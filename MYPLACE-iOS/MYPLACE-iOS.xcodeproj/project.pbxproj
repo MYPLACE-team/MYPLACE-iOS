@@ -11,6 +11,8 @@
 		AA05EAF52B3B87A0005596C5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA05EAF42B3B87A0005596C5 /* ContentView.swift */; };
 		AA05EAF72B3B87A1005596C5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA05EAF62B3B87A1005596C5 /* Assets.xcassets */; };
 		AA05EAFA2B3B87A1005596C5 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA05EAF92B3B87A1005596C5 /* Preview Assets.xcassets */; };
+		AA05EB012B3B918E005596C5 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA05EB002B3B918E005596C5 /* HomeView.swift */; };
+		AA05EB042B3B9403005596C5 /* KakaoMapsSDK_SPM in Frameworks */ = {isa = PBXBuildFile; productRef = AA05EB032B3B9403005596C5 /* KakaoMapsSDK_SPM */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +21,7 @@
 		AA05EAF42B3B87A0005596C5 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		AA05EAF62B3B87A1005596C5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AA05EAF92B3B87A1005596C5 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		AA05EB002B3B918E005596C5 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -26,6 +29,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AA05EB042B3B9403005596C5 /* KakaoMapsSDK_SPM in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -53,6 +57,7 @@
 			children = (
 				AA05EAF22B3B87A0005596C5 /* MYPLACE_iOSApp.swift */,
 				AA05EAF42B3B87A0005596C5 /* ContentView.swift */,
+				AA05EB002B3B918E005596C5 /* HomeView.swift */,
 				AA05EAF62B3B87A1005596C5 /* Assets.xcassets */,
 				AA05EAF82B3B87A1005596C5 /* Preview Content */,
 			);
@@ -83,6 +88,9 @@
 			dependencies = (
 			);
 			name = "MYPLACE-iOS";
+			packageProductDependencies = (
+				AA05EB032B3B9403005596C5 /* KakaoMapsSDK_SPM */,
+			);
 			productName = "MYPLACE-iOS";
 			productReference = AA05EAEF2B3B87A0005596C5 /* MYPLACE-iOS.app */;
 			productType = "com.apple.product-type.application";
@@ -111,6 +119,9 @@
 				Base,
 			);
 			mainGroup = AA05EAE62B3B87A0005596C5;
+			packageReferences = (
+				AA05EB022B3B9403005596C5 /* XCRemoteSwiftPackageReference "KakaoMapsSDK-SPM" */,
+			);
 			productRefGroup = AA05EAF02B3B87A0005596C5 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -137,6 +148,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AA05EB012B3B918E005596C5 /* HomeView.swift in Sources */,
 				AA05EAF52B3B87A0005596C5 /* ContentView.swift in Sources */,
 				AA05EAF32B3B87A0005596C5 /* MYPLACE_iOSApp.swift in Sources */,
 			);
@@ -342,6 +354,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		AA05EB022B3B9403005596C5 /* XCRemoteSwiftPackageReference "KakaoMapsSDK-SPM" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kakao-mapsSDK/KakaoMapsSDK-SPM.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.6.3;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		AA05EB032B3B9403005596C5 /* KakaoMapsSDK_SPM */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AA05EB022B3B9403005596C5 /* XCRemoteSwiftPackageReference "KakaoMapsSDK-SPM" */;
+			productName = KakaoMapsSDK_SPM;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = AA05EAE72B3B87A0005596C5 /* Project object */;
 }
