@@ -20,6 +20,7 @@
 		AA2B64522B3D0289008CEDBB /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2B64512B3D0289008CEDBB /* SettingView.swift */; };
 		AA2B64542B3D02A4008CEDBB /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2B64532B3D02A4008CEDBB /* NotificationView.swift */; };
 		AA2B64562B3D0E7E008CEDBB /* KakaoMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2B64552B3D0E7E008CEDBB /* KakaoMapView.swift */; };
+		AAE7CD1D2B3E3A9300E02B71 /* ToolBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE7CD1C2B3E3A9300E02B71 /* ToolBarView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,6 +38,7 @@
 		AA2B64512B3D0289008CEDBB /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
 		AA2B64532B3D02A4008CEDBB /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
 		AA2B64552B3D0E7E008CEDBB /* KakaoMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoMapView.swift; sourceTree = "<group>"; };
+		AAE7CD1C2B3E3A9300E02B71 /* ToolBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolBarView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,6 +78,7 @@
 				AA2B64552B3D0E7E008CEDBB /* KakaoMapView.swift */,
 				AA05EB002B3B918E005596C5 /* HomeView.swift */,
 				AA2B644A2B3CC83C008CEDBB /* HomeViewModel.swift */,
+				AAE7CD1C2B3E3A9300E02B71 /* ToolBarView.swift */,
 				AA2B64482B3CC713008CEDBB /* ArchiveView.swift */,
 				AA2B644C2B3CCA03008CEDBB /* FavoritePlacesView.swift */,
 				AA2B644E2B3CCA21008CEDBB /* CommunityView.swift */,
@@ -180,6 +183,7 @@
 				AA2B644B2B3CC83C008CEDBB /* HomeViewModel.swift in Sources */,
 				AA2B64562B3D0E7E008CEDBB /* KakaoMapView.swift in Sources */,
 				AA05EAF32B3B87A0005596C5 /* MYPLACE_iOSApp.swift in Sources */,
+				AAE7CD1D2B3E3A9300E02B71 /* ToolBarView.swift in Sources */,
 				AA2B64542B3D02A4008CEDBB /* NotificationView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

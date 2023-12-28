@@ -1,0 +1,64 @@
+//
+//  ToolBarView.swift
+//  MYPLACE-iOS
+//
+//  Created by 김영준 on 12/29/23.
+//
+
+import SwiftUI
+
+struct ToolBarView: View {
+    @Binding var path: [HomeViewModel]
+    var body: some View {
+        VStack {
+            HStack {
+                Button(action: {
+                    path.append(.settingView)
+                }) {
+                    Image(systemName: "person.circle")
+                        .resizable()
+                        .frame(width: 20, height: 20)
+                        .foregroundStyle(.black)
+                }
+                .padding(.trailing, 5)
+                
+                Button(action: {
+                    path.append(.notificationView)
+                }) {
+                    Image(systemName: "bell")
+                        .resizable()
+                        .frame(width: 20, height: 20)
+                        .foregroundStyle(.black)
+                }
+            }
+        }
+    }
+}
+
+struct ArchiveBackButton: View {
+    @Binding var path: [HomeViewModel]
+    var body: some View {
+        Button(action: {
+            if path.count > 0 {
+                path.removeLast()
+            }
+        }) {
+            HStack {
+                Image(systemName: "chevron.left")
+                Image("ArchiveBook")
+                Text("아카이브")
+                    .font(
+                        .custom("Apple SD Gothic Neo", size: 30)
+                        .weight(.bold)
+                    )
+            }
+            .foregroundStyle(.black)
+        }
+    }
+}
+
+#Preview {
+    ToolBarView(path: .constant([]))
+}
+
+
