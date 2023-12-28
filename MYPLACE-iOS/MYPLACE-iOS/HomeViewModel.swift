@@ -8,9 +8,9 @@
 import SwiftUI
 
 enum HomeViewModel {
+    case settingView
+    case notificationView
     case favoritePlacesView
     case arciveView
     case communityView
-    
-    
 }
