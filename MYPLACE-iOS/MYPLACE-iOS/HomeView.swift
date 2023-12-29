@@ -10,11 +10,11 @@ import KakaoMapsSDK
 import KakaoMapsSDK_SPM
 
 struct HomeView: View {
-    @State private var path: [HomeViewModel] = []
+    @State var path: [HomeViewModel] = []
+    @State var pathStack: NavigationPath = NavigationPath()
     @State var draw: Bool = false
     @State private var isPopupHidden = false
 
-    
     var body: some View {
         NavigationStack(path: $path) {
             VStack {
@@ -52,29 +52,10 @@ struct HomeView: View {
                             
                             Spacer()
                             VStack {
-                                HStack {
-                                    Button(action: {
-                                        path.append(.settingView)
-                                    }) {
-                                        Image(systemName: "person.circle")
-                                            .resizable()
-                                            .frame(width: 20, height: 20)
-                                            .foregroundStyle(.black)
-                                    }
-                                    .padding(.trailing, 5)
-                                    
-                                    Button(action: {
-                                        path.append(.notificationView)
-                                    }) {
-                                        Image(systemName: "bell")
-                                            .resizable()
-                                            .frame(width: 20, height: 20)
-                                            .foregroundStyle(.black)
-                                    }
-                                }
+                                ToolBarView(path: $path)
+                                    .padding(EdgeInsets(top: 5, leading: 0, bottom: 0, trailing: 20))
                                 Spacer()
                             }
-                            .padding(EdgeInsets(top: 5, leading: 0, bottom: 0, trailing: 20))
                         }
                     )
             }
@@ -87,29 +68,28 @@ struct HomeView: View {
                 }).frame(maxWidth: .infinity, maxHeight: .infinity)
                 
                 VStack {
-                    VStack {
-                        RoundedRectangle(cornerRadius: 10)
-                            .fill(Color(red: 0.97, green: 0.97, blue: 0.98))
-                            .frame(height: 40)
-                            .shadow(color: .black.opacity(0.25), radius: 2, x: 0, y: 4)
-                            .overlay(
-                                HStack {
-                                    Image("Map")
-                                        .resizable()
-                                        .frame(width: 16, height: 19)
-                                        .padding(.leading, 15)
-                                    TextField("장소명 검색하기", text: .constant(""))
-                                        .font(
-                                            .custom("Apple SD Gothic Neo", size: 15)
-                                            .weight(.semibold)
-                                        )
-                                        .foregroundColor(.gray)
-                                        .padding(.leading, 5)
-                                    Spacer()
-                                }
-                            )
-                            .padding(EdgeInsets(top: 10, leading: 20, bottom: 0, trailing: 20))
-                    }
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(Color(red: 0.97, green: 0.97, blue: 0.98))
+                        .frame(height: 40)
+                        .shadow(color: .black.opacity(0.25), radius: 2, x: 0, y: 4)
+                        .overlay(
+                            HStack {
+                                Image("Map")
+                                    .resizable()
+                                    .frame(width: 16, height: 19)
+                                    .padding(.leading, 15)
+                                TextField("장소명 검색하기", text: .constant(""))
+                                    .font(
+                                        .custom("Apple SD Gothic Neo", size: 15)
+                                        .weight(.semibold)
+                                    )
+                                    .foregroundColor(.gray)
+                                    .padding(.leading, 5)
+                                Spacer()
+                            }
+                        )
+                        .padding(EdgeInsets(top: 10, leading: 20, bottom: 0, trailing: 20))
+                    
                     
                     HStack {
                         ViewChangeButton(
@@ -153,7 +133,7 @@ struct HomeView: View {
                         case .favoritePlacesView:
                             FavoritePlacesView()
                         case .arciveView:
-                            ArchiveView()
+                            ArchiveView(path: $path)
                         case .communityView:
                             CommunityView()
                         }
