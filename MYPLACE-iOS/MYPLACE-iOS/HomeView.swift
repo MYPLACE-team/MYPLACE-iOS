@@ -18,47 +18,39 @@ struct HomeView: View {
     var body: some View {
         NavigationStack(path: $path) {
             VStack {
+                HStack {
+                    //MARK: - UserName 필요, 세부적인 디자인 필요
+                    Text("라일락")
+                        .font(
+                            .custom("Apple SD Gothic Neo", size: 30)
+                            .weight(.bold)
+                        )
+                        .foregroundStyle(Color(red: 0.39, green: 0.37, blue: 0.6))
+                        .padding(.leading, 20)
+                    Text("님,")
+                        .font(
+                            .custom("Apple SD Gothic Neo", size: 20)
+                        )
+                        .padding(.top, 10)
+                    Spacer()
+                    VStack {
+                        ToolBarView(path: $path)
+                            .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 20))
+                    }
+                }
+                HStack {
+                    Text("오늘도 잘 다녀오셨나요?")
+                        .font(
+                            .custom("Apple SD Gothic Neo", size: 20)
+                        )
+                        .padding(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 0))
+                    Spacer()
+                }
+            }
+            .background(
                 Rectangle()
                     .fill(.white)
-                    .frame(height: 100)
-                    .overlay(
-                        HStack {
-                            VStack {
-                                HStack {
-                                    //MARK: - UserName 필요, 세부적인 디자인 필요
-                                    Text("라일락")
-                                        .font(
-                                            .custom("Apple SD Gothic Neo", size: 30)
-                                            .weight(.bold)
-                                        )
-                                        .foregroundStyle(Color(red: 0.39, green: 0.37, blue: 0.6))
-                                    Text("님,")
-                                        .font(
-                                            .custom("Apple SD Gothic Neo", size: 20)
-                                        )
-                                    Spacer()
-                                }
-                                .padding(.leading, 20)
-                                HStack {
-                                    Text("오늘도 잘 다녀오셨나요?")
-                                        .font(
-                                            .custom("Apple SD Gothic Neo", size: 20)
-                                        )
-                                        .padding(.leading, 20)
-                                    Spacer()
-                                }
-                                Spacer()
-                            }
-                            
-                            Spacer()
-                            VStack {
-                                ToolBarView(path: $path)
-                                    .padding(EdgeInsets(top: 5, leading: 0, bottom: 0, trailing: 20))
-                                Spacer()
-                            }
-                        }
-                    )
-            }
+            )
             ZStack {
                 //MARK: - KakaoMapView
                 KakaoMapView(draw: $draw).onAppear(perform: {
@@ -216,10 +208,12 @@ struct HomeView: View {
                                         .padding(EdgeInsets(top: 0, leading: 220, bottom: 50, trailing: 0))
                                     }
                                 )
+                                .padding(.bottom, 20)
                         }
                     }
                 }
             }
+            .ignoresSafeArea(.all)
         }
     }
 }
