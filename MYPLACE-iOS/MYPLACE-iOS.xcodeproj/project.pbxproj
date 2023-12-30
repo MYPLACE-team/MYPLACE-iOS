@@ -14,13 +14,16 @@
 		AA05EB012B3B918E005596C5 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA05EB002B3B918E005596C5 /* HomeView.swift */; };
 		AA05EB042B3B9403005596C5 /* KakaoMapsSDK_SPM in Frameworks */ = {isa = PBXBuildFile; productRef = AA05EB032B3B9403005596C5 /* KakaoMapsSDK_SPM */; };
 		AA2B64492B3CC713008CEDBB /* ArchiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2B64482B3CC713008CEDBB /* ArchiveView.swift */; };
-		AA2B644B2B3CC83C008CEDBB /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2B644A2B3CC83C008CEDBB /* HomeViewModel.swift */; };
+		AA2B644B2B3CC83C008CEDBB /* PathModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2B644A2B3CC83C008CEDBB /* PathModel.swift */; };
 		AA2B644D2B3CCA03008CEDBB /* FavoritePlacesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2B644C2B3CCA03008CEDBB /* FavoritePlacesView.swift */; };
 		AA2B644F2B3CCA21008CEDBB /* CommunityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2B644E2B3CCA21008CEDBB /* CommunityView.swift */; };
 		AA2B64522B3D0289008CEDBB /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2B64512B3D0289008CEDBB /* SettingView.swift */; };
 		AA2B64542B3D02A4008CEDBB /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2B64532B3D02A4008CEDBB /* NotificationView.swift */; };
 		AA2B64562B3D0E7E008CEDBB /* KakaoMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2B64552B3D0E7E008CEDBB /* KakaoMapView.swift */; };
 		AAE7CD1D2B3E3A9300E02B71 /* ToolBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE7CD1C2B3E3A9300E02B71 /* ToolBarView.swift */; };
+		AAE7CD1F2B3F9C0C00E02B71 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE7CD1E2B3F9C0C00E02B71 /* SearchView.swift */; };
+		AAE7CD212B3FB09F00E02B71 /* PlaceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE7CD202B3FB09F00E02B71 /* PlaceModel.swift */; };
+		AAE7CD232B3FCF6400E02B71 /* SearchDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE7CD222B3FCF6400E02B71 /* SearchDetailView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,7 +34,7 @@
 		AA05EAF92B3B87A1005596C5 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		AA05EB002B3B918E005596C5 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		AA2B64482B3CC713008CEDBB /* ArchiveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveView.swift; sourceTree = "<group>"; };
-		AA2B644A2B3CC83C008CEDBB /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		AA2B644A2B3CC83C008CEDBB /* PathModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PathModel.swift; sourceTree = "<group>"; };
 		AA2B644C2B3CCA03008CEDBB /* FavoritePlacesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritePlacesView.swift; sourceTree = "<group>"; };
 		AA2B644E2B3CCA21008CEDBB /* CommunityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunityView.swift; sourceTree = "<group>"; };
 		AA2B64502B3CFEA9008CEDBB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -39,6 +42,9 @@
 		AA2B64532B3D02A4008CEDBB /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
 		AA2B64552B3D0E7E008CEDBB /* KakaoMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoMapView.swift; sourceTree = "<group>"; };
 		AAE7CD1C2B3E3A9300E02B71 /* ToolBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolBarView.swift; sourceTree = "<group>"; };
+		AAE7CD1E2B3F9C0C00E02B71 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
+		AAE7CD202B3FB09F00E02B71 /* PlaceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceModel.swift; sourceTree = "<group>"; };
+		AAE7CD222B3FCF6400E02B71 /* SearchDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchDetailView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,12 +83,13 @@
 				AA05EAF42B3B87A0005596C5 /* ContentView.swift */,
 				AA2B64552B3D0E7E008CEDBB /* KakaoMapView.swift */,
 				AA05EB002B3B918E005596C5 /* HomeView.swift */,
-				AA2B644A2B3CC83C008CEDBB /* HomeViewModel.swift */,
 				AAE7CD1C2B3E3A9300E02B71 /* ToolBarView.swift */,
 				AA2B64482B3CC713008CEDBB /* ArchiveView.swift */,
 				AA2B644C2B3CCA03008CEDBB /* FavoritePlacesView.swift */,
 				AA2B644E2B3CCA21008CEDBB /* CommunityView.swift */,
 				AA2B64512B3D0289008CEDBB /* SettingView.swift */,
+				AAE7CD252B3FCF9C00E02B71 /* Model */,
+				AAE7CD242B3FCF6E00E02B71 /* Search */,
 				AA2B64532B3D02A4008CEDBB /* NotificationView.swift */,
 				AA05EAF62B3B87A1005596C5 /* Assets.xcassets */,
 				AA05EAF82B3B87A1005596C5 /* Preview Content */,
@@ -96,6 +103,24 @@
 				AA05EAF92B3B87A1005596C5 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		AAE7CD242B3FCF6E00E02B71 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				AAE7CD1E2B3F9C0C00E02B71 /* SearchView.swift */,
+				AAE7CD222B3FCF6400E02B71 /* SearchDetailView.swift */,
+			);
+			path = Search;
+			sourceTree = "<group>";
+		};
+		AAE7CD252B3FCF9C00E02B71 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				AAE7CD202B3FB09F00E02B71 /* PlaceModel.swift */,
+				AA2B644A2B3CC83C008CEDBB /* PathModel.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -175,12 +200,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				AA2B644F2B3CCA21008CEDBB /* CommunityView.swift in Sources */,
+				AAE7CD232B3FCF6400E02B71 /* SearchDetailView.swift in Sources */,
 				AA05EB012B3B918E005596C5 /* HomeView.swift in Sources */,
 				AA2B64492B3CC713008CEDBB /* ArchiveView.swift in Sources */,
+				AAE7CD212B3FB09F00E02B71 /* PlaceModel.swift in Sources */,
 				AA2B644D2B3CCA03008CEDBB /* FavoritePlacesView.swift in Sources */,
+				AAE7CD1F2B3F9C0C00E02B71 /* SearchView.swift in Sources */,
 				AA05EAF52B3B87A0005596C5 /* ContentView.swift in Sources */,
 				AA2B64522B3D0289008CEDBB /* SettingView.swift in Sources */,
-				AA2B644B2B3CC83C008CEDBB /* HomeViewModel.swift in Sources */,
+				AA2B644B2B3CC83C008CEDBB /* PathModel.swift in Sources */,
 				AA2B64562B3D0E7E008CEDBB /* KakaoMapView.swift in Sources */,
 				AA05EAF32B3B87A0005596C5 /* MYPLACE_iOSApp.swift in Sources */,
 				AAE7CD1D2B3E3A9300E02B71 /* ToolBarView.swift in Sources */,

@@ -10,7 +10,7 @@ import KakaoMapsSDK
 import KakaoMapsSDK_SPM
 
 struct HomeView: View {
-    @State var path: [HomeViewModel] = []
+    @State var path: [PathModel] = []
     @State var pathStack: NavigationPath = NavigationPath()
     @State var draw: Bool = false
     @State private var isPopupHidden = false
@@ -18,47 +18,39 @@ struct HomeView: View {
     var body: some View {
         NavigationStack(path: $path) {
             VStack {
+                HStack {
+                    //MARK: - UserName 필요, 세부적인 디자인 필요
+                    Text("라일락")
+                        .font(
+                            .custom("Apple SD Gothic Neo", size: 30)
+                            .weight(.bold)
+                        )
+                        .foregroundStyle(Color(red: 0.39, green: 0.37, blue: 0.6))
+                        .padding(.leading, 20)
+                    Text("님,")
+                        .font(
+                            .custom("Apple SD Gothic Neo", size: 20)
+                        )
+                        .padding(.top, 10)
+                    Spacer()
+                    VStack {
+                        ToolBarView(path: $path)
+                            .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 20))
+                    }
+                }
+                HStack {
+                    Text("오늘도 잘 다녀오셨나요?")
+                        .font(
+                            .custom("Apple SD Gothic Neo", size: 20)
+                        )
+                        .padding(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 0))
+                    Spacer()
+                }
+            }
+            .background(
                 Rectangle()
                     .fill(.white)
-                    .frame(height: 100)
-                    .overlay(
-                        HStack {
-                            VStack {
-                                HStack {
-                                    //MARK: - UserName 필요, 세부적인 디자인 필요
-                                    Text("라일락")
-                                        .font(
-                                            .custom("Apple SD Gothic Neo", size: 30)
-                                            .weight(.bold)
-                                        )
-                                        .foregroundStyle(Color(red: 0.39, green: 0.37, blue: 0.6))
-                                    Text("님,")
-                                        .font(
-                                            .custom("Apple SD Gothic Neo", size: 20)
-                                        )
-                                    Spacer()
-                                }
-                                .padding(.leading, 20)
-                                HStack {
-                                    Text("오늘도 잘 다녀오셨나요?")
-                                        .font(
-                                            .custom("Apple SD Gothic Neo", size: 20)
-                                        )
-                                        .padding(.leading, 20)
-                                    Spacer()
-                                }
-                                Spacer()
-                            }
-                            
-                            Spacer()
-                            VStack {
-                                ToolBarView(path: $path)
-                                    .padding(EdgeInsets(top: 5, leading: 0, bottom: 0, trailing: 20))
-                                Spacer()
-                            }
-                        }
-                    )
-            }
+            )
             ZStack {
                 //MARK: - KakaoMapView
                 KakaoMapView(draw: $draw).onAppear(perform: {
@@ -83,8 +75,14 @@ struct HomeView: View {
                                         .custom("Apple SD Gothic Neo", size: 15)
                                         .weight(.semibold)
                                     )
-                                    .foregroundColor(.gray)
+                                    .foregroundStyle(.gray)
                                     .padding(.leading, 5)
+                                Button(action: {
+                                    path.append(.searchView)
+                                }) {
+                                    Image(systemName: "magnifyingglass")
+                                        .foregroundStyle(.gray)
+                                }
                                 Spacer()
                             }
                         )
@@ -124,12 +122,14 @@ struct HomeView: View {
                         )
                         .padding(.trailing, 20)
                     }
-                    .navigationDestination(for: HomeViewModel.self) { homeViewModel in
+                    .navigationDestination(for: PathModel.self) { homeViewModel in
                         switch homeViewModel {
                         case .settingView:
                             SettingView()
                         case .notificationView:
                             NotificationView()
+                        case .searchView:
+                            SearchView(path: $path)
                         case .favoritePlacesView:
                             FavoritePlacesView()
                         case .arciveView:
@@ -140,10 +140,10 @@ struct HomeView: View {
                     }
                     .padding(.top, 10)
                     
-                    //MARK: - 맵 화살표 디자이너님 수정 들어오면 바꾸기
                     HStack {
                         VStack {
                             Button(action: {
+                                //MARK: - 카카오맵 기능 추가 필요
                                 print("Button Tapped")
                             }) {
                                 Circle()
@@ -216,10 +216,12 @@ struct HomeView: View {
                                         .padding(EdgeInsets(top: 0, leading: 220, bottom: 50, trailing: 0))
                                     }
                                 )
+                                .padding(.bottom, 20)
                         }
                     }
                 }
             }
+            .ignoresSafeArea(.all)
         }
     }
 }

@@ -8,19 +8,8 @@
 import SwiftUI
 
 struct ArchiveView: View {
-    @Binding var path: [HomeViewModel]
+    @Binding var path: [PathModel]
     var body: some View {
-        Text("")
-            .navigationBarBackButtonHidden()
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    ArchiveBackButton(path: $path)
-                }
-                
-                ToolbarItem(placement: .topBarTrailing) {
-                    ToolBarView(path: $path)
-                }
-            }
         ZStack {
             Color("MPLightPurple")
                 .ignoresSafeArea(.all)
@@ -31,6 +20,16 @@ struct ArchiveView: View {
                     .frame(height: 270)
                 
                 Spacer()
+            }
+        }
+        .navigationBarBackButtonHidden()
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                ArchiveBackButton(path: $path)
+            }
+            
+            ToolbarItem(placement: .topBarTrailing) {
+                ToolBarView(path: $path)
             }
         }
         
