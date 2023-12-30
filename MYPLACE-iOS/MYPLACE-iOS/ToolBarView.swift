@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ToolBarView: View {
-    @Binding var path: [HomeViewModel]
+    @Binding var path: [PathModel]
     var body: some View {
         VStack {
             HStack {
@@ -35,8 +35,24 @@ struct ToolBarView: View {
     }
 }
 
+struct BasicBackButton: View {
+    @Binding var path: [PathModel]
+    var body: some View {
+        Button(action: {
+            if path.count > 0 {
+                path.removeLast()
+            }
+        }) {
+            HStack {
+                Image(systemName: "chevron.left")
+            }
+            .foregroundStyle(.black)
+        }
+    }
+}
+
 struct ArchiveBackButton: View {
-    @Binding var path: [HomeViewModel]
+    @Binding var path: [PathModel]
     var body: some View {
         Button(action: {
             if path.count > 0 {
@@ -56,6 +72,8 @@ struct ArchiveBackButton: View {
         }
     }
 }
+
+
 
 #Preview {
     ToolBarView(path: .constant([]))

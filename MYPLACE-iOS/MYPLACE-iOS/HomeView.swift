@@ -10,7 +10,7 @@ import KakaoMapsSDK
 import KakaoMapsSDK_SPM
 
 struct HomeView: View {
-    @State var path: [HomeViewModel] = []
+    @State var path: [PathModel] = []
     @State var pathStack: NavigationPath = NavigationPath()
     @State var draw: Bool = false
     @State private var isPopupHidden = false
@@ -75,8 +75,14 @@ struct HomeView: View {
                                         .custom("Apple SD Gothic Neo", size: 15)
                                         .weight(.semibold)
                                     )
-                                    .foregroundColor(.gray)
+                                    .foregroundStyle(.gray)
                                     .padding(.leading, 5)
+                                Button(action: {
+                                    path.append(.searchView)
+                                }) {
+                                    Image(systemName: "magnifyingglass")
+                                        .foregroundStyle(.gray)
+                                }
                                 Spacer()
                             }
                         )
@@ -116,12 +122,14 @@ struct HomeView: View {
                         )
                         .padding(.trailing, 20)
                     }
-                    .navigationDestination(for: HomeViewModel.self) { homeViewModel in
+                    .navigationDestination(for: PathModel.self) { homeViewModel in
                         switch homeViewModel {
                         case .settingView:
                             SettingView()
                         case .notificationView:
                             NotificationView()
+                        case .searchView:
+                            SearchView(path: $path)
                         case .favoritePlacesView:
                             FavoritePlacesView()
                         case .arciveView:
@@ -132,10 +140,10 @@ struct HomeView: View {
                     }
                     .padding(.top, 10)
                     
-                    //MARK: - 맵 화살표 디자이너님 수정 들어오면 바꾸기
                     HStack {
                         VStack {
                             Button(action: {
+                                //MARK: - 카카오맵 기능 추가 필요
                                 print("Button Tapped")
                             }) {
                                 Circle()

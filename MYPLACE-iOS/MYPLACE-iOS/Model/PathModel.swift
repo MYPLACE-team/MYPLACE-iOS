@@ -7,9 +7,10 @@
 
 import SwiftUI
 
-enum HomeViewModel {
+enum PathModel {
     case settingView
     case notificationView
+    case searchView
     case favoritePlacesView
     case arciveView
     case communityView
