@@ -76,7 +76,7 @@ struct ArchiveBackButton: View {
 
 
 #Preview {
-    ToolBarView(path: .constant([]))
+    BasicBackButton(path: .constant([]))
 }
 
 

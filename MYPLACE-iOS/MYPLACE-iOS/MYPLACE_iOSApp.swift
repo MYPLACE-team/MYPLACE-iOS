@@ -11,7 +11,7 @@ import SwiftUI
 struct MYPLACE_iOSApp: App {
     var body: some Scene {
         WindowGroup {
-            SearchView(path: .constant([]))
+            HomeView()
         }
     }
 }
