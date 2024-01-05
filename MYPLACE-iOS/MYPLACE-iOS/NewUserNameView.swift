@@ -14,17 +14,17 @@ struct NewUserNameView: View {
     @State var alertText: String = "alertText"
     var body: some View {
         NavigationStack {
-            VStack(){
-                ZStack(){
+            VStack {
+                ZStack {
                     HStack {
                         Rectangle()
-                          .foregroundColor(.clear)
-                          .frame(width: 163, height: 4)
-                          .background(Color(red: 0.39, green: 0.37, blue: 0.6))
+                            .foregroundColor(.clear)
+                            .frame(width: 163, height: 4)
+                            .background(Color(red: 0.39, green: 0.37, blue: 0.6))
                         Rectangle()
-                          .foregroundColor(.clear)
-                          .frame(width: 164, height: 4)
-                          .background(Color(red: 0.79, green: 0.8, blue: 0.82))
+                            .foregroundColor(.clear)
+                            .frame(width: 164, height: 4)
+                            .background(Color(red: 0.79, green: 0.8, blue: 0.82))
                     }
                     HStack {
                         Circle()
@@ -35,55 +35,67 @@ struct NewUserNameView: View {
                             .foregroundColor(Color(red: 0.39, green: 0.37, blue: 0.6))
                             .overlay(
                                 Image("check")
-                                .frame(width: 11, height: 9))
+                                .frame(width: 11, height: 9)
+                            )
                             .padding(.horizontal, 91)
                         Circle()
                             .frame(width: 19, height: 19)
                             .foregroundColor(Color(red: 0.79, green: 0.8, blue: 0.82))
                     }
-                }.padding(EdgeInsets(top: 68, leading: 0, bottom: 38, trailing: 0))
+                }
+                .padding(EdgeInsets(top: 68, leading: 0, bottom: 38, trailing: 0))
                 VStack(alignment: .leading) {
                     Text("안녕하세요!")
-                      .font(
-                        Font.custom("Inter", size: 30)
-                          .weight(.bold)
-                      )
-                      .foregroundColor(Color(red: 0.15, green: 0.16, blue: 0.17))
-                      .padding(.bottom, 30)
-                    ZStack(alignment: .topLeading) {
-                        Rectangle()
-                          .foregroundColor(.clear)
-                          .frame(width: 166, height: 11)
-                          .background(Color(red: 0.76, green: 0.74, blue: 1).opacity(0.6))
-                          .padding(.top, 14)
-                        Text("사용하실 닉네임을\n입력해주세요 🙂")
-                          .font(
+                        .font(
+                            Font.custom("Inter", size: 30)
+                                .weight(.bold)
+                        )
+                        .foregroundColor(Color(red: 0.15, green: 0.16, blue: 0.17))
+                        .padding(.bottom, 30)
+                    HStack(spacing: 0) {
+                        Text("사용하실 닉네임")
+                            .font(
+                                Font.custom("Inter", size: 25)
+                                    .weight(.medium)
+                            )
+                            .foregroundColor(Color(red: 0.15, green: 0.16, blue: 0.17))
+                            .background(Color(red: 0.76, green: 0.74, blue: 1).opacity(0.6))
+                        Text("을")
+                            .font(
+                                Font.custom("Inter", size: 25)
+                                    .weight(.medium)
+                            )
+                            .foregroundColor(Color(red: 0.15, green: 0.16, blue: 0.17))
+                    }
+                    Text("입력해주세요 🙂")
+                        .font(
                             Font.custom("Inter", size: 25)
-                              .weight(.medium)
-                          )
-                          .foregroundColor(Color(red: 0.15, green: 0.16, blue: 0.17))
-                    }.padding(.bottom, 100)
+                                .weight(.medium)
+                        )
+                        .foregroundColor(Color(red: 0.15, green: 0.16, blue: 0.17))
+                        .padding(.bottom, 100)
                     ZStack(alignment:.trailing) {
-                         TextField("닉네임 입력", text: $nickName)
-                           .foregroundColor(.clear)
-                           .frame(width: 312, height: 40)
-                           .padding(.leading, 10)
-                           .background(
-                               RoundedRectangle(cornerRadius: 10)
-                                .strokeBorder(Color.black.opacity(0.25), lineWidth: 1)
-                           )
-                           .shadow(color: .black.opacity(0.25), radius: 1, x: 0, y: 0)
+                        TextField("닉네임 입력", text: $nickName)
+                            .foregroundColor(.clear)
+                            .frame(width: 312, height: 40)
+                            .padding(.leading, 10)
+                            .background(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .strokeBorder(Color.black.opacity(0.25), lineWidth: 1)
+                            )
+                            .shadow(color: .black.opacity(0.25), radius: 1, x: 0, y: 0)
                         Circle()
-                          .frame(width:22, height:22)
-                          .padding(.trailing, 10)
-                     }
-                     .padding(.bottom, 5)
-                     Text("\(alertText)")
-                       .font(
-                         Font.custom("Noto Sans KR", size: 13)
-                           .weight(.medium)
-                       )
-                       .foregroundColor(Color(red: 1, green: 0, blue: 0))
+                            .foregroundColor(.red)
+                            .frame(width:22, height:22)
+                            .padding(.trailing, 10)
+                    }
+                    .padding(.bottom, 5)
+                    Text("\(alertText)")
+                        .font(
+                            Font.custom("Noto Sans KR", size: 13)
+                                .weight(.medium)
+                        )
+                        .foregroundColor(Color(red: 1, green: 0, blue: 0))
                 }
             }
             Spacer()

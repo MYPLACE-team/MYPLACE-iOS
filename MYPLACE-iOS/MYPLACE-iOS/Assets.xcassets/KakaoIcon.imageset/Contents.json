@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "Path.svg",
+      "filename" : "icons8-카카오-톡.svg",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Path 1.svg",
+      "filename" : "icons8-카카오-톡 1.svg",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "Path 2.svg",
+      "filename" : "icons8-카카오-톡 2.svg",
       "idiom" : "universal",
       "scale" : "3x"
     }
