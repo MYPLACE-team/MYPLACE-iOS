@@ -11,7 +11,7 @@ import KakaoMapsSDK_SPM
 
 struct HomeView: View {
     @State var path: [PathModel] = []
-    @State var pathStack: NavigationPath = NavigationPath()
+//    @State var pathStack: NavigationPath = NavigationPath()
     @State var draw: Bool = false
     @State private var isPopupHidden = false
 
@@ -122,8 +122,8 @@ struct HomeView: View {
                         )
                         .padding(.trailing, 20)
                     }
-                    .navigationDestination(for: PathModel.self) { homeViewModel in
-                        switch homeViewModel {
+                    .navigationDestination(for: PathModel.self) { pathModel in
+                        switch pathModel {
                         case .settingView:
                             SettingView()
                         case .notificationView:
@@ -136,6 +136,8 @@ struct HomeView: View {
                             ArchiveView(path: $path)
                         case .communityView:
                             CommunityView()
+                        case .searchDetailView:
+                            PlaceInformationEditView(path: $path)
                         }
                     }
                     .padding(.top, 10)
