@@ -15,8 +15,7 @@ struct SearchItemView: View {
 }
 
 struct SearchItemView_Registered: View {
-    //MARK: - 하트 저장여부 어디서 저장?
-    @State private var isHeartFilled = false
+    @Binding var isHeartFilled = false
     @Binding var path: [PathModel]
     var place: PlaceModel
     var body: some View {

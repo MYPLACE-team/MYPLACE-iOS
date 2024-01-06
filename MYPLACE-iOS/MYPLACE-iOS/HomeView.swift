@@ -12,6 +12,7 @@ import KakaoMapsSDK_SPM
 struct HomeView: View {
     @State var path: [PathModel] = []
 //    @State var pathStack: NavigationPath = NavigationPath()
+    @State var isHeartFilled = false
     @State var draw: Bool = false
     @State private var isPopupHidden = false
 
@@ -136,8 +137,10 @@ struct HomeView: View {
                             ArchiveView(path: $path)
                         case .communityView:
                             CommunityView()
-                        case .searchDetailView:
+                        case .placeInformationEditView:
                             PlaceInformationEditView(path: $path)
+                        case .placeInformationView:
+                            PlaceInformationView(path: $path, isHeartFilled: $isHeartFilled)
                         }
                     }
                     .padding(.top, 10)

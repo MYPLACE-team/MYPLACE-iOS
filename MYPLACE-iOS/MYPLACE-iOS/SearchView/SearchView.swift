@@ -90,7 +90,7 @@ struct SearchView: View {
                             }
                         }
                         Button(action: {
-                            path.append(.settingView)
+                            path.append(.placeInformationView)
                         }) {
                             SearchItemView_Registered(path: $path, place: places[0])
                         }
@@ -182,7 +182,7 @@ struct SearchItemPopup: View {
                     .padding(.top, 15)
                     Button(action: {
                         isPopupPresented.toggle()
-                        path.append(.searchDetailView)
+                        path.append(.placeInformationEditView)
                     }) {
                         RoundedRectangle(cornerRadius: 5)
                             .foregroundStyle(.blue)
