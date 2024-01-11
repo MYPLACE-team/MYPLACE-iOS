@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "SSO Icon.svg",
+      "filename" : "icons8-맥-os.svg",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "SSO Icon 1.svg",
+      "filename" : "icons8-맥-os 1.svg",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "SSO Icon 2.svg",
+      "filename" : "icons8-맥-os 2.svg",
       "idiom" : "universal",
       "scale" : "3x"
     }

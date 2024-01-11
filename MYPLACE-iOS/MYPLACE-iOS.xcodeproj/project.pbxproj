@@ -10,6 +10,8 @@
 		A59EE2B52B470C57009915D5 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59EE2B42B470C57009915D5 /* LoginView.swift */; };
 		A59EE2B72B470C8A009915D5 /* NewUserNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59EE2B62B470C8A009915D5 /* NewUserNameView.swift */; };
 		A59EE2B92B470C9F009915D5 /* NewUserProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59EE2B82B470C9F009915D5 /* NewUserProfileView.swift */; };
+		A59EE2BB2B47F80A009915D5 /* LoginPathModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59EE2BA2B47F80A009915D5 /* LoginPathModel.swift */; };
+		A59EE2BD2B47F91B009915D5 /* LoginModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59EE2BC2B47F91B009915D5 /* LoginModel.swift */; };
 		AA05EAF32B3B87A0005596C5 /* MYPLACE_iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA05EAF22B3B87A0005596C5 /* MYPLACE_iOSApp.swift */; };
 		AA05EAF52B3B87A0005596C5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA05EAF42B3B87A0005596C5 /* ContentView.swift */; };
 		AA05EAF72B3B87A1005596C5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA05EAF62B3B87A1005596C5 /* Assets.xcassets */; };
@@ -37,6 +39,8 @@
 		A59EE2B42B470C57009915D5 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		A59EE2B62B470C8A009915D5 /* NewUserNameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewUserNameView.swift; sourceTree = "<group>"; };
 		A59EE2B82B470C9F009915D5 /* NewUserProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewUserProfileView.swift; sourceTree = "<group>"; };
+		A59EE2BA2B47F80A009915D5 /* LoginPathModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPathModel.swift; sourceTree = "<group>"; };
+		A59EE2BC2B47F91B009915D5 /* LoginModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginModel.swift; sourceTree = "<group>"; };
 		AA05EAEF2B3B87A0005596C5 /* MYPLACE-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MYPLACE-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA05EAF22B3B87A0005596C5 /* MYPLACE_iOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MYPLACE_iOSApp.swift; sourceTree = "<group>"; };
 		AA05EAF42B3B87A0005596C5 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -140,6 +144,8 @@
 				AAE7CD202B3FB09F00E02B71 /* PlaceModel.swift */,
 				AA2B644A2B3CC83C008CEDBB /* PathModel.swift */,
 				AA9E80192B415F7C00D51447 /* ToastViewModel.swift */,
+				A59EE2BA2B47F80A009915D5 /* LoginPathModel.swift */,
+				A59EE2BC2B47F91B009915D5 /* LoginModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -233,7 +239,9 @@
 				AAE7CD1F2B3F9C0C00E02B71 /* SearchView.swift in Sources */,
 				AA9E801A2B415F7C00D51447 /* ToastViewModel.swift in Sources */,
 				AA05EAF52B3B87A0005596C5 /* ContentView.swift in Sources */,
+				A59EE2BD2B47F91B009915D5 /* LoginModel.swift in Sources */,
 				AA2B64522B3D0289008CEDBB /* SettingView.swift in Sources */,
+				A59EE2BB2B47F80A009915D5 /* LoginPathModel.swift in Sources */,
 				AA9E80202B479E6600D51447 /* PlaceInformationView.swift in Sources */,
 				AA2B644B2B3CC83C008CEDBB /* PathModel.swift in Sources */,
 				AA2B64562B3D0E7E008CEDBB /* KakaoMapView.swift in Sources */,
