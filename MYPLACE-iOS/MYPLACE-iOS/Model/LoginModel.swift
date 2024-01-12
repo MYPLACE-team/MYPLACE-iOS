@@ -13,11 +13,22 @@ class LoginModel: ObservableObject {
     }
     
     func kakaoLogin() {
-        
+//        if (UserApi.isKakaoTalkLoginAvailable()) {
+//            UserApi.shared.loginWithKakaoTalk {(oauthToken, error) in
+//                if let error = error {
+//                    print(error)
+//                }
+//                else {
+//                    print("loginWithKakaoTalk() success.")
+//
+//                    //do something
+//                    _ = oauthToken
+//                }
+//            }
+//        }
     }
     
     func appleLogin() {
-        
     }
     
     func checkNameAvailability(name: String) -> Bool {
