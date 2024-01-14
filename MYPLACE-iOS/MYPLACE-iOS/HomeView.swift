@@ -130,15 +130,15 @@ struct HomeView: View {
                         case .notificationView:
                             NotificationView()
                         case .searchView:
-                            SearchView(path: $path)
+                            SearchView(path: $path, isHeartFilled: $isHeartFilled)
                         case .favoritePlacesView:
-                            FavoritePlacesView()
+                            FavoritePlacesView(path: $path)
                         case .arciveView:
                             ArchiveView(path: $path)
                         case .communityView:
                             CommunityView()
                         case .placeInformationEditView:
-                            PlaceInformationEditView(path: $path)
+                            PlaceInformationEditView(path: $path, isHeartFilled: $isHeartFilled)
                         case .placeInformationView:
                             PlaceInformationView(path: $path, isHeartFilled: $isHeartFilled)
                         }

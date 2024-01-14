@@ -9,6 +9,7 @@ import SwiftUI
 
 struct SearchView: View {
     @Binding var path: [PathModel]
+    @Binding var isHeartFilled: Bool
     @State var searchNumber: Int = 2
     @State private var isPopupPresented = false
     @StateObject var popupViewModel = PopupViewModel()
@@ -92,7 +93,7 @@ struct SearchView: View {
                         Button(action: {
                             path.append(.placeInformationView)
                         }) {
-                            SearchItemView_Registered(path: $path, place: places[0])
+                            SearchItemView_Registered(isHeartFilled: $isHeartFilled, path: $path, place: places[0])
                         }
                     }
                     .frame(maxWidth: .infinity)
@@ -215,5 +216,5 @@ struct DottedDivider: View {
 }
 
 #Preview {
-    SearchView(path: .constant([]))
+    SearchView(path: .constant([]), isHeartFilled: .constant(false))
 }

@@ -8,43 +8,46 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var isPopupPresented = false
+    @State private var items = ["Item 1", "Item 2", "Item 3"]
 
     var body: some View {
-        ZStack {
-            VStack {
-                Text("Your Main Content")
-                Button("Show Popup") {
-                    isPopupPresented.toggle()
-                }
-            }
-            .padding()
-
-            if isPopupPresented {
-                Color.black.opacity(0.4) // Background blur
-                    .edgesIgnoringSafeArea(.all)
-
-                VStack {
-                    Text("Popup Content")
-                        .font(.title)
+        VStack {
+            ForEach(items, id: \.self) { item in
+                HStack {
+                    Text(item)
                         .padding()
-
-                    Button("Close Popup") {
-                        isPopupPresented.toggle()
-                    }
-                    .padding()
-                    .background(Color.blue)
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
+                    Spacer()
                 }
-                .background(Color.white)
-                .cornerRadius(15)
+                .swipeActions {
+                    Button(action: {
+                        // Perform action when swiped from the leading edge
+                        if let index = items.firstIndex(of: item) {
+                            items.remove(at: index)
+                        }
+                    }) {
+                        Label("Delete", systemImage: "trash")
+                    }
+                    .tint(.red)
+                }
+                .swipeActions(edge: .trailing) {
+                    Button(action: {
+                        // Perform action when swiped from the trailing edge
+                        // Your custom action here
+                    }) {
+                        Label("Custom Action", systemImage: "star")
+                    }
+                    .tint(.blue)
+                }
+                .background(Color.gray.opacity(0.1))
+                .cornerRadius(10)
                 .padding()
             }
         }
     }
 }
 
-#Preview {
-    ContentView()
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
+    }
 }

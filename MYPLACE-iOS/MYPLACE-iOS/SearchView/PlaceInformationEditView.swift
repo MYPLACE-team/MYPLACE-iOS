@@ -10,6 +10,7 @@ import PhotosUI
 
 struct PlaceInformationEditView: View {
     @Binding var path: [PathModel]
+    @Binding var isHeartFilled: Bool
     @State var isFirstImageSelected: Bool = false
     @State var isSecondImageSelected: Bool = false
     @State var isThirdImageSelected: Bool = false
@@ -31,7 +32,7 @@ struct PlaceInformationEditView: View {
             .frame(width: 301, alignment: .top)
             .toolbar(.hidden)
         //MARK: - 선택된 장소 표시되는 것 수정 필요
-        SearchItemView_Registered(path: $path, place: places[0])
+        SearchItemView_Registered(isHeartFilled: $isHeartFilled, path: $path, place: places[0])
             .padding(.top, 10)
         
         VStack(spacing: 10) {
@@ -52,7 +53,7 @@ struct PlaceInformationEditView: View {
             CustomTextField(placeholder: "장소를 나타내는 #태그를 3개까지만 입력해주세요.", text: $tag)
         }
         .padding(.top, 20)
-        HStack() {
+        HStack {
             SquarePhotosPicker(squareWidth: 82, squareHeight: 82, isSelected: $isFirstImageSelected)
             if isFirstImageSelected {
                 SquarePhotosPicker(squareWidth: 82, squareHeight: 82, isSelected: $isSecondImageSelected)
@@ -63,6 +64,7 @@ struct PlaceInformationEditView: View {
             Spacer()
         }
         .padding(.leading, 38)
+        //        .frame(height: 82)
         .padding(.top, 5)
         
         HStack {
@@ -167,10 +169,20 @@ struct SquarePhotosPicker: View {
     var body: some View {
         if let selectedImageData,
            let uiImage = UIImage(data: selectedImageData) {
-            Image(uiImage: uiImage)
-                .resizable()
-                .frame(width: squareWidth, height: squareHeight)
-                .scaledToFill()
+            ZStack {
+                Image(uiImage: uiImage)
+                    .resizable()
+                    .frame(width: squareWidth, height: squareHeight)
+                    .scaledToFill()
+                Button(action: {
+                    deleteSelectedImage()
+                }) {
+                    Image(systemName: "xmark.circle.fill")
+                        .foregroundColor(.red)
+                }
+                .offset(x: squareWidth/2, y: -squareHeight/2)
+            }
+            .frame(width: squareWidth, height: squareHeight)
         }
         else {
             PhotosPicker(
@@ -200,10 +212,14 @@ struct SquarePhotosPicker: View {
                 }
         }
     }
+    private func deleteSelectedImage() {
+        selectedImageData = nil
+        isSelected = false
+    }
 }
 
 #Preview {
     PlaceInformationEditView(
-        path: .constant([])
+        path: .constant([]), isHeartFilled: .constant(false)
     )
 }

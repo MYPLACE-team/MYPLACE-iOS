@@ -7,15 +7,9 @@
 
 import SwiftUI
 
-struct SearchItemView: View {
-    var body: some View {
-        SearchItemView_Registered(path: .constant([]), place: places[0])
-        SearchItemView_UnRegistered(path: .constant([]), place: places[0])
-    }
-}
 
 struct SearchItemView_Registered: View {
-    @Binding var isHeartFilled = false
+    @Binding var isHeartFilled: Bool
     @Binding var path: [PathModel]
     var place: PlaceModel
     var body: some View {
@@ -71,7 +65,6 @@ struct SearchItemView_Registered: View {
 }
 
 struct SearchItemView_UnRegistered: View {
-    //MARK: - 하트 저장여부 어디서 저장?
     @Binding var path: [PathModel]
     var place: PlaceModel
     var body: some View {
@@ -132,6 +125,64 @@ struct SearchItemView_UnRegistered: View {
             )
     }
 }
+
+struct FavoriteItemView: View {
+    @Binding var path: [PathModel]
+    var place: PlaceModel
+    var body: some View {
+        RoundedRectangle(cornerRadius: 15)
+            .frame(width: 340, height: 80)
+//            .foregroundStyle(Color(red: 0.97, green: 0.95, blue: 1))
+            .foregroundStyle(.blue)
+            .overlay(
+                HStack {
+                    Image(place.imageName)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 70, height: 70)
+                        .clipShape(RoundedRectangle(cornerRadius: 15))
+                        .padding(EdgeInsets(top: 0, leading: 5, bottom: 0, trailing: 0))
+                    
+                    VStack(alignment: .leading, spacing: 5) {
+                        HStack {
+                            Image("CafeIcon")
+                                .resizable()
+                                .frame(width: 20, height: 20)
+                            Text(place.name)
+                                .font(
+                                    .custom("Apple SD Gothic Neo", size: 17)
+                                    .weight(.semibold)
+                                )
+                                .foregroundStyle(.black)
+                            Spacer()
+                        }
+                        HStack {
+                            Image("Map")
+                                .resizable()
+                                .frame(width: 12, height: 15)
+                            Text(place.address)
+                                .font(
+                                    .custom("Apple SD Gothic Neo", size: 15)
+                                    .weight(.thin)
+                                )
+                                .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
+                        }
+                    }
+                    .padding(.leading, 20)
+                    Spacer()
+                }
+            )
+    }
+}
+
+struct SearchItemView: View {
+    var body: some View {
+        SearchItemView_Registered(isHeartFilled: .constant(false), path: .constant([]), place: places[1])
+        SearchItemView_UnRegistered(path: .constant([]), place: places[1])
+        FavoriteItemView(path: .constant([]), place: places[1])
+    }
+}
+
 
 #Preview {
     SearchItemView()
