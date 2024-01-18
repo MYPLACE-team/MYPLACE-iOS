@@ -10,6 +10,7 @@ import SwiftUI
 struct ArchiveView: View {
     @State var searchItem: String = ""
     @State var searchItemList: [String] = []
+    @State var arhcivePlaces: [ArchiveModel] = archivePlaces
     @Binding var path: [PathModel]
     var body: some View {
         ZStack {
@@ -184,7 +185,7 @@ struct ArchiveView: View {
                     Spacer()
                     Text("총")
                         .font(Font.custom("Apple SD Gothic Neo", size: 14))
-                    Text("30")
+                    Text(String(archivePlaces.count))
                         .font(Font.custom("Apple SD Gothic Neo", size: 18).weight(.semibold))
                     Text("건")
                         .font(Font.custom("Apple SD Gothic Neo", size: 14))
@@ -194,9 +195,80 @@ struct ArchiveView: View {
                 .padding(.top, 6)
                 ScrollView {
                     VStack{
-                        
+                        if(self.arhcivePlaces.count > 0) {
+                            ForEach(archivePlaces, id: \.self){
+                                place in
+                                HStack{
+                                    Image(place.imageName)
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fill)
+                                        .frame(width: 76, height: 76)
+                                        .clipShape(RoundedRectangle(cornerRadius: 6))
+                                        .padding(.leading, 5)
+                                    VStack(alignment:.leading){
+                                        HStack(spacing: 6){
+                                            Image("CafeIcon")
+                                                .resizable()
+                                                .frame(width: 24, height: 24)
+                                            Text(place.name)
+                                                .font(
+                                                    Font.custom("Apple SD Gothic Neo", size: 20)
+                                                        .weight(.bold)
+                                                )
+                                                .foregroundStyle(Color(red: 0.27, green: 0.3, blue: 0.33))
+                                        }
+                                        .padding(.bottom, -2)
+                                        HStack(spacing: 6){
+                                            Image("map")
+                                                .resizable()
+                                                .frame(width:12, height:14)
+                                                .padding(.horizontal,6)
+                                            Text(place.address)
+                                                .font(Font.custom("Apple SD Gothic Neo", size: 15))
+                                                .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
+                                        }
+                                    }
+                                    .padding(.leading, 13)
+                                    Spacer()
+                                    VStack(alignment: .leading){
+                                        HStack(spacing: 2){
+                                            ForEach(0..<place.stars, id: \.self)
+                                            {star in
+                                                Image("StarFill")
+                                            }
+                                            ForEach(0..<5 - place.stars, id: \.self) {star in
+                                                Image("StarEmpty")
+                                            }
+                                        }
+                                        .padding(.bottom, 6)
+                                        HStack(spacing: 3){
+                                            Text("# \(place.tag[0])")
+                                                .font(Font.custom("Apple SD Gothic Neo", size: 10))
+                                                .foregroundStyle(.white)
+                                                .frame(height: 18)
+                                                .padding(.horizontal, 6)
+                                                .background(Color(red: 0, green: 0.48, blue: 1))
+                                                .clipShape(RoundedRectangle(cornerRadius: 10))
+                                            Text("# \(place.tag[1])")
+                                                .font(Font.custom("Apple SD Gothic Neo", size: 10))
+                                                .foregroundStyle(.white)
+                                                .frame(height: 18)
+                                                .padding(.horizontal, 6)
+                                                .background(Color(red: 0, green: 0.48, blue: 1))
+                                                .clipShape(RoundedRectangle(cornerRadius: 10))
+                                        }
+                                    }
+                                    .frame(width: 100)
+                                    .padding(.trailing, 8)
+                                }
+                                .frame(width: 343, height: 88)
+                                .background(.white)
+                                .clipShape(RoundedRectangle(cornerRadius: 12))
+                            }
+                        }
                     }
                 }
+                .clipShape(RoundedRectangle(cornerRadius: 12))
                 Spacer()
             }
         }
