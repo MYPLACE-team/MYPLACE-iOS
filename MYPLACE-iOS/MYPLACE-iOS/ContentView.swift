@@ -6,41 +6,22 @@
 //
 
 import SwiftUI
+import KakaoMapsSDK_SPM
+import Moya
 
 struct ContentView: View {
-    @State private var items = ["Item 1", "Item 2", "Item 3"]
-
+    @StateObject private var kakaoSearchViewModel = KakaoSearchViewModel()
     var body: some View {
         VStack {
-            ForEach(items, id: \.self) { item in
-                HStack {
-                    Text(item)
-                        .padding()
-                    Spacer()
+            Button("Search Places") {
+                kakaoSearchViewModel.searchPlaces(query: "카카오프렌즈")
+            }
+            List(kakaoSearchViewModel.places, id: \.id) { place in
+                VStack(alignment: .leading) {
+                    Text("Place Name: \(place.placeName)")
+                    Text("Distance: \(place.distance)")
+                    Text("Address: \(place.addressName)")
                 }
-                .swipeActions {
-                    Button(action: {
-                        // Perform action when swiped from the leading edge
-                        if let index = items.firstIndex(of: item) {
-                            items.remove(at: index)
-                        }
-                    }) {
-                        Label("Delete", systemImage: "trash")
-                    }
-                    .tint(.red)
-                }
-                .swipeActions(edge: .trailing) {
-                    Button(action: {
-                        // Perform action when swiped from the trailing edge
-                        // Your custom action here
-                    }) {
-                        Label("Custom Action", systemImage: "star")
-                    }
-                    .tint(.blue)
-                }
-                .background(Color.gray.opacity(0.1))
-                .cornerRadius(10)
-                .padding()
             }
         }
     }

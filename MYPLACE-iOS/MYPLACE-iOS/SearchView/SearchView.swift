@@ -8,9 +8,10 @@
 import SwiftUI
 
 struct SearchView: View {
+    @StateObject private var kakaoSearchViewModel = KakaoSearchViewModel()
+    @Binding var searchText: String
     @Binding var path: [PathModel]
     @Binding var isHeartFilled: Bool
-    @State var searchNumber: Int = 2
     @State private var isPopupPresented = false
     @StateObject var popupViewModel = PopupViewModel()
     @StateObject var toastViewModel = ToastViewModel.shared
@@ -18,8 +19,7 @@ struct SearchView: View {
         ZStack {
             VStack {
                 HStack {
-                    //MARK: - 검색 안됨, 홈화면 정보값 넘겨받기
-                    TextField("장소명 검색하기", text: .constant(""))
+                    TextField("장소명 검색하기", text: $searchText)
                         .font(
                             .custom("Apple SD Gothic Neo", size: 15)
                             .weight(.semibold)
@@ -27,7 +27,7 @@ struct SearchView: View {
                         .foregroundStyle(.gray)
                         .padding(.leading, 40)
                     Button(action: {
-                        //MARK: - Search update
+                        kakaoSearchViewModel.searchPlaces(query: searchText)
                     }) {
                         Image(systemName: "magnifyingglass")
                             .foregroundStyle(.gray)
@@ -39,7 +39,16 @@ struct SearchView: View {
                     ToolbarItem(placement: .topBarLeading) {
                         BasicBackButton(path: $path)
                     }
-                    
+                    ToolbarItem(placement: .principal) {
+                        HStack {
+                            Text("장소 검색")
+                                .font(
+                                    .custom("Apple SD Gothic Neo", size: 20)
+                                    .weight(.semibold)
+                                )
+                        }
+                        .foregroundStyle(.black)
+                    }
                     ToolbarItem(placement: .topBarTrailing) {
                         ToolBarView(path: $path)
                     }
@@ -54,8 +63,7 @@ struct SearchView: View {
                             .custom("Apple SD Gothic Neo", size: 15)
                             .weight(.thin)
                         )
-                    //MARK: - API 값
-                    Text("\(searchNumber)") // API로 받은 숫자로 업데이트
+                    Text("\(kakaoSearchViewModel.meta.totalCount)")
                         .font(
                             .custom("Apple SD Gothic Neo", size: 15)
                         )
@@ -65,7 +73,6 @@ struct SearchView: View {
                             .weight(.thin)
                         )
                         .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 30))
-                    
                 }
                 .padding(.top, 5)
                 
@@ -80,7 +87,17 @@ struct SearchView: View {
 //                                    .padding(.top, 5)
 //                            }
 //                        }
-                        ForEach(0..<min(searchNumber, places.count), id: \.self) { index in
+//                        ForEach(0..<min(3, places.count), id: \.self) { index in
+//                            let place = places[index]
+//                            Button(action: {
+//                                popupViewModel.setSelectedPlace(placeModel: place)
+//                                isPopupPresented.toggle()
+//                            }) {
+//                                SearchItemView_UnRegistered(path: $path, place: place)
+//                                    .padding(.top, 5)
+//                            }
+//                        }
+                        ForEach(0..<kakaoSearchViewModel.meta.totalCount, id: \.self) { index in
                             let place = places[index]
                             Button(action: {
                                 popupViewModel.setSelectedPlace(placeModel: place)
@@ -107,6 +124,7 @@ struct SearchView: View {
             }
         }
         .toast(message: toastViewModel.toastMessage, isShowing: $toastViewModel.showToast, duration: Toast.time)
+        .padding(.top, 10)
     }
 }
 
@@ -216,5 +234,6 @@ struct DottedDivider: View {
 }
 
 #Preview {
-    SearchView(path: .constant([]), isHeartFilled: .constant(false))
+    SearchView(searchText: .constant("카카오프렌즈"), path: .constant([]), isHeartFilled: .constant(false))
 }
+

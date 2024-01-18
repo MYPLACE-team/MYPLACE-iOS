@@ -10,8 +10,9 @@ import KakaoMapsSDK
 import KakaoMapsSDK_SPM
 
 struct HomeView: View {
+    @StateObject private var kakaoSearchViewModel = KakaoSearchViewModel()
+    @State var searchText = ""
     @State var path: [PathModel] = []
-//    @State var pathStack: NavigationPath = NavigationPath()
     @State var isHeartFilled = false
     @State var draw: Bool = false
     @State private var isPopupHidden = false
@@ -61,34 +62,9 @@ struct HomeView: View {
                 }).frame(maxWidth: .infinity, maxHeight: .infinity)
                 
                 VStack {
-                    RoundedRectangle(cornerRadius: 10)
-                        .fill(Color(red: 0.97, green: 0.97, blue: 0.98))
-                        .frame(height: 40)
-                        .shadow(color: .black.opacity(0.25), radius: 2, x: 0, y: 4)
-                        .overlay(
-                            HStack {
-                                Image("Map")
-                                    .resizable()
-                                    .frame(width: 16, height: 19)
-                                    .padding(.leading, 15)
-                                TextField("장소명 검색하기", text: .constant(""))
-                                    .font(
-                                        .custom("Apple SD Gothic Neo", size: 15)
-                                        .weight(.semibold)
-                                    )
-                                    .foregroundStyle(.gray)
-                                    .padding(.leading, 5)
-                                Button(action: {
-                                    path.append(.searchView)
-                                }) {
-                                    Image(systemName: "magnifyingglass")
-                                        .foregroundStyle(.gray)
-                                }
-                                Spacer()
-                            }
-                        )
+                    //MARK: - kakaoSearchView
+                    KakaoSearchView(path: $path, searchText: $searchText)
                         .padding(EdgeInsets(top: 10, leading: 20, bottom: 0, trailing: 20))
-                    
                     
                     HStack {
                         ViewChangeButton(
@@ -130,7 +106,7 @@ struct HomeView: View {
                         case .notificationView:
                             NotificationView()
                         case .searchView:
-                            SearchView(path: $path, isHeartFilled: $isHeartFilled)
+                            SearchView(searchText: $searchText, path: $path, isHeartFilled: $isHeartFilled)
                         case .favoritePlacesView:
                             FavoritePlacesView(path: $path)
                         case .arciveView:
