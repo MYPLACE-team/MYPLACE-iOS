@@ -7,6 +7,16 @@
 
 import SwiftUI
 
+struct ToolBarPreview: View{
+    var body: some View {
+        VStack {
+            BasicBackButton(path: .constant([]))
+            ArchiveBackButton(path: .constant([]))
+            ToolBarView(path: .constant([]))
+        }
+    }
+}
+
 struct ToolBarView: View {
     @Binding var path: [PathModel]
     var body: some View {
@@ -73,10 +83,27 @@ struct ArchiveBackButton: View {
     }
 }
 
+struct NewUserBackButton: View {
+    @Binding var loginPath: [LoginPathModel]
+    var body: some View {
+        Button(action: {
+            if loginPath.count > 0 {
+                loginPath.removeLast()
+            }
+        }) {
+            HStack {
+                Image(systemName: "chevron.left")
+                    .bold()
+            }
+            .foregroundStyle(Color(red: 0.39, green: 0.37, blue: 0.6))
+        }
+    }
+}
+
 
 
 #Preview {
-    BasicBackButton(path: .constant([]))
+    ToolBarPreview()
 }
 
 
