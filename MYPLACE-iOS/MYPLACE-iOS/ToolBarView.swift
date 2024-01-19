@@ -7,6 +7,16 @@
 
 import SwiftUI
 
+struct ToolBarPreview: View{
+    var body: some View {
+        VStack {
+            BasicBackButton(path: .constant([]))
+            ArchiveBackButton(path: .constant([]))
+            ToolBarView(path: .constant([]))
+        }
+    }
+}
+
 struct ToolBarView: View {
     @Binding var path: [PathModel]
     var body: some View {
@@ -93,7 +103,7 @@ struct NewUserBackButton: View {
 
 
 #Preview {
-    BasicBackButton(path: .constant([]))
+    ToolBarPreview()
 }
 
 

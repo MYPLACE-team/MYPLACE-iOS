@@ -6,45 +6,29 @@
 //
 
 import SwiftUI
+import KakaoMapsSDK_SPM
+import Moya
 
 struct ContentView: View {
-    @State private var isPopupPresented = false
-
+    @StateObject private var kakaoSearchViewModel = KakaoSearchViewModel()
     var body: some View {
-        ZStack {
-            VStack {
-                Text("Your Main Content")
-                Button("Show Popup") {
-                    isPopupPresented.toggle()
-                }
+        VStack {
+            Button("Search Places") {
+                kakaoSearchViewModel.searchPlaces(query: "카카오프렌즈")
             }
-            .padding()
-
-            if isPopupPresented {
-                Color.black.opacity(0.4) // Background blur
-                    .edgesIgnoringSafeArea(.all)
-
-                VStack {
-                    Text("Popup Content")
-                        .font(.title)
-                        .padding()
-
-                    Button("Close Popup") {
-                        isPopupPresented.toggle()
-                    }
-                    .padding()
-                    .background(Color.blue)
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
+            List(kakaoSearchViewModel.places, id: \.id) { place in
+                VStack(alignment: .leading) {
+                    Text("Place Name: \(place.placeName)")
+                    Text("Distance: \(place.distance)")
+                    Text("Address: \(place.addressName)")
                 }
-                .background(Color.white)
-                .cornerRadius(15)
-                .padding()
             }
         }
     }
 }
 
-#Preview {
-    ContentView()
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
+    }
 }

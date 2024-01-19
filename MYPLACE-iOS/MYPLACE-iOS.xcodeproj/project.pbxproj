@@ -32,6 +32,16 @@
 		AA9E801C2B41641D00D51447 /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9E801B2B41641C00D51447 /* ToastView.swift */; };
 		AA9E801E2B4711B300D51447 /* SearchItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9E801D2B4711B300D51447 /* SearchItemView.swift */; };
 		AA9E80202B479E6600D51447 /* PlaceInformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9E801F2B479E6600D51447 /* PlaceInformationView.swift */; };
+		AAAAC9B62B56AA590026C8D9 /* KakaoAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAAAC9B52B56AA590026C8D9 /* KakaoAPI.swift */; };
+		AAAAC9B92B56AA910026C8D9 /* CombineMoya in Frameworks */ = {isa = PBXBuildFile; productRef = AAAAC9B82B56AA910026C8D9 /* CombineMoya */; };
+		AAAAC9BB2B56AA910026C8D9 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = AAAAC9BA2B56AA910026C8D9 /* Moya */; };
+		AAAAC9BD2B56AA910026C8D9 /* ReactiveMoya in Frameworks */ = {isa = PBXBuildFile; productRef = AAAAC9BC2B56AA910026C8D9 /* ReactiveMoya */; };
+		AAAAC9BF2B56AA910026C8D9 /* RxMoya in Frameworks */ = {isa = PBXBuildFile; productRef = AAAAC9BE2B56AA910026C8D9 /* RxMoya */; };
+		AAAAC9C12B56BC180026C8D9 /* KakaoSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAAAC9C02B56BC180026C8D9 /* KakaoSearchViewModel.swift */; };
+		AAAAC9C32B56BF220026C8D9 /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAAAC9C22B56BF220026C8D9 /* Response.swift */; };
+		AAAAC9C62B5921C50026C8D9 /* KakaoSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAAAC9C52B5921C50026C8D9 /* KakaoSearchView.swift */; };
+		AAAAC9C82B597DB70026C8D9 /* PopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAAAC9C72B597DB70026C8D9 /* PopupView.swift */; };
+		AAAAC9CA2B59858D0026C8D9 /* PopupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAAAC9C92B59858D0026C8D9 /* PopupViewModel.swift */; };
 		AAE7CD1D2B3E3A9300E02B71 /* ToolBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE7CD1C2B3E3A9300E02B71 /* ToolBarView.swift */; };
 		AAE7CD1F2B3F9C0C00E02B71 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE7CD1E2B3F9C0C00E02B71 /* SearchView.swift */; };
 		AAE7CD212B3FB09F00E02B71 /* PlaceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE7CD202B3FB09F00E02B71 /* PlaceModel.swift */; };
@@ -65,6 +75,12 @@
 		AA9E801B2B41641C00D51447 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
 		AA9E801D2B4711B300D51447 /* SearchItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchItemView.swift; sourceTree = "<group>"; };
 		AA9E801F2B479E6600D51447 /* PlaceInformationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceInformationView.swift; sourceTree = "<group>"; };
+		AAAAC9B52B56AA590026C8D9 /* KakaoAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoAPI.swift; sourceTree = "<group>"; };
+		AAAAC9C02B56BC180026C8D9 /* KakaoSearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoSearchViewModel.swift; sourceTree = "<group>"; };
+		AAAAC9C22B56BF220026C8D9 /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
+		AAAAC9C52B5921C50026C8D9 /* KakaoSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoSearchView.swift; sourceTree = "<group>"; };
+		AAAAC9C72B597DB70026C8D9 /* PopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupView.swift; sourceTree = "<group>"; };
+		AAAAC9C92B59858D0026C8D9 /* PopupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupViewModel.swift; sourceTree = "<group>"; };
 		AAE7CD1C2B3E3A9300E02B71 /* ToolBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolBarView.swift; sourceTree = "<group>"; };
 		AAE7CD1E2B3F9C0C00E02B71 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		AAE7CD202B3FB09F00E02B71 /* PlaceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceModel.swift; sourceTree = "<group>"; };
@@ -76,7 +92,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AAAAC9BF2B56AA910026C8D9 /* RxMoya in Frameworks */,
+				AAAAC9B92B56AA910026C8D9 /* CombineMoya in Frameworks */,
+				AAAAC9BD2B56AA910026C8D9 /* ReactiveMoya in Frameworks */,
 				AA05EB042B3B9403005596C5 /* KakaoMapsSDK_SPM in Frameworks */,
+				AAAAC9BB2B56AA910026C8D9 /* Moya in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -108,20 +128,24 @@
 				AA2B64552B3D0E7E008CEDBB /* KakaoMapView.swift */,
 				AA05EB002B3B918E005596C5 /* HomeView.swift */,
 				AAE7CD1C2B3E3A9300E02B71 /* ToolBarView.swift */,
+				AA2B644C2B3CCA03008CEDBB /* FavoritePlacesView.swift */,
 				AA2B64482B3CC713008CEDBB /* ArchiveView.swift */,
 				A5CE892B2B59AA0900ED8F62 /* ArchiveDetailView.swift */,
 				AA2B644C2B3CCA03008CEDBB /* FavoritePlacesView.swift */,
 				AA2B644E2B3CCA21008CEDBB /* CommunityView.swift */,
 				AA2B64512B3D0289008CEDBB /* SettingView.swift */,
 				AA9E801B2B41641C00D51447 /* ToastView.swift */,
-				AAE7CD252B3FCF9C00E02B71 /* Model */,
+				AAAAC9C72B597DB70026C8D9 /* PopupView.swift */,
 				AAE7CD242B3FCF6E00E02B71 /* SearchView */,
+				AAE7CD252B3FCF9C00E02B71 /* Model */,
+				AAAAC9C42B5920F60026C8D9 /* ViewModel */,
 				AA2B64532B3D02A4008CEDBB /* NotificationView.swift */,
 				A59EE2B42B470C57009915D5 /* LoginView.swift */,
 				A5CE89292B5980CE00ED8F62 /* NewUserView.swift */,
 				A59EE2B62B470C8A009915D5 /* NewUserNameView.swift */,
 				A59EE2B82B470C9F009915D5 /* NewUserProfileView.swift */,
 				AA05EAF62B3B87A1005596C5 /* Assets.xcassets */,
+				AAAAC9B42B56A9F40026C8D9 /* API */,
 				AA05EAF82B3B87A1005596C5 /* Preview Content */,
 			);
 			path = "MYPLACE-iOS";
@@ -135,9 +159,29 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
+		AAAAC9B42B56A9F40026C8D9 /* API */ = {
+			isa = PBXGroup;
+			children = (
+				AAAAC9B52B56AA590026C8D9 /* KakaoAPI.swift */,
+				AAAAC9C22B56BF220026C8D9 /* Response.swift */,
+			);
+			path = API;
+			sourceTree = "<group>";
+		};
+		AAAAC9C42B5920F60026C8D9 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				AAAAC9C02B56BC180026C8D9 /* KakaoSearchViewModel.swift */,
+				AAAAC9C92B59858D0026C8D9 /* PopupViewModel.swift */,
+				AA9E80192B415F7C00D51447 /* ToastViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 		AAE7CD242B3FCF6E00E02B71 /* SearchView */ = {
 			isa = PBXGroup;
 			children = (
+				AAAAC9C52B5921C50026C8D9 /* KakaoSearchView.swift */,
 				AAE7CD1E2B3F9C0C00E02B71 /* SearchView.swift */,
 				AA9E801D2B4711B300D51447 /* SearchItemView.swift */,
 				AAE7CD222B3FCF6400E02B71 /* PlaceInformationEditView.swift */,
@@ -151,7 +195,6 @@
 			children = (
 				AAE7CD202B3FB09F00E02B71 /* PlaceModel.swift */,
 				AA2B644A2B3CC83C008CEDBB /* PathModel.swift */,
-				AA9E80192B415F7C00D51447 /* ToastViewModel.swift */,
 				A59EE2BA2B47F80A009915D5 /* LoginPathModel.swift */,
 				A59EE2BC2B47F91B009915D5 /* LoginModel.swift */,
 				A5F03F852B50FB5700242929 /* ArchiveModel.swift */,
@@ -177,6 +220,10 @@
 			name = "MYPLACE-iOS";
 			packageProductDependencies = (
 				AA05EB032B3B9403005596C5 /* KakaoMapsSDK_SPM */,
+				AAAAC9B82B56AA910026C8D9 /* CombineMoya */,
+				AAAAC9BA2B56AA910026C8D9 /* Moya */,
+				AAAAC9BC2B56AA910026C8D9 /* ReactiveMoya */,
+				AAAAC9BE2B56AA910026C8D9 /* RxMoya */,
 			);
 			productName = "MYPLACE-iOS";
 			productReference = AA05EAEF2B3B87A0005596C5 /* MYPLACE-iOS.app */;
@@ -208,6 +255,7 @@
 			mainGroup = AA05EAE62B3B87A0005596C5;
 			packageReferences = (
 				AA05EB022B3B9403005596C5 /* XCRemoteSwiftPackageReference "KakaoMapsSDK-SPM" */,
+				AAAAC9B72B56AA910026C8D9 /* XCRemoteSwiftPackageReference "Moya" */,
 			);
 			productRefGroup = AA05EAF02B3B87A0005596C5 /* Products */;
 			projectDirPath = "";
@@ -236,8 +284,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				AA9E801C2B41641D00D51447 /* ToastView.swift in Sources */,
+				AAAAC9CA2B59858D0026C8D9 /* PopupViewModel.swift in Sources */,
 				AA2B644F2B3CCA21008CEDBB /* CommunityView.swift in Sources */,
 				AAE7CD232B3FCF6400E02B71 /* PlaceInformationEditView.swift in Sources */,
+				AAAAC9C82B597DB70026C8D9 /* PopupView.swift in Sources */,
 				AA05EB012B3B918E005596C5 /* HomeView.swift in Sources */,
 				A59EE2B52B470C57009915D5 /* LoginView.swift in Sources */,
 				AA2B64492B3CC713008CEDBB /* ArchiveView.swift in Sources */,
@@ -250,12 +300,16 @@
 				AAE7CD1F2B3F9C0C00E02B71 /* SearchView.swift in Sources */,
 				AA9E801A2B415F7C00D51447 /* ToastViewModel.swift in Sources */,
 				AA05EAF52B3B87A0005596C5 /* ContentView.swift in Sources */,
+				AAAAC9C32B56BF220026C8D9 /* Response.swift in Sources */,
 				A59EE2BD2B47F91B009915D5 /* LoginModel.swift in Sources */,
 				AA2B64522B3D0289008CEDBB /* SettingView.swift in Sources */,
+				AAAAC9C62B5921C50026C8D9 /* KakaoSearchView.swift in Sources */,
 				A59EE2BB2B47F80A009915D5 /* LoginPathModel.swift in Sources */,
 				A5F03F862B50FB5700242929 /* ArchiveModel.swift in Sources */,
+				AAAAC9C12B56BC180026C8D9 /* KakaoSearchViewModel.swift in Sources */,
 				AA9E80202B479E6600D51447 /* PlaceInformationView.swift in Sources */,
 				AA2B644B2B3CC83C008CEDBB /* PathModel.swift in Sources */,
+				AAAAC9B62B56AA590026C8D9 /* KakaoAPI.swift in Sources */,
 				AA2B64562B3D0E7E008CEDBB /* KakaoMapView.swift in Sources */,
 				AA05EAF32B3B87A0005596C5 /* MYPLACE_iOSApp.swift in Sources */,
 				AA9E801E2B4711B300D51447 /* SearchItemView.swift in Sources */,
@@ -402,6 +456,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -431,6 +486,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -476,6 +532,14 @@
 				minimumVersion = 2.6.3;
 			};
 		};
+		AAAAC9B72B56AA910026C8D9 /* XCRemoteSwiftPackageReference "Moya" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Moya/Moya";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 15.0.3;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -483,6 +547,26 @@
 			isa = XCSwiftPackageProductDependency;
 			package = AA05EB022B3B9403005596C5 /* XCRemoteSwiftPackageReference "KakaoMapsSDK-SPM" */;
 			productName = KakaoMapsSDK_SPM;
+		};
+		AAAAC9B82B56AA910026C8D9 /* CombineMoya */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AAAAC9B72B56AA910026C8D9 /* XCRemoteSwiftPackageReference "Moya" */;
+			productName = CombineMoya;
+		};
+		AAAAC9BA2B56AA910026C8D9 /* Moya */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AAAAC9B72B56AA910026C8D9 /* XCRemoteSwiftPackageReference "Moya" */;
+			productName = Moya;
+		};
+		AAAAC9BC2B56AA910026C8D9 /* ReactiveMoya */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AAAAC9B72B56AA910026C8D9 /* XCRemoteSwiftPackageReference "Moya" */;
+			productName = ReactiveMoya;
+		};
+		AAAAC9BE2B56AA910026C8D9 /* RxMoya */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AAAAC9B72B56AA910026C8D9 /* XCRemoteSwiftPackageReference "Moya" */;
+			productName = RxMoya;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
