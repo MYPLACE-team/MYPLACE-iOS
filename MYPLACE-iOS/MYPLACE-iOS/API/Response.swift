@@ -14,12 +14,13 @@ struct SearchResponse: Codable {
 }
 
 // MARK: - Place
-struct Place: Codable {
+struct Place: Codable, Identifiable {
+    let id: String
     let placeName, distance: String
     let placeURL: String
-    let categoryName, addressName, roadAddressName, id: String
-    let phone, categoryGroupCode, categoryGroupName, x: String
-    let y: String
+    let categoryName, addressName, roadAddressName: String
+    let phone, categoryGroupCode, categoryGroupName: String
+    let x, y: String
 
     enum CodingKeys: String, CodingKey {
         case placeName = "place_name"

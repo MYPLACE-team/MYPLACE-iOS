@@ -110,7 +110,7 @@ struct FavoritePlacesView: View {
                                 Text("등록순").tag(1)
                                 Text("이름순").tag(2)
                             }
-                            //                            .pickerStyle(SegmentedPickerStyle())
+                            .pickerStyle(SegmentedPickerStyle())
                                 .tint(.white)
                         )
                         .padding(.leading, 15)

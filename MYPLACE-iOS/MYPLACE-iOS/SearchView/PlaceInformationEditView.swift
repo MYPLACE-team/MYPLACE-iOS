@@ -11,6 +11,7 @@ import PhotosUI
 struct PlaceInformationEditView: View {
     @Binding var path: [PathModel]
     @Binding var isHeartFilled: Bool
+    @ObservedObject var popupViewModel: PopupViewModel
     @State var isFirstImageSelected: Bool = false
     @State var isSecondImageSelected: Bool = false
     @State var isThirdImageSelected: Bool = false
@@ -32,8 +33,14 @@ struct PlaceInformationEditView: View {
             .frame(width: 301, alignment: .top)
             .toolbar(.hidden)
         //MARK: - 선택된 장소 표시되는 것 수정 필요
-        SearchItemView_Registered(isHeartFilled: $isHeartFilled, path: $path, place: places[0])
-            .padding(.top, 10)
+        if let selectedPlace = popupViewModel.selectedPlace {
+            Text("ddd")
+            SearchItemView_UnRegistered(path: $path, placeName: selectedPlace.placeName, addressName: selectedPlace.address)
+        } else {
+            Text("fail!")
+            SearchItemView_Registered(isHeartFilled: $isHeartFilled, path: $path, place: places[1])
+                .padding(.top, 10)
+        }
         
         VStack(spacing: 10) {
             SectionView(imageName: "Fork", title: "추천 메뉴", placeholder: "추천 메뉴를 1가지 입력해주세요.", text: $recommendedMenu)
@@ -122,12 +129,12 @@ struct SectionView: View {
         HStack(spacing: 0) {
             Image(imageName)
                 .resizable()
-                .frame(width: 16, height: 16)
+                .frame(width: 18, height: 16)
                 .padding(.leading, 33)
                 .padding(.top, 13)
             Text(title)
                 .font(
-                    .custom("Apple SD Gothic Neo", size: 16)
+                    .custom("Apple SD Gothic Neo", size: 18)
                     .weight(.bold)
                 )
                 .padding(.top, 15)
@@ -220,6 +227,6 @@ struct SquarePhotosPicker: View {
 
 #Preview {
     PlaceInformationEditView(
-        path: .constant([]), isHeartFilled: .constant(false)
+        path: .constant([]), isHeartFilled: .constant(false), popupViewModel: PopupViewModel()
     )
 }

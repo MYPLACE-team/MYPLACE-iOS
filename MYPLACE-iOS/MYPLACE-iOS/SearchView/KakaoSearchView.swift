@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct KakaoSearchView: View {
-    @StateObject private var kakaoSearchViewModel = KakaoSearchViewModel()
+    @ObservedObject var kakaoSearchViewModel: KakaoSearchViewModel
     @Binding var path: [PathModel]
     @Binding var searchText: String
     
@@ -44,5 +44,5 @@ struct KakaoSearchView: View {
 }
 
 #Preview {
-    KakaoSearchView(path: .constant([]), searchText: .constant(""))
+    KakaoSearchView(kakaoSearchViewModel: KakaoSearchViewModel(), path: .constant([]), searchText: .constant(""))
 }

@@ -40,14 +40,6 @@ let placeTypes: [PlaceType] = [
 ]
 
 struct SelectedPlace {
-    var name: String
+    var placeName: String
     var address: String
-}
-
-class PopupViewModel: ObservableObject {
-    @Published var selectedPlace: SelectedPlace?
-    
-    func setSelectedPlace(placeModel: PlaceModel) {
-        selectedPlace = SelectedPlace(name: placeModel.name, address: placeModel.address)
-    }
 }

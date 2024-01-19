@@ -10,7 +10,8 @@ import KakaoMapsSDK
 import KakaoMapsSDK_SPM
 
 struct HomeView: View {
-    @StateObject private var kakaoSearchViewModel = KakaoSearchViewModel()
+    @StateObject var kakaoSearchViewModel = KakaoSearchViewModel()
+    @ObservedObject var popupViewModel = PopupViewModel()
     @State var searchText = ""
     @State var path: [PathModel] = []
     @State var isHeartFilled = false
@@ -63,7 +64,7 @@ struct HomeView: View {
                 
                 VStack {
                     //MARK: - kakaoSearchView
-                    KakaoSearchView(path: $path, searchText: $searchText)
+                    KakaoSearchView(kakaoSearchViewModel: KakaoSearchViewModel(), path: $path, searchText: $searchText)
                         .padding(EdgeInsets(top: 10, leading: 20, bottom: 0, trailing: 20))
                     
                     HStack {
@@ -106,7 +107,7 @@ struct HomeView: View {
                         case .notificationView:
                             NotificationView()
                         case .searchView:
-                            SearchView(searchText: $searchText, path: $path, isHeartFilled: $isHeartFilled)
+                            SearchView(kakaoSearchViewModel: KakaoSearchViewModel(), popupViewModel: PopupViewModel(), searchText: $searchText, path: $path, isHeartFilled: $isHeartFilled)
                         case .favoritePlacesView:
                             FavoritePlacesView(path: $path)
                         case .arciveView:
@@ -114,7 +115,7 @@ struct HomeView: View {
                         case .communityView:
                             CommunityView()
                         case .placeInformationEditView:
-                            PlaceInformationEditView(path: $path, isHeartFilled: $isHeartFilled)
+                            PlaceInformationEditView(path: $path, isHeartFilled: $isHeartFilled, popupViewModel: PopupViewModel())
                         case .placeInformationView:
                             PlaceInformationView(path: $path, isHeartFilled: $isHeartFilled)
                         }

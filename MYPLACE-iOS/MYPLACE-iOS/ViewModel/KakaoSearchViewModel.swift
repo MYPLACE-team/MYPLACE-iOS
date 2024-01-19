@@ -25,7 +25,7 @@ class KakaoSearchViewModel: ObservableObject {
             longitude = userLocation.longitude
         }
         
-        kakaoProvider.request(.searchPlaces(query: query, y: latitude, x: longitude, radius: 20000)) { result in
+        kakaoProvider.request(.searchPlaces(query: query, y: latitude, x: longitude, radius: 2000)) { result in
             switch result {
             case let .success(response):
                 do {
