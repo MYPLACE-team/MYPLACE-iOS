@@ -124,6 +124,29 @@ struct FavoritePlacesView: View {
                 List {
                     ForEach(items, id: \.self) { item in
                         Section {
+                            SwipeItem(content: {
+                                FavoriteItemView(path: $path, place: places[1])
+                             },
+                             left: {
+                                ZStack {
+                                    Rectangle()
+                                        .fill(Color.orange)
+                                    
+                                    Image(systemName: "pencil.circle")
+                                        .foregroundColor(.white)
+                                        .font(.largeTitle)
+                                }
+                             },
+                             right: {
+                                ZStack {
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .fill(Color.red)
+                                    
+                                    Image(systemName: "trash.circle")
+                                        .foregroundColor(.white)
+                                        .font(.largeTitle)
+                                }
+                             }, itemHeight: 50)
                             FavoriteItemView(path: $path, place: places[1])
                                 .swipeActions(edge: .trailing, allowsFullSwipe: false) {
                                     Button(action: {
