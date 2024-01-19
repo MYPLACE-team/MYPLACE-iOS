@@ -152,10 +152,6 @@ struct LoginView: View {
                 switch loginPathModel {
                 case .newUserView:
                     NewUserView(loginPath: $loginPath)
-                case .newUserNameView:
-                    NewUserNameView(loginPath: $loginPath)
-                case .newUserProfileView:
-                    NewUserProfileView(loginPath: $loginPath)
                 }
             }
         }
