@@ -25,3 +25,6 @@ let archivePlaces: [ArchiveModel] = [
     ArchiveModel(imageName: "DummyImage2", name: "맛차", address: "서울시 중구", type: "카페", tag: ["녹차", "디저트"], stars: 4),
     ArchiveModel(imageName: "DummyImage2", name: "진더미엔", address: "서울시 중구", type: "카페", tag: ["카페", "스콘"], stars: 4)
 ]
+
+let archiveDetail = ArchiveModel(imageName: "DummyImage", name: "도틀", address: "서울시 종로구", type: "카페", tag: ["카페", "스콘"], stars: 4)
+

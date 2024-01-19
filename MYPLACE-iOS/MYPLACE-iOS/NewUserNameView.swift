@@ -13,6 +13,7 @@ struct NewUserNameView: View {
     @State var alertImage: String = ""
     @State var alertText: String = ""
     @State var isAvailable: Bool = false
+
     
     @Binding var loginPath: [LoginPathModel]
     
@@ -90,7 +91,7 @@ struct NewUserNameView: View {
                     print(nickName)
                 })
                 .autocapitalization(.none)
-                .foregroundStyle(.clear)
+                .foregroundStyle(.black)
                 .frame(width: 312, height: 40)
                 .padding(.leading, 10)
                 .background(
