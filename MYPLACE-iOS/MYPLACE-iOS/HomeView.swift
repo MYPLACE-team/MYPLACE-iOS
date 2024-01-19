@@ -112,6 +112,8 @@ struct HomeView: View {
                             FavoritePlacesView(path: $path)
                         case .arciveView:
                             ArchiveView(path: $path)
+                        case .archiveDetailView:
+                            ArchiveDetailView(path: $path)
                         case .communityView:
                             CommunityView()
                         case .placeInformationEditView:

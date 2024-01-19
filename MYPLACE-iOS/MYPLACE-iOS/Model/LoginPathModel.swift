@@ -8,6 +8,5 @@
 import SwiftUI
 
 enum LoginPathModel {
-    case newUserNameView
-    case newUserProfileView
+    case newUserView
 }
