@@ -17,9 +17,12 @@ struct MYPLACE_iOSApp: App {
 //        KakaoSDK.initSDK(appKey: "78756fd73a212ebe5b9f720292d65d1a")
 //    }
     
+    @StateObject var popupViewModel = PopupViewModel()
+    
     var body: some Scene {
         WindowGroup {
             HomeView()
+                .environmentObject(popupViewModel)
 //            LoginView().onOpenURL(perform: { url in
 //                if (AuthApi.isKakaoTalkLoginUrl(url)) {
 //                    AuthController.handleOpenUrl(url: url)

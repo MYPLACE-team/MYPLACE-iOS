@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SearchView: View {
     @ObservedObject var kakaoSearchViewModel: KakaoSearchViewModel
-    @ObservedObject var popupViewModel: PopupViewModel
+    @EnvironmentObject var popupViewModel: PopupViewModel
     
     @Binding var searchText: String
     @Binding var path: [PathModel]
@@ -20,25 +20,35 @@ struct SearchView: View {
         ZStack {
             VStack {
                 HStack {
-                    TextField("장소명 검색하기", text: $searchText)
-                        .font(
-                            .custom("Apple SD Gothic Neo", size: 15)
-                            .weight(.semibold)
-                        )
-                        .foregroundStyle(.gray)
-                        .padding(.leading, 40)
-                    Button(action: {
-                        kakaoSearchViewModel.searchPlaces(query: searchText)
-                        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-                    }) {
-                        Image(systemName: "magnifyingglass")
-                            .foregroundStyle(.gray)
-                    }
-                    .onAppear {
-                        kakaoSearchViewModel.searchPlaces(query: searchText)
-                    }
+                    Spacer()
+                    RoundedRectangle(cornerRadius: 7)
+                        .frame(width: 340, height: 40)
+                        .foregroundStyle(Color(red: 0.97, green: 0.97, blue: 0.97))
+                        .overlay(
+                            HStack {
+                                TextField("장소명 검색하기", text: $searchText)
+                                    .font(
+                                        .custom("Apple SD Gothic Neo", size: 15)
+                                        .weight(.semibold)
+                                    )
+                                    .foregroundStyle(.gray)
+                                    .padding(.leading, 13)
+                                Button(action: {
+                                    kakaoSearchViewModel.searchPlaces(query: searchText)
+                                    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                                }) {
+                                    Image(systemName: "magnifyingglass")
+                                        .foregroundStyle(.gray)
+                                }
+                                .onAppear {
+                                    kakaoSearchViewModel.searchPlaces(query: searchText)
+                                }
+                                .padding(.trailing, 13)
+                            }
+                    )
                     Spacer()
                 }
+                .padding(.top, 10)
                 .navigationBarBackButtonHidden()
                 .toolbar {
                     ToolbarItem(placement: .topBarLeading) {
@@ -58,9 +68,7 @@ struct SearchView: View {
                         ToolBarView(path: $path)
                     }
                 }
-                Divider()
-                    .background(.black)
-                    .padding(.top, 10)
+            
                 HStack(spacing: 0) {
                     Spacer()
                     Text("총 ")
@@ -114,14 +122,12 @@ struct SearchView: View {
                         }
                         Spacer()
                     }
-//                    .frame(maxWidth: .infinity)
                 Spacer()
             }
             .blur(radius: isPopupPresented ? 10 : 0)
             .disabled(isPopupPresented)
             if isPopupPresented {
-                SearchPopup(path: $path, isPopupPresented: $isPopupPresented, popupViewModel: popupViewModel)
-                    .environmentObject(popupViewModel)
+                SearchPopup(path: $path, isPopupPresented: $isPopupPresented)
             }
         }
         .toast(message: toastViewModel.toastMessage, isShowing: $toastViewModel.showToast, duration: Toast.time)
@@ -131,21 +137,7 @@ struct SearchView: View {
 
 
 
-struct DottedDivider: View {
-    var body: some View {
-        GeometryReader { geometry in
-            Path { path in
-                path.move(to: CGPoint(x: 0, y: 0))
-                path.addLine(to: CGPoint(x: geometry.size.width, y: 0))
-            }
-            .stroke(style: StrokeStyle(lineWidth: 1, dash: [3]))
-            .foregroundStyle(.white)
-        }
-        .frame(height: 1)
-    }
-}
-
 #Preview {
-    SearchView(kakaoSearchViewModel: KakaoSearchViewModel(), popupViewModel: PopupViewModel(), searchText: .constant("StarBucks"), path: .constant([]), isHeartFilled: .constant(false))
+    SearchView(kakaoSearchViewModel: KakaoSearchViewModel(), searchText: .constant("StarBucks"), path: .constant([]), isHeartFilled: .constant(false))
 }
 
