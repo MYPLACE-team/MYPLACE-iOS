@@ -9,26 +9,11 @@ import SwiftUI
 import KakaoMapsSDK_SPM
 import Moya
 
+import SwiftUI
+
 struct ContentView: View {
-    @StateObject private var kakaoSearchViewModel = KakaoSearchViewModel()
     var body: some View {
-        VStack {
-            Button("Search Places") {
-                kakaoSearchViewModel.searchPlaces(query: "카카오프렌즈")
-            }
-            List(kakaoSearchViewModel.places, id: \.id) { place in
-                VStack(alignment: .leading) {
-                    Text("Place Name: \(place.placeName)")
-                    Text("Distance: \(place.distance)")
-                    Text("Address: \(place.addressName)")
-                }
-            }
-        }
+        Text("")
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-    }
-}
