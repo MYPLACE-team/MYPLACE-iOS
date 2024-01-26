@@ -17,10 +17,32 @@ struct NewUserView: View {
     @State var lineLength: CGFloat = 156
     
     @Binding var loginPath: [LoginPathModel]
-    
     @StateObject var loginModel = LoginModel()
+    
     var body: some View {
         VStack {
+            //            HStack {
+            //                Button(action: {
+            //                    if isNameView {
+            //                        if loginPath.count > 0 {
+            //                            loginPath.removeLast()
+            //                        }
+            //                    } else {
+            //                        isNameView = true
+            //                        withAnimation {
+            //                            lineLength = 156
+            //                        }
+            //                    }
+            //                })
+            //                {
+            //                    HStack {
+            //                        Image(systemName: "chevron.left")
+            //                            .bold()
+            //                    }
+            //                    .foregroundStyle(Color(red: 0.39, green: 0.37, blue: 0.6))
+            //                }
+            //                Spacer()
+            //            }
             ZStack {
                 HStack(spacing: 0) {
                     Rectangle()
@@ -148,12 +170,14 @@ struct NewUserView: View {
                     )
                     .overlay(
                         HStack {
-                            Spacer()
-                            Image(systemName: alertImage)
-                                .resizable()
-                                .foregroundStyle(alertColor)
-                                .frame(width: 22, height: 22)
-                                .padding(.trailing, 10)
+                            if alertImage != "" {
+                                Spacer()
+                                Image(systemName: alertImage)
+                                    .resizable()
+                                    .foregroundStyle(alertColor)
+                                    .frame(width: 22, height: 22)
+                                    .padding(.trailing, 10)
+                            }
                         }
                     )
                     Text("\(alertText)")
@@ -337,7 +361,7 @@ struct NewUserView: View {
         }
         .navigationBarBackButtonHidden()
         .toolbar {
-            ToolbarItem(placement: .topBarLeading ) { // toolbar newuseback 없애야 할듯
+            ToolbarItem(placement: .topBarLeading ) {
                 Button(action: {
                     if isNameView {
                         if loginPath.count > 0 {
@@ -358,6 +382,7 @@ struct NewUserView: View {
                 }
             }
         }
+        
     }
     
     func isNameAvailable() {

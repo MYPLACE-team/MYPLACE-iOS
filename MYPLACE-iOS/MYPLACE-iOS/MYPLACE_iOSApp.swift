@@ -6,25 +6,28 @@
 //
 
 import SwiftUI
-//import KakaoSDKCommon
-//import KakaoSDKAuth
+import KakaoSDKCommon
+import KakaoSDKAuth
+import GoogleSignIn
 
 @main
 struct MYPLACE_iOSApp: App {
-    
-//    init() {
-//        // Kakao SDK 초기화
-//        KakaoSDK.initSDK(appKey: "78756fd73a212ebe5b9f720292d65d1a")
-//    }
+    init() {
+        // Kakao SDK 초기화
+        KakaoSDK.initSDK(appKey: "78756fd73a212ebe5b9f720292d65d1a")
+    }
     
     var body: some Scene {
         WindowGroup {
+            //            LoginView()
             LoginView()
-//            LoginView().onOpenURL(perform: { url in
-//                if (AuthApi.isKakaoTalkLoginUrl(url)) {
-//                    AuthController.handleOpenUrl(url: url)
-//                }
-//            })
+                .onOpenURL(perform: { url in
+                    if (AuthApi.isKakaoTalkLoginUrl(url)) {
+                        AuthController.handleOpenUrl(url: url)
+                    }})
+                .onOpenURL { url in
+                    GIDSignIn.sharedInstance.handle(url)
+                }
         }
     }
 }
