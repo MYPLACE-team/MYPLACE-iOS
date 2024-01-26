@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SearchView: View {
     @ObservedObject var kakaoSearchViewModel: KakaoSearchViewModel
-    @EnvironmentObject var popupViewModel: PopupViewModel
+    @StateObject var popupViewModel = PopupViewModel.shared
     
     @Binding var searchText: String
     @Binding var path: [PathModel]
@@ -39,9 +39,6 @@ struct SearchView: View {
                                 }) {
                                     Image(systemName: "magnifyingglass")
                                         .foregroundStyle(.gray)
-                                }
-                                .onAppear {
-                                    kakaoSearchViewModel.searchPlaces(query: searchText)
                                 }
                                 .padding(.trailing, 13)
                             }
@@ -89,15 +86,6 @@ struct SearchView: View {
                 }
                 .padding(.top, 5)
                     VStack {
-//                        ForEach(places, id: \.self) { place in
-//                            Button(action: {
-//                                popupViewModel.setSelectedPlace(placeModel: place)
-//                                isPopupPresented.toggle()
-//                            }) {
-//                                SearchItemView(path: $path)
-//                                    .padding(.top, 5)
-//                            }
-//                        }
                         Button(action: {
                             path.append(.placeInformationView)
                         }) {
@@ -118,6 +106,10 @@ struct SearchView: View {
                             }
                             .listStyle(PlainListStyle())
                             .scrollIndicators(.hidden)
+                            .onAppear {
+                                kakaoSearchViewModel.searchPlaces(query: searchText)
+                            }
+
                             Spacer()
                         }
                         Spacer()
@@ -127,7 +119,7 @@ struct SearchView: View {
             .blur(radius: isPopupPresented ? 10 : 0)
             .disabled(isPopupPresented)
             if isPopupPresented {
-                SearchPopup(path: $path, isPopupPresented: $isPopupPresented)
+                SearchPopup(path: $path, isPopupPresented: $isPopupPresented, popupViewModel: popupViewModel)
             }
         }
         .toast(message: toastViewModel.toastMessage, isShowing: $toastViewModel.showToast, duration: Toast.time)

@@ -74,6 +74,7 @@ struct SearchItemView_UnRegistered: View {
     @Binding var path: [PathModel]
     let placeName: String
     let addressName: String
+    var isEditing: Bool = false
     var body: some View {
         RoundedRectangle(cornerRadius: 15)
             .fill(Color(red: 0.96, green: 0.96, blue: 0.96))
@@ -103,34 +104,28 @@ struct SearchItemView_UnRegistered: View {
                                 )
                                 .frame(height: 22)
                                 .lineLimit(1)
-//                            Text(placeName)
-//                                .font(
-//                                    .custom("Apple SD Gothic Neo", size: 18)
-//                                    .weight(.semibold)
-//                                )
-//                                .lineLimit(1)
-//                                .foregroundStyle(.black)
                             }
                             .frame(width: 165)
                             .clipped()
                             Spacer()
-                            Text("등록하기")
-                                .font(
-                                    .custom("Apple SD Gothic Neo", size: 11)
-                                )
-                                .foregroundStyle(Color(red: 0.4, green: 0.35, blue: 0.96))
-                                .background(
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .fill(Color(red: 0.89, green: 0.89, blue: 0.95).opacity(0.42))
-                                        .foregroundColor(.clear)
-                                        .frame(width: 55, height: 18)
-                                        .overlay(
-                                            RoundedRectangle(cornerRadius: 10)
-                                                .stroke(Color(red: 0.4, green: 0.35, blue: 0.96), lineWidth: 0.5)
-                                        )
-                                )
-                                .padding(.trailing, 10)
-                            
+                            if !isEditing {
+                                Text("등록하기")
+                                    .font(
+                                        .custom("Apple SD Gothic Neo", size: 11)
+                                    )
+                                    .foregroundStyle(Color(red: 0.4, green: 0.35, blue: 0.96))
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 10)
+                                            .fill(Color(red: 0.89, green: 0.89, blue: 0.95).opacity(0.42))
+                                            .foregroundColor(.clear)
+                                            .frame(width: 55, height: 18)
+                                            .overlay(
+                                                RoundedRectangle(cornerRadius: 10)
+                                                    .stroke(Color(red: 0.4, green: 0.35, blue: 0.96), lineWidth: 0.5)
+                                            )
+                                    )
+                                    .padding(.trailing, 10)
+                            }
                         }
                         HStack {
                             Image("Map")

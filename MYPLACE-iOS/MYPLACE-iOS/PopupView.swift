@@ -10,9 +10,9 @@ import SwiftUI
 struct PopupView: View {
     var body: some View {
         ScrollView {
-            PlaceInformation_DayOffPopup(isPopupPresented: .constant(true))
-            PlaceInformation_ServicePopup(isPopupPresented: .constant(true))
-            SearchPopup(path: .constant([]), isPopupPresented: .constant(true))
+            PlaceInformation_DayOffPopup(isPopupPresented: .constant(true), selectedDayOffIndices: .constant([]))
+            PlaceInformation_ServicePopup(isPopupPresented: .constant(true), selectedServiceIndices: .constant(([])))
+            SearchPopup(path: .constant([]), isPopupPresented: .constant(true), popupViewModel: PopupViewModel())
             FilterPopup(isPopupPresented: .constant(true))
         }
     }
@@ -21,23 +21,8 @@ struct PopupView: View {
 struct SearchPopup: View {
     @Binding var path: [PathModel]
     @Binding var isPopupPresented: Bool
-    @EnvironmentObject var popupViewModel: PopupViewModel
-    @State private var selectedTypeIndex: Int?
-    
-    let placeTypes: [String] = [
-        "카페",
-        "중식",
-        "일식",
-        "양식",
-        "한식",
-        "술집",
-        "디저트",
-        "문화공간",
-        "아시안",
-        "고기",
-        "팝업스토어",
-        "기타"
-    ]
+    @StateObject var popupViewModel = PopupViewModel.shared
+    @State var selectedTypeIndex: PlaceType?
     
     var body: some View {
         RoundedRectangle(cornerRadius: 20)
@@ -110,14 +95,15 @@ struct SearchPopup: View {
                             HStack {
                                 ForEach(0..<4) { column in
                                     let index = row * 4 + column
-                                    if index < placeTypes.count {
+                                    if index < PlaceType.allCases.count {
+                                        let placeType = PlaceType.allCases[index]
                                         RoundedRectangle(cornerRadius: 20)
-                                            .foregroundStyle(selectedTypeIndex == index ? Color.accentColor : Color(red: 0.97, green: 0.95, blue: 1))
+                                            .foregroundStyle(selectedTypeIndex == placeType ? Color.accentColor : Color(red: 0.97, green: 0.95, blue: 1))
                                             .frame(width: 58, height: 24)
                                             .overlay(
-                                                Text(placeTypes[index])
+                                                Text(placeType.rawValue)
                                                     .font(Font.custom("Apple SD Gothic Neo", size: 12))
-                                                    .foregroundStyle(selectedTypeIndex == index ? Color.white : Color(red: 0.4, green: 0.35, blue: 0.96))
+                                                    .foregroundStyle(selectedTypeIndex == placeType ? Color.white : Color(red: 0.4, green: 0.35, blue: 0.96))
                                                     .padding(.top, 2)
                                             )
                                             .overlay(
@@ -125,7 +111,7 @@ struct SearchPopup: View {
                                                     .stroke(Color(red: 0.4, green: 0.35, blue: 0.96), lineWidth: 1)
                                             )
                                             .onTapGesture {
-                                                selectedTypeIndex = index
+                                                selectedTypeIndex = placeType
                                             }
                                     }
                                 }
@@ -155,22 +141,7 @@ struct SearchPopup: View {
 
 struct FilterPopup: View {
     @Binding var isPopupPresented: Bool
-    @State private var selectedTypeIndex: Int?
-    
-    let placeTypes: [String] = [
-        "카페",
-        "중식",
-        "일식",
-        "양식",
-        "한식",
-        "술집",
-        "디저트",
-        "문화공간",
-        "아시안",
-        "고기",
-        "팝업스토어",
-        "기타"
-    ]
+    @State var selectedTypeIndex: PlaceType?
     
     var body: some View {
         RoundedRectangle(cornerRadius: 20)
@@ -203,14 +174,15 @@ struct FilterPopup: View {
                             HStack {
                                 ForEach(0..<4) { column in
                                     let index = row * 4 + column
-                                    if index < placeTypes.count {
+                                    if index < PlaceType.allCases.count {
+                                        let placeType = PlaceType.allCases[index]
                                         RoundedRectangle(cornerRadius: 20)
-                                            .foregroundStyle(selectedTypeIndex == index ? Color.accentColor : Color(red: 0.97, green: 0.95, blue: 1))
+                                            .foregroundStyle(selectedTypeIndex == placeType ? Color.accentColor : Color(red: 0.97, green: 0.95, blue: 1))
                                             .frame(width: 58, height: 24)
                                             .overlay(
-                                                Text(placeTypes[index])
+                                                Text(placeType.rawValue)
                                                     .font(Font.custom("Apple SD Gothic Neo", size: 12))
-                                                    .foregroundStyle(selectedTypeIndex == index ? Color.white : Color(red: 0.4, green: 0.35, blue: 0.96))
+                                                    .foregroundStyle(selectedTypeIndex == placeType ? Color.white : Color(red: 0.4, green: 0.35, blue: 0.96))
                                                     .padding(.top, 2)
                                             )
                                             .overlay(
@@ -218,7 +190,7 @@ struct FilterPopup: View {
                                                     .stroke(Color(red: 0.4, green: 0.35, blue: 0.96), lineWidth: 1)
                                             )
                                             .onTapGesture {
-                                                selectedTypeIndex = selectedTypeIndex == index ? nil : index
+                                                selectedTypeIndex = selectedTypeIndex == placeType ? nil : placeType
                                             }
                                     }
                                 }
@@ -246,19 +218,7 @@ struct FilterPopup: View {
 
 struct PlaceInformation_DayOffPopup: View {
     @Binding var isPopupPresented: Bool
-    @State private var selectedTypeIndex: Int?
-    
-    let days: [String] = [
-        "월요일",
-        "화요일",
-        "수요일",
-        "목요일",
-        "금요일",
-        "토요일",
-        "일요일",
-        "공휴일",
-        "연중무휴"
-    ]
+    @Binding var selectedDayOffIndices: [Holiday]
     
     var body: some View {
         RoundedRectangle(cornerRadius: 20)
@@ -291,14 +251,15 @@ struct PlaceInformation_DayOffPopup: View {
                             HStack {
                                 ForEach(0..<4) { column in
                                     let index = row * 4 + column
-                                    if index < days.count {
+                                    if index < Holiday.allCases.count {
+                                        let holiday = Holiday.allCases[index]
                                         RoundedRectangle(cornerRadius: 20)
-                                            .foregroundStyle(selectedTypeIndex == index ? Color.accentColor : Color(red: 0.97, green: 0.95, blue: 1))
+                                            .foregroundStyle(selectedDayOffIndices.contains(holiday) ? Color.accentColor : Color(red: 0.97, green: 0.95, blue: 1))
                                             .frame(width: 58, height: 24)
                                             .overlay(
-                                                Text(days[index])
+                                                Text(holiday.rawValue)
                                                     .font(Font.custom("Apple SD Gothic Neo", size: 12))
-                                                    .foregroundStyle(selectedTypeIndex == index ? Color.white : Color(red: 0.4, green: 0.35, blue: 0.96))
+                                                    .foregroundStyle(selectedDayOffIndices.contains(holiday) ? Color.white : Color(red: 0.4, green: 0.35, blue: 0.96))
                                                     .padding(.top, 2)
                                             )
                                             .overlay(
@@ -306,7 +267,11 @@ struct PlaceInformation_DayOffPopup: View {
                                                     .stroke(Color(red: 0.4, green: 0.35, blue: 0.96), lineWidth: 1)
                                             )
                                             .onTapGesture {
-                                                selectedTypeIndex = selectedTypeIndex == index ? nil : index
+                                                if selectedDayOffIndices.contains(holiday) {
+                                                    selectedDayOffIndices.removeAll { $0 == holiday }
+                                                } else {
+                                                    selectedDayOffIndices.append(holiday)
+                                                }
                                             }
                                     }
                                 }
@@ -326,7 +291,6 @@ struct PlaceInformation_DayOffPopup: View {
                             )
                     }
                     .padding(.top, 15)
-                    .disabled(selectedTypeIndex == nil)
                     Spacer()
                 }
             )
@@ -335,21 +299,7 @@ struct PlaceInformation_DayOffPopup: View {
 
 struct PlaceInformation_ServicePopup: View {
     @Binding var isPopupPresented: Bool
-    @State private var selectedTypeIndex: Int?
-    
-    let services: [String] = [
-        "💰 저렴한 가격",
-        "☺️ 친절한 서비스",
-        "⛰️ 좋은 뷰",
-        "🚗 주차 가능",
-        "💺 편안한 좌석",
-        "🤤 최고의 맛",
-        "🎧 집중하기 좋은 곳",
-        "💐 좋은 분위기",
-        "👶🏻 키즈존",
-        "😻 반려동물 동반",
-        "🎶 좋은 음악 큐레이션"
-    ]
+    @Binding var selectedServiceIndices: [ProvidedService]
     
     var body: some View {
         RoundedRectangle(cornerRadius: 20)
@@ -385,15 +335,16 @@ struct PlaceInformation_ServicePopup: View {
                                 Spacer()
                                 ForEach(0..<3) { column in
                                     let index = row * 3 + column
-                                    if index < services.count {                                          
-                                        Text(services[index])
+                                    if index < ProvidedService.allCases.count {
+                                       let service = ProvidedService.allCases[index]
+                                        Text(service.rawValue)
                                             .font(Font.custom("Apple SD Gothic Neo", size: 10))
-                                            .foregroundStyle(selectedTypeIndex == index ? Color.white : Color(red: 0.4, green: 0.35, blue: 0.96))
+                                            .foregroundStyle(selectedServiceIndices.contains(service) ? Color.white : Color(red: 0.4, green: 0.35, blue: 0.96))
                                             .lineLimit(1)
                                             .padding(.top, 2)
                                             .background(
                                                 RoundedRectangle(cornerRadius: 20)
-                                                    .foregroundStyle(selectedTypeIndex == index ? Color.accentColor : Color(red: 0.97, green: 0.95, blue: 1))
+                                                    .foregroundStyle(selectedServiceIndices.contains(service) ? Color.accentColor : Color(red: 0.97, green: 0.95, blue: 1))
                                                     .overlay(
                                                         RoundedRectangle(cornerRadius: 20)
                                                             .stroke(Color(red: 0.4, green: 0.35, blue: 0.96), lineWidth: 1)
@@ -402,7 +353,11 @@ struct PlaceInformation_ServicePopup: View {
                                                     .padding(EdgeInsets(top: 0, leading: -10, bottom: 0, trailing: -10))
                                             )
                                             .onTapGesture {
-                                                selectedTypeIndex = selectedTypeIndex == index ? nil : index
+                                                if selectedServiceIndices.contains(service) {
+                                                    selectedServiceIndices.removeAll { $0 == service }
+                                                } else if selectedServiceIndices.count < 2 {
+                                                    selectedServiceIndices.append(service)
+                                                }
                                             }
                                     }
                                 }
@@ -423,7 +378,7 @@ struct PlaceInformation_ServicePopup: View {
                             )
                     }
                     .padding(.top, 15)
-                    .disabled(selectedTypeIndex == nil)
+                    .disabled(selectedServiceIndices.isEmpty)
                     Spacer()
                 }
             )

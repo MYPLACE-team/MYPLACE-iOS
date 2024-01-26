@@ -8,6 +8,7 @@
 import Foundation
 
 class PopupViewModel: ObservableObject {
+    static let shared = PopupViewModel()
     @Published var selectedPlace: SelectedPlace?
     
     func setSelectedPlace(placeName: String, address: String) {

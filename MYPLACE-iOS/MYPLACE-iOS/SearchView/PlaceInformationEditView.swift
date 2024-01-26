@@ -11,7 +11,7 @@ import PhotosUI
 struct PlaceInformationEditView: View {
     @Binding var path: [PathModel]
     @Binding var isHeartFilled: Bool
-    @EnvironmentObject var popupViewModel: PopupViewModel
+    @StateObject var popupViewModel = PopupViewModel.shared
     @State var isFirstImageSelected: Bool = false
     @State var isSecondImageSelected: Bool = false
     @State var isThirdImageSelected: Bool = false
@@ -21,9 +21,12 @@ struct PlaceInformationEditView: View {
     @State private var providedService: String = ""
     @State private var url: String = ""
     @State private var tag: String = ""
+    @State private var tags: [String] = []
     
     @State private var isDayOffPopupPresented = false
+    @Binding var selectedDayOffIndices: [Holiday]
     @State private var isServicePopupPresented = false
+    @Binding var selectedServiceIndices: [ProvidedService]
     
     var body: some View {
         ZStack {
@@ -49,9 +52,8 @@ struct PlaceInformationEditView: View {
                         .toolbar(.hidden)
                 }
                 .padding(.top, 10)
-                //MARK: - 선택된 장소 표시되는 것 수정 필요
                 if let selectedPlace = popupViewModel.selectedPlace {
-                    SearchItemView_UnRegistered(path: $path, placeName: selectedPlace.placeName, addressName: selectedPlace.address)
+                    SearchItemView_UnRegistered(path: $path, placeName: selectedPlace.placeName, addressName: selectedPlace.address, isEditing: true)
                 } else {
                     SearchItemView_Registered(isHeartFilled: $isHeartFilled, path: $path, place: places[1])
                         .padding(.top, 10)
@@ -74,11 +76,37 @@ struct PlaceInformationEditView: View {
                             .padding(.leading, 4)
                         Spacer()
                     }
-                    Button (action: {
-                        isDayOffPopupPresented.toggle()
-                    }) {
-                        CustomTextField(placeholder: "휴무일을 입력해주세요.", text: $dayOff)
+                    if selectedDayOffIndices.isEmpty {
+                        Button (action: {
+                            isDayOffPopupPresented.toggle()
+                        }) {
+                            CustomTextField(placeholder: "휴무일을 입력해주세요.", text: $dayOff)
+                        }
                     }
+                    else {
+                        Button (action: {
+                            isDayOffPopupPresented.toggle()
+                        }) {
+                            HStack(spacing: 8) {
+                                ForEach(selectedDayOffIndices, id: \.self) { holiday in
+                                    RoundedRectangle(cornerRadius: 20)
+                                        .foregroundStyle(Color(red: 1, green: 0.95, blue: 0.95))
+                                        .frame(width: 58, height: 24)
+                                        .overlay(
+                                            Text(holiday.rawValue)
+                                                .font(Font.custom("Apple SD Gothic Neo", size: 12))
+                                                .foregroundStyle(Color(red: 0.89, green: 0.39, blue: 0.39))
+                                                .padding(.top, 2)
+                                        )
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 20)
+                                                .stroke(Color(red: 0.89, green: 0.39, blue: 0.39), lineWidth: 1)
+                                        )
+                                }
+                            }
+                        }
+                    }
+
                     HStack(spacing: 0) {
                         Image("MoneyBag")
                             .resizable()
@@ -94,12 +122,37 @@ struct PlaceInformationEditView: View {
                             .padding(.leading, 4)
                         Spacer()
                     }
-                    Button (action: {
-                        isServicePopupPresented.toggle()
-                    }) {
-                        CustomTextField(placeholder: "제공 서비스를 선택해주세요.", text: $providedService)
+                    if selectedServiceIndices.isEmpty {
+                        Button (action: {
+                            isServicePopupPresented.toggle()
+                        }) {
+                            CustomTextField(placeholder: "제공 서비스를 선택해주세요.", text: $providedService)
+                        }
                     }
-//                    SectionView(imageName: "MoneyBag", title: "제공 서비스", placeholder: "제공 서비스를 선택해주세요.", text: $providedService)
+                    else {
+                        Button (action: {
+                            isServicePopupPresented.toggle()
+                        }) {
+                            HStack(spacing: 8) {
+                                ForEach(selectedServiceIndices, id: \.self) { service in
+                                    Text(service.rawValue)
+                                        .font(Font.custom("Apple SD Gothic Neo", size: 10))
+                                        .foregroundStyle(Color(red: 0.4, green: 0.35, blue: 0.96))
+                                        .lineLimit(1)
+                                        .padding(.horizontal, 10)
+                                        .padding(.vertical, 5)
+                                        .background(
+                                            RoundedRectangle(cornerRadius: 20)
+                                                .foregroundColor(Color(red: 0.97, green: 0.95, blue: 1))
+                                                .overlay(
+                                                    RoundedRectangle(cornerRadius: 20)
+                                                        .stroke(Color(red: 0.4, green: 0.35, blue: 0.96), lineWidth: 1)
+                                                )
+                                        )
+                                }
+                            }
+                        }
+                    }
                     SectionView(imageName: "CheckMark", title: "외부 링크", placeholder: "URL 형태로 입력해주세요.", text: $url)
                     HStack(spacing: 0) {
                         Text("#태그")
@@ -112,6 +165,48 @@ struct PlaceInformationEditView: View {
                         Spacer()
                     }
                     CustomTextField(placeholder: "장소를 나타내는 #태그를 3개까지만 입력해주세요.", text: $tag)
+                        .submitLabel(.done)
+                        .onSubmit {
+                            if !tag.isEmpty {
+                                let newTags = tag.split(separator: "\n").map { String($0) }
+                                tags.append(contentsOf: newTags)
+                                tag = " "
+                            }
+                        }
+                        .overlay(
+                            HStack {
+                                ForEach(tags.indices, id: \.self) { index in
+                                    HStack(spacing: 3) {
+                                        Text(tags[index])
+                                            .font(
+                                                Font.custom("Apple SD Gothic Neo", size: 12)
+                                                    .weight(.bold)
+                                            )
+                                            .foregroundStyle(Color(red: 0.4, green: 0.35, blue: 0.96))
+                                            .padding(.top, 2)
+                                        Button(action: {
+                                            tags.remove(at: index)
+                                        }) {
+                                            Image(systemName: "xmark")
+                                                .resizable()
+                                                .frame(width: 10, height: 10)
+                                                .foregroundStyle(.gray)
+                                                .bold()
+                                        }
+                                    }
+                                    .frame(height: 22)
+                                    .padding(.horizontal, 8)
+                                    .background(Color(red: 0.97, green: 0.95, blue: 1))
+                                    .clipShape(RoundedRectangle(cornerRadius: 20))
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 20)
+                                            .inset(by: 0.5)
+                                            .stroke(Color(red: 0.4, green: 0.35, blue: 0.96), lineWidth: 1)
+                                    )
+                                }
+                                Spacer()
+                            }
+                    )
                 }
                 .padding(.top, 20)
                 HStack {
@@ -125,7 +220,6 @@ struct PlaceInformationEditView: View {
                     Spacer()
                 }
                 .padding(.leading, 38)
-                //        .frame(height: 82)
                 .padding(.top, 5)
                 
                 HStack {
@@ -155,6 +249,8 @@ struct PlaceInformationEditView: View {
                     }
                     Button(action:  {
                         path.removeLast()
+                        selectedDayOffIndices.removeAll()
+                        selectedServiceIndices.removeAll()
                     }) {
                         Text("돌아가기")
                             .font(Font.custom("Apple SD Gothic Neo", size: 15))
@@ -174,10 +270,10 @@ struct PlaceInformationEditView: View {
             .blur(radius: isServicePopupPresented || isDayOffPopupPresented ? 10 : 0)
             .disabled(isDayOffPopupPresented || isServicePopupPresented)
             if isDayOffPopupPresented {
-                PlaceInformation_DayOffPopup(isPopupPresented: $isDayOffPopupPresented)
+                PlaceInformation_DayOffPopup(isPopupPresented: $isDayOffPopupPresented, selectedDayOffIndices: $selectedDayOffIndices)
             }
             else if isServicePopupPresented {
-                PlaceInformation_ServicePopup(isPopupPresented: $isServicePopupPresented)
+                PlaceInformation_ServicePopup(isPopupPresented: $isServicePopupPresented, selectedServiceIndices: $selectedServiceIndices)
             }
         }
     }
@@ -224,6 +320,7 @@ struct CustomTextField: View {
                         .custom("Apple SD Gothic Neo", size: 15)
                         .weight(.medium)
                     )
+                    .multilineTextAlignment(.leading)
                     .foregroundStyle(.gray)
                     .padding(.leading, 10)
             )
@@ -291,6 +388,6 @@ struct SquarePhotosPicker: View {
 
 #Preview {
     PlaceInformationEditView(
-        path: .constant([]), isHeartFilled: .constant(false)
+        path: .constant([]), isHeartFilled: .constant(false), selectedDayOffIndices: .constant([]), selectedServiceIndices: .constant(([]))
     )
 }
