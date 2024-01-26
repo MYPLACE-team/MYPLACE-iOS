@@ -12,7 +12,11 @@ struct PlaceInformationView: View {
     @Binding var isHeartFilled: Bool
     @State private var userInput: String = ""
     //MARK: - 토스트 메시지 뷰 두개에 띄워지는거 해결해야함
-    @StateObject private var toastViewModel = ToastViewModel.shared
+    @StateObject private var toastViewModel = ToastViewModel()
+    
+//    @Binding var selectedDayOffIndices: [Holiday]
+//    @Binding var selectedServiceIndices: [ProvidedService]
+    
     var body: some View {
         ZStack {
             VStack {
@@ -46,7 +50,7 @@ struct PlaceInformationView: View {
                                                 .onTapGesture {
                                                     isHeartFilled.toggle()
                                                     let toastMessage = isHeartFilled ? "관심 장소로 저장되었습니다." : "관심 장소 저장이 해제되었습니다."
-                                                    ToastViewModel.shared.showToastWithString(text: toastMessage)
+                                                    toastViewModel.showToastWithString(text: toastMessage)
                                                 }
                                                 .padding(.trailing, 10)
                                         }

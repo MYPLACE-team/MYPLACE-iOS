@@ -11,12 +11,13 @@ import KakaoMapsSDK_SPM
 
 struct HomeView: View {
     @StateObject var kakaoSearchViewModel = KakaoSearchViewModel()
-    @ObservedObject var popupViewModel = PopupViewModel()
     @State var searchText = ""
     @State var path: [PathModel] = []
     @State var isHeartFilled = false
     @State var draw: Bool = false
     @State private var isPopupHidden = false
+    @State var selectedDayOffIndices: [Holiday] = []
+    @State var selectedServiceIndices: [ProvidedService] = []
 
     var body: some View {
         NavigationStack(path: $path) {
@@ -107,7 +108,7 @@ struct HomeView: View {
                         case .notificationView:
                             NotificationView()
                         case .searchView:
-                            SearchView(kakaoSearchViewModel: KakaoSearchViewModel(), popupViewModel: PopupViewModel(), searchText: $searchText, path: $path, isHeartFilled: $isHeartFilled)
+                            SearchView(kakaoSearchViewModel: KakaoSearchViewModel(), searchText: $searchText, path: $path, isHeartFilled: $isHeartFilled)
                         case .favoritePlacesView:
                             FavoritePlacesView(path: $path)
                         case .arciveView:
@@ -117,7 +118,7 @@ struct HomeView: View {
                         case .communityView:
                             CommunityView()
                         case .placeInformationEditView:
-                            PlaceInformationEditView(path: $path, isHeartFilled: $isHeartFilled, popupViewModel: PopupViewModel())
+                            PlaceInformationEditView(path: $path, isHeartFilled: $isHeartFilled, selectedDayOffIndices: $selectedDayOffIndices, selectedServiceIndices: $selectedServiceIndices)
                         case .placeInformationView:
                             PlaceInformationView(path: $path, isHeartFilled: $isHeartFilled)
                         }
