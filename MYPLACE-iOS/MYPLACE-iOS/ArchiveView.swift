@@ -12,6 +12,7 @@ struct ArchiveView: View {
     @State var searchItemList: [String] = []
     @State var arhcivePlaces: [ArchiveModel] = archivePlaces
     @State var isTotalView: Bool = true
+    @State var isPopupPresented: Bool = false
     @Binding var path: [PathModel]
     
     var body: some View {
@@ -19,163 +20,160 @@ struct ArchiveView: View {
             Color("MPLightPurple")
                 .ignoresSafeArea(.all)
                 .padding(.top, 50)
-            VStack {
-                UnevenRoundedRectangle(bottomLeadingRadius: 20, bottomTrailingRadius: 20)
-                    .fill(.white)
-                    .frame(height: 300)
-                    .overlay(
-                        VStack {
-                            Circle()
-                                .frame(width: 80, height: 80)
-                                .foregroundStyle(.gray)
-                                .overlay(
-                                    Image("profile")
-                                )
-                                .padding(.top, 20)
-                            HStack {
-                                Text("라일락")
-                                    .font(
-                                        Font.custom("Apple SD Gothic Neo", size: 25)
-                                            .weight(.semibold)
-                                    )
-                                    .foregroundStyle(Color(red: 0.15, green: 0.16, blue: 0.17))
-                                RoundedRectangle(cornerRadius: 20)
-                                    .frame(width: 30, height: 14)
-                                    .foregroundStyle(Color(red: 0.68, green: 0.65, blue: 1))
-                                    .overlay(
-                                        Text("Lv.0")
-                                            .font(Font.custom("Apple SD Gothic Neo", size: 9))
-                                            .foregroundColor(Color(red: 0.27, green: 0.3, blue: 0.33))
-                                            .bold()
-                                            .padding([.top, .leading], 1)
-                                    )
-                            }
-                            .frame(height: 25)
-                            .padding(.top, 12)
-                            HStack(spacing: 0) {
-                                Text("이번 달 ")
-                                    .font(
-                                        Font.custom("Apple SD Gothic Neo", size: 23)
-                                            .weight(.medium)
-                                    )
-                                    .foregroundStyle(Color(red: 0.27, green: 0.3, blue: 0.33))
-                                Text("10곳 달성 ")
-                                    .font(
-                                        Font.custom("Apple SD Gothic Neo", size: 23)
-                                            .weight(.medium)
-                                    )
-                                    .foregroundStyle(Color(red: 0.27, green: 0.3, blue: 0.33))
-                                    .background(
-                                        VStack{
-                                            Spacer()
-                                            Rectangle()
-                                                .frame(height: 10)
-                                                .foregroundStyle(Color(red: 0.76, green: 0.74, blue: 1).opacity(0.6))
-                                        }
-                                    )
-                            }
-                            .frame(height: 25)
-                            Button(action: {
-                                if isTotalView {
-                                    
+            VStack(spacing: 0) {
+                VStack(spacing: 0) {
+                    Circle()
+                        .frame(width: 80, height: 80)
+                        .foregroundStyle(.gray)
+                        .overlay(
+                            Image("profile")
+                        )
+                        .padding(.top, 20)
+                    HStack {
+                        Text("라일락")
+                            .font(
+                                Font.custom("Apple SD Gothic Neo", size: 25)
+                                    .weight(.semibold)
+                            )
+                            .foregroundStyle(Color(red: 0.15, green: 0.16, blue: 0.17))
+                        RoundedRectangle(cornerRadius: 20)
+                            .frame(width: 30, height: 14)
+                            .foregroundStyle(Color(red: 0.68, green: 0.65, blue: 1))
+                            .overlay(
+                                Text("Lv.0")
+                                    .font(Font.custom("Apple SD Gothic Neo", size: 9))
+                                    .foregroundColor(Color(red: 0.27, green: 0.3, blue: 0.33))
+                                    .bold()
+                                    .padding([.top, .leading], 1)
+                            )
+                    }
+                    .frame(height: 25)
+                    .padding(.top, 12)
+                    HStack(spacing: 0) {
+                        Text("이번 달 ")
+                            .font(
+                                Font.custom("Apple SD Gothic Neo", size: 23)
+                                    .weight(.medium)
+                            )
+                            .foregroundStyle(Color(red: 0.27, green: 0.3, blue: 0.33))
+                        Text("10곳 달성 ")
+                            .font(
+                                Font.custom("Apple SD Gothic Neo", size: 23)
+                                    .weight(.medium)
+                            )
+                            .foregroundStyle(Color(red: 0.27, green: 0.3, blue: 0.33))
+                            .background(
+                                VStack{
+                                    Spacer()
+                                    Rectangle()
+                                        .frame(height: 10)
+                                        .foregroundStyle(Color(red: 0.76, green: 0.74, blue: 1).opacity(0.6))
                                 }
-                                else {
-                                    
-                                }
-                            }){
-                                RoundedRectangle(cornerRadius: 10)
-                                    .frame(width: 96, height: 28, alignment: .center)
-                                    .foregroundStyle(Color(red: 0, green: 0.48, blue: 1))
-                                    .overlay(
-                                        HStack(spacing: 6) {
-                                            if isTotalView {
-                                                Text("아카이브 추가")
-                                                    .font(Font.custom("Apple SD Gothic Neo", size: 14)
-                                                        .weight(.medium))
-                                                    .foregroundStyle(.white)
-                                                    .padding(.top, 1)
-                                            }
-                                            else {
-                                                Text("폴더 추가")
-                                                    .font(Font.custom("Apple SD Gothic Neo", size: 14)
-                                                        .weight(.medium))
-                                                    .foregroundStyle(.white)
-                                                    .padding(.top, 1)
-                                            }
-                                            Image(systemName: "chevron.right")
-                                                .resizable()
-                                                .frame(width: 4, height: 8)
-                                                .bold()
-                                                .foregroundStyle(.white)
-                                        }
-                                    )
-                            }
-                                .padding(.top, 13)
-                            Spacer()
-                            HStack(spacing: 16){
-                                Button(action: {
-                                    isTotalView = true
-                                })
-                                {
+                            )
+                    }
+                    .padding(.top, 8)
+                    Button(action: {
+                        if isTotalView {
+                            
+                        }
+                        else {
+                            
+                        }
+                    }){
+                        RoundedRectangle(cornerRadius: 10)
+                            .frame(width: 96, height: 28, alignment: .center)
+                            .foregroundStyle(Color(red: 0.35, green: 0.5, blue: 0.79))
+                            .overlay(
+                                HStack(spacing: 6) {
                                     if isTotalView {
-                                        VStack(spacing: 10){
-                                            Text("전체 보기")
-                                                .font(
-                                                    Font.custom("Apple SD Gothic Neo", size: 16)
-                                                        .weight(.bold)
-                                                )
-                                            UnevenRoundedRectangle(cornerRadii: .init(topLeading: 10, topTrailing: 10))
-                                                .frame(width: 156, height: 4)
-                                        }
-                                        .foregroundStyle(Color(red: 0.32, green: 0.28, blue: 0.77).opacity(0.8))
+                                        Text("새 아카이브")
+                                            .font(Font.custom("Apple SD Gothic Neo", size: 12)
+                                                .weight(.medium))
+                                            .foregroundStyle(Color(red: 0.97, green: 0.97, blue: 0.98))
+                                            .padding(.top, 1)
                                     }
                                     else {
-                                        VStack(spacing: 10){
-                                            Text("전체 보기")
-                                                .font(
-                                                    Font.custom("Apple SD Gothic Neo", size: 16)
-                                                        .weight(.semibold)
-                                                )
-                                                .foregroundStyle(Color(red: 0.79, green: 0.8, blue: 0.82))
-                                            UnevenRoundedRectangle(cornerRadii: .init(topLeading: 10, topTrailing: 10))
-                                                .frame(width: 156, height: 4)
-                                                .foregroundStyle(.clear)
-                                        }
+                                        Text("새 폴더")
+                                            .font(Font.custom("Apple SD Gothic Neo", size: 12)
+                                                .weight(.medium))
+                                            .foregroundStyle(Color(red: 0.97, green: 0.97, blue: 0.98))
+                                            .padding(.top, 1)
                                     }
+                                    Image(systemName: "chevron.right")
+                                        .resizable()
+                                        .frame(width: 4, height: 8)
+                                        .bold()
+                                        .foregroundStyle(.white)
                                 }
-                                Button(action: {
-                                    isTotalView = false
-                                })
-                                {
-                                    if isTotalView {
-                                        VStack(spacing: 10){
-                                            Text("폴더 보기")
-                                                .font(
-                                                    Font.custom("Apple SD Gothic Neo", size: 16)
-                                                        .weight(.semibold)
-                                                )
-                                                .foregroundStyle(Color(red: 0.79, green: 0.8, blue: 0.82))
-                                            UnevenRoundedRectangle(cornerRadii: .init(topLeading: 10, topTrailing: 10))
-                                                .frame(width: 156, height: 4)
-                                                .foregroundStyle(.clear)
-                                        }
-                                    } else {
-                                        VStack(spacing: 10){
-                                            Text("폴더 보기")
-                                                .font(
-                                                    Font.custom("Apple SD Gothic Neo", size: 16)
-                                                        .weight(.bold)
-                                                )
-                                            UnevenRoundedRectangle(cornerRadii: .init(topLeading: 10, topTrailing: 10))
-                                                .frame(width: 156, height: 4)
-                                        }
-                                        .foregroundStyle(Color(red: 0.32, green: 0.28, blue: 0.77).opacity(0.8))
-                                    }
+                            )
+                    }
+                    .padding(.top, 26)
+                    HStack(spacing: 16){
+                        Button(action: {
+                            isTotalView = true
+                        })
+                        {
+                            if isTotalView {
+                                VStack(spacing: 6){
+                                    Text("전체 보기")
+                                        .font(
+                                            Font.custom("Apple SD Gothic Neo", size: 16)
+                                                .weight(.bold)
+                                        )
+                                    UnevenRoundedRectangle(cornerRadii: .init(topLeading: 10, topTrailing: 10))
+                                        .frame(width: 151, height: 4)
+                                }
+                                .foregroundStyle(Color(red: 0.4, green: 0.35, blue: 0.96))
+                            }
+                            else {
+                                VStack(spacing: 6){
+                                    Text("전체 보기")
+                                        .font(
+                                            Font.custom("Apple SD Gothic Neo", size: 16)
+                                                .weight(.semibold)
+                                        )
+                                        .foregroundStyle(Color(red: 0.79, green: 0.8, blue: 0.82))
+                                    UnevenRoundedRectangle(cornerRadii: .init(topLeading: 10, topTrailing: 10))
+                                        .frame(width: 151, height: 4)
+                                        .foregroundStyle(.clear)
                                 }
                             }
-                            .padding(.top, 10)
                         }
-                    )
+                        Button(action: {
+                            isTotalView = false
+                        })
+                        {
+                            if isTotalView {
+                                VStack(spacing: 6){
+                                    Text("폴더 보기")
+                                        .font(
+                                            Font.custom("Apple SD Gothic Neo", size: 16)
+                                                .weight(.semibold)
+                                        )
+                                        .foregroundStyle(Color(red: 0.79, green: 0.8, blue: 0.82))
+                                    UnevenRoundedRectangle(cornerRadii: .init(topLeading: 10, topTrailing: 10))
+                                        .frame(width: 151, height: 4)
+                                        .foregroundStyle(.clear)
+                                }
+                            } else {
+                                VStack(spacing: 6){
+                                    Text("폴더 보기")
+                                        .font(
+                                            Font.custom("Apple SD Gothic Neo", size: 16)
+                                                .weight(.bold)
+                                        )
+                                    UnevenRoundedRectangle(cornerRadii: .init(topLeading: 10, topTrailing: 10))
+                                        .frame(width: 151, height: 4)
+                                }
+                                .foregroundStyle(Color(red: 0.4, green: 0.35, blue: 0.96))
+                            }
+                        }
+                    }
+                    .padding(.top, 18)
+                }
+                .frame(maxWidth: .infinity)
+                .background(.white)
+                .clipShape(UnevenRoundedRectangle(topLeadingRadius: 0, bottomLeadingRadius: 20, bottomTrailingRadius: 20, topTrailingRadius: 0))
                 if isTotalView {
                     HStack(spacing: 8){
                         RoundedRectangle(cornerRadius: 4)
@@ -239,7 +237,7 @@ struct ArchiveView: View {
                     .padding(.horizontal, 8)
                     .background(.white)
                     .clipShape(RoundedRectangle(cornerRadius: 6))
-                    .padding(.top, 12)
+                    .padding(.top, 15)
                     HStack(spacing: 6){
                         Spacer()
                         Text("총")
@@ -251,9 +249,9 @@ struct ArchiveView: View {
                             .padding(.trailing, 36)
                     }
                     .foregroundStyle(Color(red: 0.27, green: 0.3, blue: 0.33))
-                    .padding(.top, 6)
+                    .padding(.vertical, 6)
                     ScrollView {
-                        VStack{
+                        VStack(spacing: 14){
                             if(self.arhcivePlaces.count > 0) {
                                 ForEach(archivePlaces, id: \.self){
                                     place in
@@ -349,8 +347,81 @@ struct ArchiveView: View {
                 }
                 else
                 {
+                    HStack(spacing: 6){
+                        Spacer()
+                        Text("총")
+                            .font(Font.custom("Apple SD Gothic Neo", size: 14))
+                        Text(String(7))
+                            .font(Font.custom("Apple SD Gothic Neo", size: 18).weight(.semibold))
+                        Text("건")
+                            .font(Font.custom("Apple SD Gothic Neo", size: 14))
+                            .padding(.trailing, 36)
+                    }
+                    .foregroundStyle(Color(red: 0.27, green: 0.3, blue: 0.33))
+                    .padding(.vertical, 18)
+                    ScrollView {
+                        LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing:18) {
+                            ForEach(0..<7) { index in
+                                Image("DummyImage2")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: 130, height: 110)
+                                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                                    .overlay(
+                                        Color(red: 0.85, green: 0.85, blue: 0.85).opacity(0.6)
+                                            .overlay(
+                                                VStack(alignment: .leading, spacing: 0){
+                                                    HStack{
+                                                        Spacer()
+                                                        Button(action: {
+                                                            isPopupPresented.toggle()
+                                                        })
+                                                        {
+                                                            Circle()
+                                                                .frame(width: 17, height: 17)
+                                                                .foregroundStyle(Color(red: 0.89, green: 0.39, blue: 0.39))
+                                                                .overlay(
+                                                                    Image(systemName: "xmark")
+                                                                        .resizable()
+                                                                        .frame(width: 7, height: 7)
+                                                                        .foregroundStyle(.white)
+                                                                )
+                                                        }
+                                                    }
+                                                    .padding(.top, 7)
+                                                    .padding(.trailing, 8)
+                                                    HStack(alignment: .bottom,spacing: 2){
+                                                        Text("부산여행")
+                                                            .font(
+                                                                Font.custom("Apple SD Gothic Neo", size: 20)
+                                                                    .weight(.bold)
+                                                            )
+                                                            .foregroundStyle(Color(red: 0.15, green: 0.16, blue: 0.17))
+                                                        Image("edit")
+                                                            .foregroundStyle(Color(red: 0.27, green: 0.3, blue: 0.33))
+                                                            .padding(.bottom, 4)
+                                                    }
+                                                    .padding(.leading, 6)
+                                                    .padding(.top, 40)
+                                                    Text("2023.10.19~2023.10.21")
+                                                        .font(
+                                                            Font.custom("Apple SD Gothic Neo", size: 10)
+                                                                .weight(.semibold)
+                                                        )
+                                                        .foregroundStyle(Color(red: 0.27, green: 0.3, blue: 0.33))
+                                                        .padding(.leading, 6)
+                                                }
+                                                , alignment: .top)
+                                    )
+                            }
+                        }
+                    }
+                    .frame(width: 290)
                     Spacer()
                 }
+            }
+            if isPopupPresented {
+                FolderPopupView(isPopupPresented: $isPopupPresented)
             }
         }
         .navigationBarBackButtonHidden()
@@ -358,7 +429,6 @@ struct ArchiveView: View {
             ToolbarItem(placement: .topBarLeading) {
                 BasicBackButton(path: $path)
             }
-            
             ToolbarItem(placement: .principal) {
                 HStack {
                     Image("ArchiveBook")
@@ -375,11 +445,82 @@ struct ArchiveView: View {
                 ToolBarView(path: $path)
             }
         }
-        
     }
 }
 
+struct FolderPopupView: View {
+    @Binding var isPopupPresented: Bool
 
+    var body: some View {
+        ZStack {
+            Color.black.opacity(0.5).edgesIgnoringSafeArea(.all)
+            VStack(spacing: 0){
+                Circle()
+                    .frame(width: 96, height: 96)
+                    .foregroundStyle(Color(red: 1, green: 0.85, blue: 0.07).opacity(0.2))
+                    .overlay(
+                        Image(systemName: "exclamationmark")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 46, height: 46)
+                            .bold()
+                            .foregroundStyle(Color(red: 1, green: 0.85, blue: 0.07))
+                    )
+                Text("폴더를 정말 삭제할까요?")
+                  .font(
+                    Font.custom("Apple SD Gothic Neo", size: 20)
+                      .weight(.bold)
+                  )
+                  .foregroundStyle(.black)
+                  .padding(.top, 30)
+                
+                Text("삭제한 폴더는 복구할 수 없어요.")
+                  .font(Font.custom("Apple SD Gothic Neo", size: 15))
+                  .foregroundStyle(.black)
+                  .padding(.top, 18)
+                HStack(spacing: 10) {
+                    Button(action: {
+                    
+                    })
+                    {
+                        RoundedRectangle(cornerRadius: 14)
+                            .frame(width: 100, height: 44)
+                            .foregroundStyle(Color(red: 0.4, green: 0.35, blue: 0.96))
+                            .overlay(
+                                Text("삭제하기")
+                                    .font(Font.custom("Apple SD Gothic Neo", size: 16))
+                                    .foregroundColor(.white)
+                            )
+                    }
+                    Button(action: {
+                        isPopupPresented.toggle()
+                    })
+                    {
+                        RoundedRectangle(cornerRadius: 14)
+                            .frame(width: 100, height: 44)
+                            .foregroundStyle(.white)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 14)
+                                    .inset(by: 1)
+                                    .stroke(Color(red: 0.4, green: 0.35, blue: 0.96), lineWidth: 2)
+                                    .overlay(
+                                        Text("돌아가기")
+                                            .font(Font.custom("Apple SD Gothic Neo", size: 16))
+                                            .foregroundColor(Color(red: 0.4, green: 0.35, blue: 0.96))
+                                    )
+                            )
+                    }
+                }
+                .padding(.top, 24)
+            }
+            .frame(width: 282)
+            .padding(.vertical, 30)
+            .padding(.horizontal, 24)
+            .background(.white)
+            .clipShape(RoundedRectangle(cornerRadius: 8))
+        }
+    }
+}
 
 #Preview {
     ArchiveView(path: .constant([]))

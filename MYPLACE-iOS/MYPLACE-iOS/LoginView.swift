@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import GoogleSignIn
 
 struct LoginView: View {
     @State var loginPath: [LoginPathModel] = []
@@ -36,9 +37,11 @@ struct LoginView: View {
                         .overlay(
                             VStack(spacing: 26) {
                                 Button(action : {
-                                    loginModel.googleLogin()
-                                    loginPath.append(.newUserView)
-                                    //loginPath.append(.newUserNameView)
+                                    loginModel.googleLogin { result in
+                                        if result {
+                                            loginPath.append(.newUserView)
+                                        }
+                                    }
                                 })
                                 {
                                     HStack(alignment: .center, spacing: 12) {
@@ -64,9 +67,11 @@ struct LoginView: View {
                                 )
                                 .padding(.top, 60)
                                 Button(action: {
-                                    loginModel.kakaoLogin()
-                                    loginPath.append(.newUserView)
-                                    //loginPath.append(.newUserNameView)
+                                    loginModel.kakaoLogin { result in
+                                        if result {
+                                            loginPath.append(.newUserView)
+                                        }
+                                    }
                                 })
                                 {
                                     HStack(alignment: .center, spacing: 12) {
@@ -93,7 +98,6 @@ struct LoginView: View {
                                 Button(action: {
                                     loginModel.appleLogin()
                                     loginPath.append(.newUserView)
-                                    //loginPath.append(.newUserNameView)
                                 })
                                 {
                                     HStack(alignment: .center, spacing: 12) {

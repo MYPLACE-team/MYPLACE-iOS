@@ -104,7 +104,7 @@ struct HomeView: View {
                     .navigationDestination(for: PathModel.self) { pathModel in
                         switch pathModel {
                         case .settingView:
-                            SettingView()
+                            SettingView(path: $path)
                         case .notificationView:
                             NotificationView()
                         case .searchView:
