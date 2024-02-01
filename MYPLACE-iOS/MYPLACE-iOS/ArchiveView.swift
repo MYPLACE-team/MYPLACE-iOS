@@ -12,7 +12,16 @@ struct ArchiveView: View {
     @State var searchItemList: [String] = []
     @State var arhcivePlaces: [ArchiveModel] = archivePlaces
     @State var isTotalView: Bool = true
+    
     @State var isPopupPresented: Bool = false
+    
+    @State var createFolder: Bool = false
+    @State var folderImage: String = ""
+    @State var folderName: String = ""
+    @State var startDate: String = ""
+    @State var endDate: String = ""
+    @State var isCreate: Bool = false
+    
     @Binding var path: [PathModel]
     
     var body: some View {
@@ -77,7 +86,12 @@ struct ArchiveView: View {
                             
                         }
                         else {
-                            
+                            isCreate = true
+                            folderImage = ""
+                            folderName = ""
+                            startDate = ""
+                            endDate = ""
+                            createFolder.toggle()
                         }
                     }){
                         RoundedRectangle(cornerRadius: 10)
@@ -93,6 +107,7 @@ struct ArchiveView: View {
                                             .padding(.top, 1)
                                     }
                                     else {
+                                        
                                         Text("새 폴더")
                                             .font(Font.custom("Apple SD Gothic Neo", size: 12)
                                                 .weight(.medium))
@@ -397,9 +412,16 @@ struct ArchiveView: View {
                                                                     .weight(.bold)
                                                             )
                                                             .foregroundStyle(Color(red: 0.15, green: 0.16, blue: 0.17))
-                                                        Image("edit")
-                                                            .foregroundStyle(Color(red: 0.27, green: 0.3, blue: 0.33))
-                                                            .padding(.bottom, 4)
+                                                        Button(action: {
+                                                            folderName = "전주여행"
+                                                            isCreate = false
+                                                            createFolder.toggle()
+                                                        })
+                                                        {
+                                                            Image("edit")
+                                                                .foregroundStyle(Color(red: 0.27, green: 0.3, blue: 0.33))
+                                                                .padding(.bottom, 4)
+                                                        }
                                                     }
                                                     .padding(.leading, 6)
                                                     .padding(.top, 40)
@@ -419,6 +441,9 @@ struct ArchiveView: View {
                     .frame(width: 290)
                     Spacer()
                 }
+            }
+            if createFolder {
+                createFolderView(image: $folderImage, name: $folderName, start: $startDate, end: $endDate, isCreate: $isCreate, show: $createFolder)
             }
             if isPopupPresented {
                 FolderPopupView(isPopupPresented: $isPopupPresented)
@@ -521,6 +546,178 @@ struct FolderPopupView: View {
         }
     }
 }
+
+struct createFolderView: View {
+    @Binding var image: String
+    @Binding var name: String
+    @Binding var start: String
+    @Binding var end: String
+    @Binding var isCreate: Bool
+    @Binding var show: Bool
+    
+    var body: some View {
+        ZStack {
+            Color.black.opacity(0.5).edgesIgnoringSafeArea(.all)
+            VStack{
+                Spacer()
+                UnevenRoundedRectangle(cornerRadii: .init(topLeading: 40, topTrailing: 40))
+                    .foregroundStyle(.white)
+                    .frame(width: 394, height: 547)
+                    .overlay(
+                        VStack(spacing: 0){
+                            if isCreate {
+                                Text("새 폴더를 추가해 주세요!")
+                                    .font(
+                                        Font.custom("Apple SD Gothic Neo", size: 30)
+                                            .weight(.bold)
+                                    )
+                                    .foregroundStyle(Color(red: 0.15, green: 0.16, blue: 0.17))
+                                    .background(
+                                        Rectangle()
+                                            .foregroundStyle(Color(red: 0.76, green: 0.74, blue: 1).opacity(0.6))
+                                            .frame(height: 15), alignment: .bottom)
+                                    .frame(width: 324, alignment: .leading)
+                            } else {
+                                Text("폴더를 수정해 주세요!")
+                                    .font(
+                                        Font.custom("Apple SD Gothic Neo", size: 30)
+                                            .weight(.bold)
+                                    )
+                                    .foregroundStyle(Color(red: 0.15, green: 0.16, blue: 0.17))
+                                    .background(
+                                        Rectangle()
+                                            .foregroundStyle(Color(red: 0.76, green: 0.74, blue: 1).opacity(0.6))
+                                            .frame(height: 15), alignment: .bottom)
+                                    .frame(width: 324, alignment: .leading)
+                            }
+                                Image("DummyImage2")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: 118, height: 118)
+                                    .overlay(
+                                        Circle()
+                                            .frame(width: 17, height: 17)
+                                            .foregroundStyle(Color(red: 0.89, green: 0.39, blue: 0.39))
+                                            .overlay(
+                                                Image(systemName: "xmark")
+                                                    .resizable()
+                                                    .frame(width: 7, height: 7)
+                                                    .foregroundStyle(.white)
+                                            )
+                                            .padding(.top, -8)
+                                            .padding(.trailing, -8)
+                                        ,alignment : .topTrailing)
+                                    .padding(.top, 26)
+                                Text("*해당 사진은 폴더의 썸네일로 등록돼요.")
+                                    .font(
+                                        Font.custom("Apple SD Gothic Neo", size: 14)
+                                            .weight(.medium)
+                                    )
+                                    .foregroundStyle(Color(red: 0.62, green: 0.64, blue: 0.67))
+                                    .padding(.top, 3)
+                            HStack(spacing: 0){
+                                Text("폴더명")
+                                    .font(
+                                        Font.custom("Apple SD Gothic Neo", size: 25)
+                                            .weight(.semibold)
+                                    )
+                                    .foregroundStyle(Color(red: 0.27, green: 0.3, blue: 0.33))
+                                Text("*")
+                                    .font(
+                                        Font.custom("Apple SD Gothic Neo", size: 25)
+                                            .weight(.semibold)
+                                    )
+                                    .foregroundStyle(Color(red: 0.89, green: 0.39, blue: 0.39))
+                            }
+                            .padding(.top, 14)
+                            .frame(width: 324, alignment: .leading)
+                            TextField("폴더명을 입력해주세요.", text: $name)
+                                .font(
+                                    Font.custom("Apple SD Gothic Neo", size: 16)
+                                        .weight(.medium)
+                                )
+                                .foregroundStyle(Color(red: 0.15, green: 0.16, blue: 0.17))
+                                .padding(.vertical, 5)
+                                .padding(.horizontal, 12)
+                                .frame(width: 324, height: 30)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 5)
+                                        .inset(by: 0.5)
+                                        .stroke(Color(red: 0.62, green: 0.64, blue: 0.67), lineWidth: 1)
+                                )
+                            Text("방문 날짜")
+                                .font(
+                                    Font.custom("Apple SD Gothic Neo", size: 25)
+                                        .weight(.semibold)
+                                )
+                                .foregroundStyle(Color(red: 0.27, green: 0.3, blue: 0.33))
+                                .padding(.top, 27)
+                                .frame(width: 324, alignment: .leading)
+                            HStack(spacing: 20) {
+                                Rectangle()
+                                    .foregroundColor(.clear)
+                                    .frame(width: 152, height: 50)
+                                    .background(Color(red: 0.91, green: 0.92, blue: 0.93))
+                                    .cornerRadius(5)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 5)
+                                            .inset(by: 0.5)
+                                            .stroke(.black, lineWidth: 1)
+                                    )
+                                RoundedRectangle(cornerRadius: 5)
+                                    .foregroundColor(.clear)
+                                    .frame(width: 152, height: 50)
+                                    .background(Color(red: 0.91, green: 0.92, blue: 0.93))
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 5)
+                                            .inset(by: 0.5)
+                                            .stroke(.black, lineWidth: 1)
+                                    )
+                            }
+                            .padding(.top, 5)
+                            .frame(width: 324, alignment: .leading)
+                            if isCreate {
+                                Button(action: {
+                                    show.toggle()
+                                })
+                                {
+                                    Text("새 폴더 추가 완료")
+                                        .font(Font.custom("Apple SD Gothic Neo", size: 16))
+                                        .foregroundColor(.white)
+                                        .padding(.vertical, 10)
+                                        .padding(.horizontal, 20)
+                                        .background(Color(red: 0.4, green: 0.35, blue: 0.96))
+                                        .clipShape(RoundedRectangle(cornerRadius: 14))
+                                        .padding(.top, 27)
+                                }
+                            } else {
+                                Button(action: {
+                                    show.toggle()
+                                })
+                                {
+                                    Text("수정 완료")
+                                        .font(Font.custom("Apple SD Gothic Neo", size: 16))
+                                        .foregroundColor(.white)
+                                        .padding(.vertical, 10)
+                                        .padding(.horizontal, 20)
+                                        .background(Color(red: 0.4, green: 0.35, blue: 0.96))
+                                        .clipShape(RoundedRectangle(cornerRadius: 14))
+                                        .padding(.top, 27)
+                                }
+                            }
+                        }
+                    )
+            }
+            .ignoresSafeArea(.all)
+        }
+    }
+}
+
+//struct editFolderView: View {
+//    var body: some View {
+//
+//    }
+//}
 
 #Preview {
     ArchiveView(path: .constant([]))
