@@ -194,10 +194,68 @@ struct FavoritePlacesView: View {
                     Spacer()
                 }
                 else if selectedTab == "다녀온 장소" {
-                    Text("")
+                    VStack {
+                        Image("FavoritePlaceMissing2")
+                        Text("다녀온 장소가 없어요.\n원활한 방문을 위해 알림을 보내드릴까요?")
+                            .font(
+                                Font.custom("Apple SD Gothic Neo", size: 20)
+                                    .weight(.semibold)
+                            )
+                            .multilineTextAlignment(.center)
+                            .lineSpacing(5)
+                            .padding(.top, 30)
+                        Button(action: {
+                            
+                        }) {
+                            RoundedRectangle(cornerRadius: 10)
+                                .foregroundStyle(Color.accentColor)
+                                .frame(width: 240, height: 50)
+                                .overlay(
+                                    Text("알림 설정")
+                                        .foregroundStyle(.white)
+                                        .font(
+                                            Font.custom("Apple SD Gothic Neo", size: 20)
+                                                .weight(.semibold)
+                                        )
+                                    
+                                )
+                                .padding(.top, 25)
+                        }
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .background(Color(red: 0.94, green: 0.93, blue: 1).opacity(0.7))
                 }
                 else if selectedTab == "다녀올 장소" {
-                    Text("")
+                    VStack {
+                        Image("FavoritePlaceMissing3")
+                        Text("관심장소를 모두 방문했어요. \n새로운 관심장소를 찾아볼까요?")
+                            .font(
+                                Font.custom("Apple SD Gothic Neo", size: 20)
+                                    .weight(.semibold)
+                            )
+                            .multilineTextAlignment(.center)
+                            .lineSpacing(5)
+                            .padding(.top, 30)
+                        Button(action: {
+                            
+                        }) {
+                            RoundedRectangle(cornerRadius: 10)
+                                .foregroundStyle(Color.accentColor)
+                                .frame(width: 240, height: 50)
+                                .overlay(
+                                    Text("장소 둘러보기")
+                                        .foregroundStyle(.white)
+                                        .font(
+                                            Font.custom("Apple SD Gothic Neo", size: 20)
+                                                .weight(.semibold)
+                                        )
+                                    
+                                )
+                                .padding(.top, 25)
+                        }
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .background(Color(red: 0.94, green: 0.93, blue: 1).opacity(0.7))
                 }
                     
             }

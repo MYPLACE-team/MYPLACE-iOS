@@ -12,16 +12,15 @@ struct PlaceInformationEditView: View {
     @Binding var path: [PathModel]
     @Binding var isHeartFilled: Bool
     @StateObject var popupViewModel = PopupViewModel.shared
-    @State var isFirstImageSelected: Bool = false
-    @State var isSecondImageSelected: Bool = false
-    @State var isThirdImageSelected: Bool = false
+    @State private var selectedImage: [Image?] = []
     
     @State private var recommendedMenu: String = ""
     @State private var dayOff: String = ""
     @State private var providedService: String = ""
     @State private var url: String = ""
-    @State private var tag: String = ""
-    @State private var tags: [String] = []
+    @State private var tag1: String = ""
+    @State private var tag2: String = ""
+    @State private var tag3: String = ""
     
     @State private var isDayOffPopupPresented = false
     @Binding var selectedDayOffIndices: [Holiday]
@@ -60,6 +59,7 @@ struct PlaceInformationEditView: View {
                 }
                 
                 VStack(spacing: 10) {
+                    //MARK: - 15자 제한
                     SectionView(imageName: "Fork", title: "추천 메뉴", placeholder: "추천 메뉴를 1가지 입력해주세요.", text: $recommendedMenu)
                     HStack(spacing: 0) {
                         Image("Clock")
@@ -153,7 +153,7 @@ struct PlaceInformationEditView: View {
                             }
                         }
                     }
-                    SectionView(imageName: "CheckMark", title: "외부 링크", placeholder: "URL 형태로 입력해주세요.", text: $url)
+                    SectionView(imageName: "CheckMark", title: "인스타그램", placeholder: "장소의 인스타그램 계정을 입력해주세요.", text: $url)
                     HStack(spacing: 0) {
                         Text("#태그")
                             .font(
@@ -164,58 +164,66 @@ struct PlaceInformationEditView: View {
                             .padding(.leading, 37)
                         Spacer()
                     }
-                    CustomTextField(placeholder: "장소를 나타내는 #태그를 3개까지만 입력해주세요.", text: $tag)
-                        .submitLabel(.done)
-                        .onSubmit {
-                            if !tag.isEmpty {
-                                let newTags = tag.split(separator: "\n").map { String($0) }
-                                tags.append(contentsOf: newTags)
-                                tag = " "
-                            }
-                        }
-                        .overlay(
-                            HStack {
-                                ForEach(tags.indices, id: \.self) { index in
-                                    HStack(spacing: 3) {
-                                        Text(tags[index])
-                                            .font(
-                                                Font.custom("Apple SD Gothic Neo", size: 12)
-                                                    .weight(.bold)
-                                            )
-                                            .foregroundStyle(Color(red: 0.4, green: 0.35, blue: 0.96))
-                                            .padding(.top, 2)
-                                        Button(action: {
-                                            tags.remove(at: index)
-                                        }) {
-                                            Image(systemName: "xmark")
-                                                .resizable()
-                                                .frame(width: 10, height: 10)
-                                                .foregroundStyle(.gray)
-                                                .bold()
-                                        }
-                                    }
-                                    .frame(height: 22)
-                                    .padding(.horizontal, 8)
-                                    .background(Color(red: 0.97, green: 0.95, blue: 1))
-                                    .clipShape(RoundedRectangle(cornerRadius: 20))
-                                    .overlay(
-                                        RoundedRectangle(cornerRadius: 20)
-                                            .inset(by: 0.5)
-                                            .stroke(Color(red: 0.4, green: 0.35, blue: 0.96), lineWidth: 1)
-                                    )
-                                }
-                                Spacer()
-                            }
-                    )
+                    HStack(spacing: 10) {
+                        TagView(tag: $tag1)
+                            .padding(.leading, 37)
+                        TagView(tag: $tag2)
+                        TagView(tag: $tag3)
+                        Spacer()
+                    }
                 }
                 .padding(.top, 20)
                 HStack {
-                    SquarePhotosPicker(squareWidth: 82, squareHeight: 82, isSelected: $isFirstImageSelected)
-                    if isFirstImageSelected {
-                        SquarePhotosPicker(squareWidth: 82, squareHeight: 82, isSelected: $isSecondImageSelected)
+//                    SquarePhotosPicker(selectedImage: $selectedImage, imageIndex: $imageIndex, squareWidth: 82, squareHeight: 82)
+//                    if isImageSelected[0] {
+//                        SquarePhotosPicker(selectedImage: $selectedImage, imageIndex: $imageIndex, squareWidth: 82, squareHeight: 82)
+//                    }
+//                    if isImageSelected[0] && isImageSelected[1] {
+//                        SquarePhotosPicker(selectedImage: $selectedImage, imageIndex: $imageIndex, squareWidth: 82, squareHeight: 82)
+//                    }
+//                    if let selectedImage = selectedImage[imageIndex] {
+//                        ZStack {
+//                            selectedImage
+//                                .resizable()
+//                                .frame(width: 82, height: 82)
+//                                .scaledToFill()
+//                            Button(action: {
+//                                self.selectedImage.remove(at: imageIndex)
+////                                selectedItem = nil
+//                            }) {
+//                                Image(systemName: "xmark.circle.fill")
+//                                    .foregroundColor(.red)
+//                            }
+//                            .offset(x: 82/2, y: -82/2)
+//                        }
+//                        .frame(width: 82, height: 82)
+//                    }
+//                    else {
+//                        SquarePhotosPicker(selectedImage: $selectedImage, imageIndex: $imageIndex, squareWidth: 82, squareHeight: 82)
+//                    }
+                    ForEach(selectedImage.indices, id: \.self) { index in
+                        if let image = selectedImage[index] {
+                            ZStack {
+                                image
+                                    .resizable()
+                                    .frame(width: 82, height: 82)
+                                    .scaledToFill()
+                                Button(action: {
+                                    selectedImage.remove(at: index)
+                                }) {
+                                    Image(systemName: "xmark.circle.fill")
+                                        .foregroundColor(.red)
+                                }
+                                .offset(x: 82/2, y: -82/2)
+                            }
+                            .frame(width: 82, height: 82)
+                        }
+                        else {
+                            SquarePhotosPicker(selectedImage: $selectedImage, squareWidth: 82, squareHeight: 82)
+                        }
                     }
-                    if isSecondImageSelected {
-                        SquarePhotosPicker(squareWidth: 82, squareHeight: 82, isSelected: $isThirdImageSelected)
+                    if selectedImage.count < 3 {
+                        SquarePhotosPicker(selectedImage: $selectedImage, squareWidth: 82, squareHeight: 82)
                     }
                     Spacer()
                 }
@@ -327,64 +335,117 @@ struct CustomTextField: View {
     }
 }
 
-struct SquarePhotosPicker: View {
-    @State private var selectedItem: PhotosPickerItem? = nil
-    @State private var selectedImageData: Data? = nil
-    var squareWidth: CGFloat
-    var squareHeight: CGFloat
-    @Binding var isSelected: Bool
-
+struct TagView: View {
+    @Binding var tag: String
+    @State private var isSubmitted = false
+    
     var body: some View {
-        if let selectedImageData,
-           let uiImage = UIImage(data: selectedImageData) {
-            ZStack {
-                Image(uiImage: uiImage)
-                    .resizable()
-                    .frame(width: squareWidth, height: squareHeight)
-                    .scaledToFill()
-                Button(action: {
-                    deleteSelectedImage()
-                }) {
-                    Image(systemName: "xmark.circle.fill")
-                        .foregroundColor(.red)
-                }
-                .offset(x: squareWidth/2, y: -squareHeight/2)
-            }
-            .frame(width: squareWidth, height: squareHeight)
-        }
-        else {
-            PhotosPicker(
-                selection: $selectedItem,
-                matching: .images,
-                photoLibrary: .shared()) {
-                    Rectangle()
-                        .stroke(Color(red: 0.62, green: 0.64, blue: 0.67), lineWidth: 1)
-                        .foregroundStyle(.clear)
-                        .frame(width: squareWidth, height: squareHeight)
-                        .overlay(
-                            Image(systemName: "plus")
+        HStack {
+            if !isSubmitted {
+                Rectangle()
+                    .stroke(Color(red: 0.62, green: 0.64, blue: 0.67), lineWidth: 1)
+                    .foregroundStyle(.white)
+                    .frame(width: 55, height: 30)
+                    .overlay(
+                        HStack {
+                            TextField("#", text: $tag)
+                                .submitLabel(.done)
+                                .onChange(of: tag) {
+                                    if tag.count > 11 {
+                                        tag = String(tag.prefix(11))
+                                    }
+                                }
+                                .onTapGesture {
+                                    if tag.isEmpty {
+                                        tag = "#"
+                                    }
+                                }
+                                .onSubmit {
+                                    if tag.isEmpty || tag == "#" {
+                                        tag = "#"
+                                    }
+                                    else if !tag.hasPrefix("#") {
+                                        tag = "#" + tag
+                                        isSubmitted.toggle()
+                                    }
+                                    else {
+                                        isSubmitted.toggle()
+                                    }
+                                }
+                                .autocapitalization(.none)
                                 .font(
-                                    .system(size: 20)
-                                    .bold()
+                                    .custom("Apple SD Gothic Neo", size: 15)
+                                    .weight(.medium)
                                 )
-                                .foregroundStyle(Color(red: 0.62, green: 0.64, blue: 0.67))
-                        )
-                }
-                .onChange(of: selectedItem) { newItem in
-                    Task {
-                        if let data = try? await newItem?.loadTransferable(type: Data.self) {
-                            selectedImageData = data
-                            isSelected = true
+                                .multilineTextAlignment(.leading)
+                                .foregroundStyle(.gray)
+                                .padding(.leading, 10)
+                            
+                            Spacer()
                         }
+                    )
+            }
+            else {
+                Text(tag)
+                    .font(
+                        Font.custom("Apple SD Gothic Neo", size: 14)
+                    )
+                    .foregroundStyle(.black)
+                    .padding(.top, 2)
+                    .background(
+                        Rectangle()
+                            .foregroundStyle(Color(red: 0.98, green: 0.96, blue: 1))
+                            .frame(height: 30)
+                            .overlay(
+                                Rectangle()
+                                    .stroke(Color(red: 0.62, green: 0.64, blue: 0.67), lineWidth: 1)
+                            )
+                            .padding(EdgeInsets(top: 0, leading: -10, bottom: 0, trailing: -10))
+                    )
+                    .padding([.leading, .trailing], 10)
+                    .onTapGesture {
+                        isSubmitted.toggle()
                     }
-                }
+            }
         }
-    }
-    private func deleteSelectedImage() {
-        selectedImageData = nil
-        isSelected = false
     }
 }
+
+struct SquarePhotosPicker: View {
+    @State private var selectedItem: PhotosPickerItem? = nil
+    @Binding var selectedImage: [Image?]
+    var squareWidth: CGFloat
+    var squareHeight: CGFloat
+
+    var body: some View {
+        PhotosPicker(
+            selection: $selectedItem,
+            matching: .images,
+            photoLibrary: .shared()) {
+                Rectangle()
+                    .stroke(Color(red: 0.62, green: 0.64, blue: 0.67), lineWidth: 1)
+                    .foregroundStyle(.clear)
+                    .frame(width: squareWidth, height: squareHeight)
+                    .overlay(
+                        Image(systemName: "plus")
+                            .font(
+                                .system(size: 20)
+                                .bold()
+                            )
+                            .foregroundStyle(Color(red: 0.62, green: 0.64, blue: 0.67))
+                    )
+            }
+            .onChange(of: selectedItem) {
+                Task {
+                    if let image = try? await selectedItem?.loadTransferable(type: Image.self) {
+                        selectedImage.append(image)
+                        selectedItem = nil
+                    }
+                }
+            }
+    }
+}
+
 
 #Preview {
     PlaceInformationEditView(
