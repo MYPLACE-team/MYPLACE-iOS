@@ -10,11 +10,11 @@ import Foundation
 // MARK: - SearchResponse
 struct SearchResponse: Codable {
     let meta: Meta
-    let documents: [Place]
+    let documents: [KakaoPlace]
 }
 
 // MARK: - Place
-struct Place: Codable, Identifiable {
+struct KakaoPlace: Codable, Identifiable {
     let id: String
     let placeName, distance: String
     let placeURL: String

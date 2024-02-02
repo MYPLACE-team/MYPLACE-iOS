@@ -34,7 +34,7 @@ struct SearchView: View {
                                     .foregroundStyle(.gray)
                                     .padding(.leading, 13)
                                 Button(action: {
-                                    kakaoSearchViewModel.searchPlaces(query: searchText)
+                                    kakaoSearchViewModel.search(query: searchText)
                                     UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                                 }) {
                                     Image(systemName: "magnifyingglass")
@@ -89,7 +89,7 @@ struct SearchView: View {
                         Button(action: {
                             path.append(.placeInformationView)
                         }) {
-                            SearchItemView_Registered(isHeartFilled: $isHeartFilled, path: $path, place: places[1])
+                            SearchItemView_Registered(isHeartFilled: $isHeartFilled, path: $path, place: dummyPlaces[1])
                         }
                         HStack {
                             Spacer()
@@ -107,7 +107,7 @@ struct SearchView: View {
                             .listStyle(PlainListStyle())
                             .scrollIndicators(.hidden)
                             .onAppear {
-                                kakaoSearchViewModel.searchPlaces(query: searchText)
+                                kakaoSearchViewModel.search(query: searchText)
                             }
 
                             Spacer()

@@ -6,41 +6,25 @@
 //
 
 import Foundation
-import Moya
-import CoreLocation
 
 class KakaoSearchViewModel: ObservableObject {
-    let kakaoProvider = MoyaProvider<KakaoAPI>(plugins: [NetworkLoggerPlugin()])
-    @Published var places: [Place] = []
-    @Published var meta: Meta = Meta(sameName: SameName(region: [], keyword: "", selectedRegion: ""), pageableCount: 0, totalCount: 0, isEnd: false)
-    private var locationManager = CLLocationManager()
+    let searchManager = KakaoSearchManager()
     
-    func searchPlaces(query: String) {
-        locationManager.requestWhenInUseAuthorization()
-        var latitude = 37.514322572335935
-        var longitude = 127.06283102249932
-        
-        if let userLocation = locationManager.location?.coordinate {
-            latitude = userLocation.latitude
-            longitude = userLocation.longitude
-        }
-        
-        kakaoProvider.request(.searchPlaces(query: query, y: latitude, x: longitude, radius: 2000)) { result in
+    @Published var places: [KakaoPlace] = []
+    @Published var meta: Meta = Meta(sameName: SameName(region: [], keyword: "", selectedRegion: ""), pageableCount: 0, totalCount: 0, isEnd: false)
+    
+    func search(query: String) {
+        searchManager.searchPlaces(query: query) { result in
             switch result {
-            case let .success(response):
-                do {
-                    let decoder = JSONDecoder()
-                    let result = try decoder.decode(SearchResponse.self, from: response.data)
-                    DispatchQueue.main.async {
-                        self.places = result.documents
-                        self.meta = result.meta
-                    }
-                } catch {
-                    print("Error decoding JSON: \(error)")
+            case .success(let response):
+                DispatchQueue.main.async {
+                    self.places = response.documents
+                    self.meta = response.meta
                 }
-            case let .failure(error):
-                print("Network request failed: \(error.localizedDescription)")
+            case .failure(let error):
+                print("Search error: \(error.localizedDescription)")
             }
         }
     }
+    
 }

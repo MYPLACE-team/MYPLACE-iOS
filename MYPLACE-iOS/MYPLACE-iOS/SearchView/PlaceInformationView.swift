@@ -13,6 +13,15 @@ struct PlaceInformationView: View {
     @State private var userInput: String = ""
     //MARK: - 토스트 메시지 뷰 두개에 띄워지는거 해결해야함
     @StateObject private var toastViewModel = ToastViewModel()
+    func openInstagram(username: String) {
+        let instagramUrl = URL(string: "instagram://user?username=\(username)")!
+        if UIApplication.shared.canOpenURL(instagramUrl) {
+            UIApplication.shared.open(instagramUrl, options: [:], completionHandler: nil)
+        } else {
+            let webUrl = URL(string: "https://www.instagram.com/\(username)/")!
+            UIApplication.shared.open(webUrl, options: [:], completionHandler: nil)
+        }
+    }
     
 //    @Binding var selectedDayOffIndices: [Holiday]
 //    @Binding var selectedServiceIndices: [ProvidedService]
@@ -132,6 +141,7 @@ struct PlaceInformationView: View {
                                 .resizable()
                                 .frame(width: 18, height: 18)
                                 .padding(.top, 13)
+                            //MARK: - 휴무일 길면 가로 스크롤
                             Text("휴무일")
                                 .font(
                                     .custom("Apple SD Gothic Neo", size: 18)
@@ -145,7 +155,7 @@ struct PlaceInformationView: View {
                                 .resizable()
                                 .frame(width: 18, height: 18)
                                 .padding(.top, 13)
-                            Text("외부 링크")
+                            Text("인스타그램")
                                 .font(
                                     .custom("Apple SD Gothic Neo", size: 18)
                                     .weight(.semibold)
@@ -180,13 +190,14 @@ struct PlaceInformationView: View {
                             )
                             .padding(.top, 15)
                             .foregroundStyle(.red)
-                        Text("흑임자라떼")
-                            .font(
-                                Font.custom("Apple SD Gothic Neo", size: 18)
-                                    .weight(.thin)
-                            )
-                            .padding(.top, 15)
-                            .foregroundStyle(.black)
+                        Button(action: {
+                            //MARK: - 백에서 준 값으로 업데이트 필요
+                            openInstagram(username: "user")
+                        }, label: {
+                            Image(systemName: "globe")
+                                .padding(.top, 15)
+                                .foregroundStyle(.black)
+                        })
                     }
                     .padding(.leading, 60)
                     Spacer()
@@ -282,16 +293,6 @@ struct BackgroundBlurView: UIViewRepresentable{
     }
     
     func updateUIView(_ uiView: UIViewType, context: Context) { }
-}
-
-struct ImageTabView: View {
-    let imageName: String
-    var body: some View {
-        Image(imageName)
-            .resizable()
-            .frame(height: 460)
-
-    }
 }
 
 #Preview {
