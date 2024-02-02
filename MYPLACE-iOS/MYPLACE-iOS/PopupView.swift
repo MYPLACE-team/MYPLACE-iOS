@@ -22,7 +22,8 @@ struct SearchPopup: View {
     @Binding var path: [PathModel]
     @Binding var isPopupPresented: Bool
     @StateObject var popupViewModel = PopupViewModel.shared
-    @State var selectedTypeIndex: PlaceType?
+    @StateObject var myPlaceInformationViewModel = MyPlaceInformationViewModel.shared
+    @State var selectedType: PlaceType?
     
     var body: some View {
         RoundedRectangle(cornerRadius: 20)
@@ -98,12 +99,12 @@ struct SearchPopup: View {
                                     if index < PlaceType.allCases.count {
                                         let placeType = PlaceType.allCases[index]
                                         RoundedRectangle(cornerRadius: 20)
-                                            .foregroundStyle(selectedTypeIndex == placeType ? Color.accentColor : Color(red: 0.97, green: 0.95, blue: 1))
+                                            .foregroundStyle(selectedType == placeType ? Color.accentColor : Color(red: 0.97, green: 0.95, blue: 1))
                                             .frame(width: 58, height: 24)
                                             .overlay(
                                                 Text(placeType.rawValue)
                                                     .font(Font.custom("Apple SD Gothic Neo", size: 12))
-                                                    .foregroundStyle(selectedTypeIndex == placeType ? Color.white : Color(red: 0.4, green: 0.35, blue: 0.96))
+                                                    .foregroundStyle(selectedType == placeType ? Color.white : Color(red: 0.4, green: 0.35, blue: 0.96))
                                                     .padding(.top, 2)
                                             )
                                             .overlay(
@@ -111,7 +112,7 @@ struct SearchPopup: View {
                                                     .stroke(Color(red: 0.4, green: 0.35, blue: 0.96), lineWidth: 1)
                                             )
                                             .onTapGesture {
-                                                selectedTypeIndex = placeType
+                                                selectedType = placeType
                                             }
                                     }
                                 }
@@ -120,6 +121,9 @@ struct SearchPopup: View {
                     }
                     .padding(.top, 15)
                     Button(action: {
+                        myPlaceInformationViewModel.name = popupViewModel.selectedPlace?.placeName ?? "장소"
+                        myPlaceInformationViewModel.address = popupViewModel.selectedPlace?.address ?? "주소"
+                        myPlaceInformationViewModel.category = selectedType!.rawValue
                         isPopupPresented.toggle()
                         path.append(.placeInformationEditView)
                     }) {
@@ -132,7 +136,7 @@ struct SearchPopup: View {
                             )
                     }
                     .padding(.top, 15)
-                    .disabled(selectedTypeIndex == nil)
+                    .disabled(selectedType == nil)
                     Spacer()
                 }
             )
@@ -219,6 +223,7 @@ struct FilterPopup: View {
 struct PlaceInformation_DayOffPopup: View {
     @Binding var isPopupPresented: Bool
     @Binding var selectedDayOffIndices: [Holiday]
+    @StateObject var myPlaceInformationViewModel = MyPlaceInformationViewModel.shared
     
     var body: some View {
         RoundedRectangle(cornerRadius: 20)
@@ -280,6 +285,7 @@ struct PlaceInformation_DayOffPopup: View {
                     }
                     .padding(.top, 10)
                     Button(action: {
+                        myPlaceInformationViewModel.dayOff = selectedDayOffIndices.map { $0.rawValue }
                         isPopupPresented.toggle()
                     }) {
                         RoundedRectangle(cornerRadius: 5)
@@ -300,6 +306,7 @@ struct PlaceInformation_DayOffPopup: View {
 struct PlaceInformation_ServicePopup: View {
     @Binding var isPopupPresented: Bool
     @Binding var selectedServiceIndices: [ProvidedService]
+    @StateObject var myPlaceInformationViewModel = MyPlaceInformationViewModel.shared
     
     var body: some View {
         RoundedRectangle(cornerRadius: 20)

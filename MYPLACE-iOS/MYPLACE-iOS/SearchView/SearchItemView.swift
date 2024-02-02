@@ -9,9 +9,9 @@ import SwiftUI
 
 struct SearchItemView: View {
     var body: some View {
-        SearchItemView_Registered(isHeartFilled: .constant(false), path: .constant([]), place: places[1])
+        SearchItemView_Registered(isHeartFilled: .constant(false), path: .constant([]), place: dummyPlaces[1])
         SearchItemView_UnRegistered(path: .constant([]), placeName: "카카오프렌즈카카오프렌즈카카오프렌즈", addressName: "서울")
-        FavoriteItemView(path: .constant([]), isVisited: .constant(false), place: places[1])
+        FavoriteItemView(path: .constant([]), isVisited: .constant(false), place: dummyPlaces[1])
     }
 }
 

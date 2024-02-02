@@ -14,7 +14,7 @@ struct PlaceModel: Hashable, Identifiable {
     let address: String
 }
 
-let places: [PlaceModel] = [
+let dummyPlaces: [PlaceModel] = [
     PlaceModel(imageName: "DummyImage1", name: "장소1", address: "주소1"),
     PlaceModel(imageName: "DummyImage2", name: "장소2", address: "주소2")
 ]

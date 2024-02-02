@@ -9,7 +9,7 @@ import SwiftUI
 import Moya
 
 enum KakaoAPI {
-    case searchPlaces(query: String, y: Double, x: Double, radius: Int)
+    case searchPlaces(query: String)
 }
 
 extension KakaoAPI: TargetType {
@@ -31,14 +31,14 @@ extension KakaoAPI: TargetType {
         }
     }
 
-//    var sampleData: Data {
-//        return Data()
-//    }
+    var sampleData: Data {
+        return Data()
+    }
 
     var task: Task {
         switch self {
-        case let .searchPlaces(query, y, x, radius):
-            return .requestParameters(parameters: ["query": query, "y": y, "x": x, "radius": radius], encoding: URLEncoding.queryString)
+        case let .searchPlaces(query):
+            return .requestParameters(parameters: ["query": query], encoding: URLEncoding.queryString)
         }
     }
 
