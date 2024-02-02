@@ -144,7 +144,7 @@ struct FavoritePlacesView: View {
                         ForEach(items, id: \.self) { item in
                             Section {
                                 SwipeItem(content: {
-                                    FavoriteItemView(path: $path, isVisited: $isVisited, place: places[1])
+                                    FavoriteItemView(path: $path, isVisited: $isVisited, place: dummyPlaces[1])
                                         .background( Color(red: 0.93, green: 0.93, blue: 1))
                                 },  left: {
                                     ZStack {

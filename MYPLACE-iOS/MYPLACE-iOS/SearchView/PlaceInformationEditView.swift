@@ -12,15 +12,8 @@ struct PlaceInformationEditView: View {
     @Binding var path: [PathModel]
     @Binding var isHeartFilled: Bool
     @StateObject var popupViewModel = PopupViewModel.shared
+    @StateObject var myPlaceInformationViewModel = MyPlaceInformationViewModel.shared
     @State private var selectedImage: [Image?] = []
-    
-    @State private var recommendedMenu: String = ""
-    @State private var dayOff: String = ""
-    @State private var providedService: String = ""
-    @State private var url: String = ""
-    @State private var tag1: String = ""
-    @State private var tag2: String = ""
-    @State private var tag3: String = ""
     
     @State private var isDayOffPopupPresented = false
     @Binding var selectedDayOffIndices: [Holiday]
@@ -54,13 +47,13 @@ struct PlaceInformationEditView: View {
                 if let selectedPlace = popupViewModel.selectedPlace {
                     SearchItemView_UnRegistered(path: $path, placeName: selectedPlace.placeName, addressName: selectedPlace.address, isEditing: true)
                 } else {
-                    SearchItemView_Registered(isHeartFilled: $isHeartFilled, path: $path, place: places[1])
+                    SearchItemView_Registered(isHeartFilled: $isHeartFilled, path: $path, place: dummyPlaces[1])
                         .padding(.top, 10)
                 }
                 
                 VStack(spacing: 10) {
                     //MARK: - 15자 제한
-                    SectionView(imageName: "Fork", title: "추천 메뉴", placeholder: "추천 메뉴를 1가지 입력해주세요.", text: $recommendedMenu)
+                    SectionView(imageName: "Fork", title: "추천 메뉴", placeholder: "추천 메뉴를 1가지 입력해주세요.", text: $myPlaceInformationViewModel.recommendedMenu)
                     HStack(spacing: 0) {
                         Image("Clock")
                             .resizable()
@@ -77,17 +70,31 @@ struct PlaceInformationEditView: View {
                         Spacer()
                     }
                     if selectedDayOffIndices.isEmpty {
-                        Button (action: {
-                            isDayOffPopupPresented.toggle()
-                        }) {
-                            CustomTextField(placeholder: "휴무일을 입력해주세요.", text: $dayOff)
-                        }
+                        Rectangle()
+                            .stroke(Color(red: 0.62, green: 0.64, blue: 0.67), lineWidth: 1)
+                            .foregroundStyle(.white)
+                            .frame(width: 320, height: 30)
+                            .overlay(
+                                HStack {
+                                    Text("휴무일을 입력해주세요.")
+                                        .font(
+                                            .custom("Apple SD Gothic Neo", size: 15)
+                                            .weight(.thin)
+                                        )
+                                        .foregroundStyle(.gray)
+                                        .padding(.leading, 10)
+                                    Spacer()
+                                }
+                            )
+                            .onTapGesture {
+                                isDayOffPopupPresented.toggle()
+                            }
                     }
                     else {
                         Button (action: {
                             isDayOffPopupPresented.toggle()
                         }) {
-                            HStack(spacing: 8) {
+                            HStack(alignment: .center, spacing: 8) {
                                 ForEach(selectedDayOffIndices, id: \.self) { holiday in
                                     RoundedRectangle(cornerRadius: 20)
                                         .foregroundStyle(Color(red: 1, green: 0.95, blue: 0.95))
@@ -103,7 +110,10 @@ struct PlaceInformationEditView: View {
                                                 .stroke(Color(red: 0.89, green: 0.39, blue: 0.39), lineWidth: 1)
                                         )
                                 }
+                                Spacer()
                             }
+                            .frame(height: 30)
+                            .padding(.leading, 37)
                         }
                     }
 
@@ -123,20 +133,34 @@ struct PlaceInformationEditView: View {
                         Spacer()
                     }
                     if selectedServiceIndices.isEmpty {
-                        Button (action: {
-                            isServicePopupPresented.toggle()
-                        }) {
-                            CustomTextField(placeholder: "제공 서비스를 선택해주세요.", text: $providedService)
-                        }
+                        Rectangle()
+                            .stroke(Color(red: 0.62, green: 0.64, blue: 0.67), lineWidth: 1)
+                            .foregroundStyle(.white)
+                            .frame(width: 320, height: 30)
+                            .overlay(
+                                HStack {
+                                    Text("제공 서비스를 선택해주세요.")
+                                        .font(
+                                            .custom("Apple SD Gothic Neo", size: 15)
+                                            .weight(.thin)
+                                        )
+                                        .foregroundStyle(.gray)
+                                        .padding(.leading, 10)
+                                    Spacer()
+                                }
+                            )
+                            .onTapGesture {
+                                isServicePopupPresented.toggle()
+                            }
                     }
                     else {
                         Button (action: {
                             isServicePopupPresented.toggle()
                         }) {
-                            HStack(spacing: 8) {
+                            HStack(alignment: .center, spacing: 8) {
                                 ForEach(selectedServiceIndices, id: \.self) { service in
                                     Text(service.rawValue)
-                                        .font(Font.custom("Apple SD Gothic Neo", size: 10))
+                                        .font(Font.custom("Apple SD Gothic Neo", size: 12))
                                         .foregroundStyle(Color(red: 0.4, green: 0.35, blue: 0.96))
                                         .lineLimit(1)
                                         .padding(.horizontal, 10)
@@ -150,10 +174,13 @@ struct PlaceInformationEditView: View {
                                                 )
                                         )
                                 }
+                                Spacer()
                             }
+                            .frame(height: 30)
+                            .padding(.leading, 37)
                         }
                     }
-                    SectionView(imageName: "CheckMark", title: "인스타그램", placeholder: "장소의 인스타그램 계정을 입력해주세요.", text: $url)
+                    SectionView(imageName: "CheckMark", title: "인스타그램", placeholder: "장소의 인스타그램 계정을 입력해주세요.", text: $myPlaceInformationViewModel.url)
                     HStack(spacing: 0) {
                         Text("#태그")
                             .font(
@@ -165,42 +192,15 @@ struct PlaceInformationEditView: View {
                         Spacer()
                     }
                     HStack(spacing: 10) {
-                        TagView(tag: $tag1)
+                        TagView(tag: $myPlaceInformationViewModel.tags[0])
                             .padding(.leading, 37)
-                        TagView(tag: $tag2)
-                        TagView(tag: $tag3)
+                        TagView(tag: $myPlaceInformationViewModel.tags[1])
+                        TagView(tag: $myPlaceInformationViewModel.tags[2])
                         Spacer()
                     }
                 }
                 .padding(.top, 20)
                 HStack {
-//                    SquarePhotosPicker(selectedImage: $selectedImage, imageIndex: $imageIndex, squareWidth: 82, squareHeight: 82)
-//                    if isImageSelected[0] {
-//                        SquarePhotosPicker(selectedImage: $selectedImage, imageIndex: $imageIndex, squareWidth: 82, squareHeight: 82)
-//                    }
-//                    if isImageSelected[0] && isImageSelected[1] {
-//                        SquarePhotosPicker(selectedImage: $selectedImage, imageIndex: $imageIndex, squareWidth: 82, squareHeight: 82)
-//                    }
-//                    if let selectedImage = selectedImage[imageIndex] {
-//                        ZStack {
-//                            selectedImage
-//                                .resizable()
-//                                .frame(width: 82, height: 82)
-//                                .scaledToFill()
-//                            Button(action: {
-//                                self.selectedImage.remove(at: imageIndex)
-////                                selectedItem = nil
-//                            }) {
-//                                Image(systemName: "xmark.circle.fill")
-//                                    .foregroundColor(.red)
-//                            }
-//                            .offset(x: 82/2, y: -82/2)
-//                        }
-//                        .frame(width: 82, height: 82)
-//                    }
-//                    else {
-//                        SquarePhotosPicker(selectedImage: $selectedImage, imageIndex: $imageIndex, squareWidth: 82, squareHeight: 82)
-//                    }
                     ForEach(selectedImage.indices, id: \.self) { index in
                         if let image = selectedImage[index] {
                             ZStack {
@@ -241,7 +241,24 @@ struct PlaceInformationEditView: View {
                 .padding(.top, 5)
                 HStack(spacing: 40) {
                     Button(action:  {
-                        path.removeLast()
+                        MyPlaceManager.shared.registerPlace(query: myPlaceInformationViewModel) { result in
+                            switch result {
+                            case .success:
+                                myPlaceInformationViewModel.reset()
+                                selectedDayOffIndices.removeAll()
+                                selectedServiceIndices.removeAll()
+                                path.removeLast()
+                            case .failure(let error):
+                                myPlaceInformationViewModel.reset()
+                                selectedDayOffIndices.removeAll()
+                                selectedServiceIndices.removeAll()
+                                print("Error registering place: \(error.localizedDescription)")
+                                path.removeLast()
+                            }
+                        }
+//                        myPlaceInformationViewModel.reset()
+//                        print("RESET&&&&&&&&&&&&&&&&&&&: \(myPlaceInformationViewModel)")
+//                        path.removeLast()
                     }) {
                         Text("등록완료")
                             .font(
@@ -256,6 +273,7 @@ struct PlaceInformationEditView: View {
                             )
                     }
                     Button(action:  {
+                        
                         path.removeLast()
                         selectedDayOffIndices.removeAll()
                         selectedServiceIndices.removeAll()

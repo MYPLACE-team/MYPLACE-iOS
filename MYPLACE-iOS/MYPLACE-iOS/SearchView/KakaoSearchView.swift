@@ -31,7 +31,7 @@ struct KakaoSearchView: View {
                         .foregroundStyle(.gray)
                         .padding(.leading, 5)
                     Button(action: {
-                        kakaoSearchViewModel.searchPlaces(query: searchText)
+                        kakaoSearchViewModel.search(query: searchText)
                         path.append(.searchView)
                     }) {
                         Image(systemName: "magnifyingglass")
