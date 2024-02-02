@@ -17,6 +17,8 @@
 		A513E10A2B5A3FF500D50986 /* KakaoSDKNavi in Frameworks */ = {isa = PBXBuildFile; productRef = A513E1092B5A3FF500D50986 /* KakaoSDKNavi */; };
 		A55106832B5FCCBC004E8D1D /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = A55106822B5FCCBC004E8D1D /* GoogleSignIn */; };
 		A55106852B5FCCBC004E8D1D /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = A55106842B5FCCBC004E8D1D /* GoogleSignInSwift */; };
+		A55106872B6C0E1A004E8D1D /* PrivacyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A55106862B6C0E1A004E8D1D /* PrivacyView.swift */; };
+		A55106892B6C0E30004E8D1D /* ProfileEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A55106882B6C0E30004E8D1D /* ProfileEditView.swift */; };
 		A59EE2B52B470C57009915D5 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59EE2B42B470C57009915D5 /* LoginView.swift */; };
 		A59EE2BB2B47F80A009915D5 /* LoginPathModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59EE2BA2B47F80A009915D5 /* LoginPathModel.swift */; };
 		A59EE2BD2B47F91B009915D5 /* LoginModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59EE2BC2B47F91B009915D5 /* LoginModel.swift */; };
@@ -62,6 +64,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A55106862B6C0E1A004E8D1D /* PrivacyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyView.swift; sourceTree = "<group>"; };
+		A55106882B6C0E30004E8D1D /* ProfileEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEditView.swift; sourceTree = "<group>"; };
 		A59EE2B42B470C57009915D5 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		A59EE2BA2B47F80A009915D5 /* LoginPathModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPathModel.swift; sourceTree = "<group>"; };
 		A59EE2BC2B47F91B009915D5 /* LoginModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginModel.swift; sourceTree = "<group>"; };
@@ -162,6 +166,8 @@
 				AA2B644C2B3CCA03008CEDBB /* FavoritePlacesView.swift */,
 				AA2B644E2B3CCA21008CEDBB /* CommunityView.swift */,
 				AA2B64512B3D0289008CEDBB /* SettingView.swift */,
+				A55106862B6C0E1A004E8D1D /* PrivacyView.swift */,
+				A55106882B6C0E30004E8D1D /* ProfileEditView.swift */,
 				AA9E801B2B41641C00D51447 /* ToastView.swift */,
 				AAAAC9C72B597DB70026C8D9 /* PopupView.swift */,
 				AAE7CD242B3FCF6E00E02B71 /* SearchView */,
@@ -328,6 +334,7 @@
 				AA2B644F2B3CCA21008CEDBB /* CommunityView.swift in Sources */,
 				AAE7CD232B3FCF6400E02B71 /* PlaceInformationEditView.swift in Sources */,
 				AAAAC9C82B597DB70026C8D9 /* PopupView.swift in Sources */,
+				A55106872B6C0E1A004E8D1D /* PrivacyView.swift in Sources */,
 				AAB755E22B62970C007B00A1 /* PopupModel.swift in Sources */,
 				AA05EB012B3B918E005596C5 /* HomeView.swift in Sources */,
 				A59EE2B52B470C57009915D5 /* LoginView.swift in Sources */,
@@ -354,6 +361,7 @@
 				AA2B644B2B3CC83C008CEDBB /* PathModel.swift in Sources */,
 				AAAAC9B62B56AA590026C8D9 /* KakaoAPI.swift in Sources */,
 				AA2B64562B3D0E7E008CEDBB /* KakaoMapView.swift in Sources */,
+				A55106892B6C0E30004E8D1D /* ProfileEditView.swift in Sources */,
 				AA05EAF32B3B87A0005596C5 /* MYPLACE_iOSApp.swift in Sources */,
 				AA9E801E2B4711B300D51447 /* SearchItemView.swift in Sources */,
 				AAE7CD1D2B3E3A9300E02B71 /* ToolBarView.swift in Sources */,

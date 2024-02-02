@@ -6,43 +6,24 @@
 //
 
 import SwiftUI
+import PhotosUI
 
 struct NewUserView: View {
-    @State var nickName: String = ""
-    @State var alertColor: Color = Color(red: 0.62, green: 0.64, blue: 0.67)
-    @State var alertImage: String = ""
-    @State var alertText: String = ""
-    @State var isAvailable: Bool = false
-    @State var isNameView: Bool = true
-    @State var lineLength: CGFloat = 156
+    @State private var nickName: String = ""
+    @State private var alertColor: Color = Color(red: 0.62, green: 0.64, blue: 0.67)
+    @State private var alertImage: String = ""
+    @State private var alertText: String = ""
+    @State private var isAvailable: Bool = false
+    @State private var isNameView: Bool = true
+    @State private var lineLength: CGFloat = 156
+    @State private var profileItem: PhotosPickerItem?
+    @State private var profileImage: Image?
     
     @Binding var loginPath: [LoginPathModel]
     @StateObject var loginModel = LoginModel()
     
     var body: some View {
         VStack {
-            //            HStack {
-            //                Button(action: {
-            //                    if isNameView {
-            //                        if loginPath.count > 0 {
-            //                            loginPath.removeLast()
-            //                        }
-            //                    } else {
-            //                        isNameView = true
-            //                        withAnimation {
-            //                            lineLength = 156
-            //                        }
-            //                    }
-            //                })
-            //                {
-            //                    HStack {
-            //                        Image(systemName: "chevron.left")
-            //                            .bold()
-            //                    }
-            //                    .foregroundStyle(Color(red: 0.39, green: 0.37, blue: 0.6))
-            //                }
-            //                Spacer()
-            //            }
             ZStack {
                 HStack(spacing: 0) {
                     Rectangle()
@@ -278,22 +259,58 @@ struct NewUserView: View {
                 }
                 .frame(width: 312, alignment: .leading)
                 .padding(.bottom, 36)
-                Button(action: {
-                    
-                })
-                {
-                    RoundedRectangle(cornerRadius: 7)
-                        .foregroundStyle(Color(red: 0.91, green: 0.92, blue: 0.93))
-                        .frame(width:154, height:154)
-                        .overlay(
+//                Button(action: {
+//                    
+//                })
+//                {
+//                    RoundedRectangle(cornerRadius: 7)
+//                        .foregroundStyle(Color(red: 0.91, green: 0.92, blue: 0.93))
+//                        .frame(width:154, height:154)
+//                        .overlay(
+//                            RoundedRectangle(cornerRadius: 7)
+//                                .inset(by: 1)
+//                                .stroke(Color(red: 0.45, green: 0.47, blue: 0.5), style: StrokeStyle(lineWidth: 2, dash: [2, 2]))
+//                                .overlay(
+//                                    Image(systemName: "plus.circle")
+//                                        .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
+//                                )
+//                        )
+//                        .padding(.bottom, 26)
+//                }
+                if profileImage == nil {
+                    PhotosPicker(
+                        selection: $profileItem,
+                        matching: .images,
+                        photoLibrary: .shared()) {
                             RoundedRectangle(cornerRadius: 7)
-                                .inset(by: 1)
-                                .stroke(Color(red: 0.45, green: 0.47, blue: 0.5), style: StrokeStyle(lineWidth: 2, dash: [2, 2]))
+                                .foregroundStyle(Color(red: 0.91, green: 0.92, blue: 0.93))
+                                .frame(width:154, height:154)
                                 .overlay(
-                                    Image(systemName: "plus.circle")
-                                        .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
+                                    RoundedRectangle(cornerRadius: 7)
+                                        .inset(by: 1)
+                                        .stroke(Color(red: 0.45, green: 0.47, blue: 0.5), style: StrokeStyle(lineWidth: 2, dash: [2, 2]))
+                                        .overlay(
+                                            Image(systemName: "plus.circle")
+                                                .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
+                                        )
                                 )
-                        )
+                                .padding(.bottom, 26)
+                        }
+                        .onChange(of: profileItem) {
+                            Task {
+                                if let image = try? await profileItem?.loadTransferable(type: Image.self) {
+                                    profileImage = image
+                                    profileItem = nil
+                                }
+                            }
+                        }
+                }
+                else {
+                    profileImage?
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 154, height: 154)
+                        .cornerRadius(7)
                         .padding(.bottom, 26)
                 }
                 VStack(spacing: 5){

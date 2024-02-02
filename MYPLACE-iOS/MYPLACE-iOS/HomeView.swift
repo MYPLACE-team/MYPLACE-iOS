@@ -121,6 +121,10 @@ struct HomeView: View {
                             PlaceInformationEditView(path: $path, isHeartFilled: $isHeartFilled, selectedDayOffIndices: $selectedDayOffIndices, selectedServiceIndices: $selectedServiceIndices)
                         case .placeInformationView:
                             PlaceInformationView(path: $path, isHeartFilled: $isHeartFilled)
+                        case .privacyView:
+                            PrivacyView(path: $path)
+                        case .profileEditView:
+                            ProfileEditView(path: $path)
                         }
                     }
                     .padding(.top, 10)
