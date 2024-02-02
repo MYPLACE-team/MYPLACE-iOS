@@ -382,6 +382,7 @@ struct ArchiveView: View {
                                     .aspectRatio(contentMode: .fill)
                                     .frame(width: 130, height: 110)
                                     .clipShape(RoundedRectangle(cornerRadius: 10))
+                                    .shadow(color: .black.opacity(0.25), radius: 2, x: 0, y: 2)
                                     .overlay(
                                         Color(red: 0.85, green: 0.85, blue: 0.85).opacity(0.6)
                                             .overlay(
@@ -408,12 +409,12 @@ struct ArchiveView: View {
                                                     HStack(alignment: .bottom,spacing: 2){
                                                         Text("부산여행")
                                                             .font(
-                                                                Font.custom("Apple SD Gothic Neo", size: 20)
+                                                                Font.custom("Apple SD Gothic Neo", size: 15)
                                                                     .weight(.bold)
                                                             )
                                                             .foregroundStyle(Color(red: 0.15, green: 0.16, blue: 0.17))
                                                         Button(action: {
-                                                            folderName = "전주여행"
+                                                            folderName = "부산여행"
                                                             isCreate = false
                                                             createFolder.toggle()
                                                         })
@@ -712,12 +713,6 @@ struct createFolderView: View {
         }
     }
 }
-
-//struct editFolderView: View {
-//    var body: some View {
-//
-//    }
-//}
 
 #Preview {
     ArchiveView(path: .constant([]))

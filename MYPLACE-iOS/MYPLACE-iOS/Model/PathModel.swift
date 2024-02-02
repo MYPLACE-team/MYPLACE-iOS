@@ -17,4 +17,6 @@ enum PathModel {
     case communityView
     case placeInformationEditView
     case placeInformationView
+    case privacyView
+    case profileEditView
 }
