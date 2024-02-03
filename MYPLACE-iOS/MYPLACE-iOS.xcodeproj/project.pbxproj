@@ -38,7 +38,7 @@
 		AA2B64562B3D0E7E008CEDBB /* KakaoMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2B64552B3D0E7E008CEDBB /* KakaoMapView.swift */; };
 		AA9E801A2B415F7C00D51447 /* ToastViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9E80192B415F7C00D51447 /* ToastViewModel.swift */; };
 		AA9E801C2B41641D00D51447 /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9E801B2B41641C00D51447 /* ToastView.swift */; };
-		AA9E801E2B4711B300D51447 /* SearchItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9E801D2B4711B300D51447 /* SearchItemView.swift */; };
+		AA9E801E2B4711B300D51447 /* ViewComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9E801D2B4711B300D51447 /* ViewComponents.swift */; };
 		AA9E80202B479E6600D51447 /* PlaceInformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9E801F2B479E6600D51447 /* PlaceInformationView.swift */; };
 		AAAAC9B62B56AA590026C8D9 /* KakaoAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAAAC9B52B56AA590026C8D9 /* KakaoAPI.swift */; };
 		AAAAC9B92B56AA910026C8D9 /* CombineMoya in Frameworks */ = {isa = PBXBuildFile; productRef = AAAAC9B82B56AA910026C8D9 /* CombineMoya */; };
@@ -84,7 +84,7 @@
 		AA2B64552B3D0E7E008CEDBB /* KakaoMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoMapView.swift; sourceTree = "<group>"; };
 		AA9E80192B415F7C00D51447 /* ToastViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastViewModel.swift; sourceTree = "<group>"; };
 		AA9E801B2B41641C00D51447 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
-		AA9E801D2B4711B300D51447 /* SearchItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchItemView.swift; sourceTree = "<group>"; };
+		AA9E801D2B4711B300D51447 /* ViewComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewComponents.swift; sourceTree = "<group>"; };
 		AA9E801F2B479E6600D51447 /* PlaceInformationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceInformationView.swift; sourceTree = "<group>"; };
 		AAAAC9B52B56AA590026C8D9 /* KakaoAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoAPI.swift; sourceTree = "<group>"; };
 		AAAAC9C02B56BC180026C8D9 /* KakaoSearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoSearchViewModel.swift; sourceTree = "<group>"; };
@@ -152,8 +152,8 @@
 				AABAC2952B6C6E10001B1533 /* KakaoSearchManager.swift */,
 				AABAC2932B6C6AFD001B1533 /* MyPlaceManager.swift */,
 				AA2B64502B3CFEA9008CEDBB /* Info.plist */,
-				AA05EAF22B3B87A0005596C5 /* MYPLACE_iOSApp.swift */,
 				AA05EAF42B3B87A0005596C5 /* ContentView.swift */,
+				AA05EAF22B3B87A0005596C5 /* MYPLACE_iOSApp.swift */,
 				AA2B64552B3D0E7E008CEDBB /* KakaoMapView.swift */,
 				AA05EB002B3B918E005596C5 /* HomeView.swift */,
 				AAE7CD1C2B3E3A9300E02B71 /* ToolBarView.swift */,
@@ -164,6 +164,7 @@
 				AA2B64512B3D0289008CEDBB /* SettingView.swift */,
 				AA9E801B2B41641C00D51447 /* ToastView.swift */,
 				AAAAC9C72B597DB70026C8D9 /* PopupView.swift */,
+				AA9E801D2B4711B300D51447 /* ViewComponents.swift */,
 				AAE7CD242B3FCF6E00E02B71 /* SearchView */,
 				AAE7CD252B3FCF9C00E02B71 /* Model */,
 				AAAAC9C42B5920F60026C8D9 /* ViewModel */,
@@ -210,7 +211,6 @@
 			children = (
 				AAAAC9C52B5921C50026C8D9 /* KakaoSearchView.swift */,
 				AAE7CD1E2B3F9C0C00E02B71 /* SearchView.swift */,
-				AA9E801D2B4711B300D51447 /* SearchItemView.swift */,
 				AAE7CD222B3FCF6400E02B71 /* PlaceInformationEditView.swift */,
 				AA9E801F2B479E6600D51447 /* PlaceInformationView.swift */,
 			);
@@ -355,7 +355,7 @@
 				AAAAC9B62B56AA590026C8D9 /* KakaoAPI.swift in Sources */,
 				AA2B64562B3D0E7E008CEDBB /* KakaoMapView.swift in Sources */,
 				AA05EAF32B3B87A0005596C5 /* MYPLACE_iOSApp.swift in Sources */,
-				AA9E801E2B4711B300D51447 /* SearchItemView.swift in Sources */,
+				AA9E801E2B4711B300D51447 /* ViewComponents.swift in Sources */,
 				AAE7CD1D2B3E3A9300E02B71 /* ToolBarView.swift in Sources */,
 				AA2B64542B3D02A4008CEDBB /* NotificationView.swift in Sources */,
 			);
