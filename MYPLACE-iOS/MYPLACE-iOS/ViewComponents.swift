@@ -118,7 +118,7 @@ struct SearchItemView_UnRegistered: View {
                                 .resizable()
                                 .frame(width: 12, height: 15)
                             AutoScrollingText(text: addressName, fontName: "Apple SD Gothic Neo", fontSize: 15, fontWeight: .thin)
-                                .frame(width: 180, height: 18)
+                                .frame(width: 200, height: 18)
                                 .clipped()
                                 .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
                         }
@@ -177,7 +177,6 @@ struct FavoriteItemView: View {
 
 struct AutoScrollingText: View {
     @State private var scrollPosition: CGFloat = 0
-
     private let text: String
     private let fontName: String
     private let fontSize: CGFloat
@@ -194,31 +193,39 @@ struct AutoScrollingText: View {
         GeometryReader { geometry in
             Text(text)
                 .font(
-                        .custom(fontName, size: fontSize)
-                        .weight(self.fontWeight)
+                    .custom(fontName, size: fontSize)
+                    .weight(fontWeight)
                 )
                 .lineLimit(1)
                 .fixedSize(horizontal: true, vertical: true)
-                .offset(x: -self.scrollPosition, y: 0)
-                .animation(
-                    Animation.timingCurve(0.0, 0.0, 0.5, 1, duration: Double(self.text.count) * 0.3)
-                        .delay(1)
-                        .repeatForever(autoreverses: false),
-                    value: self.scrollPosition
-                )
-                .onAppear {
-                    let textWidth = self.calculateTextWidth(text: self.text, fontSize: self.fontSize)
-                    self.scrollPosition = textWidth > geometry.size.width ? textWidth - geometry.size.width : 0
+                .background(GeometryReader {
+                    Color.clear.preference(key: TextWidthPreferenceKey.self, value: $0.frame(in: .local).size.width)
+                })
+                .onPreferenceChange(TextWidthPreferenceKey.self) { textWidth in
+                    let visibleWidth = geometry.size.width
+                    if textWidth > visibleWidth {
+                        let animationDuration = Double(text.count) * 0.3
+                        withAnimation(
+                            Animation.timingCurve(0.0, 0.0, 0.5, 1, duration: animationDuration)
+                                .delay(1)
+                                .repeatForever(autoreverses: false)
+                        ) {
+                            self.scrollPosition = textWidth - visibleWidth
+                        }
+                    }
                 }
+                .offset(x: -self.scrollPosition, y: 0)
         }
     }
+}
 
-    private func calculateTextWidth(text: String, fontSize: CGFloat) -> CGFloat {
-        let attributes: [NSAttributedString.Key: Any] = [.font: UIFont.systemFont(ofSize: fontSize)]
-        let size = (text as NSString).size(withAttributes: attributes)
-        return ceil(size.width)
+struct TextWidthPreferenceKey: PreferenceKey {
+    static var defaultValue: CGFloat = 0
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+        value = nextValue()
     }
 }
+
 
 struct KakaoSearchView: View {
     @ObservedObject var kakaoSearchViewModel: KakaoSearchViewModel
