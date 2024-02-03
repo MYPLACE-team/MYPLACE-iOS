@@ -1,5 +1,5 @@
 //
-//  SearchItemView.swift
+//  ViewComponents.swift
 //  MYPLACE-iOS
 //
 //  Created by 김영준 on 1/5/24.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SearchItemView: View {
+struct ViewComponents: View {
     var body: some View {
         SearchItemView_Registered(isHeartFilled: .constant(false), path: .constant([]), place: dummyPlaces[1])
         SearchItemView_UnRegistered(path: .constant([]), placeName: "카카오프렌즈카카오프렌즈카카오프렌즈", addressName: "서울")
@@ -75,6 +75,26 @@ struct SearchItemView_UnRegistered: View {
     let placeName: String
     let addressName: String
     var isEditing: Bool = false
+    @State private var offset: CGFloat = 0
+    @State private var textWidth: CGFloat = 0
+    @State private var scrollPosition: CGFloat = 0
+    private func startScrolling(in textWidth: CGFloat, parentWidth: CGFloat) {
+        let distance = textWidth + parentWidth
+        withAnimation(Animation.linear(duration: Double(distance) / 50)) {
+            self.offset = -distance
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + Double(distance) / 50) {
+            withAnimation(.none) {
+                self.offset = 0
+                self.startScrolling(in: textWidth, parentWidth: parentWidth)
+            }
+        }
+    }
+    private func calculateTextWidth(text: String, fontSize: CGFloat) -> CGFloat {
+        let attributes: [NSAttributedString.Key: Any] = [.font: UIFont.systemFont(ofSize: fontSize)]
+        let size = (text as NSString).size(withAttributes: attributes)
+        return ceil(size.width)
+    }
     var body: some View {
         RoundedRectangle(cornerRadius: 15)
             .fill(Color(red: 0.96, green: 0.96, blue: 0.96))
@@ -91,22 +111,9 @@ struct SearchItemView_UnRegistered: View {
                     
                     VStack(alignment: .leading, spacing: 5) {
                         HStack {
-                            Group {
-                                GeometryReader { proxy in
-                                    RewindingTextTicker(
-                                        textKey: placeName,
-                                        viewWidth: proxy.size.width
-                                    )
-                                }
-                                .font(
-                                    .custom("Apple SD Gothic Neo", size: 18)
-                                    .weight(.semibold)
-                                )
-                                .frame(height: 22)
-                                .lineLimit(1)
-                            }
-                            .frame(width: 165)
-                            .clipped()
+                            AutoScrollingText(text: placeName, fontName: "Apple SD Gothic Neo", fontSize: 18, fontWeight: .semibold)
+                                .frame(width: 165, height: 22)
+                                .clipped()
                             Spacer()
                             if !isEditing {
                                 Text("등록하기")
@@ -195,115 +202,51 @@ struct FavoriteItemView: View {
     }
 }
 
-struct OffsetModifier: ViewModifier, Animatable {
-    private let maxOffset: CGFloat
-    private let rewindSpeedFactor: Int
-    private let endWaitFraction: CGFloat
-    private var progress: CGFloat
-    
-    // The progress value at which the end wait begins
-    private let endWaitThreshold: CGFloat
-    
-    // The progress value at which rewind begins
-    private let rewindThreshold: CGFloat
-    
-    init(
-        maxOffset: CGFloat,
-        rewindSpeedFactor: Int = 5,
-        endWaitFraction: CGFloat = 0,
-        progress: CGFloat
-    ) {
-        self.maxOffset = maxOffset
-        self.rewindSpeedFactor = rewindSpeedFactor
-        self.endWaitFraction = endWaitFraction
-        self.progress = progress
-        
-        // Compute the thresholds for waiting and for rewinding
-        let rewindFraction = (CGFloat(1) - endWaitFraction) / CGFloat(rewindSpeedFactor + 1)
-        self.rewindThreshold = CGFloat(1) - rewindFraction
-        self.endWaitThreshold = CGFloat(1) - rewindFraction - endWaitFraction
-    }
-    
-    /// Implementation of protocol property
-    var animatableData: CGFloat {
-        get { progress }
-        set { progress = newValue }
-    }
-    
-    var xOffset: CGFloat {
-        let fraction: CGFloat
-        if progress > rewindThreshold {
-            fraction = endWaitThreshold - ((progress - rewindThreshold) * CGFloat(rewindSpeedFactor))
-        } else {
-            fraction = min(progress, endWaitThreshold)
-        }
-        return endWaitThreshold > 0 ? (fraction / endWaitThreshold) * maxOffset : 0
-    }
-    
-    func body(content: Content) -> some View {
-        content.offset(x: xOffset)
-    }
-}
+struct AutoScrollingText: View {
+    @State private var scrollPosition: CGFloat = 0
 
-struct RewindingTextTicker: View {
-    let textKey: String
-    let viewWidth: CGFloat
-    let beginEndDelaySecs: TimeInterval
-    
-    init(
-        textKey: String,
-        viewWidth: CGFloat,
-        beginEndDelaySecs: TimeInterval = 1.0
-    ) {
-        self.textKey = textKey
-        self.viewWidth = viewWidth
-        self.beginEndDelaySecs = beginEndDelaySecs
+    private let text: String
+    private let fontName: String
+    private let fontSize: CGFloat
+    private let fontWeight: Font.Weight
+
+    init(text: String, fontName: String, fontSize: CGFloat, fontWeight: Font.Weight) {
+        self.text = text
+        self.fontName = fontName
+        self.fontSize = fontSize
+        self.fontWeight = fontWeight
     }
-    
-    let pixelsPerSec = 100
-    @State private var progress = CGFloat.zero
-    
-    private func duration(width: CGFloat) -> TimeInterval {
-        (TimeInterval(max(width, 0)) / TimeInterval(pixelsPerSec)) + beginEndDelaySecs
-    }
-    
-    private func endWaitFraction(textWidth: CGFloat) -> CGFloat {
-        let totalDuration = duration(width: textWidth - viewWidth)
-        return totalDuration > 0 ? beginEndDelaySecs / totalDuration : 0
-    }
-    
+
     var body: some View {
-        // Display the full text on one line.
-        // This establishes the width that is needed
-        Text(LocalizedStringKey(textKey))
-            .lineLimit(1)
-            .fixedSize(horizontal: true, vertical: true)
-        // Perform the animation in an overlay
-            .overlay(
-                GeometryReader { proxy in
-                    Text(LocalizedStringKey(textKey))
-                        .modifier(
-                            OffsetModifier(
-                                maxOffset: viewWidth - proxy.size.width,
-                                endWaitFraction: endWaitFraction(textWidth: proxy.size.width),
-                                progress: progress
-                            )
-                        )
-                        .animation(
-                            .linear(duration: duration(width: proxy.size.width - viewWidth))
-                            .delay(beginEndDelaySecs)
-                            .repeatForever(autoreverses: false),
-                            value: progress
-                        )
-                    // Mask out the base view
-                    //MARK: - 글씨 뒷 배경 색
-                        .background(Color(red: 0.96, green: 0.96, blue: 0.96))
+        GeometryReader { geometry in
+            Text(text)
+                .font(
+                        .custom(fontName, size: fontSize)
+                        .weight(self.fontWeight)
+                )
+                .lineLimit(1)
+                .fixedSize(horizontal: true, vertical: true)
+                .offset(x: -self.scrollPosition, y: 0)
+                .animation(
+                    Animation.timingCurve(0.0, 0.0, 0.5, 1, duration: Double(self.text.count) * 0.3)
+                        .delay(1)
+                        .repeatForever(autoreverses: false),
+                    value: self.scrollPosition
+                )
+                .onAppear {
+                    let textWidth = self.calculateTextWidth(text: self.text, fontSize: self.fontSize)
+                    self.scrollPosition = textWidth > geometry.size.width ? textWidth - geometry.size.width : 0
                 }
-            )
-            .onAppear { progress = 1.0 }
+        }
+    }
+
+    private func calculateTextWidth(text: String, fontSize: CGFloat) -> CGFloat {
+        let attributes: [NSAttributedString.Key: Any] = [.font: UIFont.systemFont(ofSize: fontSize)]
+        let size = (text as NSString).size(withAttributes: attributes)
+        return ceil(size.width)
     }
 }
 
 #Preview {
-    SearchItemView()
+    ViewComponents()
 }

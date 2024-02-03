@@ -52,8 +52,7 @@ struct PlaceInformationEditView: View {
                 }
                 
                 VStack(spacing: 10) {
-                    //MARK: - 15자 제한
-                    SectionView(imageName: "Fork", title: "추천 메뉴", placeholder: "추천 메뉴를 1가지 입력해주세요.", text: $myPlaceInformationViewModel.recommendedMenu)
+                    SectionView(text: $myPlaceInformationViewModel.recommendedMenu, imageName: "Fork", title: "추천 메뉴", placeholder: "추천 메뉴를 1가지 입력해주세요.", characterLimit: 15)
                     HStack(spacing: 0) {
                         Image("Clock")
                             .resizable()
@@ -180,14 +179,14 @@ struct PlaceInformationEditView: View {
                             .padding(.leading, 37)
                         }
                     }
-                    SectionView(imageName: "CheckMark", title: "인스타그램", placeholder: "장소의 인스타그램 계정을 입력해주세요.", text: $myPlaceInformationViewModel.url)
+                    SectionView(text: $myPlaceInformationViewModel.url, imageName: "CheckMark", title: "인스타그램", placeholder: "장소의 인스타그램 계정을 입력해주세요.", characterLimit: 30)
                     HStack(spacing: 0) {
                         Text("#태그")
                             .font(
                                 .custom("Apple SD Gothic Neo", size: 16)
                                 .weight(.bold)
                             )
-                            .padding(.top, 15)
+                            .padding(.top, 10)
                             .padding(.leading, 37)
                         Spacer()
                     }
@@ -306,10 +305,12 @@ struct PlaceInformationEditView: View {
 }
 
 struct SectionView: View {
+    @Binding var text: String
+    
     let imageName: String
     let title: String
     let placeholder: String
-    @Binding var text: String
+    let characterLimit: Int
 
     var body: some View {
         HStack(spacing: 0) {
@@ -327,13 +328,15 @@ struct SectionView: View {
                 .padding(.leading, 4)
             Spacer()
         }
-        CustomTextField(placeholder: placeholder, text: $text)
+        CustomTextField(text: $text, placeholder: placeholder, characterLimit: characterLimit)
     }
 }
 
 struct CustomTextField: View {
-    let placeholder: String
     @Binding var text: String
+    
+    let placeholder: String
+    let characterLimit: Int
     
     var body: some View {
         Rectangle()
@@ -342,6 +345,11 @@ struct CustomTextField: View {
             .frame(width: 320, height: 30)
             .overlay(
                 TextField(placeholder, text: $text)
+                    .onChange(of: text) {
+                        if text.count > characterLimit {
+                            text = String(text.prefix(characterLimit))
+                        }
+                    }
                     .font(
                         .custom("Apple SD Gothic Neo", size: 15)
                         .weight(.medium)
