@@ -28,6 +28,7 @@ struct MYPLACE_iOSApp: App {
 //                    GIDSignIn.sharedInstance.handle(url)
 //                }
             HomeView()
+                .preferredColorScheme(.light)
         }
     }
 }

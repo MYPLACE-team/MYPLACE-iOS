@@ -90,9 +90,7 @@ struct PlaceInformationEditView: View {
                             }
                     }
                     else {
-                        Button (action: {
-                            isDayOffPopupPresented.toggle()
-                        }) {
+                        ScrollView(.horizontal, showsIndicators: false) {
                             HStack(alignment: .center, spacing: 8) {
                                 ForEach(selectedDayOffIndices, id: \.self) { holiday in
                                     RoundedRectangle(cornerRadius: 20)
@@ -109,11 +107,16 @@ struct PlaceInformationEditView: View {
                                                 .stroke(Color(red: 0.89, green: 0.39, blue: 0.39), lineWidth: 1)
                                         )
                                 }
+                                .onTapGesture {
+                                    isDayOffPopupPresented.toggle()
+                                }
                                 Spacer()
                             }
                             .frame(height: 30)
-                            .padding(.leading, 37)
+                            .padding(.leading, 5)
+                            
                         }
+                        .frame(width: 320)
                     }
 
                     HStack(spacing: 0) {
@@ -475,6 +478,6 @@ struct SquarePhotosPicker: View {
 
 #Preview {
     PlaceInformationEditView(
-        path: .constant([]), isHeartFilled: .constant(false), selectedDayOffIndices: .constant([]), selectedServiceIndices: .constant(([]))
+        path: .constant([]), isHeartFilled: .constant(false), selectedDayOffIndices: .constant([Holiday.monday, Holiday.tuesday, Holiday.wednesday, Holiday.thursday, Holiday.friday, Holiday.saturday]), selectedServiceIndices: .constant(([]))
     )
 }

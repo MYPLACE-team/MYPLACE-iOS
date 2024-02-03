@@ -13,15 +13,7 @@ struct PlaceInformationView: View {
     @State private var userInput: String = ""
     //MARK: - 토스트 메시지 뷰 두개에 띄워지는거 해결해야함
     @StateObject private var toastViewModel = ToastViewModel()
-    func openInstagram(username: String) {
-        let instagramUrl = URL(string: "instagram://user?username=\(username)")!
-        if UIApplication.shared.canOpenURL(instagramUrl) {
-            UIApplication.shared.open(instagramUrl, options: [:], completionHandler: nil)
-        } else {
-            let webUrl = URL(string: "https://www.instagram.com/\(username)/")!
-            UIApplication.shared.open(webUrl, options: [:], completionHandler: nil)
-        }
-    }
+    @StateObject var myPlaceInformationViewModel = MyPlaceInformationViewModel.shared
     
 //    @Binding var selectedDayOffIndices: [Holiday]
 //    @Binding var selectedServiceIndices: [ProvidedService]
@@ -192,7 +184,7 @@ struct PlaceInformationView: View {
                             .foregroundStyle(.red)
                         Button(action: {
                             //MARK: - 백에서 준 값으로 업데이트 필요
-                            openInstagram(username: "user")
+                            myPlaceInformationViewModel.openInstagram(username: "user")
                         }, label: {
                             Image(systemName: "globe")
                                 .padding(.top, 15)
@@ -279,20 +271,6 @@ struct PlaceInformationView: View {
         .toolbar(.hidden)
         .toast(message: toastViewModel.toastMessage, isShowing: $toastViewModel.showToast, duration: Toast.time)
     }
-}
-
-struct BackgroundBlurView: UIViewRepresentable{
-    func makeUIView(context: Context) -> some UIView {
-        let view = UIVisualEffectView(effect: UIBlurEffect(style: .systemUltraThinMaterialDark))
-        
-        DispatchQueue.main.async{
-            view.superview?.superview?.backgroundColor = .clear
-        }
-        
-        return view
-    }
-    
-    func updateUIView(_ uiView: UIViewType, context: Context) { }
 }
 
 #Preview {

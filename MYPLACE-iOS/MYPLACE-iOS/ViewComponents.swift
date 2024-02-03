@@ -12,6 +12,7 @@ struct ViewComponents: View {
         SearchItemView_Registered(isHeartFilled: .constant(false), path: .constant([]), place: dummyPlaces[1])
         SearchItemView_UnRegistered(path: .constant([]), placeName: "카카오프렌즈카카오프렌즈카카오프렌즈", addressName: "서울")
         FavoriteItemView(path: .constant([]), isVisited: .constant(false), place: dummyPlaces[1])
+        KakaoSearchView(kakaoSearchViewModel: KakaoSearchViewModel(), path: .constant([]), searchText: .constant(""))
     }
 }
 
@@ -34,11 +35,9 @@ struct SearchItemView_Registered: View {
                     
                     VStack(alignment: .leading, spacing: 5) {
                         HStack {
-                            Text(place.name)
-                                .font(
-                                    .custom("Apple SD Gothic Neo", size: 18)
-                                    .weight(.semibold)
-                                )
+                            AutoScrollingText(text: place.name, fontName: "Apple SD Gothic Neo", fontSize: 18, fontWeight: .semibold)
+                                .frame(width: 165, height: 22)
+                                .clipped()
                                 .foregroundStyle(.black)
                             Spacer()
                             Image(systemName: isHeartFilled ? "heart.fill" : "heart")
@@ -55,11 +54,9 @@ struct SearchItemView_Registered: View {
                             Image("Map")
                                 .resizable()
                                 .frame(width: 12, height: 15)
-                            Text(place.address)
-                                .font(
-                                    .custom("Apple SD Gothic Neo", size: 15)
-                                    .weight(.thin)
-                                )
+                            AutoScrollingText(text: place.address, fontName: "Apple SD Gothic Neo", fontSize: 15, fontWeight: .thin)
+                                .frame(width: 165, height: 18)
+                                .clipped()
                                 .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
                         }
                     }
@@ -75,26 +72,7 @@ struct SearchItemView_UnRegistered: View {
     let placeName: String
     let addressName: String
     var isEditing: Bool = false
-    @State private var offset: CGFloat = 0
-    @State private var textWidth: CGFloat = 0
-    @State private var scrollPosition: CGFloat = 0
-    private func startScrolling(in textWidth: CGFloat, parentWidth: CGFloat) {
-        let distance = textWidth + parentWidth
-        withAnimation(Animation.linear(duration: Double(distance) / 50)) {
-            self.offset = -distance
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + Double(distance) / 50) {
-            withAnimation(.none) {
-                self.offset = 0
-                self.startScrolling(in: textWidth, parentWidth: parentWidth)
-            }
-        }
-    }
-    private func calculateTextWidth(text: String, fontSize: CGFloat) -> CGFloat {
-        let attributes: [NSAttributedString.Key: Any] = [.font: UIFont.systemFont(ofSize: fontSize)]
-        let size = (text as NSString).size(withAttributes: attributes)
-        return ceil(size.width)
-    }
+    
     var body: some View {
         RoundedRectangle(cornerRadius: 15)
             .fill(Color(red: 0.96, green: 0.96, blue: 0.96))
@@ -114,6 +92,7 @@ struct SearchItemView_UnRegistered: View {
                             AutoScrollingText(text: placeName, fontName: "Apple SD Gothic Neo", fontSize: 18, fontWeight: .semibold)
                                 .frame(width: 165, height: 22)
                                 .clipped()
+                                .foregroundStyle(.black)
                             Spacer()
                             if !isEditing {
                                 Text("등록하기")
@@ -138,11 +117,9 @@ struct SearchItemView_UnRegistered: View {
                             Image("Map")
                                 .resizable()
                                 .frame(width: 12, height: 15)
-                            Text(addressName)
-                                .font(
-                                    .custom("Apple SD Gothic Neo", size: 15)
-                                    .weight(.thin)
-                                )
+                            AutoScrollingText(text: addressName, fontName: "Apple SD Gothic Neo", fontSize: 15, fontWeight: .thin)
+                                .frame(width: 180, height: 18)
+                                .clipped()
                                 .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
                         }
                     }
@@ -175,11 +152,9 @@ struct FavoriteItemView: View {
                             Image("CafeIcon")
                                 .resizable()
                                 .frame(width: 20, height: 20)
-                            Text(place.name)
-                                .font(
-                                    .custom("Apple SD Gothic Neo", size: 18)
-                                    .weight(.semibold)
-                                )
+                            AutoScrollingText(text: place.name, fontName: "Apple SD Gothic Neo", fontSize: 18, fontWeight: .semibold)
+                                .frame(width: 165, height: 22)
+                                .clipped()
                                 .foregroundStyle(.black)
                             Spacer()
                         }
@@ -187,11 +162,9 @@ struct FavoriteItemView: View {
                             Image("Map")
                                 .resizable()
                                 .frame(width: 12, height: 15)
-                            Text(place.address)
-                                .font(
-                                    .custom("Apple SD Gothic Neo", size: 15)
-                                    .weight(.thin)
-                                )
+                            AutoScrollingText(text: place.address, fontName: "Apple SD Gothic Neo", fontSize: 15, fontWeight: .thin)
+                                .frame(width: 165, height: 18)
+                                .clipped()
                                 .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
                         }
                     }
@@ -245,6 +218,56 @@ struct AutoScrollingText: View {
         let size = (text as NSString).size(withAttributes: attributes)
         return ceil(size.width)
     }
+}
+
+struct KakaoSearchView: View {
+    @ObservedObject var kakaoSearchViewModel: KakaoSearchViewModel
+    @Binding var path: [PathModel]
+    @Binding var searchText: String
+    
+    var body: some View {
+        RoundedRectangle(cornerRadius: 10)
+            .foregroundStyle(Color(red: 0.97, green: 0.97, blue: 0.98))
+            .frame(height: 40)
+            .shadow(color: .black.opacity(0.25), radius: 2, x: 0, y: 4)
+            .overlay(
+                HStack {
+                    Image("Map")
+                        .resizable()
+                        .frame(width: 16, height: 19)
+                        .padding(.leading, 15)
+                    TextField("장소명 검색하기", text: $searchText)
+                        .font(
+                            .custom("Apple SD Gothic Neo", size: 15)
+                            .weight(.semibold)
+                        )
+                        .foregroundStyle(.gray)
+                        .padding(.leading, 5)
+                    Button(action: {
+                        kakaoSearchViewModel.search(query: searchText)
+                        path.append(.searchView)
+                    }) {
+                        Image(systemName: "magnifyingglass")
+                            .foregroundStyle(.gray)
+                    }
+                    Spacer()
+                }
+            )
+    }
+}
+
+struct BackgroundBlurView: UIViewRepresentable{
+    func makeUIView(context: Context) -> some UIView {
+        let view = UIVisualEffectView(effect: UIBlurEffect(style: .systemUltraThinMaterialDark))
+        
+        DispatchQueue.main.async{
+            view.superview?.superview?.backgroundColor = .clear
+        }
+        
+        return view
+    }
+    
+    func updateUIView(_ uiView: UIViewType, context: Context) { }
 }
 
 #Preview {
