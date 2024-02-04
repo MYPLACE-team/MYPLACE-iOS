@@ -12,6 +12,79 @@ struct ViewComponents: View {
         SearchItemView_Registered(isHeartFilled: .constant(false), path: .constant([]), place: dummyPlaces[1])
         SearchItemView_UnRegistered(path: .constant([]), placeName: "카카오프렌즈카카오프렌즈카카오프렌즈", addressName: "서울")
         FavoriteItemView(path: .constant([]), isVisited: .constant(false), place: dummyPlaces[1])
+        KakaoSearchView(kakaoSearchViewModel: KakaoSearchViewModel(), path: .constant([]), searchText: .constant(""))
+        BlueChip(text: "가나다라마바사", isSelected: false)
+        RedChip(text: "가나다라마바사")
+    }
+}
+
+
+struct BlueChip: View {
+    private let text: String
+    private let isSelected: Bool
+    
+    init(text: String, isSelected: Bool) {
+        self.text = text
+        self.isSelected = isSelected
+    }
+    
+    var body: some View {
+        Text(text)
+            .font(
+                .custom("Apple SD Gothic Neo", size: 12)
+            )
+            .foregroundStyle(isSelected ? Color.white : Color(red: 0.4, green: 0.35, blue: 0.96))
+            .lineLimit(1)
+            .padding(.horizontal, 10)
+            .padding(.vertical, 5)
+            .background(
+                RoundedRectangle(cornerRadius: 20)
+                    .foregroundStyle(isSelected ? Color.accentColor : Color(red: 0.97, green: 0.95, blue: 1))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 20)
+                            .stroke(Color(red: 0.4, green: 0.35, blue: 0.96), lineWidth: 1)
+                    )
+            )
+        
+        
+    }
+}
+
+struct RedChip: View {
+    private let text: String
+    
+    init(text: String) {
+        self.text = text
+    }
+    
+    var body: some View {
+        Text(text)
+            .font(
+                .custom("Apple SD Gothic Neo", size: 12)
+            )
+            .foregroundStyle(Color(red: 0.89, green: 0.39, blue: 0.39))
+            .lineLimit(1)
+            .padding(.horizontal, 10)
+            .padding(.vertical, 5)
+            .background(
+                RoundedRectangle(cornerRadius: 20)
+                    .foregroundStyle(Color(red: 1, green: 0.95, blue: 0.95))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 20)
+                            .stroke(Color(red: 0.89, green: 0.39, blue: 0.39), lineWidth: 1)
+                    )
+            )
+    }
+}
+
+struct Xmark: View {
+    var body: some View {
+        Image(systemName: "xmark")
+            .resizable()
+            .frame(width: 17, height: 17)
+            .foregroundStyle(.white)
+            .padding(.trailing, 20)
+            .padding(.top, 20)
     }
 }
 
@@ -34,11 +107,9 @@ struct SearchItemView_Registered: View {
                     
                     VStack(alignment: .leading, spacing: 5) {
                         HStack {
-                            Text(place.name)
-                                .font(
-                                    .custom("Apple SD Gothic Neo", size: 18)
-                                    .weight(.semibold)
-                                )
+                            AutoScrollingText(text: place.name, fontName: "Apple SD Gothic Neo", fontSize: 18, fontWeight: .semibold)
+                                .frame(width: 165, height: 22)
+                                .clipped()
                                 .foregroundStyle(.black)
                             Spacer()
                             Image(systemName: isHeartFilled ? "heart.fill" : "heart")
@@ -55,11 +126,9 @@ struct SearchItemView_Registered: View {
                             Image("Map")
                                 .resizable()
                                 .frame(width: 12, height: 15)
-                            Text(place.address)
-                                .font(
-                                    .custom("Apple SD Gothic Neo", size: 15)
-                                    .weight(.thin)
-                                )
+                            AutoScrollingText(text: place.address, fontName: "Apple SD Gothic Neo", fontSize: 15, fontWeight: .thin)
+                                .frame(width: 165, height: 18)
+                                .clipped()
                                 .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
                         }
                     }
@@ -75,26 +144,7 @@ struct SearchItemView_UnRegistered: View {
     let placeName: String
     let addressName: String
     var isEditing: Bool = false
-    @State private var offset: CGFloat = 0
-    @State private var textWidth: CGFloat = 0
-    @State private var scrollPosition: CGFloat = 0
-    private func startScrolling(in textWidth: CGFloat, parentWidth: CGFloat) {
-        let distance = textWidth + parentWidth
-        withAnimation(Animation.linear(duration: Double(distance) / 50)) {
-            self.offset = -distance
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + Double(distance) / 50) {
-            withAnimation(.none) {
-                self.offset = 0
-                self.startScrolling(in: textWidth, parentWidth: parentWidth)
-            }
-        }
-    }
-    private func calculateTextWidth(text: String, fontSize: CGFloat) -> CGFloat {
-        let attributes: [NSAttributedString.Key: Any] = [.font: UIFont.systemFont(ofSize: fontSize)]
-        let size = (text as NSString).size(withAttributes: attributes)
-        return ceil(size.width)
-    }
+    
     var body: some View {
         RoundedRectangle(cornerRadius: 15)
             .fill(Color(red: 0.96, green: 0.96, blue: 0.96))
@@ -114,6 +164,7 @@ struct SearchItemView_UnRegistered: View {
                             AutoScrollingText(text: placeName, fontName: "Apple SD Gothic Neo", fontSize: 18, fontWeight: .semibold)
                                 .frame(width: 165, height: 22)
                                 .clipped()
+                                .foregroundStyle(.black)
                             Spacer()
                             if !isEditing {
                                 Text("등록하기")
@@ -138,11 +189,9 @@ struct SearchItemView_UnRegistered: View {
                             Image("Map")
                                 .resizable()
                                 .frame(width: 12, height: 15)
-                            Text(addressName)
-                                .font(
-                                    .custom("Apple SD Gothic Neo", size: 15)
-                                    .weight(.thin)
-                                )
+                            AutoScrollingText(text: addressName, fontName: "Apple SD Gothic Neo", fontSize: 15, fontWeight: .thin)
+                                .frame(width: 200, height: 18)
+                                .clipped()
                                 .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
                         }
                     }
@@ -175,11 +224,9 @@ struct FavoriteItemView: View {
                             Image("CafeIcon")
                                 .resizable()
                                 .frame(width: 20, height: 20)
-                            Text(place.name)
-                                .font(
-                                    .custom("Apple SD Gothic Neo", size: 18)
-                                    .weight(.semibold)
-                                )
+                            AutoScrollingText(text: place.name, fontName: "Apple SD Gothic Neo", fontSize: 18, fontWeight: .semibold)
+                                .frame(width: 165, height: 22)
+                                .clipped()
                                 .foregroundStyle(.black)
                             Spacer()
                         }
@@ -187,11 +234,9 @@ struct FavoriteItemView: View {
                             Image("Map")
                                 .resizable()
                                 .frame(width: 12, height: 15)
-                            Text(place.address)
-                                .font(
-                                    .custom("Apple SD Gothic Neo", size: 15)
-                                    .weight(.thin)
-                                )
+                            AutoScrollingText(text: place.address, fontName: "Apple SD Gothic Neo", fontSize: 15, fontWeight: .thin)
+                                .frame(width: 165, height: 18)
+                                .clipped()
                                 .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
                         }
                     }
@@ -204,7 +249,6 @@ struct FavoriteItemView: View {
 
 struct AutoScrollingText: View {
     @State private var scrollPosition: CGFloat = 0
-
     private let text: String
     private let fontName: String
     private let fontSize: CGFloat
@@ -221,30 +265,87 @@ struct AutoScrollingText: View {
         GeometryReader { geometry in
             Text(text)
                 .font(
-                        .custom(fontName, size: fontSize)
-                        .weight(self.fontWeight)
+                    .custom(fontName, size: fontSize)
+                    .weight(fontWeight)
                 )
                 .lineLimit(1)
                 .fixedSize(horizontal: true, vertical: true)
-                .offset(x: -self.scrollPosition, y: 0)
-                .animation(
-                    Animation.timingCurve(0.0, 0.0, 0.5, 1, duration: Double(self.text.count) * 0.3)
-                        .delay(1)
-                        .repeatForever(autoreverses: false),
-                    value: self.scrollPosition
-                )
-                .onAppear {
-                    let textWidth = self.calculateTextWidth(text: self.text, fontSize: self.fontSize)
-                    self.scrollPosition = textWidth > geometry.size.width ? textWidth - geometry.size.width : 0
+                .background(GeometryReader {
+                    Color.clear.preference(key: TextWidthPreferenceKey.self, value: $0.frame(in: .local).size.width)
+                })
+                .onPreferenceChange(TextWidthPreferenceKey.self) { textWidth in
+                    let visibleWidth = geometry.size.width
+                    if textWidth > visibleWidth {
+                        let animationDuration = Double(text.count) * 0.3
+                        withAnimation(
+                            Animation.timingCurve(0.0, 0.0, 0.5, 1, duration: animationDuration)
+                                .delay(1)
+                                .repeatForever(autoreverses: false)
+                        ) {
+                            self.scrollPosition = textWidth - visibleWidth
+                        }
+                    }
                 }
+                .offset(x: -self.scrollPosition, y: 0)
         }
     }
+}
 
-    private func calculateTextWidth(text: String, fontSize: CGFloat) -> CGFloat {
-        let attributes: [NSAttributedString.Key: Any] = [.font: UIFont.systemFont(ofSize: fontSize)]
-        let size = (text as NSString).size(withAttributes: attributes)
-        return ceil(size.width)
+struct TextWidthPreferenceKey: PreferenceKey {
+    static var defaultValue: CGFloat = 0
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+        value = nextValue()
     }
+}
+
+struct KakaoSearchView: View {
+    @ObservedObject var kakaoSearchViewModel: KakaoSearchViewModel
+    @Binding var path: [PathModel]
+    @Binding var searchText: String
+    
+    var body: some View {
+        RoundedRectangle(cornerRadius: 10)
+            .foregroundStyle(Color(red: 0.97, green: 0.97, blue: 0.98))
+            .frame(height: 40)
+            .shadow(color: .black.opacity(0.25), radius: 2, x: 0, y: 4)
+            .overlay(
+                HStack {
+                    Image("Map")
+                        .resizable()
+                        .frame(width: 16, height: 19)
+                        .padding(.leading, 15)
+                    TextField("장소명 검색하기", text: $searchText)
+                        .font(
+                            .custom("Apple SD Gothic Neo", size: 15)
+                            .weight(.semibold)
+                        )
+                        .foregroundStyle(.gray)
+                        .padding(.leading, 5)
+                    Button(action: {
+                        kakaoSearchViewModel.search(query: searchText)
+                        path.append(.searchView)
+                    }) {
+                        Image(systemName: "magnifyingglass")
+                            .foregroundStyle(.gray)
+                    }
+                    Spacer()
+                }
+            )
+    }
+}
+
+struct BackgroundBlurView: UIViewRepresentable{
+    func makeUIView(context: Context) -> some UIView {
+        let view = UIVisualEffectView(effect: UIBlurEffect(style: .systemUltraThinMaterialDark))
+        
+        DispatchQueue.main.async{
+            view.superview?.superview?.backgroundColor = .clear
+        }
+        
+        return view
+    }
+    
+    func updateUIView(_ uiView: UIViewType, context: Context) { }
 }
 
 #Preview {

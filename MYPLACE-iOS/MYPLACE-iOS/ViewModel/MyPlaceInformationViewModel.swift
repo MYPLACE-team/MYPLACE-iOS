@@ -5,7 +5,7 @@
 //  Created by 김영준 on 2/1/24.
 //
 
-import Foundation
+import SwiftUI
 import Moya
 
 class MyPlaceInformationViewModel: ObservableObject, Codable {
@@ -95,6 +95,16 @@ class MyPlaceInformationViewModel: ObservableObject, Codable {
         self.url = ""
         self.tags = ["", "", ""]
         self.images = []
+    }
+    
+    func openInstagram(username: String) {
+        let instagramUrl = URL(string: "instagram://user?username=\(username)")!
+        if UIApplication.shared.canOpenURL(instagramUrl) {
+            UIApplication.shared.open(instagramUrl, options: [:], completionHandler: nil)
+        } else {
+            let webUrl = URL(string: "https://www.instagram.com/\(username)/")!
+            UIApplication.shared.open(webUrl, options: [:], completionHandler: nil)
+        }
     }
 }
 

@@ -51,10 +51,6 @@ struct HomeView: View {
                     Spacer()
                 }
             }
-            .background(
-                Rectangle()
-                    .fill(.white)
-            )
             ZStack {
                 //MARK: - KakaoMapView
                 KakaoMapView(draw: $draw).onAppear(perform: {

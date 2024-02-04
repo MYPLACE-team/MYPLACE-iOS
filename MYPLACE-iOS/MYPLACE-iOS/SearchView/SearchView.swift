@@ -130,6 +130,6 @@ struct SearchView: View {
 
 
 #Preview {
-    SearchView(kakaoSearchViewModel: KakaoSearchViewModel(), searchText: .constant("StarBucks"), path: .constant([]), isHeartFilled: .constant(false))
+    SearchView(kakaoSearchViewModel: KakaoSearchViewModel(), searchText: .constant("강원"), path: .constant([]), isHeartFilled: .constant(false))
 }
 

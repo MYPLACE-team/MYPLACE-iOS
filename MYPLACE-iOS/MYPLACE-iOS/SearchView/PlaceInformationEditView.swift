@@ -45,7 +45,7 @@ struct PlaceInformationEditView: View {
                 }
                 .padding(.top, 10)
                 if let selectedPlace = popupViewModel.selectedPlace {
-                    SearchItemView_UnRegistered(path: $path, placeName: selectedPlace.placeName, addressName: selectedPlace.address, isEditing: true)
+                    SearchItemView_UnRegistered(path: $path, placeName: (PlaceType(rawValue: myPlaceInformationViewModel.category)?.emojiForCategory() ?? "") + selectedPlace.placeName, addressName: selectedPlace.address, isEditing: true)
                 } else {
                     SearchItemView_Registered(isHeartFilled: $isHeartFilled, path: $path, place: dummyPlaces[1])
                         .padding(.top, 10)
@@ -90,30 +90,20 @@ struct PlaceInformationEditView: View {
                             }
                     }
                     else {
-                        Button (action: {
-                            isDayOffPopupPresented.toggle()
-                        }) {
+                        ScrollView(.horizontal, showsIndicators: false) {
                             HStack(alignment: .center, spacing: 8) {
                                 ForEach(selectedDayOffIndices, id: \.self) { holiday in
-                                    RoundedRectangle(cornerRadius: 20)
-                                        .foregroundStyle(Color(red: 1, green: 0.95, blue: 0.95))
-                                        .frame(width: 58, height: 24)
-                                        .overlay(
-                                            Text(holiday.rawValue)
-                                                .font(Font.custom("Apple SD Gothic Neo", size: 12))
-                                                .foregroundStyle(Color(red: 0.89, green: 0.39, blue: 0.39))
-                                                .padding(.top, 2)
-                                        )
-                                        .overlay(
-                                            RoundedRectangle(cornerRadius: 20)
-                                                .stroke(Color(red: 0.89, green: 0.39, blue: 0.39), lineWidth: 1)
-                                        )
+                                    RedChip(text: holiday.rawValue)
+                                }
+                                .onTapGesture {
+                                    isDayOffPopupPresented.toggle()
                                 }
                                 Spacer()
                             }
                             .frame(height: 30)
-                            .padding(.leading, 37)
+                            .padding(.leading, 5)
                         }
+                        .frame(width: 320)
                     }
 
                     HStack(spacing: 0) {
@@ -158,20 +148,7 @@ struct PlaceInformationEditView: View {
                         }) {
                             HStack(alignment: .center, spacing: 8) {
                                 ForEach(selectedServiceIndices, id: \.self) { service in
-                                    Text(service.rawValue)
-                                        .font(Font.custom("Apple SD Gothic Neo", size: 12))
-                                        .foregroundStyle(Color(red: 0.4, green: 0.35, blue: 0.96))
-                                        .lineLimit(1)
-                                        .padding(.horizontal, 10)
-                                        .padding(.vertical, 5)
-                                        .background(
-                                            RoundedRectangle(cornerRadius: 20)
-                                                .foregroundColor(Color(red: 0.97, green: 0.95, blue: 1))
-                                                .overlay(
-                                                    RoundedRectangle(cornerRadius: 20)
-                                                        .stroke(Color(red: 0.4, green: 0.35, blue: 0.96), lineWidth: 1)
-                                                )
-                                        )
+                                    BlueChip(text: service.rawValue, isSelected: false)
                                 }
                                 Spacer()
                             }
@@ -238,7 +215,7 @@ struct PlaceInformationEditView: View {
                 }
                 .padding(.leading, 38)
                 .padding(.top, 5)
-                HStack(spacing: 40) {
+                HStack(spacing: 80) {
                     Button(action:  {
                         MyPlaceManager.shared.registerPlace(query: myPlaceInformationViewModel) { result in
                             switch result {
@@ -266,9 +243,9 @@ struct PlaceInformationEditView: View {
                             .foregroundStyle(.white)
                             .frame(width: 60, alignment: .center)
                             .background(
-                                RoundedRectangle(cornerRadius: 14)
-                                    .foregroundStyle(Color(red: 0, green: 0.48, blue: 1))
-                                    .frame(width: 90, height: 40)
+                                RoundedRectangle(cornerRadius: 7)
+                                    .foregroundStyle(Color.accentColor)
+                                    .frame(width: 130, height: 40)
                             )
                     }
                     Button(action:  {
@@ -279,13 +256,12 @@ struct PlaceInformationEditView: View {
                     }) {
                         Text("돌아가기")
                             .font(Font.custom("Apple SD Gothic Neo", size: 15))
-                            .foregroundStyle(Color(red: 0, green: 0.48, blue: 1))
+                            .foregroundStyle(Color.accentColor)
                             .frame(width: 60, alignment: .center)
                             .background(
-                                RoundedRectangle(cornerRadius: 14)
-                                    .stroke(Color(red: 0, green: 0.48, blue: 1), lineWidth: 2)
-                                    .foregroundStyle(Color(red: 0, green: 0.48, blue: 1))
-                                    .frame(width: 90, height: 40)
+                                RoundedRectangle(cornerRadius: 7)
+                                    .stroke(Color.accentColor, lineWidth: 2)
+                                    .frame(width: 130, height: 40)
                             )
                     }
                 }
@@ -475,6 +451,6 @@ struct SquarePhotosPicker: View {
 
 #Preview {
     PlaceInformationEditView(
-        path: .constant([]), isHeartFilled: .constant(false), selectedDayOffIndices: .constant([]), selectedServiceIndices: .constant(([]))
+        path: .constant([]), isHeartFilled: .constant(false), selectedDayOffIndices: .constant([Holiday.monday, Holiday.tuesday, Holiday.wednesday, Holiday.thursday, Holiday.friday, Holiday.saturday]), selectedServiceIndices: .constant(([]))
     )
 }

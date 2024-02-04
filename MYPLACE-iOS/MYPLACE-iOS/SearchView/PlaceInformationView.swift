@@ -13,15 +13,7 @@ struct PlaceInformationView: View {
     @State private var userInput: String = ""
     //MARK: - 토스트 메시지 뷰 두개에 띄워지는거 해결해야함
     @StateObject private var toastViewModel = ToastViewModel()
-    func openInstagram(username: String) {
-        let instagramUrl = URL(string: "instagram://user?username=\(username)")!
-        if UIApplication.shared.canOpenURL(instagramUrl) {
-            UIApplication.shared.open(instagramUrl, options: [:], completionHandler: nil)
-        } else {
-            let webUrl = URL(string: "https://www.instagram.com/\(username)/")!
-            UIApplication.shared.open(webUrl, options: [:], completionHandler: nil)
-        }
-    }
+    @StateObject var myPlaceInformationViewModel = MyPlaceInformationViewModel.shared
     
 //    @Binding var selectedDayOffIndices: [Holiday]
 //    @Binding var selectedServiceIndices: [ProvidedService]
@@ -80,7 +72,25 @@ struct PlaceInformationView: View {
                     }
                     .frame(height: 460)
                 }
-                HStack(spacing: 30) {
+                HStack(spacing: 10) {
+                    //MARK: - 백 데이터 오면 업데이트 필요
+                    Text("#돈까스")
+                        .font(
+                            .custom("Apple SD Gothic Neo", size: 15)
+                            .weight(.bold)
+                        )
+                        .foregroundStyle(Color.accentColor)
+                        .background(
+                            RoundedRectangle(cornerRadius: 40)
+                                .foregroundStyle(.white)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 40)
+                                        .stroke(Color.accentColor, lineWidth: 1.3)
+                                        .padding(EdgeInsets(top: -5, leading: -10, bottom: -4, trailing: -10))
+                                )
+                        )
+                        .padding([.leading, .trailing], 10)
+                        
                     Text("# 서촌")
                         .font(Font.custom("Apple SD Gothic Neo", size: 15))
                         .foregroundColor(.white)
@@ -89,6 +99,7 @@ struct PlaceInformationView: View {
                                 .foregroundStyle(.blue)
                                 .padding(EdgeInsets(top: -5, leading: -10, bottom: -5, trailing: -10))
                         )
+                        .padding([.leading, .trailing], 10)
                     Text("# 서촌")
                         .font(Font.custom("Apple SD Gothic Neo", size: 15))
                         .foregroundColor(.white)
@@ -97,14 +108,7 @@ struct PlaceInformationView: View {
                                 .foregroundStyle(.blue)
                                 .padding(EdgeInsets(top: -5, leading: -10, bottom: -5, trailing: -10))
                         )
-                    Text("# 서촌")
-                        .font(Font.custom("Apple SD Gothic Neo", size: 15))
-                        .foregroundColor(.white)
-                        .background(
-                            RoundedRectangle(cornerRadius: 40)
-                                .foregroundStyle(.blue)
-                                .padding(EdgeInsets(top: -5, leading: -10, bottom: -5, trailing: -10))
-                        )
+                        .padding([.leading, .trailing], 10)
                     Spacer()
                 }
                 .padding(EdgeInsets(top: 10, leading: 30, bottom: 0, trailing: 0))
@@ -176,23 +180,18 @@ struct PlaceInformationView: View {
                             )
                             .foregroundStyle(.black)
                             .padding(.top, 15)
-                        Text("가나다라마바사")
-                            .font(
-                                Font.custom("Apple SD Gothic Neo", size: 18)
-                                    .weight(.thin)
-                            )
-                            .padding(.top, 15)
-                            .foregroundStyle(.black)
-                        Text("공휴일 휴무")
-                            .font(
-                                Font.custom("Apple SD Gothic Neo", size: 18)
-                                    .weight(.thin)
-                            )
-                            .padding(.top, 15)
-                            .foregroundStyle(.red)
+                        //MARK: - 백 데이터 구조 나오면 업데이트 예정
+                        HStack {
+                            BlueChip(text: "가나다라마바사", isSelected: false)
+                                .padding(.top, 10)
+                        }
+                        HStack {
+                            RedChip(text: "공휴일 휴무")
+                                .padding(.top, 15)
+                        }
                         Button(action: {
                             //MARK: - 백에서 준 값으로 업데이트 필요
-                            openInstagram(username: "user")
+                            myPlaceInformationViewModel.openInstagram(username: "user")
                         }, label: {
                             Image(systemName: "globe")
                                 .padding(.top, 15)
@@ -237,7 +236,7 @@ struct PlaceInformationView: View {
                         .background(
                             Rectangle()
                                 .foregroundStyle(.white)
-                                .frame(width: 270, height: 50)
+                                .frame(width: 270, height: 60)
                                 .shadow(color: .black.opacity(0.25), radius: 2, x: 0, y: 2)
                                 .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
                         )
@@ -246,13 +245,18 @@ struct PlaceInformationView: View {
                         Text("수정이 필요한 정보가 무엇인가요?\n자유롭게 남겨주세요!")
                             .foregroundStyle(.gray)
                             .font(
-                                .custom("Apple SD Gothic Neo", size: 12)
+                                .custom("Apple SD Gothic Neo", size: 13)
                             )
                             .frame(width: 250, height: 50)
                             .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
                     }
                     Spacer()
                 }
+                .onTapGesture {
+                    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                }
+                .KeyboardAwarePadding()
+                
             }
             .ignoresSafeArea(.all)
             
@@ -281,18 +285,34 @@ struct PlaceInformationView: View {
     }
 }
 
-struct BackgroundBlurView: UIViewRepresentable{
-    func makeUIView(context: Context) -> some UIView {
-        let view = UIVisualEffectView(effect: UIBlurEffect(style: .systemUltraThinMaterialDark))
-        
-        DispatchQueue.main.async{
-            view.superview?.superview?.backgroundColor = .clear
-        }
-        
-        return view
+import Combine
+
+struct KeyboardAwareModifier: ViewModifier {
+    @State private var keyboardHeight: CGFloat = 0
+
+    private var keyboardHeightPublisher: AnyPublisher<CGFloat, Never> {
+        Publishers.Merge(
+            NotificationCenter.default
+                .publisher(for: UIResponder.keyboardWillShowNotification)
+                .compactMap { $0.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue }
+                .map { $0.cgRectValue.height },
+            NotificationCenter.default
+                .publisher(for: UIResponder.keyboardWillHideNotification)
+                .map { _ in CGFloat(0) }
+       ).eraseToAnyPublisher()
     }
-    
-    func updateUIView(_ uiView: UIViewType, context: Context) { }
+
+    func body(content: Content) -> some View {
+        content
+            .padding(.bottom, keyboardHeight)
+            .onReceive(keyboardHeightPublisher) { self.keyboardHeight = $0 }
+    }
+}
+
+extension View {
+    func KeyboardAwarePadding() -> some View {
+        ModifiedContent(content: self, modifier: KeyboardAwareModifier())
+    }
 }
 
 #Preview {
