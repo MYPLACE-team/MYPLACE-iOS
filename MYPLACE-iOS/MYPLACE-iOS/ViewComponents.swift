@@ -13,6 +13,78 @@ struct ViewComponents: View {
         SearchItemView_UnRegistered(path: .constant([]), placeName: "카카오프렌즈카카오프렌즈카카오프렌즈", addressName: "서울")
         FavoriteItemView(path: .constant([]), isVisited: .constant(false), place: dummyPlaces[1])
         KakaoSearchView(kakaoSearchViewModel: KakaoSearchViewModel(), path: .constant([]), searchText: .constant(""))
+        BlueChip(text: "가나다라마바사", isSelected: false)
+        RedChip(text: "가나다라마바사")
+    }
+}
+
+
+struct BlueChip: View {
+    private let text: String
+    private let isSelected: Bool
+    
+    init(text: String, isSelected: Bool) {
+        self.text = text
+        self.isSelected = isSelected
+    }
+    
+    var body: some View {
+        Text(text)
+            .font(
+                .custom("Apple SD Gothic Neo", size: 12)
+            )
+            .foregroundStyle(isSelected ? Color.white : Color(red: 0.4, green: 0.35, blue: 0.96))
+            .lineLimit(1)
+            .padding(.horizontal, 10)
+            .padding(.vertical, 5)
+            .background(
+                RoundedRectangle(cornerRadius: 20)
+                    .foregroundStyle(isSelected ? Color.accentColor : Color(red: 0.97, green: 0.95, blue: 1))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 20)
+                            .stroke(Color(red: 0.4, green: 0.35, blue: 0.96), lineWidth: 1)
+                    )
+            )
+        
+        
+    }
+}
+
+struct RedChip: View {
+    private let text: String
+    
+    init(text: String) {
+        self.text = text
+    }
+    
+    var body: some View {
+        Text(text)
+            .font(
+                .custom("Apple SD Gothic Neo", size: 12)
+            )
+            .foregroundStyle(Color(red: 0.89, green: 0.39, blue: 0.39))
+            .lineLimit(1)
+            .padding(.horizontal, 10)
+            .padding(.vertical, 5)
+            .background(
+                RoundedRectangle(cornerRadius: 20)
+                    .foregroundStyle(Color(red: 1, green: 0.95, blue: 0.95))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 20)
+                            .stroke(Color(red: 0.89, green: 0.39, blue: 0.39), lineWidth: 1)
+                    )
+            )
+    }
+}
+
+struct Xmark: View {
+    var body: some View {
+        Image(systemName: "xmark")
+            .resizable()
+            .frame(width: 17, height: 17)
+            .foregroundStyle(.white)
+            .padding(.trailing, 20)
+            .padding(.top, 20)
     }
 }
 
@@ -225,7 +297,6 @@ struct TextWidthPreferenceKey: PreferenceKey {
         value = nextValue()
     }
 }
-
 
 struct KakaoSearchView: View {
     @ObservedObject var kakaoSearchViewModel: KakaoSearchViewModel

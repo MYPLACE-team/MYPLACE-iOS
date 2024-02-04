@@ -36,12 +36,7 @@ struct SearchPopup: View {
                         Button(action: {
                             isPopupPresented.toggle()
                         }) {
-                            Image(systemName: "xmark")
-                                .resizable()
-                                .frame(width: 17, height: 17)
-                                .foregroundStyle(.white)
-                                .padding(.trailing, 20)
-                                .padding(.top, 20)
+                            Xmark()
                         }
                     }
                     if let selectedPlace = popupViewModel.selectedPlace {
@@ -158,12 +153,7 @@ struct FilterPopup: View {
                         Button(action: {
                             isPopupPresented.toggle()
                         }) {
-                            Image(systemName: "xmark")
-                                .resizable()
-                                .frame(width: 17, height: 17)
-                                .foregroundStyle(.white)
-                                .padding(.trailing, 20)
-                                .padding(.top, 20)
+                            Xmark()
                         }
                     }
                     Text("보고 싶은 관심장소 유형을 선택해보세요!")
@@ -236,12 +226,7 @@ struct PlaceInformation_DayOffPopup: View {
                         Button(action: {
                             isPopupPresented.toggle()
                         }) {
-                            Image(systemName: "xmark")
-                                .resizable()
-                                .frame(width: 17, height: 17)
-                                .foregroundStyle(.white)
-                                .padding(.trailing, 20)
-                                .padding(.top, 20)
+                            Xmark()
                         }
                     }
                     Text("이 장소의 휴무 정보를 알려주세요.")
@@ -319,12 +304,7 @@ struct PlaceInformation_ServicePopup: View {
                         Button(action: {
                             isPopupPresented.toggle()
                         }) {
-                            Image(systemName: "xmark")
-                                .resizable()
-                                .frame(width: 17, height: 17)
-                                .foregroundStyle(.white)
-                                .padding(.trailing, 20)
-                                .padding(.top, 20)
+                            Xmark()
                         }
                     }
                     Text("이 장소가 제공하는 서비스를\n최대 2개까지 알려주세요.")
