@@ -47,3 +47,34 @@ enum ProvidedService: String, CaseIterable {
     case petFriendly = "😻 반려동물 동반"
     case goodMusic = "🎶 좋은 음악 큐레이션"
 }
+
+extension PlaceType {
+    func emojiForCategory() -> String {
+        switch self {
+        case .cafe:
+            return "☕️"
+        case .chinese:
+            return "🥟"
+        case .japanese:
+            return "🍣"
+        case .western:
+            return "🍕"
+        case .korean:
+            return "🍚"
+        case .bar:
+            return "🍻"
+        case .dessert:
+            return "🍰"
+        case .culturalSpace:
+            return "📒"
+        case .asian:
+            return "🧋"
+        case .meat:
+            return "🥩"
+        case .popupStore:
+            return "🛍️"
+        case .etc:
+            return "📂"
+        }
+    }
+}

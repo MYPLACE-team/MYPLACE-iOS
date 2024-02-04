@@ -45,7 +45,7 @@ struct PlaceInformationEditView: View {
                 }
                 .padding(.top, 10)
                 if let selectedPlace = popupViewModel.selectedPlace {
-                    SearchItemView_UnRegistered(path: $path, placeName: selectedPlace.placeName, addressName: selectedPlace.address, isEditing: true)
+                    SearchItemView_UnRegistered(path: $path, placeName: (PlaceType(rawValue: myPlaceInformationViewModel.category)?.emojiForCategory() ?? "") + selectedPlace.placeName, addressName: selectedPlace.address, isEditing: true)
                 } else {
                     SearchItemView_Registered(isHeartFilled: $isHeartFilled, path: $path, place: dummyPlaces[1])
                         .padding(.top, 10)
