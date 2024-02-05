@@ -83,7 +83,7 @@ struct ArchiveView: View {
                     .padding(.top, 8)
                     Button(action: {
                         if isTotalView {
-                            
+                            path.append(.newArchiveView)
                         }
                         else {
                             isCreate = true
@@ -130,11 +130,23 @@ struct ArchiveView: View {
                         {
                             if isTotalView {
                                 VStack(spacing: 6){
-                                    Text("전체 보기")
-                                        .font(
-                                            Font.custom("Apple SD Gothic Neo", size: 16)
-                                                .weight(.bold)
-                                        )
+                                    HStack(spacing: 4){
+                                        Text("전체 보기")
+                                            .font(
+                                                Font.custom("Apple SD Gothic Neo", size: 16)
+                                                    .weight(.bold)
+                                            )
+                                        Text(String(archivePlaces.count))
+                                            .font(
+                                            Font.custom("Apple SD Gothic Neo", size: 12)
+                                            .weight(.medium)
+                                            )
+                                            .foregroundStyle(Color(red: 0.15, green: 0.16, blue: 0.17))
+                                            .padding(.horizontal, 8)
+                                            .padding(.vertical, 2)
+                                            .background(Color(red: 0.95, green: 0.96, blue: 0.97))
+                                            .cornerRadius(10)
+                                    }
                                     UnevenRoundedRectangle(cornerRadii: .init(topLeading: 10, topTrailing: 10))
                                         .frame(width: 151, height: 4)
                                 }
@@ -191,15 +203,15 @@ struct ArchiveView: View {
                 .clipShape(UnevenRoundedRectangle(topLeadingRadius: 0, bottomLeadingRadius: 20, bottomTrailingRadius: 20, topTrailingRadius: 0))
                 if isTotalView {
                     HStack(spacing: 8){
-                        RoundedRectangle(cornerRadius: 4)
-                            .frame(width: 53, height: 20, alignment: .center)
-                            .foregroundStyle(Color(red: 0.03, green: 0.25, blue: 0.83))
-                            .overlay(
-                                Text("태그명")
-                                    .font(Font.custom("Apple SD Gothic Neo", size: 14)
-                                        .weight(.medium))
-                                    .foregroundStyle(.white)
-                            )
+//                        RoundedRectangle(cornerRadius: 4)
+//                            .frame(width: 53, height: 20, alignment: .center)
+//                            .foregroundStyle(Color(red: 0.03, green: 0.25, blue: 0.83))
+//                            .overlay(
+//                                Text("태그명")
+//                                    .font(Font.custom("Apple SD Gothic Neo", size: 14)
+//                                        .weight(.medium))
+//                                    .foregroundStyle(.white)
+//                            )
                         if searchItemList.count > 0 {
                             ForEach(searchItemList.indices, id: \.self) { index in
                                 HStack(spacing: 3){
@@ -233,10 +245,16 @@ struct ArchiveView: View {
                         }
                         if searchItemList.count < 3 {
                             TextField("검색하기", text: $searchItem)
+                                .font(
+                                    Font.custom("Apple SD Gothic Neo", size: 14)
+                                        .weight(.medium)
+                                )
+                                .foregroundColor(Color(red: 0.12, green: 0.12, blue: 0.12).opacity(0.4))
+                            
                                 .submitLabel(.done)
                                 .onSubmit {
                                     if(searchItem != "") {
-                                        searchItemList.append(searchItem)
+                                        searchItemList.append("#" + searchItem)
                                         searchItem = ""
                                     }
                                 }
@@ -249,8 +267,8 @@ struct ArchiveView: View {
                             .foregroundStyle(.gray)
                     }
                     .frame(width: 344, height: 32)
-                    .padding(.horizontal, 8)
-                    .background(.white)
+                    .padding(.horizontal, 13)
+                    .background(Color(red: 0.98, green: 0.99, blue: 1))
                     .clipShape(RoundedRectangle(cornerRadius: 6))
                     .padding(.top, 15)
                     HStack(spacing: 6){
