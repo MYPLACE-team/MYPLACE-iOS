@@ -24,6 +24,7 @@
 		A59EE2BD2B47F91B009915D5 /* LoginModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59EE2BC2B47F91B009915D5 /* LoginModel.swift */; };
 		A5CE892A2B5980CE00ED8F62 /* NewUserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5CE89292B5980CE00ED8F62 /* NewUserView.swift */; };
 		A5CE892C2B59AA0900ED8F62 /* ArchiveDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5CE892B2B59AA0900ED8F62 /* ArchiveDetailView.swift */; };
+		A5CFD2782B6CDB2200F7DA48 /* NewArchiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5CFD2772B6CDB2200F7DA48 /* NewArchiveView.swift */; };
 		A5F03F862B50FB5700242929 /* ArchiveModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F03F852B50FB5700242929 /* ArchiveModel.swift */; };
 		AA05EAF32B3B87A0005596C5 /* MYPLACE_iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA05EAF22B3B87A0005596C5 /* MYPLACE_iOSApp.swift */; };
 		AA05EAF52B3B87A0005596C5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA05EAF42B3B87A0005596C5 /* ContentView.swift */; };
@@ -71,6 +72,7 @@
 		A59EE2BC2B47F91B009915D5 /* LoginModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginModel.swift; sourceTree = "<group>"; };
 		A5CE89292B5980CE00ED8F62 /* NewUserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewUserView.swift; sourceTree = "<group>"; };
 		A5CE892B2B59AA0900ED8F62 /* ArchiveDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveDetailView.swift; sourceTree = "<group>"; };
+		A5CFD2772B6CDB2200F7DA48 /* NewArchiveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewArchiveView.swift; sourceTree = "<group>"; };
 		A5F03F852B50FB5700242929 /* ArchiveModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveModel.swift; sourceTree = "<group>"; };
 		AA05EAEF2B3B87A0005596C5 /* MYPLACE-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MYPLACE-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA05EAF22B3B87A0005596C5 /* MYPLACE_iOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MYPLACE_iOSApp.swift; sourceTree = "<group>"; };
@@ -162,6 +164,7 @@
 				AA05EB002B3B918E005596C5 /* HomeView.swift */,
 				AAE7CD1C2B3E3A9300E02B71 /* ToolBarView.swift */,
 				AA2B64482B3CC713008CEDBB /* ArchiveView.swift */,
+				A5CFD2772B6CDB2200F7DA48 /* NewArchiveView.swift */,
 				A5CE892B2B59AA0900ED8F62 /* ArchiveDetailView.swift */,
 				AA2B644C2B3CCA03008CEDBB /* FavoritePlacesView.swift */,
 				AA2B644E2B3CCA21008CEDBB /* CommunityView.swift */,
@@ -353,6 +356,7 @@
 				AA2B64522B3D0289008CEDBB /* SettingView.swift in Sources */,
 				AAAAC9C62B5921C50026C8D9 /* KakaoSearchView.swift in Sources */,
 				A59EE2BB2B47F80A009915D5 /* LoginPathModel.swift in Sources */,
+				A5CFD2782B6CDB2200F7DA48 /* NewArchiveView.swift in Sources */,
 				A5F03F862B50FB5700242929 /* ArchiveModel.swift in Sources */,
 				AAAAC9C12B56BC180026C8D9 /* KakaoSearchViewModel.swift in Sources */,
 				AA9E80202B479E6600D51447 /* PlaceInformationView.swift in Sources */,

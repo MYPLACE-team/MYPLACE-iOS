@@ -20,7 +20,7 @@ class LoginModel: ObservableObject {
             
             let image = profile.imageURL(withDimension: 180)
             let name = profile.name
-            let idToken = result.user.idToken
+            guard let idToken = result.user.idToken else {return}
             
             completion(true)
             
@@ -29,7 +29,6 @@ class LoginModel: ObservableObject {
     }
     
     func kakaoLogin(completion: @escaping (Bool) -> Void) {
-        var result = false
         if (UserApi.isKakaoTalkLoginAvailable()) {
             //카톡 설치되어있으면 -> 카톡으로 로그인
             UserApi.shared.loginWithKakaoTalk {(oauthToken, error) in
@@ -47,7 +46,7 @@ class LoginModel: ObservableObject {
                                 return
                             }
                             
-                            print(token, name)
+                            print(token, profile, name)
                             completion(true)
                             //서버에 이메일/토큰/이름 보내주기
                         }
@@ -72,7 +71,7 @@ class LoginModel: ObservableObject {
                                 return
                             }
                             
-                            print(token, name)
+                            print(token, profile, name)
                             completion(true)                            //서버에 이메일/토큰/이름 보내주기
                         }
                     }
