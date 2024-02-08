@@ -19,7 +19,7 @@ struct NewArchiveView: View {
     @State private var folderName: String = ""
     @State private var title: String = ""
     @State private var comment: String = ""
-    @State private var images: [Image?] = []
+    @State private var images: [UIImage] = []
     @State private var tags: [String] = []
     @State private var tag: String = ""
     @State private var menu: String = ""
@@ -85,7 +85,7 @@ struct NewArchiveView: View {
                                 if showPublicInfo {
                                     Text("모든 유저가 조회할 수 있어요.")
                                         .font(Font.custom("Apple SD Gothic Neo", size: 12))
-                                        .foregroundColor(Color(red: 0.15, green: 0.16, blue: 0.17))
+                                        .foregroundStyle(Color(red: 0.15, green: 0.16, blue: 0.17))
                                         .padding(.horizontal, 16)
                                         .padding(.vertical, 12)
                                         .background(.white)
@@ -198,25 +198,19 @@ struct NewArchiveView: View {
                         .padding(.top, 22)
                     HStack(spacing: 20) {
                         ForEach(images.indices, id: \.self) { index in
-                            if let image = images[index] {
-                                ZStack {
-                                    image
-                                        .resizable()
-                                        .frame(width: 72, height: 72)
-                                        .scaledToFill()
-                                    Button(action: {
-                                        images.remove(at: index)
-                                    }) {
-                                        Image(systemName: "xmark.circle.fill")
-                                            .foregroundColor(.red)
-                                    }
-                                    .offset(x: 72/2, y: -72/2)
+                            let image = images[index]
+                            ZStack {
+                                let resizedImage = resizeImage(image: image, targetSize: CGSize(width: 72, height: 72))
+                                Image(uiImage: resizedImage)
+                                Button(action: {
+                                    images.remove(at: index)
+                                }) {
+                                    Image(systemName: "xmark.circle.fill")
+                                        .foregroundStyle(.red)
                                 }
-                                .frame(width: 72, height: 72)
+                                .offset(x: 72/2, y: -72/2)
                             }
-                            else {
-                                SquarePhotosPicker(selectedImage: $images, squareWidth: 72, squareHeight: 72)
-                            }
+                            .frame(width: 72, height: 72)
                         }
                         if images.count < 3 {
                             SquarePhotosPicker(selectedImage: $images, squareWidth: 72, squareHeight: 72)
@@ -314,7 +308,7 @@ struct NewArchiveView: View {
                                     Font.custom("Apple SD Gothic Neo", size: 15)
                                         .weight(.semibold)
                                 )
-                                .foregroundColor(Color(red: 0.27, green: 0.3, blue: 0.33))
+                                .foregroundStyle(Color(red: 0.27, green: 0.3, blue: 0.33))
                                 .padding(.horizontal, 4)
                                 .background(.white)
                                 .padding(.top, -8)
@@ -398,7 +392,7 @@ struct NewArchiveView: View {
                                     Font.custom("Apple SD Gothic Neo", size: 16)
                                         .weight(.medium)
                                 )
-                                .foregroundColor(.white)
+                                .foregroundStyle(.white)
                         )
                 }
                 Spacer()
@@ -429,6 +423,14 @@ struct NewArchiveView: View {
         formatter.numberStyle = .decimal
         return formatter
     }()
+    
+    func resizeImage(image: UIImage, targetSize: CGSize) -> UIImage {
+            UIGraphicsBeginImageContext(targetSize)
+            image.draw(in: CGRect(x: 0, y: 0, width: targetSize.width, height: targetSize.height))
+            let newImage = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
+            return newImage!
+        }
 }
 
 struct placeView: View{

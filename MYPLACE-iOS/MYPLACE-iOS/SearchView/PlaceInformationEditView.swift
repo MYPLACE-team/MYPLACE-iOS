@@ -186,7 +186,7 @@ struct PlaceInformationEditView: View {
                                 selectedImage.remove(at: index)
                             }) {
                                 Image(systemName: "xmark.circle.fill")
-                                    .foregroundColor(.red)
+                                    .foregroundStyle(.red)
                             }
                             .offset(x: 82/2, y: -82/2)
                         }
@@ -204,7 +204,7 @@ struct PlaceInformationEditView: View {
                     Text("첫 번째 사진은 썸네일로 사용됩니다.")
                         .font(Font.custom("Apple SD Gothic Neo", size: 12))
                         .multilineTextAlignment(.center)
-                        .foregroundColor(.black.opacity(0.4))
+                        .foregroundStyle(.black.opacity(0.4))
                     Spacer()
                 }
                 .padding(.leading, 38)

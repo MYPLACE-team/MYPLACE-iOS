@@ -175,7 +175,7 @@ struct SearchItemView_UnRegistered: View {
                                     .background(
                                         RoundedRectangle(cornerRadius: 10)
                                             .fill(Color(red: 0.89, green: 0.89, blue: 0.95).opacity(0.42))
-                                            .foregroundColor(.clear)
+                                            .foregroundStyle(.clear)
                                             .frame(width: 55, height: 18)
                                             .overlay(
                                                 RoundedRectangle(cornerRadius: 10)
