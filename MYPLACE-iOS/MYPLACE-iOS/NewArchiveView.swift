@@ -43,7 +43,7 @@ struct NewArchiveView: View {
                                 Font.custom("Apple SD Gothic Neo", size: 15)
                                     .weight(.semibold)
                             )
-                            .foregroundColor(Color(red: 0.27, green: 0.3, blue: 0.33))
+                            .foregroundStyle(Color(red: 0.27, green: 0.3, blue: 0.33))
                         HStack(spacing: 8){
                             ForEach(0..<5)
                             {index in
@@ -107,6 +107,7 @@ struct NewArchiveView: View {
                             .labelsHidden()
                     }
                 }
+                .padding(.horizontal, 1)
                 .frame(width: 358)
                 .padding(.top, 32)
                 HStack(spacing: 0){
@@ -130,6 +131,7 @@ struct NewArchiveView: View {
                 .frame(width: 358,height: 56)
                 .background(
                     Rectangle()
+                        .inset(by: 1)
                         .stroke(.black.opacity(0.23), lineWidth: 1)
                 )
                 .padding(.top, 24)
@@ -151,6 +153,7 @@ struct NewArchiveView: View {
                 .frame(width: 358,height: 56)
                 .overlay(
                     Rectangle()
+                        .inset(by: 1)
                         .stroke(.black.opacity(0.23), lineWidth: 1)
                 )
                 .padding(.top, 16)
@@ -171,7 +174,7 @@ struct NewArchiveView: View {
                         Spacer()
                         Text("\(comment.count)/300")
                             .font(Font.custom("Apple SD Gothic Neo", size: 14))
-                            .foregroundColor(Color(red: 0.45, green: 0.47, blue: 0.5))
+                            .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
                     }
                     .padding(.bottom, -16)
                     .padding(.trailing, -10)
@@ -181,6 +184,7 @@ struct NewArchiveView: View {
                 .frame(width: 358)
                 .overlay(
                     Rectangle()
+                        .inset(by: 1)
                         .stroke(.black.opacity(0.23), lineWidth: 1)
                 )
                 .padding(.top, 16)
@@ -266,7 +270,7 @@ struct NewArchiveView: View {
                                 .overlay(
                                     Rectangle()
                                         .inset(by: 0.5)
-                                        .stroke(.black.opacity(0.12), lineWidth: 1)
+                                        .stroke(.black.opacity(0.23), lineWidth: 1)
                                 )
                                 .onSubmit {
                                     if(tag != "") {
@@ -278,12 +282,13 @@ struct NewArchiveView: View {
                             ForEach(0..<2 - tags.count, id: \.self) { tag in
                                 Rectangle()
                                     .inset(by: 0.5)
-                                    .stroke(.black.opacity(0.12), lineWidth: 1)
+                                    .stroke(.black.opacity(0.23), lineWidth: 1)
                                     .frame(width: 72, height: 40)
                             }
                         }
                     }
                     .padding(.top, 8)
+                    .frame(height: 40)
                     TextField("",text: $menu, axis: .vertical)
                         .font(
                             Font.custom("Apple SD Gothic Neo", size: 16)
@@ -300,6 +305,7 @@ struct NewArchiveView: View {
                         .frame(width: 358)
                         .background(
                             Rectangle()
+                                .inset(by: 1)
                                 .stroke(.black.opacity(0.23), lineWidth: 1)
                         )
                         .overlay(
@@ -339,6 +345,7 @@ struct NewArchiveView: View {
                     .frame(width: 358, alignment: .leading)
                     .background(
                         Rectangle()
+                            .inset(by: 1)
                             .stroke(.black.opacity(0.23), lineWidth: 1)
                     )
                     .overlay(
@@ -370,6 +377,7 @@ struct NewArchiveView: View {
                     .frame(width: 358, height: 54, alignment: .leading)
                     .background(
                         Rectangle()
+                            .inset(by: 1)
                             .stroke(.black.opacity(0.23), lineWidth: 1)
                     )
                     .padding(.top, 18)
