@@ -12,6 +12,7 @@ struct ArchiveDetailView: View {
     @State var isPopupPresented: Bool = false
     @State var popupMode: String = ""
     @State var isCommentPresented: Bool = false
+    @StateObject private var toastViewModel = ToastViewModel.shared
     
     @Binding var path: [PathModel]
     
@@ -553,6 +554,7 @@ struct ArchiveDetailView: View {
                 CommentView(isPresented: $isCommentPresented)
             }
         }
+        .toast(message: toastViewModel.toastMessage, isShowing: $toastViewModel.showToast, duration: Toast.time)
         .navigationBarBackButtonHidden()
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
@@ -607,12 +609,13 @@ struct ArchivePopupView: View {
                 HStack(spacing: 10) {
                     Button(action: {
                         if mode == "delete" {
-                            
+                            ToastViewModel.shared.showToastWithString(text: "아카이브 게시물을 삭제했어요.")
                         } else if mode == "share" {
-                            
+                            ToastViewModel.shared.showToastWithString(text: "URL이 복사되었어요.")
                         } else if mode == "store" {
-                            
+                            ToastViewModel.shared.showToastWithString(text: "사진 앱에 사진이 저장되었어요.")
                         }
+                        isPopupPresented.toggle()
                     })
                     {
                         RoundedRectangle(cornerRadius: 14)

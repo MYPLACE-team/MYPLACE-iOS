@@ -15,7 +15,7 @@ struct SettingView: View {
             VStack(alignment: .leading, spacing: 40){
                 UnevenRoundedRectangle(cornerRadii: .init(bottomLeading: 15, bottomTrailing: 15))
                     .foregroundStyle(Color(red: 0.4, green: 0.35, blue: 0.96))
-                    .frame(width: .infinity, height: 304)
+                    .frame(height: 304)
                     .ignoresSafeArea(.all)
                     .overlay(
                         VStack(spacing: 18){

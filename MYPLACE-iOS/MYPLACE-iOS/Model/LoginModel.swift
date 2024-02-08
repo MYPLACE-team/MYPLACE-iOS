@@ -80,10 +80,6 @@ class LoginModel: ObservableObject {
         }
     }
     
-    func kakaoLoginthroughAPI() {
-        
-    }
-    
     func appleLogin() {
     }
     

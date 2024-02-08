@@ -25,8 +25,11 @@ struct NewArchiveView: View {
     @State private var menu: String = ""
     @State private var price: Int?
     @State private var date: String = "2023.04.03"
-    
+    @State private var selectedOption: String?
+            
     @Binding var path: [PathModel]
+    
+    let options = ["속초여행", "데이트", "새 폴더"]
     
     var body: some View {
         ScrollView{
@@ -125,7 +128,7 @@ struct NewArchiveView: View {
                 .padding(.horizontal, 12)
                 .padding(.vertical, 16)
                 .frame(width: 358,height: 56)
-                .overlay(
+                .background(
                     Rectangle()
                         .stroke(.black.opacity(0.23), lineWidth: 1)
                 )
@@ -175,7 +178,7 @@ struct NewArchiveView: View {
                 }
                 .padding(.horizontal, 12)
                 .padding(.vertical, 16)
-                .frame(width: 358, height: 224)
+                .frame(width: 358)
                 .overlay(
                     Rectangle()
                         .stroke(.black.opacity(0.23), lineWidth: 1)
@@ -312,41 +315,52 @@ struct NewArchiveView: View {
                                 .padding(.leading, 12)
                             , alignment: .topLeading)
                         .padding(.top, 28)
-                    
-                    TextField("원", value: $price, format: .currency(code: Locale.current.currency?.identifier ?? "WON"))
-                        .font(
-                            Font.custom("Apple SD Gothic Neo", size: 16)
-                                .weight(.medium)
-                        )
-                        .foregroundStyle(Color(red: 0.15, green: 0.16, blue: 0.17))
-                        .keyboardType(.numberPad)
-                        .padding(.horizontal, 12)
-                        .padding(.vertical, 16)
-                        .frame(width: 358, alignment: .leading)
-                        .background(
-                            Rectangle()
-                                .stroke(.black.opacity(0.23), lineWidth: 1)
-                        )
-                        .overlay(
-                            Text("사용한 금액:")
+                    HStack(spacing: 5) {
+                        TextField("원", value: $price, format: .number.grouping(.automatic).precision(.fractionLength(0)))
+                            .font(
+                                Font.custom("Apple SD Gothic Neo", size: 16)
+                                    .weight(.medium)
+                            )
+                            .foregroundStyle(Color(red: 0.15, green: 0.16, blue: 0.17))
+                            .keyboardType(.numberPad)
+                            .fixedSize(horizontal: true, vertical: true)
+                        if(price != nil) {
+                            Text("원")
                                 .font(
-                                    Font.custom("Apple SD Gothic Neo", size: 15)
-                                        .weight(.semibold)
+                                    Font.custom("Apple SD Gothic Neo", size: 16)
+                                        .weight(.medium)
                                 )
-                                .foregroundColor(Color(red: 0.27, green: 0.3, blue: 0.33))
-                                .padding(.horizontal, 4)
-                                .background(.white)
-                                .padding(.top, -8)
-                                .padding(.leading, 12)
-                            , alignment: .topLeading)
-                        .padding(.top, 28)
+                                .foregroundStyle(Color(red: 0.15, green: 0.16, blue: 0.17))
+                        }
+                        Spacer()
+                    }
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 16)
+                    .frame(width: 358, alignment: .leading)
+                    .background(
+                        Rectangle()
+                            .stroke(.black.opacity(0.23), lineWidth: 1)
+                    )
+                    .overlay(
+                        Text("사용한 금액:")
+                            .font(
+                                Font.custom("Apple SD Gothic Neo", size: 15)
+                                    .weight(.semibold)
+                            )
+                            .foregroundStyle(Color(red: 0.27, green: 0.3, blue: 0.33))
+                            .padding(.horizontal, 4)
+                            .background(.white)
+                            .padding(.top, -8)
+                            .padding(.leading, 12)
+                        , alignment: .topLeading)
+                    .padding(.top, 28)
                     VStack(alignment: .leading, spacing: 0) {
                         Text("방문날짜")
                             .font(
                                 Font.custom("Apple SD Gothic Neo", size: 12)
                                     .weight(.semibold)
                             )
-                            .foregroundStyle(Color(red: 0.4, green: 0.35, blue: 0.96))
+                            .foregroundStyle(Color(red: 0.27, green: 0.3, blue: 0.33))
                         Text(date)
                             .font(Font.custom("Apple SD Gothic Neo", size: 16))
                             .foregroundStyle(Color(red: 0.15, green: 0.16, blue: 0.17))
@@ -358,11 +372,6 @@ struct NewArchiveView: View {
                         Rectangle()
                             .stroke(.black.opacity(0.23), lineWidth: 1)
                     )
-                    .overlay(
-                        Rectangle()
-                            .frame(height: 1)
-                            .foregroundStyle(Color(red: 0.4, green: 0.35, blue: 0.96))
-                        , alignment: .bottom)
                     .padding(.top, 18)
                 }
                 .frame(width: 358, alignment: .leading)
@@ -406,6 +415,12 @@ struct NewArchiveView: View {
             }
         }
     }
+    
+    let priceFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        return formatter
+    }()
 }
 
 struct placeView: View{
