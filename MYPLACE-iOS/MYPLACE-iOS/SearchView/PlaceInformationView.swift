@@ -107,7 +107,7 @@ struct PlaceInformationView: View {
                         
                     Text("# 서촌")
                         .font(Font.custom("Apple SD Gothic Neo", size: 15))
-                        .foregroundColor(.white)
+                        .foregroundStyle(.white)
                         .background(
                             RoundedRectangle(cornerRadius: 40)
                                 .foregroundStyle(.blue)
@@ -116,7 +116,7 @@ struct PlaceInformationView: View {
                         .padding([.leading, .trailing], 10)
                     Text("# 서촌")
                         .font(Font.custom("Apple SD Gothic Neo", size: 15))
-                        .foregroundColor(.white)
+                        .foregroundStyle(.white)
                         .background(
                             RoundedRectangle(cornerRadius: 40)
                                 .foregroundStyle(.blue)

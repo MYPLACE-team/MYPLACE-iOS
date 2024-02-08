@@ -143,7 +143,7 @@ struct ProfileEditView: View {
                         Font.custom("Apple SD Gothic Neo", size: 20)
                             .weight(.heavy)
                     )
-                    .foregroundColor(Color(red: 0.15, green: 0.16, blue: 0.17))
+                    .foregroundStyle(Color(red: 0.15, green: 0.16, blue: 0.17))
             }
             
             ToolbarItem(placement: .topBarTrailing) {

@@ -277,7 +277,7 @@ struct ArchiveDetailView: View {
                                                                         Font.custom("Apple SD Gothic Neo", size: 15)
                                                                             .weight(.medium)
                                                                     )
-                                                                    .foregroundColor(Color(red: 0.15, green: 0.16, blue: 0.17))
+                                                                    .foregroundStyle(Color(red: 0.15, green: 0.16, blue: 0.17))
                                                                     .frame(width: 100, alignment: .leading)
                                                             }
                                                             Divider()
@@ -360,7 +360,7 @@ struct ArchiveDetailView: View {
                                                         HStack(spacing: 10){
                                                             Text("# 한옥")
                                                                 .font(Font.custom("Apple SD Gothic Neo", size: 12))
-                                                                .foregroundColor(Color(red: 0.4, green: 0.35, blue: 0.96))
+                                                                .foregroundStyle(Color(red: 0.4, green: 0.35, blue: 0.96))
                                                                 .padding(.horizontal, 15)
                                                                 .padding(.vertical, 6)
                                                                 .background(Color(red: 0.97, green: 0.95, blue: 1))
@@ -372,7 +372,7 @@ struct ArchiveDetailView: View {
                                                                 )
                                                             Text("# 크로플")
                                                                 .font(Font.custom("Apple SD Gothic Neo", size: 12))
-                                                                .foregroundColor(Color(red: 0.4, green: 0.35, blue: 0.96))
+                                                                .foregroundStyle(Color(red: 0.4, green: 0.35, blue: 0.96))
                                                                 .padding(.horizontal, 15)
                                                                 .padding(.vertical, 6)
                                                                 .background(Color(red: 0.97, green: 0.95, blue: 1))
@@ -384,7 +384,7 @@ struct ArchiveDetailView: View {
                                                                 )
                                                             Text("# 안국역")
                                                                 .font(Font.custom("Apple SD Gothic Neo", size: 12))
-                                                                .foregroundColor(Color(red: 0.4, green: 0.35, blue: 0.96))
+                                                                .foregroundStyle(Color(red: 0.4, green: 0.35, blue: 0.96))
                                                                 .multilineTextAlignment(.leading)
                                                                 .padding(.horizontal, 15)
                                                                 .padding(.vertical, 6)
@@ -414,7 +414,7 @@ struct ArchiveDetailView: View {
                                                                 Font.custom("Apple SD Gothic Neo", size: 18)
                                                                     .weight(.bold)
                                                             )
-                                                            .foregroundColor(Color(red: 0.15, green: 0.16, blue: 0.17))
+                                                            .foregroundStyle(Color(red: 0.15, green: 0.16, blue: 0.17))
                                                     }
                                                     .frame(width: 228, alignment: .leading)
                                                     Text("안국역 북촌한옥마을 근처에 위치한 한옥 카페이다. 시그니처인 크림라떼를 먹었는데 굉장히 부드럽고 맛있었다.")
@@ -425,7 +425,7 @@ struct ArchiveDetailView: View {
                                                         .baselineOffset(4)
                                                         .lineLimit(3)
                                                         .multilineTextAlignment(.leading)
-                                                        .foregroundColor(Color(red: 0.45, green: 0.47, blue: 0.5))
+                                                        .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
                                                         .frame(width: 228)
                                                         .padding(.top, 8)
                                                     HStack {
@@ -624,7 +624,7 @@ struct ArchivePopupView: View {
                             .overlay(
                                 Text(modeButton)
                                     .font(Font.custom("Apple SD Gothic Neo", size: 16))
-                                    .foregroundColor(.white)
+                                    .foregroundStyle(.white)
                             )
                     }
                     Button(action: {
@@ -641,7 +641,7 @@ struct ArchivePopupView: View {
                                     .overlay(
                                         Text("돌아가기")
                                             .font(Font.custom("Apple SD Gothic Neo", size: 16))
-                                            .foregroundColor(Color(red: 0.4, green: 0.35, blue: 0.96))
+                                            .foregroundStyle(Color(red: 0.4, green: 0.35, blue: 0.96))
                                     )
                             )
                     }

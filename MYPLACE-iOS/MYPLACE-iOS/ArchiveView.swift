@@ -51,7 +51,7 @@ struct ArchiveView: View {
                             .overlay(
                                 Text("Lv.0")
                                     .font(Font.custom("Apple SD Gothic Neo", size: 9))
-                                    .foregroundColor(Color(red: 0.27, green: 0.3, blue: 0.33))
+                                    .foregroundStyle(Color(red: 0.27, green: 0.3, blue: 0.33))
                                     .bold()
                                     .padding([.top, .leading], 1)
                             )
@@ -249,7 +249,7 @@ struct ArchiveView: View {
                                     Font.custom("Apple SD Gothic Neo", size: 14)
                                         .weight(.medium)
                                 )
-                                .foregroundColor(Color(red: 0.12, green: 0.12, blue: 0.12).opacity(0.4))
+                                .foregroundStyle(Color(red: 0.12, green: 0.12, blue: 0.12).opacity(0.4))
                             
                                 .submitLabel(.done)
                                 .onSubmit {
@@ -533,7 +533,7 @@ struct FolderPopupView: View {
                             .overlay(
                                 Text("삭제하기")
                                     .font(Font.custom("Apple SD Gothic Neo", size: 16))
-                                    .foregroundColor(.white)
+                                    .foregroundStyle(.white)
                             )
                     }
                     Button(action: {
@@ -550,7 +550,7 @@ struct FolderPopupView: View {
                                     .overlay(
                                         Text("돌아가기")
                                             .font(Font.custom("Apple SD Gothic Neo", size: 16))
-                                            .foregroundColor(Color(red: 0.4, green: 0.35, blue: 0.96))
+                                            .foregroundStyle(Color(red: 0.4, green: 0.35, blue: 0.96))
                                     )
                             )
                     }
@@ -674,7 +674,7 @@ struct createFolderView: View {
                                 .frame(width: 324, alignment: .leading)
                             HStack(spacing: 20) {
                                 Rectangle()
-                                    .foregroundColor(.clear)
+                                    .foregroundStyle(.clear)
                                     .frame(width: 152, height: 50)
                                     .background(Color(red: 0.91, green: 0.92, blue: 0.93))
                                     .cornerRadius(5)
@@ -684,7 +684,7 @@ struct createFolderView: View {
                                             .stroke(.black, lineWidth: 1)
                                     )
                                 RoundedRectangle(cornerRadius: 5)
-                                    .foregroundColor(.clear)
+                                    .foregroundStyle(.clear)
                                     .frame(width: 152, height: 50)
                                     .background(Color(red: 0.91, green: 0.92, blue: 0.93))
                                     .overlay(
@@ -702,7 +702,7 @@ struct createFolderView: View {
                                 {
                                     Text("새 폴더 추가 완료")
                                         .font(Font.custom("Apple SD Gothic Neo", size: 16))
-                                        .foregroundColor(.white)
+                                        .foregroundStyle(.white)
                                         .padding(.vertical, 10)
                                         .padding(.horizontal, 20)
                                         .background(Color(red: 0.4, green: 0.35, blue: 0.96))
@@ -716,7 +716,7 @@ struct createFolderView: View {
                                 {
                                     Text("수정 완료")
                                         .font(Font.custom("Apple SD Gothic Neo", size: 16))
-                                        .foregroundColor(.white)
+                                        .foregroundStyle(.white)
                                         .padding(.vertical, 10)
                                         .padding(.horizontal, 20)
                                         .background(Color(red: 0.4, green: 0.35, blue: 0.96))
