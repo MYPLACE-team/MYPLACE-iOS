@@ -109,6 +109,8 @@ struct HomeView: View {
                             FavoritePlacesView(path: $path)
                         case .arciveView:
                             ArchiveView(path: $path)
+                        case .newArchiveView:
+                            NewArchiveView(path: $path)
                         case .archiveDetailView:
                             ArchiveDetailView(path: $path)
                         case .communityView:
@@ -117,6 +119,10 @@ struct HomeView: View {
                             PlaceInformationEditView(path: $path, isHeartFilled: $isHeartFilled, selectedDayOffIndices: $selectedDayOffIndices, selectedServiceIndices: $selectedServiceIndices)
                         case .placeInformationView:
                             PlaceInformationView(path: $path, isHeartFilled: $isHeartFilled)
+                        case .privacyView:
+                            PrivacyView(path: $path)
+                        case .profileEditView:
+                            ProfileEditView(path: $path)
                         }
                     }
                     .padding(.top, 10)

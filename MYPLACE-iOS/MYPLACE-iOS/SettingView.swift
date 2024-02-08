@@ -36,6 +36,9 @@ struct SettingView: View {
                                                     .resizable()
                                                     .frame(width: 10, height: 10)
                                             )
+                                            .onTapGesture {
+                                                path.append(.profileEditView)
+                                            }
                                         , alignment: .bottomTrailing)
                                 VStack(alignment: .leading, spacing: 2){
                                     HStack(alignment: .bottom, spacing: 5){
@@ -115,7 +118,9 @@ struct SettingView: View {
                                 }
                             }
                             Spacer()
-                        }.frame(width: 310)
+                        }
+                            .frame(width: 310)
+                            .padding(.top, 100)
                     )
                 HStack(alignment: .top, spacing: 14){
                     RoundedRectangle(cornerRadius: 1)
@@ -135,7 +140,7 @@ struct SettingView: View {
                     }
                 }
                 .padding(.leading, 33)
-                .padding(.top, -60)
+                .padding(.top, 30)
                 HStack(alignment: .top, spacing: 14){
                     RoundedRectangle(cornerRadius: 1)
                       .foregroundStyle(Color(red: 0.4, green: 0.35, blue: 0.96))
@@ -172,9 +177,13 @@ struct SettingView: View {
                               .weight(.semibold)
                           )
                           .foregroundStyle(Color(red: 0.4, green: 0.35, blue: 0.96))
-                        Text("개인정보 관리")
-                          .font(Font.custom("Apple SD Gothic Neo", size: 16))
-                          .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
+                        Button(action: {
+                            path.append(.privacyView)
+                        })
+                        {Text("개인정보 관리")
+                                .font(Font.custom("Apple SD Gothic Neo", size: 16))
+                                .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
+                        }
                     }
                 }
                 .padding(.leading, 33)
@@ -185,6 +194,7 @@ struct SettingView: View {
                       .foregroundStyle(.black.opacity(0.4))
                 }.frame(maxWidth: .infinity)
             }
+            .ignoresSafeArea(.all)
             VStack {
                 RoundedRectangle(cornerRadius: 10)
                     .foregroundStyle(.white)
@@ -259,7 +269,14 @@ struct SettingView: View {
             }
             
             ToolbarItem(placement: .topBarTrailing) {
-                ToolBarView(path: $path)
+                Button(action: {
+                    path.append(.notificationView)
+                }) {
+                    Image(systemName: "bell")
+                        .resizable()
+                        .frame(width: 20, height: 20)
+                        .foregroundStyle(.black)
+                }
             }
         }
     }

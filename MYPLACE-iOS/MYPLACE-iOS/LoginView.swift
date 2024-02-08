@@ -39,7 +39,9 @@ struct LoginView: View {
                                 Button(action : {
                                     loginModel.googleLogin { result in
                                         if result {
-                                            loginPath.append(.newUserView)
+                                            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                                                loginPath.append(.newUserView)
+                                            }
                                         }
                                     }
                                 })
@@ -69,7 +71,9 @@ struct LoginView: View {
                                 Button(action: {
                                     loginModel.kakaoLogin { result in
                                         if result {
-                                            loginPath.append(.newUserView)
+                                            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                                                loginPath.append(.newUserView)
+                                            }
                                         }
                                     }
                                 })

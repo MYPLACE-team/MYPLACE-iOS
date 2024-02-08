@@ -13,8 +13,11 @@ enum PathModel {
     case searchView
     case favoritePlacesView
     case arciveView
+    case newArchiveView
     case archiveDetailView
     case communityView
     case placeInformationEditView
     case placeInformationView
+    case privacyView
+    case profileEditView
 }

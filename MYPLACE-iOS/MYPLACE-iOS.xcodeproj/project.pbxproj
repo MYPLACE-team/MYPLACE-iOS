@@ -17,11 +17,14 @@
 		A513E10A2B5A3FF500D50986 /* KakaoSDKNavi in Frameworks */ = {isa = PBXBuildFile; productRef = A513E1092B5A3FF500D50986 /* KakaoSDKNavi */; };
 		A55106832B5FCCBC004E8D1D /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = A55106822B5FCCBC004E8D1D /* GoogleSignIn */; };
 		A55106852B5FCCBC004E8D1D /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = A55106842B5FCCBC004E8D1D /* GoogleSignInSwift */; };
+		A55106872B6C0E1A004E8D1D /* PrivacyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A55106862B6C0E1A004E8D1D /* PrivacyView.swift */; };
+		A55106892B6C0E30004E8D1D /* ProfileEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A55106882B6C0E30004E8D1D /* ProfileEditView.swift */; };
 		A59EE2B52B470C57009915D5 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59EE2B42B470C57009915D5 /* LoginView.swift */; };
 		A59EE2BB2B47F80A009915D5 /* LoginPathModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59EE2BA2B47F80A009915D5 /* LoginPathModel.swift */; };
 		A59EE2BD2B47F91B009915D5 /* LoginModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59EE2BC2B47F91B009915D5 /* LoginModel.swift */; };
 		A5CE892A2B5980CE00ED8F62 /* NewUserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5CE89292B5980CE00ED8F62 /* NewUserView.swift */; };
 		A5CE892C2B59AA0900ED8F62 /* ArchiveDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5CE892B2B59AA0900ED8F62 /* ArchiveDetailView.swift */; };
+		A5CFD2782B6CDB2200F7DA48 /* NewArchiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5CFD2772B6CDB2200F7DA48 /* NewArchiveView.swift */; };
 		A5F03F862B50FB5700242929 /* ArchiveModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F03F852B50FB5700242929 /* ArchiveModel.swift */; };
 		AA05EAF32B3B87A0005596C5 /* MYPLACE_iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA05EAF22B3B87A0005596C5 /* MYPLACE_iOSApp.swift */; };
 		AA05EAF52B3B87A0005596C5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA05EAF42B3B87A0005596C5 /* ContentView.swift */; };
@@ -61,11 +64,14 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A55106862B6C0E1A004E8D1D /* PrivacyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyView.swift; sourceTree = "<group>"; };
+		A55106882B6C0E30004E8D1D /* ProfileEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEditView.swift; sourceTree = "<group>"; };
 		A59EE2B42B470C57009915D5 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		A59EE2BA2B47F80A009915D5 /* LoginPathModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPathModel.swift; sourceTree = "<group>"; };
 		A59EE2BC2B47F91B009915D5 /* LoginModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginModel.swift; sourceTree = "<group>"; };
 		A5CE89292B5980CE00ED8F62 /* NewUserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewUserView.swift; sourceTree = "<group>"; };
 		A5CE892B2B59AA0900ED8F62 /* ArchiveDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveDetailView.swift; sourceTree = "<group>"; };
+		A5CFD2772B6CDB2200F7DA48 /* NewArchiveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewArchiveView.swift; sourceTree = "<group>"; };
 		A5F03F852B50FB5700242929 /* ArchiveModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveModel.swift; sourceTree = "<group>"; };
 		AA05EAEF2B3B87A0005596C5 /* MYPLACE-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MYPLACE-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA05EAF22B3B87A0005596C5 /* MYPLACE_iOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MYPLACE_iOSApp.swift; sourceTree = "<group>"; };
@@ -156,10 +162,13 @@
 				AA05EB002B3B918E005596C5 /* HomeView.swift */,
 				AAE7CD1C2B3E3A9300E02B71 /* ToolBarView.swift */,
 				AA2B64482B3CC713008CEDBB /* ArchiveView.swift */,
+				A5CFD2772B6CDB2200F7DA48 /* NewArchiveView.swift */,
 				A5CE892B2B59AA0900ED8F62 /* ArchiveDetailView.swift */,
 				AA2B644C2B3CCA03008CEDBB /* FavoritePlacesView.swift */,
 				AA2B644E2B3CCA21008CEDBB /* CommunityView.swift */,
 				AA2B64512B3D0289008CEDBB /* SettingView.swift */,
+				A55106862B6C0E1A004E8D1D /* PrivacyView.swift */,
+				A55106882B6C0E30004E8D1D /* ProfileEditView.swift */,
 				AA9E801B2B41641C00D51447 /* ToastView.swift */,
 				AAAAC9C72B597DB70026C8D9 /* PopupView.swift */,
 				AA9E801D2B4711B300D51447 /* ViewComponents.swift */,
@@ -325,6 +334,7 @@
 				AA2B644F2B3CCA21008CEDBB /* CommunityView.swift in Sources */,
 				AAE7CD232B3FCF6400E02B71 /* PlaceInformationEditView.swift in Sources */,
 				AAAAC9C82B597DB70026C8D9 /* PopupView.swift in Sources */,
+				A55106872B6C0E1A004E8D1D /* PrivacyView.swift in Sources */,
 				AAB755E22B62970C007B00A1 /* PopupModel.swift in Sources */,
 				AA05EB012B3B918E005596C5 /* HomeView.swift in Sources */,
 				A59EE2B52B470C57009915D5 /* LoginView.swift in Sources */,
@@ -342,6 +352,7 @@
 				A59EE2BD2B47F91B009915D5 /* LoginModel.swift in Sources */,
 				AA2B64522B3D0289008CEDBB /* SettingView.swift in Sources */,
 				A59EE2BB2B47F80A009915D5 /* LoginPathModel.swift in Sources */,
+				A5CFD2782B6CDB2200F7DA48 /* NewArchiveView.swift in Sources */,
 				A5F03F862B50FB5700242929 /* ArchiveModel.swift in Sources */,
 				AAAAC9C12B56BC180026C8D9 /* KakaoSearchViewModel.swift in Sources */,
 				AA9E80202B479E6600D51447 /* PlaceInformationView.swift in Sources */,
@@ -350,6 +361,7 @@
 				AA2B644B2B3CC83C008CEDBB /* PathModel.swift in Sources */,
 				AAAAC9B62B56AA590026C8D9 /* KakaoAPI.swift in Sources */,
 				AA2B64562B3D0E7E008CEDBB /* KakaoMapView.swift in Sources */,
+				A55106892B6C0E30004E8D1D /* ProfileEditView.swift in Sources */,
 				AA05EAF32B3B87A0005596C5 /* MYPLACE_iOSApp.swift in Sources */,
 				AA9E801E2B4711B300D51447 /* ViewComponents.swift in Sources */,
 				AAE7CD1D2B3E3A9300E02B71 /* ToolBarView.swift in Sources */,
