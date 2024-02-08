@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import PhotosUI
 
 struct ProfileEditView: View {
     @State private var name: String = ""
@@ -29,11 +30,16 @@ struct ProfileEditView: View {
                         .padding(.bottom, 1)
                         .shadow(color: .black.opacity(0.25), radius: 3.9, x: 1, y: 4)
                         .overlay(
-                            Image(systemName: "camera")
-                                .resizable()
-                                .aspectRatio(contentMode: /*@START_MENU_TOKEN@*/.fill/*@END_MENU_TOKEN@*/)
-                                .frame(width: 13, height: 13)
-                                .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
+                            Button(action: {
+                                
+                            })
+                            {
+                                Image(systemName: "camera")
+                                    .resizable()
+                                    .aspectRatio(contentMode: /*@START_MENU_TOKEN@*/.fill/*@END_MENU_TOKEN@*/)
+                                    .frame(width: 13, height: 13)
+                                    .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
+                            }
                         )
                     , alignment: .bottomTrailing)
                 .padding(.top, 25)

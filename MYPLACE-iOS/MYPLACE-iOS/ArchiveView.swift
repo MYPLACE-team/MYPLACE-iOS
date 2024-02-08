@@ -203,15 +203,15 @@ struct ArchiveView: View {
                 .clipShape(UnevenRoundedRectangle(topLeadingRadius: 0, bottomLeadingRadius: 20, bottomTrailingRadius: 20, topTrailingRadius: 0))
                 if isTotalView {
                     HStack(spacing: 8){
-//                        RoundedRectangle(cornerRadius: 4)
-//                            .frame(width: 53, height: 20, alignment: .center)
-//                            .foregroundStyle(Color(red: 0.03, green: 0.25, blue: 0.83))
-//                            .overlay(
-//                                Text("태그명")
-//                                    .font(Font.custom("Apple SD Gothic Neo", size: 14)
-//                                        .weight(.medium))
-//                                    .foregroundStyle(.white)
-//                            )
+                        //                        RoundedRectangle(cornerRadius: 4)
+                        //                            .frame(width: 53, height: 20, alignment: .center)
+                        //                            .foregroundStyle(Color(red: 0.03, green: 0.25, blue: 0.83))
+                        //                            .overlay(
+                        //                                Text("태그명")
+                        //                                    .font(Font.custom("Apple SD Gothic Neo", size: 14)
+                        //                                        .weight(.medium))
+                        //                                    .foregroundStyle(.white)
+                        //                            )
                         if searchItemList.count > 0 {
                             ForEach(searchItemList.indices, id: \.self) { index in
                                 HStack(spacing: 3){
@@ -243,8 +243,8 @@ struct ArchiveView: View {
                                 )
                             }
                         }
-                        if searchItemList.count < 3 {
-                            TextField("검색하기", text: $searchItem)
+                        if searchItemList.count < 2 {
+                            TextField("태그 검색하기", text: $searchItem)
                                 .font(
                                     Font.custom("Apple SD Gothic Neo", size: 14)
                                         .weight(.medium)
@@ -271,18 +271,19 @@ struct ArchiveView: View {
                     .background(Color(red: 0.98, green: 0.99, blue: 1))
                     .clipShape(RoundedRectangle(cornerRadius: 6))
                     .padding(.top, 15)
-                    HStack(spacing: 6){
-                        Spacer()
-                        Text("총")
-                            .font(Font.custom("Apple SD Gothic Neo", size: 14))
-                        Text(String(archivePlaces.count))
-                            .font(Font.custom("Apple SD Gothic Neo", size: 18).weight(.semibold))
-                        Text("건")
-                            .font(Font.custom("Apple SD Gothic Neo", size: 14))
-                            .padding(.trailing, 36)
-                    }
-                    .foregroundStyle(Color(red: 0.27, green: 0.3, blue: 0.33))
-                    .padding(.vertical, 6)
+                    .padding(.bottom, 24)
+//                    HStack(spacing: 6){
+//                        Spacer()
+//                        Text("총")
+//                            .font(Font.custom("Apple SD Gothic Neo", size: 14))
+//                        Text(String(archivePlaces.count))
+//                            .font(Font.custom("Apple SD Gothic Neo", size: 18).weight(.semibold))
+//                        Text("건")
+//                            .font(Font.custom("Apple SD Gothic Neo", size: 14))
+//                            .padding(.trailing, 36)
+//                    }
+//                    .foregroundStyle(Color(red: 0.27, green: 0.3, blue: 0.33))
+//                    .padding(.vertical, 6)
                     ScrollView {
                         VStack(spacing: 14){
                             if(self.arhcivePlaces.count > 0) {
@@ -324,7 +325,7 @@ struct ArchiveView: View {
                                             }
                                             .padding(.leading, 6)
                                             Spacer()
-                                            VStack(alignment: .leading){
+                                            VStack(alignment: .trailing){
                                                 HStack(spacing: 2){
                                                     ForEach(0..<place.stars, id: \.self)
                                                     {star in
@@ -364,7 +365,6 @@ struct ArchiveView: View {
                                                         )
                                                 }
                                             }
-                                            .frame(width: 110)
                                             .padding(.trailing, 8)
                                         }
                                         .frame(width: 343, height: 88)
