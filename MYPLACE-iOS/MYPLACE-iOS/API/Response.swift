@@ -32,7 +32,8 @@ struct KakaoPlace: Codable, Identifiable {
         case id, phone
         case categoryGroupCode = "category_group_code"
         case categoryGroupName = "category_group_name"
-        case x, y
+        case x = "x"
+        case y = "y"
     }
 }
 

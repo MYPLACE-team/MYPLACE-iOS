@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UIKit
 import KakaoMapsSDK
 
 struct KakaoMapView: UIViewRepresentable {
@@ -52,6 +53,9 @@ struct KakaoMapView: UIViewRepresentable {
     
     /// Coordinator 구현. KMControllerDelegate를 adopt한다.
     class KakaoMapCoordinator: NSObject, MapControllerDelegate {
+        var controller: KMController?
+        var first: Bool
+
         override init() {
             first = true
             super.init()
@@ -74,6 +78,10 @@ struct KakaoMapView: UIViewRepresentable {
             if controller?.addView(mapviewInfo) == Result.OK {
                 let _ = controller?.getView("mapview") as! KakaoMap
             }
+            
+            createLabelLayer()
+            createPoiStyle()
+            createPois()
         }
         
         /// KMViewContainer 리사이징 될 때 호출.
@@ -87,8 +95,73 @@ struct KakaoMapView: UIViewRepresentable {
             }
         }
         
-        var controller: KMController?
-        var first: Bool
+        // Poi생성을 위한 LabelLayer 생성
+        func createLabelLayer() {
+            let view = controller?.getView("mapview") as! KakaoMap
+            let manager = view.getLabelManager()
+            let layerOption = LabelLayerOptions(layerID: "PoiLayer", competitionType: .none, competitionUnit: .symbolFirst, orderType: .rank, zOrder: 0)
+            let _ = manager.addLabelLayer(option: layerOption)
+        }
+        
+        // Poi 표시 스타일 생성
+        func createPoiStyle() {
+            let view = controller?.getView("mapview") as! KakaoMap
+            let manager = view.getLabelManager()
+            
+//            let noti1 = PoiBadge(badgeID: "Cafe", image: UIImage(named: "CafeIcon"), offset: CGPoint(x: 0.0, y: 0.0), zOrder: 0)
+            let icon1 = PoiIconStyle(symbol: UIImage(named: "PoiIcon"), anchorPoint: CGPoint(x: 0.0, y: 0.0))
+            let perLevelStyle1 = PerLevelPoiStyle(iconStyle: icon1, level: 0)
+            let poiStyle1 = PoiStyle(styleID: "purple", styles: [perLevelStyle1])
+            manager.addPoiStyle(poiStyle1)
+            
+            let icon2 = PoiIconStyle(symbol: UIImage(named: "PoiIcon_Ad"), anchorPoint: CGPoint(x: 0.0, y: 0.0))
+            let perLevelStyle2 = PerLevelPoiStyle(iconStyle: icon2, level: 0)
+            let poiStyle2 = PoiStyle(styleID: "Added", styles: [perLevelStyle2])
+            manager.addPoiStyle(poiStyle2)
+            
+            // PoiBadge는 스타일에도 추가될 수 있다. 이렇게 추가된 Badge는 해당 스타일이 적용될 때 함께 그려진다.
+            
+            //let iconStyle1 = PoiIconStyle(symbol: UIImage(named: "pin_green.png"), anchorPoint: KMNormalizedPoint(x: 0.0, y: 0.5), badges: [noti1])
+            //let noti2 = PoiBadge(badgeID: "badge2", image: UIImage(named: "noti2.png"), offset: KMNormalizedPoint(x: 0.9, y: 0.1), zOrder: 0)
+            //let iconStyle2 = PoiIconStyle(symbol: UIImage(named: "pin_red.png"), anchorPoint: KMNormalizedPoint(x: 0.0, y: 0.5), badges: [noti2])
+            
+            // 5~11, 12~21 에 표출될 스타일을 지정한다.
+//            let poiStyle = PoiStyle(styleID: "PerLevelStyle", styles: [
+//                PerLevelPoiStyle(iconStyle: iconStyle1, level: 5),
+//                PerLevelPoiStyle(iconStyle: iconStyle2, level: 12)
+//            ])
+//            manager.addPoiStyle(poiStyle)
+        }
+        
+        func createPois() {
+            print("createPois")
+            let view = controller?.getView("mapview") as! KakaoMap
+            let manager = view.getLabelManager()
+            let layer = manager.getLabelLayer(layerID: "PoiLayer")
+            let poiOption = PoiOptions(styleID: "purple")
+            poiOption.rank = 0
+            poiOption.clickable = true
+           
+            
+            let poi1 = layer?.addPoi(option:poiOption, at: MapPoint(longitude: 126.9770, latitude: 37.57861))
+            // Poi 개별 Badge추가. 즉, 아래에서 생성된 Poi는 Style에 빌트인되어있는 badge와, Poi가 개별적으로 가지고 있는 Badge를 갖게 된다.
+            let resizedImage = resizeImage(image: UIImage(named: "CafeIcon")!, targetSize: CGSize(width: 60, height: 60))
+            let badge = PoiBadge(badgeID: "Cafe", image: resizedImage, offset: CGPoint(x: 0.5, y: 0.3), zOrder: 1)
+            poi1?.addBadge(badge)
+            poi1?.show()
+//            print(poi1?.itemID as Any)
+//            poi1?.showBadge(badgeID: "noti")
+            layer?.showAllPois()
+        }
+        
+        func resizeImage(image: UIImage, targetSize: CGSize) -> UIImage {
+            UIGraphicsBeginImageContext(targetSize)
+            image.draw(in: CGRect(x: 0, y: 0, width: targetSize.width, height: targetSize.height))
+            let newImage = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
+            return newImage!
+        }
+
     }
 }
 
