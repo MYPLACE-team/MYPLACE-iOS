@@ -13,7 +13,7 @@ struct PlaceInformationEditView: View {
     @Binding var isHeartFilled: Bool
     @StateObject var popupViewModel = PopupViewModel.shared
     @StateObject var myPlaceInformationViewModel = MyPlaceInformationViewModel.shared
-    @State private var selectedImage: [Image?] = []
+    @State private var selectedImage: [UIImage] = []
     
     @State private var isDayOffPopupPresented = false
     @Binding var selectedDayOffIndices: [Holiday]
@@ -178,25 +178,19 @@ struct PlaceInformationEditView: View {
                 .padding(.top, 20)
                 HStack {
                     ForEach(selectedImage.indices, id: \.self) { index in
-                        if let image = selectedImage[index] {
-                            ZStack {
-                                image
-                                    .resizable()
-                                    .frame(width: 82, height: 82)
-                                    .scaledToFill()
-                                Button(action: {
-                                    selectedImage.remove(at: index)
-                                }) {
-                                    Image(systemName: "xmark.circle.fill")
-                                        .foregroundColor(.red)
-                                }
-                                .offset(x: 82/2, y: -82/2)
+                        let image = selectedImage[index]
+                        ZStack {
+                            let resizedImage = resizeImage(image: image, targetSize: CGSize(width: 82, height: 82))
+                            Image(uiImage: resizedImage)
+                            Button(action: {
+                                selectedImage.remove(at: index)
+                            }) {
+                                Image(systemName: "xmark.circle.fill")
+                                    .foregroundColor(.red)
                             }
-                            .frame(width: 82, height: 82)
+                            .offset(x: 82/2, y: -82/2)
                         }
-                        else {
-                            SquarePhotosPicker(selectedImage: $selectedImage, squareWidth: 82, squareHeight: 82)
-                        }
+                        .frame(width: 82, height: 82)
                     }
                     if selectedImage.count < 3 {
                         SquarePhotosPicker(selectedImage: $selectedImage, squareWidth: 82, squareHeight: 82)
@@ -217,6 +211,9 @@ struct PlaceInformationEditView: View {
                 .padding(.top, 5)
                 HStack(spacing: 80) {
                     Button(action:  {
+                        myPlaceInformationViewModel.latitude = popupViewModel.selectedPlace?.x ?? "0"
+                        myPlaceInformationViewModel.longitude = popupViewModel.selectedPlace?.y ?? "0"
+                        updateViewModelWithFormData(images: selectedImage)
                         MyPlaceManager.shared.registerPlace(query: myPlaceInformationViewModel) { result in
                             switch result {
                             case .success:
@@ -249,10 +246,10 @@ struct PlaceInformationEditView: View {
                             )
                     }
                     Button(action:  {
-                        
-                        path.removeLast()
+                        myPlaceInformationViewModel.reset()
                         selectedDayOffIndices.removeAll()
                         selectedServiceIndices.removeAll()
+                        path.removeLast()
                     }) {
                         Text("돌아가기")
                             .font(Font.custom("Apple SD Gothic Neo", size: 15))
@@ -278,6 +275,39 @@ struct PlaceInformationEditView: View {
             }
         }
     }
+    
+    func resizeImage(image: UIImage, targetSize: CGSize) -> UIImage {
+        UIGraphicsBeginImageContext(targetSize)
+        image.draw(in: CGRect(x: 0, y: 0, width: targetSize.width, height: targetSize.height))
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return newImage!
+    }
+    
+    func updateViewModelWithFormData(images: [UIImage]) {
+        let boundary = "Boundary-\(UUID().uuidString)"
+        var formData = Data()
+
+        for image in images {
+            guard let imageData = image.jpegData(compressionQuality: 0.5) else {
+                continue
+            }
+
+            formData.append("--\(boundary)\r\n".data(using: .utf8)!)
+            formData.append("Content-Disposition: form-data; name=\"image\"; filename=\"image.jpeg\"\r\n".data(using: .utf8)!)
+            formData.append("Content-Type: image/jpeg\r\n\r\n".data(using: .utf8)!)
+            formData.append(imageData)
+            formData.append("\r\n".data(using: .utf8)!)
+        }
+
+        formData.append("--\(boundary)\r\n".data(using: .utf8)!)
+
+        // Now you have the form data, you can update your ViewModel here
+        // For example, you might have a function in your ViewModel like this:
+        // viewModel.updateImages(formData: formData)
+    }
+
+    
 }
 
 struct SectionView: View {
@@ -415,7 +445,7 @@ struct TagView: View {
 
 struct SquarePhotosPicker: View {
     @State private var selectedItem: PhotosPickerItem? = nil
-    @Binding var selectedImage: [Image?]
+    @Binding var selectedImage: [UIImage]
     var squareWidth: CGFloat
     var squareHeight: CGFloat
 
@@ -439,8 +469,10 @@ struct SquarePhotosPicker: View {
             }
             .onChange(of: selectedItem) {
                 Task {
-                    if let image = try? await selectedItem?.loadTransferable(type: Image.self) {
-                        selectedImage.append(image)
+                    if let imageData = try? await selectedItem?.loadTransferable(type: Data.self) {
+                        if let uiImage = UIImage(data: imageData) {
+                            selectedImage.append(uiImage)
+                        }
                         selectedItem = nil
                     }
                 }

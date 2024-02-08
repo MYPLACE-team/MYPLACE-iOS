@@ -21,9 +21,14 @@
 	<string>4f73341c490141268efcfe719b7fefff</string>
 	<key>KAKAO_PHASE</key>
 	<string>alpha</string>
-    <key>LSApplicationQueriesSchemes</key>
-    <array>
-        <string>instagram</string>
-    </array>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>instagram</string>
+	</array>
 </dict>
 </plist>

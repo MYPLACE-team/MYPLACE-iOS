@@ -14,7 +14,7 @@ enum MyPlaceAPI {
 
 extension MyPlaceAPI: TargetType {
     var baseURL: URL {
-        return URL(string: "https://3.35.214.215")!
+        return URL(string: "http://3.35.214.215")!
     }
     
     var path: String {

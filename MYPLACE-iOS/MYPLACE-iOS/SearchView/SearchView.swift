@@ -96,7 +96,7 @@ struct SearchView: View {
                             List {
                                 ForEach(kakaoSearchViewModel.places, id: \.id) { place in
                                     Button(action: {
-                                        popupViewModel.setSelectedPlace(placeName: place.placeName, address: place.addressName)
+                                        popupViewModel.setSelectedPlace(x: place.x, y: place.y, placeName: place.placeName, address: place.addressName)
                                         isPopupPresented.toggle()
                                     }) {
                                         SearchItemView_UnRegistered(path: $path, placeName: place.placeName, addressName: place.addressName)
