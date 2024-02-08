@@ -9,6 +9,7 @@ import SwiftUI
 
 struct PlaceInformationView: View {
     @Binding var path: [PathModel]
+    @State private var currentPage = 0
     @Binding var isHeartFilled: Bool
     @State private var userInput: String = ""
     //MARK: - 토스트 메시지 뷰 두개에 띄워지는거 해결해야함
@@ -22,16 +23,29 @@ struct PlaceInformationView: View {
         ZStack {
             VStack {
                 ZStack {
-                    TabView {
+                    //MARK: - 이미지 이동하려는 순간 살짝 아래로 내려와서 위에 여백 생김
+                    TabView(selection: $currentPage) {
                         Image("DummyImage2")
                             .resizable()
                             .ignoresSafeArea(.all)
                         Image("DummyImage")
                             .resizable()
                             .ignoresSafeArea(.all)
+                        Image("DummyImage2")
+                            .resizable()
+                            .ignoresSafeArea(.all)
                     }
-                    .tabViewStyle(PageTabViewStyle())
+                    .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
                     .frame(height: 460)
+                    //MARK: - pageControl 일단 보류 시간 오래걸림
+//                    HStack {
+//                        ForEach(0..<3, id: \.self) { index in
+//                            Circle()
+//                                .foregroundStyle(index == currentPage ? Color.black : Color.gray)
+//                                .frame(width: 8, height: 8)
+//                        }
+//                    }
+//                    .padding(.top, 290)
                     VStack {
                         Spacer()
                         ZStack {
@@ -252,14 +266,9 @@ struct PlaceInformationView: View {
                     }
                     Spacer()
                 }
-                .onTapGesture {
-                    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-                }
-                .KeyboardAwarePadding()
                 
             }
             .ignoresSafeArea(.all)
-            
             VStack {
                 HStack{
                     Button(action: {
@@ -280,6 +289,10 @@ struct PlaceInformationView: View {
                 Spacer()
             }
         }
+        .onTapGesture {
+            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+        }
+        .KeyboardAwarePadding()
         .toolbar(.hidden)
         .toast(message: toastViewModel.toastMessage, isShowing: $toastViewModel.showToast, duration: Toast.time)
     }
