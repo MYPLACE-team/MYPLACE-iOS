@@ -20,6 +20,8 @@ let dummyPlaces: [PlaceModel] = [
 ]
 
 struct SelectedPlace {
+    var x: String = "0"
+    var y: String = "0"
     var placeName: String = "1"
     var address: String = "2"
 }
