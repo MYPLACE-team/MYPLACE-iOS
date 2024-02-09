@@ -14,7 +14,8 @@ struct PlaceInformationView: View {
     @State private var userInput: String = ""
     //MARK: - 토스트 메시지 뷰 두개에 띄워지는거 해결해야함
     @StateObject private var toastViewModel = ToastViewModel()
-    @StateObject var myPlaceInformationViewModel = MyPlaceInformationViewModel.shared
+    @StateObject var myPlaceInformationEditViewModel = MyPlaceInformationEditViewModel.shared
+    @ObservedObject var myPlaceInformationViewModel: MyPlaceInformationViewModel
     
 //    @Binding var selectedDayOffIndices: [Holiday]
 //    @Binding var selectedServiceIndices: [ProvidedService]
@@ -54,10 +55,10 @@ struct PlaceInformationView: View {
                                 .background(BackgroundBlurView())
                                 .frame(height: 70)
                                 .overlay(
-                                    VStack {
+                                    VStack(spacing: 0) {
                                         HStack {
-                                            Text("hello")
-                                                .padding(.leading, 10)
+                                            Text(PlaceType.emojiForCategory(from: myPlaceInformationViewModel.result.categoryID) + " " + myPlaceInformationViewModel.result.name)
+                                                
                                                 .font(.system(size: 25))
                                             Spacer()
                                             Image(systemName: isHeartFilled ? "heart.fill" : "heart")
@@ -69,9 +70,10 @@ struct PlaceInformationView: View {
                                                 }
                                                 .padding(.trailing, 10)
                                         }
-                                        HStack {
-                                            Text("hello")
-                                                .padding(.leading, 10)
+                                        HStack(spacing: 0) {
+                                            Image("Map2")
+                                            Text(myPlaceInformationViewModel.result.address)
+                                                .padding(.leading, 5)
                                             Spacer()
                                         }
                                     }
@@ -80,6 +82,7 @@ struct PlaceInformationView: View {
                                             .custom("Apple SD Gothic Neo", size: 20)
                                             .weight(.semibold)
                                         )
+                                        .padding(.leading, 10)
                                 )
                         }
                         
@@ -87,140 +90,122 @@ struct PlaceInformationView: View {
                     .frame(height: 460)
                 }
                 HStack(spacing: 10) {
-                    //MARK: - 백 데이터 오면 업데이트 필요
-                    Text("#돈까스")
-                        .font(
-                            .custom("Apple SD Gothic Neo", size: 15)
-                            .weight(.bold)
-                        )
-                        .foregroundStyle(Color.accentColor)
-                        .background(
-                            RoundedRectangle(cornerRadius: 40)
-                                .foregroundStyle(.white)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 40)
-                                        .stroke(Color.accentColor, lineWidth: 1.3)
-                                        .padding(EdgeInsets(top: -5, leading: -10, bottom: -4, trailing: -10))
-                                )
-                        )
-                        .padding([.leading, .trailing], 10)
-                        
-                    Text("# 서촌")
-                        .font(Font.custom("Apple SD Gothic Neo", size: 15))
-                        .foregroundStyle(.white)
-                        .background(
-                            RoundedRectangle(cornerRadius: 40)
-                                .foregroundStyle(.blue)
-                                .padding(EdgeInsets(top: -5, leading: -10, bottom: -5, trailing: -10))
-                        )
-                        .padding([.leading, .trailing], 10)
-                    Text("# 서촌")
-                        .font(Font.custom("Apple SD Gothic Neo", size: 15))
-                        .foregroundStyle(.white)
-                        .background(
-                            RoundedRectangle(cornerRadius: 40)
-                                .foregroundStyle(.blue)
-                                .padding(EdgeInsets(top: -5, leading: -10, bottom: -5, trailing: -10))
-                        )
-                        .padding([.leading, .trailing], 10)
+                    ForEach(myPlaceInformationViewModel.result.hashtag.isEmpty ? ["해시태그"] : myPlaceInformationViewModel.result.hashtag, id: \.self) { hashtag in
+                        Text(hashtag)
+                            .font(
+                                .custom("Apple SD Gothic Neo", size: 15)
+                                .weight(.bold)
+                            )
+                            .foregroundStyle(Color.accentColor)
+                            .background(
+                                RoundedRectangle(cornerRadius: 40)
+                                    .foregroundStyle(.white)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 40)
+                                            .stroke(Color.accentColor, lineWidth: 1.3)
+                                            .padding(EdgeInsets(top: -5, leading: -10, bottom: -4, trailing: -10))
+                                    )
+                            )
+                            .padding([.leading, .trailing], 10)
+                    }
+
+                    
                     Spacer()
                 }
                 .padding(EdgeInsets(top: 10, leading: 30, bottom: 0, trailing: 0))
                 HStack {
-                    VStack(alignment: .leading) {
+                    VStack(alignment: .leading, spacing: 20) {
                         HStack(spacing: 0) {
-                            Image("Fork")
-                                .resizable()
-                                .frame(width: 18, height: 18)
-                                .padding(.top, 13)
-                            Text("추천 메뉴")
+                            HStack {
+                                Text("🍴추천 메뉴")
+                                    .font(
+                                        .custom("Apple SD Gothic Neo", size: 18)
+                                        .weight(.semibold)
+                                    )
+                                Spacer()
+                            }
+                            .frame(width: 130)
+                            Text("흑임자라떼")
                                 .font(
-                                    .custom("Apple SD Gothic Neo", size: 18)
-                                    .weight(.semibold)
+                                    Font.custom("Apple SD Gothic Neo", size: 18)
+                                        .weight(.thin)
                                 )
-                                .padding(.top, 15)
-                                .padding(.leading, 4)
+                                .foregroundStyle(.black)
+                        }
+                        .padding(.top, 13)
+                        HStack(spacing: 0) {
+                            HStack {
+                                Text("💰제공서비스")
+                                    .font(
+                                        .custom("Apple SD Gothic Neo", size: 18)
+                                        .weight(.semibold)
+                                    )
+                                Spacer()
+                            }
+                            .frame(width: 130)
+                            ForEach(myPlaceInformationViewModel.result.service.isEmpty ? [""] : myPlaceInformationViewModel.result.service, id: \.self) { serviceIndex in
+                                BlueChip(text: serviceIndex, isSelected: false)
+                            }
                         }
                         HStack(spacing: 0) {
-                            Image("MoneyBag")
-                                .resizable()
-                                .frame(width: 18, height: 18)
-                                .padding(.top, 13)
-                            Text("제공서비스")
-                                .font(
-                                    .custom("Apple SD Gothic Neo", size: 18)
-                                    .weight(.semibold)
-                                )
-                                .padding(.top, 15)
-                                .padding(.leading, 4)
+                            HStack {
+                                Text("⏰휴무일")
+                                    .font(
+                                        .custom("Apple SD Gothic Neo", size: 18)
+                                        .weight(.semibold)
+                                    )
+                                Spacer()
+                            }
+                            .frame(width: 130)
+                            VStack {
+                                HStack(spacing: 5) {
+                                    ForEach(myPlaceInformationViewModel.result.closedDay.prefix(3), id: \.self) { closedDayIndex in
+                                        RedChip(text: closedDayIndex)
+                                    }
+                                }
+                            }
+                        }
+                        
+                        if myPlaceInformationViewModel.result.closedDay.count > 3 {
+                            HStack(spacing: 0) {
+                                HStack {
+                                    EmptyView()
+                                }
+                                .frame(width: 130)
+                                ForEach(myPlaceInformationViewModel.result.closedDay.dropFirst(3), id: \.self) { closedDayIndex in
+                                    RedChip(text: closedDayIndex)
+                                }
+                            }
                         }
                         HStack(spacing: 0) {
-                            Image("Clock")
-                                .resizable()
-                                .frame(width: 18, height: 18)
-                                .padding(.top, 13)
-                            //MARK: - 휴무일 길면 가로 스크롤
-                            Text("휴무일")
-                                .font(
-                                    .custom("Apple SD Gothic Neo", size: 18)
-                                    .weight(.semibold)
-                                )
-                                .padding(.top, 15)
-                                .padding(.leading, 4)
-                        }
-                        HStack(spacing: 0) {
-                            Image("CheckMark")
-                                .resizable()
-                                .frame(width: 18, height: 18)
-                                .padding(.top, 13)
-                            Text("인스타그램")
-                                .font(
-                                    .custom("Apple SD Gothic Neo", size: 18)
-                                    .weight(.semibold)
-                                )
-                                .padding(.top, 15)
-                                .padding(.leading, 4)
+                            HStack {
+                                Text("✅인스타그램")
+                                    .font(
+                                        .custom("Apple SD Gothic Neo", size: 18)
+                                        .weight(.semibold)
+                                    )
+                                Spacer()
+                            }
+                            .frame(width: 130)
+                            Button(action: {
+                                //MARK: - 백에서 준 값으로 업데이트 필요
+                                openInstagram(username: myPlaceInformationViewModel.result.insta)
+                            }, label: {
+                                Image(systemName: "globe")
+                                    .foregroundStyle(.black)
+                            })
                         }
                         
                     }
                     .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
-                    .padding(.leading, 50)
-                    
-                    VStack(alignment: .leading) {
-                        Text("흑임자라떼")
-                            .font(
-                                Font.custom("Apple SD Gothic Neo", size: 18)
-                                    .weight(.thin)
-                            )
-                            .foregroundStyle(.black)
-                            .padding(.top, 15)
-                        //MARK: - 백 데이터 구조 나오면 업데이트 예정
-                        HStack {
-                            BlueChip(text: "가나다라마바사", isSelected: false)
-                                .padding(.top, 10)
-                        }
-                        HStack {
-                            RedChip(text: "공휴일 휴무")
-                                .padding(.top, 15)
-                        }
-                        Button(action: {
-                            //MARK: - 백에서 준 값으로 업데이트 필요
-                            myPlaceInformationViewModel.openInstagram(username: "user")
-                        }, label: {
-                            Image(systemName: "globe")
-                                .padding(.top, 15)
-                                .foregroundStyle(.black)
-                        })
-                    }
-                    .padding(.leading, 60)
-                    Spacer()
+                    .frame(width: 320)
                 }
                 HStack(spacing: 0) {
                     Image("Pencil")
                         .resizable()
                         .frame(width: 18, height: 18)
                         .padding(.top, 13)
-                        .padding(.leading, 50)
+                        .padding(.leading, 40)
                     Text("장소정보 수정 문의")
                         .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
                         .font(
@@ -296,6 +281,16 @@ struct PlaceInformationView: View {
         .toolbar(.hidden)
         .toast(message: toastViewModel.toastMessage, isShowing: $toastViewModel.showToast, duration: Toast.time)
     }
+    
+    func openInstagram(username: String) {
+        let instagramUrl = URL(string: "instagram://user?username=\(username)")!
+        if UIApplication.shared.canOpenURL(instagramUrl) {
+            UIApplication.shared.open(instagramUrl, options: [:], completionHandler: nil)
+        } else {
+            let webUrl = URL(string: "https://www.instagram.com/\(username)/")!
+            UIApplication.shared.open(webUrl, options: [:], completionHandler: nil)
+        }
+    }
 }
 
 import Combine
@@ -329,5 +324,5 @@ extension View {
 }
 
 #Preview {
-    PlaceInformationView(path: .constant([]), isHeartFilled: .constant(true))
+    PlaceInformationView(path: .constant([]), isHeartFilled: .constant(true), myPlaceInformationViewModel: MyPlaceInformationViewModel())
 }

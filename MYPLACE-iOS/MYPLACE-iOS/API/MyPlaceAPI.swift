@@ -9,7 +9,9 @@ import Foundation
 import Moya
 
 enum MyPlaceAPI {
-    case registerMyPlace(place: MyPlaceInformationViewModel)
+    case registerMyPlace(place: MyPlaceInformationEditViewModel)
+    case searchFavoritePlaceList
+    case getMyPlaceInformation
 }
 
 extension MyPlaceAPI: TargetType {
@@ -21,6 +23,10 @@ extension MyPlaceAPI: TargetType {
         switch self {
         case .registerMyPlace:
             return "/place"
+        case .searchFavoritePlaceList:
+            return "/place/like"
+        case .getMyPlaceInformation:
+            return "/place/:placeId"
         }
     }
     
@@ -28,6 +34,10 @@ extension MyPlaceAPI: TargetType {
         switch self {
         case .registerMyPlace:
             return .post
+        case .searchFavoritePlaceList:
+            return .post
+        case .getMyPlaceInformation:
+            return .get
         }
     }
     
@@ -36,6 +46,10 @@ extension MyPlaceAPI: TargetType {
         case .registerMyPlace(let place):
             let jsonData = try! JSONEncoder().encode(place)
             return .requestData(jsonData)
+        case .searchFavoritePlaceList:
+            return .requestPlain
+        case .getMyPlaceInformation:
+            return .requestPlain
         }
     }
     

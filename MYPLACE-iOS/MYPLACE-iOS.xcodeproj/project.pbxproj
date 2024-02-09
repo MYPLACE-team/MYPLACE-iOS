@@ -43,6 +43,8 @@
 		AA9E801C2B41641D00D51447 /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9E801B2B41641C00D51447 /* ToastView.swift */; };
 		AA9E801E2B4711B300D51447 /* ViewComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9E801D2B4711B300D51447 /* ViewComponents.swift */; };
 		AA9E80202B479E6600D51447 /* PlaceInformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9E801F2B479E6600D51447 /* PlaceInformationView.swift */; };
+		AAA411B42B74E60100507E2F /* FavoritePlaceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA411B32B74E60100507E2F /* FavoritePlaceViewModel.swift */; };
+		AAA411B62B75CAE800507E2F /* MyPlaceInformationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA411B52B75CAE800507E2F /* MyPlaceInformationViewModel.swift */; };
 		AAAAC9B62B56AA590026C8D9 /* KakaoAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAAAC9B52B56AA590026C8D9 /* KakaoAPI.swift */; };
 		AAAAC9B92B56AA910026C8D9 /* CombineMoya in Frameworks */ = {isa = PBXBuildFile; productRef = AAAAC9B82B56AA910026C8D9 /* CombineMoya */; };
 		AAAAC9BB2B56AA910026C8D9 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = AAAAC9BA2B56AA910026C8D9 /* Moya */; };
@@ -54,7 +56,7 @@
 		AAAAC9CA2B59858D0026C8D9 /* PopupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAAAC9C92B59858D0026C8D9 /* PopupViewModel.swift */; };
 		AAB755E22B62970C007B00A1 /* PopupModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAB755E12B62970C007B00A1 /* PopupModel.swift */; };
 		AABAC2902B6B3729001B1533 /* MyPlaceAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABAC28F2B6B3729001B1533 /* MyPlaceAPI.swift */; };
-		AABAC2922B6B3E96001B1533 /* MyPlaceInformationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABAC2912B6B3E96001B1533 /* MyPlaceInformationViewModel.swift */; };
+		AABAC2922B6B3E96001B1533 /* MyPlaceInformationEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABAC2912B6B3E96001B1533 /* MyPlaceInformationEditViewModel.swift */; };
 		AABAC2942B6C6AFD001B1533 /* MyPlaceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABAC2932B6C6AFD001B1533 /* MyPlaceManager.swift */; };
 		AABAC2962B6C6E10001B1533 /* KakaoSearchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABAC2952B6C6E10001B1533 /* KakaoSearchManager.swift */; };
 		AAE7CD1D2B3E3A9300E02B71 /* ToolBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE7CD1C2B3E3A9300E02B71 /* ToolBarView.swift */; };
@@ -91,6 +93,8 @@
 		AA9E801B2B41641C00D51447 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
 		AA9E801D2B4711B300D51447 /* ViewComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewComponents.swift; sourceTree = "<group>"; };
 		AA9E801F2B479E6600D51447 /* PlaceInformationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceInformationView.swift; sourceTree = "<group>"; };
+		AAA411B32B74E60100507E2F /* FavoritePlaceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritePlaceViewModel.swift; sourceTree = "<group>"; };
+		AAA411B52B75CAE800507E2F /* MyPlaceInformationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPlaceInformationViewModel.swift; sourceTree = "<group>"; };
 		AAAAC9B52B56AA590026C8D9 /* KakaoAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoAPI.swift; sourceTree = "<group>"; };
 		AAAAC9C02B56BC180026C8D9 /* KakaoSearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoSearchViewModel.swift; sourceTree = "<group>"; };
 		AAAAC9C22B56BF220026C8D9 /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
@@ -98,7 +102,7 @@
 		AAAAC9C92B59858D0026C8D9 /* PopupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupViewModel.swift; sourceTree = "<group>"; };
 		AAB755E12B62970C007B00A1 /* PopupModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupModel.swift; sourceTree = "<group>"; };
 		AABAC28F2B6B3729001B1533 /* MyPlaceAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPlaceAPI.swift; sourceTree = "<group>"; };
-		AABAC2912B6B3E96001B1533 /* MyPlaceInformationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPlaceInformationViewModel.swift; sourceTree = "<group>"; };
+		AABAC2912B6B3E96001B1533 /* MyPlaceInformationEditViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPlaceInformationEditViewModel.swift; sourceTree = "<group>"; };
 		AABAC2932B6C6AFD001B1533 /* MyPlaceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPlaceManager.swift; sourceTree = "<group>"; };
 		AABAC2952B6C6E10001B1533 /* KakaoSearchManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoSearchManager.swift; sourceTree = "<group>"; };
 		AAE7CD1C2B3E3A9300E02B71 /* ToolBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolBarView.swift; sourceTree = "<group>"; };
@@ -206,7 +210,9 @@
 			isa = PBXGroup;
 			children = (
 				AAAAC9C02B56BC180026C8D9 /* KakaoSearchViewModel.swift */,
-				AABAC2912B6B3E96001B1533 /* MyPlaceInformationViewModel.swift */,
+				AAA411B32B74E60100507E2F /* FavoritePlaceViewModel.swift */,
+				AABAC2912B6B3E96001B1533 /* MyPlaceInformationEditViewModel.swift */,
+				AAA411B52B75CAE800507E2F /* MyPlaceInformationViewModel.swift */,
 				AAAAC9C92B59858D0026C8D9 /* PopupViewModel.swift */,
 				AA9E80192B415F7C00D51447 /* ToastViewModel.swift */,
 			);
@@ -343,12 +349,14 @@
 				AAE7CD212B3FB09F00E02B71 /* PlaceModel.swift in Sources */,
 				A5CE892C2B59AA0900ED8F62 /* ArchiveDetailView.swift in Sources */,
 				AA2B644D2B3CCA03008CEDBB /* FavoritePlacesView.swift in Sources */,
+				AAA411B62B75CAE800507E2F /* MyPlaceInformationViewModel.swift in Sources */,
 				AABAC2962B6C6E10001B1533 /* KakaoSearchManager.swift in Sources */,
 				AAE7CD1F2B3F9C0C00E02B71 /* SearchView.swift in Sources */,
 				AA9E801A2B415F7C00D51447 /* ToastViewModel.swift in Sources */,
 				AA05EAF52B3B87A0005596C5 /* ContentView.swift in Sources */,
 				AABAC2902B6B3729001B1533 /* MyPlaceAPI.swift in Sources */,
 				AAAAC9C32B56BF220026C8D9 /* Response.swift in Sources */,
+				AAA411B42B74E60100507E2F /* FavoritePlaceViewModel.swift in Sources */,
 				A59EE2BD2B47F91B009915D5 /* LoginModel.swift in Sources */,
 				AA2B64522B3D0289008CEDBB /* SettingView.swift in Sources */,
 				A59EE2BB2B47F80A009915D5 /* LoginPathModel.swift in Sources */,
@@ -357,7 +365,7 @@
 				AAAAC9C12B56BC180026C8D9 /* KakaoSearchViewModel.swift in Sources */,
 				AA9E80202B479E6600D51447 /* PlaceInformationView.swift in Sources */,
 				AABAC2942B6C6AFD001B1533 /* MyPlaceManager.swift in Sources */,
-				AABAC2922B6B3E96001B1533 /* MyPlaceInformationViewModel.swift in Sources */,
+				AABAC2922B6B3E96001B1533 /* MyPlaceInformationEditViewModel.swift in Sources */,
 				AA2B644B2B3CC83C008CEDBB /* PathModel.swift in Sources */,
 				AAAAC9B62B56AA590026C8D9 /* KakaoAPI.swift in Sources */,
 				AA2B64562B3D0E7E008CEDBB /* KakaoMapView.swift in Sources */,

@@ -29,24 +29,27 @@ struct BlueChip: View {
     }
     
     var body: some View {
-        Text(text)
-            .font(
-                .custom("Apple SD Gothic Neo", size: 12)
-            )
-            .foregroundStyle(isSelected ? Color.white : Color(red: 0.4, green: 0.35, blue: 0.96))
-            .lineLimit(1)
-            .padding(.horizontal, 10)
-            .padding(.vertical, 5)
-            .background(
-                RoundedRectangle(cornerRadius: 20)
-                    .foregroundStyle(isSelected ? Color.accentColor : Color(red: 0.97, green: 0.95, blue: 1))
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 20)
-                            .stroke(Color(red: 0.4, green: 0.35, blue: 0.96), lineWidth: 1)
-                    )
-            )
-        
-        
+        if !text.isEmpty {
+            Text(text)
+                .font(
+                    .custom("Apple SD Gothic Neo", size: 12)
+                )
+                .foregroundStyle(isSelected ? Color.white : Color(red: 0.4, green: 0.35, blue: 0.96))
+                .lineLimit(1)
+                .padding(.horizontal, 10)
+                .padding(.vertical, 5)
+                .background(
+                    RoundedRectangle(cornerRadius: 20)
+                        .foregroundStyle(isSelected ? Color.accentColor : Color(red: 0.97, green: 0.95, blue: 1))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 20)
+                                .stroke(Color(red: 0.4, green: 0.35, blue: 0.96), lineWidth: 1)
+                        )
+                )
+        }
+        else {
+            Text("선택된 서비스가 없어요")
+        }
     }
 }
 
@@ -58,22 +61,30 @@ struct RedChip: View {
     }
     
     var body: some View {
-        Text(text)
-            .font(
-                .custom("Apple SD Gothic Neo", size: 12)
-            )
-            .foregroundStyle(Color(red: 0.89, green: 0.39, blue: 0.39))
-            .lineLimit(1)
-            .padding(.horizontal, 10)
-            .padding(.vertical, 5)
-            .background(
-                RoundedRectangle(cornerRadius: 20)
-                    .foregroundStyle(Color(red: 1, green: 0.95, blue: 0.95))
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 20)
-                            .stroke(Color(red: 0.89, green: 0.39, blue: 0.39), lineWidth: 1)
-                    )
-            )
+        if !text.isEmpty {
+            Text(text)
+                .font(
+                    .custom("Apple SD Gothic Neo", size: 12)
+                )
+                .foregroundStyle(Color(red: 0.89, green: 0.39, blue: 0.39))
+                .lineLimit(1)
+                .padding(.horizontal, 10)
+                .padding(.vertical, 5)
+                .background(
+                    RoundedRectangle(cornerRadius: 20)
+                        .foregroundStyle(Color(red: 1, green: 0.95, blue: 0.95))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 20)
+                                .stroke(Color(red: 0.89, green: 0.39, blue: 0.39), lineWidth: 1)
+                        )
+                )
+        }
+        else {
+            Text("공휴일을 알 수 없어요")
+                .font(
+                    .custom("Apple SD Gothic Neo", size: 12)
+                )
+        }
     }
 }
 

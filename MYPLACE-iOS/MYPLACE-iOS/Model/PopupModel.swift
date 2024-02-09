@@ -7,19 +7,101 @@
 
 import Foundation
 
-enum PlaceType: String, CaseIterable {
-    case cafe = "카페"
-    case chinese = "중식"
-    case japanese = "일식"
-    case western = "양식"
-    case korean = "한식"
-    case bar = "술집"
-    case dessert = "디저트"
-    case culturalSpace = "문화공간"
-    case asian = "아시안"
-    case meat = "고기"
-    case popupStore = "팝업스토어"
-    case etc = "기타"
+enum PlaceType: Int, CaseIterable, RawRepresentable {
+    case cafe
+    case chinese
+    case japanese
+    case western
+    case korean
+    case bar
+    case dessert
+    case culturalSpace
+    case asian
+    case meat
+    case popupStore
+    case etc
+
+    init?(rawValue: Int) {
+        switch rawValue {
+        case 1: self = .cafe
+        case 2: self = .chinese
+        case 3: self = .japanese
+        case 4: self = .western
+        case 5: self = .korean
+        case 6: self = .bar
+        case 7: self = .dessert
+        case 8: self = .culturalSpace
+        case 9: self = .asian
+        case 10: self = .meat
+        case 11: self = .popupStore
+        case 0: self = .etc
+        default: return nil
+        }
+    }
+
+    var rawValue: Int {
+        switch self {
+        case .cafe: return 1
+        case .chinese: return 2
+        case .japanese: return 3
+        case .western: return 4
+        case .korean: return 5
+        case .bar: return 6
+        case .dessert: return 7
+        case .culturalSpace: return 8
+        case .asian: return 9
+        case .meat: return 10
+        case .popupStore: return 11
+        case .etc: return 0
+        }
+    }
+    
+    var stringValue: String {
+        switch self {
+        case .cafe: return "카페"
+        case .chinese: return "중식"
+        case .japanese: return "일식"
+        case .western: return "양식"
+        case .korean: return "한식"
+        case .bar: return "술집"
+        case .dessert: return "디저트"
+        case .culturalSpace: return "문화공간"
+        case .asian: return "아시안"
+        case .meat: return "고기"
+        case .popupStore: return "팝업스토어"
+        case .etc: return "기타"
+        }
+    }
+
+    
+    func emojiForCategory() -> String {
+        switch self {
+        case .cafe:
+            return "☕️"
+        case .chinese:
+            return "🥟"
+        case .japanese:
+            return "🍣"
+        case .western:
+            return "🍕"
+        case .korean:
+            return "🍚"
+        case .bar:
+            return "🍻"
+        case .dessert:
+            return "🍰"
+        case .culturalSpace:
+            return "📒"
+        case .asian:
+            return "🧋"
+        case .meat:
+            return "🥩"
+        case .popupStore:
+            return "🛍️"
+        case .etc:
+            return "📂"
+        }
+    }
 }
 
 enum Holiday: String, CaseIterable {
@@ -48,33 +130,13 @@ enum ProvidedService: String, CaseIterable {
     case goodMusic = "🎶 좋은 음악 큐레이션"
 }
 
+
 extension PlaceType {
-    func emojiForCategory() -> String {
-        switch self {
-        case .cafe:
-            return "☕️"
-        case .chinese:
-            return "🥟"
-        case .japanese:
-            return "🍣"
-        case .western:
-            return "🍕"
-        case .korean:
-            return "🍚"
-        case .bar:
-            return "🍻"
-        case .dessert:
-            return "🍰"
-        case .culturalSpace:
-            return "📒"
-        case .asian:
-            return "🧋"
-        case .meat:
-            return "🥩"
-        case .popupStore:
-            return "🛍️"
-        case .etc:
-            return "📂"
+    static func emojiForCategory(from categoryID: Int) -> String {
+        if let placeType = PlaceType(rawValue: categoryID) {
+            return placeType.emojiForCategory()
+        } else {
+            return PlaceType.cafe.emojiForCategory()
         }
     }
 }

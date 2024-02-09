@@ -118,7 +118,7 @@ struct HomeView: View {
                         case .placeInformationEditView:
                             PlaceInformationEditView(path: $path, isHeartFilled: $isHeartFilled, selectedDayOffIndices: $selectedDayOffIndices, selectedServiceIndices: $selectedServiceIndices)
                         case .placeInformationView:
-                            PlaceInformationView(path: $path, isHeartFilled: $isHeartFilled)
+                            PlaceInformationView(path: $path, isHeartFilled: $isHeartFilled, myPlaceInformationViewModel: MyPlaceInformationViewModel())
                         case .privacyView:
                             PrivacyView(path: $path)
                         case .profileEditView:
@@ -224,6 +224,14 @@ struct ViewChangeButton<ViewModel: Hashable>: View {
     
     var body: some View {
         Button(action: {
+            MyPlaceManager.shared.searchFavoritePlaceList() { result in
+                switch result {
+                case .success:
+                    print("GetMyPlaceSuccess!!!!!!!!!!!!!!")
+                case .failure(let error):
+                    print("Error getFavoritePlace: \(error.localizedDescription)")
+                }
+            }
             path.append(destinationView)
         }) {
             RoundedRectangle(cornerRadius: 10)

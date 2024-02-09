@@ -7,13 +7,61 @@
 
 import Foundation
 
+// MARK: - MyPlaceInformationResponse
+struct MyPlaceInformationResponse: Codable {
+    let isSuccess: Bool
+    let code: Int
+    let message: String
+    let result: MyPlaceInformation
+}
+
+// MARK: - MyPlaceInformation (PlaceInformationView)
+struct MyPlaceInformation: Codable {
+    let id: Int
+    let name, address: String
+    let categoryID: Int
+    let recDish: String
+    let closedDay, service: [String]
+    let insta: String
+    let hashtag, images: [String]
+    let writer, updatedAt: String
+
+    enum CodingKeys: String, CodingKey {
+        case id, name, address
+        case categoryID = "categoryId"
+        case recDish, closedDay, service, insta, hashtag, images, writer, updatedAt
+    }
+}
+
+//MARK: - FavoritePlaceResponse
+struct FavoritePlaceResponse: Codable {
+    let isSuccess: Bool
+    let code: String
+    let message: String
+    let result: [FavoritePlace]
+}
+
+//MARK: - FavoritePlace
+struct FavoritePlace: Codable, Identifiable {
+    let id: Int
+    let name, address: String
+    let categoryID: Int
+    let lat, con: String
+
+    enum CodingKeys: String, CodingKey {
+        case id, name, address
+        case categoryID = "categoryId"
+        case lat, con
+    }
+}
+
 // MARK: - SearchResponse
 struct SearchResponse: Codable {
     let meta: Meta
     let documents: [KakaoPlace]
 }
 
-// MARK: - Place
+// MARK: - KakaoPlace
 struct KakaoPlace: Codable, Identifiable {
     let id: String
     let placeName, distance: String
