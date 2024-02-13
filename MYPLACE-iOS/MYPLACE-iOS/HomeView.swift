@@ -10,11 +10,13 @@ import KakaoMapsSDK
 import KakaoMapsSDK_SPM
 
 struct HomeView: View {
-    @StateObject var kakaoSearchViewModel = KakaoSearchViewModel()
+//    @StateObject var kakaoSearchViewModel = KakaoSearchViewModel()
+//    @StateObject var myPlaceListViewModel = MyPlaceListViewModel()
     @State var searchText = ""
     @State var path: [PathModel] = []
     @State var isHeartFilled = false
     @State var draw: Bool = false
+    @State var placeId: Int = 0
     @State private var isPopupHidden = false
     @State var selectedDayOffIndices: [Holiday] = []
     @State var selectedServiceIndices: [ProvidedService] = []
@@ -61,7 +63,7 @@ struct HomeView: View {
                 
                 VStack {
                     //MARK: - kakaoSearchView
-                    KakaoSearchView(kakaoSearchViewModel: KakaoSearchViewModel(), path: $path, searchText: $searchText)
+                    KakaoSearchView(kakaoSearchViewModel: KakaoSearchViewModel(), myPlaceListViewModel: MyPlaceListViewModel(), path: $path, searchText: $searchText)
                         .padding(EdgeInsets(top: 10, leading: 20, bottom: 0, trailing: 20))
                     
                     HStack {
@@ -104,7 +106,7 @@ struct HomeView: View {
                         case .notificationView:
                             NotificationView(path: $path)
                         case .searchView:
-                            SearchView(kakaoSearchViewModel: KakaoSearchViewModel(), searchText: $searchText, path: $path, isHeartFilled: $isHeartFilled)
+                            SearchView(kakaoSearchViewModel: KakaoSearchViewModel(), myPlaceListViewModel: MyPlaceListViewModel(), searchText: $searchText, path: $path, isHeartFilled: $isHeartFilled, placeId: $placeId)
                         case .favoritePlacesView:
                             FavoritePlacesView(path: $path)
                         case .arciveView:
@@ -118,7 +120,7 @@ struct HomeView: View {
                         case .placeInformationEditView:
                             PlaceInformationEditView(path: $path, isHeartFilled: $isHeartFilled, selectedDayOffIndices: $selectedDayOffIndices, selectedServiceIndices: $selectedServiceIndices)
                         case .placeInformationView:
-                            PlaceInformationView(path: $path, isHeartFilled: $isHeartFilled, myPlaceInformationViewModel: MyPlaceInformationViewModel())
+                            PlaceInformationView(path: $path, isHeartFilled: $isHeartFilled, placeId: $placeId, myPlaceInformationViewModel: MyPlaceInformationViewModel())
                         case .privacyView:
                             PrivacyView(path: $path)
                         case .profileEditView:
@@ -224,6 +226,7 @@ struct ViewChangeButton<ViewModel: Hashable>: View {
     
     var body: some View {
         Button(action: {
+            //MARK: - 임시용으로 관심장소 등록 코드 넣어놨습니다.
             MyPlaceManager.shared.searchFavoritePlaceList() { result in
                 switch result {
                 case .success:

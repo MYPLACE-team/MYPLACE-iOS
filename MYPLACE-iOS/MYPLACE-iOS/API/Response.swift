@@ -7,6 +7,43 @@
 
 import Foundation
 
+// MARK: - MyPlaceListResponse
+struct MyPlaceListResponse: Codable {
+    let isSuccess: Bool
+    let code: Int
+    let message: String
+    let result: MyPlaceListInfo
+    
+    enum CodingKeys: String, CodingKey {
+        case isSuccess, code, message
+        case result = "result"
+    }
+}
+
+// MARK: - MyPlaceListInfo
+struct MyPlaceListInfo: Codable {
+    let totalNum: Int
+    let hasNext: Bool
+    let place: [MyPlaceList]
+}
+
+// MARK: - MyPlaceList
+struct MyPlaceList: Codable {
+    let id: Int
+    let name, address: String
+    let category_id: Int
+    //MARK: - 데이터 타입 수정 필요
+    let thumbnail_url: JSONNull
+    let isLike: Int
+
+    enum CodingKeys: String, CodingKey {
+        case id, name, address
+        case category_id = "category_id"
+        case thumbnail_url = "thumbnail_url"
+        case isLike
+    }
+}
+
 // MARK: - MyPlaceInformationResponse
 struct MyPlaceInformationResponse: Codable {
     let isSuccess: Bool

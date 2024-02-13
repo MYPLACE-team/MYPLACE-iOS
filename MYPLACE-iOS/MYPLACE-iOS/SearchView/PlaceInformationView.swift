@@ -12,13 +12,13 @@ struct PlaceInformationView: View {
     @State private var currentPage = 0
     @Binding var isHeartFilled: Bool
     @State private var userInput: String = ""
+    @Binding var placeId: Int
     //MARK: - 토스트 메시지 뷰 두개에 띄워지는거 해결해야함
     @StateObject private var toastViewModel = ToastViewModel()
-    @StateObject var myPlaceInformationEditViewModel = MyPlaceInformationEditViewModel.shared
     @ObservedObject var myPlaceInformationViewModel: MyPlaceInformationViewModel
     
-//    @Binding var selectedDayOffIndices: [Holiday]
-//    @Binding var selectedServiceIndices: [ProvidedService]
+    let hstackWidth = CGFloat(320)
+    @State var emoji: String = ""
     
     var body: some View {
         ZStack {
@@ -53,12 +53,11 @@ struct PlaceInformationView: View {
                             Rectangle()
                                 .foregroundStyle(.clear)
                                 .background(BackgroundBlurView())
-                                .frame(height: 70)
+                                .frame(height: 80)
                                 .overlay(
                                     VStack(spacing: 0) {
                                         HStack {
                                             Text(PlaceType.emojiForCategory(from: myPlaceInformationViewModel.result.categoryID) + " " + myPlaceInformationViewModel.result.name)
-                                                
                                                 .font(.system(size: 25))
                                             Spacer()
                                             Image(systemName: isHeartFilled ? "heart.fill" : "heart")
@@ -70,6 +69,7 @@ struct PlaceInformationView: View {
                                                 }
                                                 .padding(.trailing, 10)
                                         }
+                                        
                                         HStack(spacing: 0) {
                                             Image("Map2")
                                             Text(myPlaceInformationViewModel.result.address)
@@ -89,30 +89,32 @@ struct PlaceInformationView: View {
                     }
                     .frame(height: 460)
                 }
-                HStack(spacing: 10) {
-                    ForEach(myPlaceInformationViewModel.result.hashtag.isEmpty ? ["해시태그"] : myPlaceInformationViewModel.result.hashtag, id: \.self) { hashtag in
-                        Text(hashtag)
-                            .font(
-                                .custom("Apple SD Gothic Neo", size: 15)
-                                .weight(.bold)
-                            )
-                            .foregroundStyle(Color.accentColor)
-                            .background(
-                                RoundedRectangle(cornerRadius: 40)
-                                    .foregroundStyle(.white)
-                                    .overlay(
-                                        RoundedRectangle(cornerRadius: 40)
-                                            .stroke(Color.accentColor, lineWidth: 1.3)
-                                            .padding(EdgeInsets(top: -5, leading: -10, bottom: -4, trailing: -10))
-                                    )
-                            )
-                            .padding([.leading, .trailing], 10)
+                
+                if !myPlaceInformationViewModel.result.hashtag.isEmpty {
+                    HStack(spacing: 10) {
+                        ForEach(myPlaceInformationViewModel.result.hashtag, id: \.self) { hashtag in
+                            Text(hashtag)
+                                .font(
+                                    .custom("Apple SD Gothic Neo", size: 15)
+                                    .weight(.bold)
+                                )
+                                .foregroundStyle(Color.accentColor)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 40)
+                                        .foregroundStyle(.white)
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 40)
+                                                .stroke(Color.accentColor, lineWidth: 1.3)
+                                                .padding(EdgeInsets(top: -5, leading: -10, bottom: -4, trailing: -10))
+                                        )
+                                )
+                                .padding([.leading, .trailing], 10)
+                        }
+                        Spacer()
                     }
-
-                    
-                    Spacer()
+                    .padding(EdgeInsets(top: 10, leading: 30, bottom: 0, trailing: 0))   
                 }
-                .padding(EdgeInsets(top: 10, leading: 30, bottom: 0, trailing: 0))
+                
                 HStack {
                     VStack(alignment: .leading, spacing: 20) {
                         HStack(spacing: 0) {
@@ -124,13 +126,16 @@ struct PlaceInformationView: View {
                                     )
                                 Spacer()
                             }
-                            .frame(width: 130)
-                            Text("흑임자라떼")
+                            .frame(width: 110)
+                            .padding(.trailing, 40)
+                            Text(myPlaceInformationViewModel.result.recDish.isEmpty ? "추천 메뉴가 입력되지 않았어요" : myPlaceInformationViewModel.result.recDish)
                                 .font(
-                                    Font.custom("Apple SD Gothic Neo", size: 18)
-                                        .weight(.thin)
+                                    myPlaceInformationViewModel.result.recDish.isEmpty ?
+                                    Font.custom("Apple SD Gothic Neo", size: 12).weight(.thin) :
+                                        Font.custom("Apple SD Gothic Neo", size: 18).weight(.thin)
                                 )
                                 .foregroundStyle(.black)
+                            Spacer()
                         }
                         .padding(.top, 13)
                         HStack(spacing: 0) {
@@ -142,10 +147,21 @@ struct PlaceInformationView: View {
                                     )
                                 Spacer()
                             }
-                            .frame(width: 130)
-                            ForEach(myPlaceInformationViewModel.result.service.isEmpty ? [""] : myPlaceInformationViewModel.result.service, id: \.self) { serviceIndex in
-                                BlueChip(text: serviceIndex, isSelected: false)
+                            .frame(width: 110)
+                            .padding(.trailing, 40)
+                            HStack(spacing: 5) {
+                                ForEach(myPlaceInformationViewModel.result.service.isEmpty ? ["제공서비스가 입력되지 않았어요"] : myPlaceInformationViewModel.result.service, id: \.self) { service in
+                                    
+                                    BlueChip(text: emoji + service, isSelected: false)
+                                }
+                                .font(
+                                    myPlaceInformationViewModel.result.service.isEmpty ?
+                                    Font.custom("Apple SD Gothic Neo", size: 12).weight(.thin) :
+                                        Font.custom("Apple SD Gothic Neo", size: 18).weight(.thin)
+                                )
                             }
+
+                            Spacer()
                         }
                         HStack(spacing: 0) {
                             HStack {
@@ -156,7 +172,8 @@ struct PlaceInformationView: View {
                                     )
                                 Spacer()
                             }
-                            .frame(width: 130)
+                            .frame(width: 110)
+                            .padding(.trailing, 40)
                             VStack {
                                 HStack(spacing: 5) {
                                     ForEach(myPlaceInformationViewModel.result.closedDay.prefix(3), id: \.self) { closedDayIndex in
@@ -166,14 +183,17 @@ struct PlaceInformationView: View {
                             }
                         }
                         
+                        //MARK: - 간격 확인 후 수정 필요
                         if myPlaceInformationViewModel.result.closedDay.count > 3 {
                             HStack(spacing: 0) {
                                 HStack {
                                     EmptyView()
                                 }
                                 .frame(width: 130)
-                                ForEach(myPlaceInformationViewModel.result.closedDay.dropFirst(3), id: \.self) { closedDayIndex in
-                                    RedChip(text: closedDayIndex)
+                                HStack(spacing: 5) {
+                                    ForEach(myPlaceInformationViewModel.result.closedDay.dropFirst(3), id: \.self) { closedDayIndex in
+                                        RedChip(text: closedDayIndex)
+                                    }
                                 }
                             }
                         }
@@ -186,35 +206,44 @@ struct PlaceInformationView: View {
                                     )
                                 Spacer()
                             }
-                            .frame(width: 130)
-                            Button(action: {
-                                //MARK: - 백에서 준 값으로 업데이트 필요
-                                openInstagram(username: myPlaceInformationViewModel.result.insta)
-                            }, label: {
-                                Image(systemName: "globe")
-                                    .foregroundStyle(.black)
-                            })
+                            .frame(width: 110)
+                            .padding(.trailing, 40)
+                            if !myPlaceInformationViewModel.result.insta.isEmpty {
+                                Button(action: {
+                                    openInstagram(username: myPlaceInformationViewModel.result.insta)
+                                }, label: {
+                                    Image(systemName: "globe")
+                                        .foregroundStyle(.black)
+                                })
+                            }
+                            else {
+                                Text("인스타그램 몰라!")
+                                    .font(
+                                        .custom("Apple SD Gothic Neo", size: 12)
+                                        .weight(.semibold)
+                                    )
+                            }
                         }
                         
                     }
                     .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
-                    .frame(width: 320)
+                    .frame(width: hstackWidth)
                 }
                 HStack(spacing: 0) {
                     Image("Pencil")
                         .resizable()
                         .frame(width: 18, height: 18)
-                        .padding(.top, 13)
-                        .padding(.leading, 40)
+                        .padding(.top, 8)
                     Text("장소정보 수정 문의")
                         .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
                         .font(
                             .custom("Apple SD Gothic Neo", size: 18)
                             .weight(.semibold)
                         )
-                        .padding(.top, 15)
+                        .padding(.top, 10)
                         .padding(.leading, 4)
                     Spacer()
+                    //MARK: - toast창이라도 띄우면 좋을듯?
                     Button(action: {
                         
                     }) {
@@ -223,9 +252,9 @@ struct PlaceInformationView: View {
                                 .custom("Apple SD Gothic Neo", size: 12)
                             )
                     }
-                    .padding(.top, 15)
-                    .padding(.trailing, 60)
+                    .padding(.top, 10)
                 }
+                .frame(width: hstackWidth)
                 ZStack {
                     TextEditor(text: $userInput)
                         .font(
@@ -252,6 +281,19 @@ struct PlaceInformationView: View {
                     Spacer()
                 }
                 
+                Spacer()
+                HStack {
+                    Text("최초 작성자: " + "\(myPlaceInformationViewModel.result.writer)")
+                        .font(Font.custom("Apple SD Gothic Neo", size: 12))
+                        .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
+                        .padding(.leading, 40)
+                    Spacer()
+                    Text("최근 수정일: \(formatDateString(myPlaceInformationViewModel.result.updatedAt))")
+                        .font(Font.custom("Apple SD Gothic Neo", size: 12))
+                        .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
+                        .padding(.trailing, 40)
+                }
+                .padding(.bottom, 10)
             }
             .ignoresSafeArea(.all)
             VStack {
@@ -277,10 +319,26 @@ struct PlaceInformationView: View {
         .onTapGesture {
             UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
         }
+        .onAppear {
+            myPlaceInformationViewModel.getMyPlaceInformation(placeId: placeId)
+        }
         .KeyboardAwarePadding()
         .toolbar(.hidden)
         .toast(message: toastViewModel.toastMessage, isShowing: $toastViewModel.showToast, duration: Toast.time)
     }
+    
+    func formatDateString(_ dateString: String) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+
+        if let date = dateFormatter.date(from: dateString) {
+            dateFormatter.dateFormat = "yyyy.MM.dd"
+            return dateFormatter.string(from: date)
+        } else {
+            return "날짜 없음"
+        }
+    }
+
     
     func openInstagram(username: String) {
         let instagramUrl = URL(string: "instagram://user?username=\(username)")!
@@ -324,5 +382,5 @@ extension View {
 }
 
 #Preview {
-    PlaceInformationView(path: .constant([]), isHeartFilled: .constant(true), myPlaceInformationViewModel: MyPlaceInformationViewModel())
+    PlaceInformationView(path: .constant([]), isHeartFilled: .constant(true), placeId: .constant(49), myPlaceInformationViewModel: MyPlaceInformationViewModel())
 }

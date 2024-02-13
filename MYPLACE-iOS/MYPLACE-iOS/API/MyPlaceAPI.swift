@@ -10,8 +10,10 @@ import Moya
 
 enum MyPlaceAPI {
     case registerMyPlace(place: MyPlaceInformationEditViewModel)
+    case registerFavoritePlace(placeId: Int)
     case searchFavoritePlaceList
-    case getMyPlaceInformation
+    case getMyPlaceInformation(placeId: Int)
+    case getMyPlaceList(keyword: String, page: Int)
 }
 
 extension MyPlaceAPI: TargetType {
@@ -23,10 +25,14 @@ extension MyPlaceAPI: TargetType {
         switch self {
         case .registerMyPlace:
             return "/place"
+        case .registerFavoritePlace(let placeId):
+            return "/place/like/\(placeId)"
         case .searchFavoritePlaceList:
             return "/place/like"
-        case .getMyPlaceInformation:
-            return "/place/:placeId"
+        case .getMyPlaceInformation(let placeId):
+            return "/place/\(placeId)"
+        case .getMyPlaceList:
+            return "/place/search"
         }
     }
     
@@ -34,9 +40,13 @@ extension MyPlaceAPI: TargetType {
         switch self {
         case .registerMyPlace:
             return .post
+        case .registerFavoritePlace:
+            return .post
         case .searchFavoritePlaceList:
             return .post
         case .getMyPlaceInformation:
+            return .get
+        case .getMyPlaceList:
             return .get
         }
     }
@@ -46,10 +56,14 @@ extension MyPlaceAPI: TargetType {
         case .registerMyPlace(let place):
             let jsonData = try! JSONEncoder().encode(place)
             return .requestData(jsonData)
+        case .registerFavoritePlace:
+            return .requestPlain
         case .searchFavoritePlaceList:
             return .requestPlain
         case .getMyPlaceInformation:
             return .requestPlain
+        case .getMyPlaceList(let keyword, let page):
+            return .requestParameters(parameters: ["keyword": keyword, "page": page], encoding: URLEncoding.default)
         }
     }
     

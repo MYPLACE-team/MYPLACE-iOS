@@ -118,7 +118,7 @@ struct SearchPopup: View {
                     Button(action: {
                         myPlaceInformationEditViewModel.name = popupViewModel.selectedPlace?.placeName ?? "장소"
                         myPlaceInformationEditViewModel.address = popupViewModel.selectedPlace?.address ?? "주소"
-                        myPlaceInformationEditViewModel.category = selectedType!.rawValue
+                        myPlaceInformationEditViewModel.categoryId = selectedType!.rawValue
                         isPopupPresented.toggle()
                         path.append(.placeInformationEditView)
                     }) {
@@ -270,7 +270,7 @@ struct PlaceInformation_DayOffPopup: View {
                     }
                     .padding(.top, 10)
                     Button(action: {
-                        myPlaceInformationEditViewModel.dayOff = selectedDayOffIndices.map { $0.rawValue }
+                        myPlaceInformationEditViewModel.closedDay = selectedDayOffIndices.map { $0.rawValue }
                         isPopupPresented.toggle()
                     }) {
                         RoundedRectangle(cornerRadius: 5)
@@ -354,7 +354,13 @@ struct PlaceInformation_ServicePopup: View {
                     }
                     .padding(.top, 10)
                     Button(action: {
-                        myPlaceInformationEditViewModel.providedService = selectedServiceIndices.map { $0.rawValue }
+                        myPlaceInformationEditViewModel.service = selectedServiceIndices.map {
+                            var serviceString = $0.rawValue
+                            // 이모지가 포함된 문자열의 맨 앞 이모지를 제거
+                            serviceString.removeFirst()
+                            return serviceString
+                        }
+
                         isPopupPresented.toggle()
                     }) {
                         RoundedRectangle(cornerRadius: 5)
