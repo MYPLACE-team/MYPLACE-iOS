@@ -103,6 +103,8 @@ struct HomeView: View {
                             SettingView(path: $path)
                         case .notificationView:
                             NotificationView(path: $path)
+                        case .notificationSettingView:
+                            NotificationSettingView(path: $path)
                         case .searchView:
                             SearchView(kakaoSearchViewModel: KakaoSearchViewModel(), searchText: $searchText, path: $path, isHeartFilled: $isHeartFilled)
                         case .favoritePlacesView:

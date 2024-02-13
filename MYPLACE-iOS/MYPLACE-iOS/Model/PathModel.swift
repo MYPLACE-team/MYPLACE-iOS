@@ -10,6 +10,7 @@ import SwiftUI
 enum PathModel {
     case settingView
     case notificationView
+    case notificationSettingView
     case searchView
     case favoritePlacesView
     case arciveView

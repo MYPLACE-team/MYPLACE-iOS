@@ -10,7 +10,6 @@ import SwiftUI
 struct ArchiveView: View {
     @State var searchItem: String = ""
     @State var searchItemList: [String] = []
-    @State var arhcivePlaces: [ArchiveModel] = archivePlaces
     @State var isTotalView: Bool = true
     
     @State var isPopupPresented: Bool = false
@@ -272,21 +271,9 @@ struct ArchiveView: View {
                     .clipShape(RoundedRectangle(cornerRadius: 6))
                     .padding(.top, 15)
                     .padding(.bottom, 24)
-//                    HStack(spacing: 6){
-//                        Spacer()
-//                        Text("총")
-//                            .font(Font.custom("Apple SD Gothic Neo", size: 14))
-//                        Text(String(archivePlaces.count))
-//                            .font(Font.custom("Apple SD Gothic Neo", size: 18).weight(.semibold))
-//                        Text("건")
-//                            .font(Font.custom("Apple SD Gothic Neo", size: 14))
-//                            .padding(.trailing, 36)
-//                    }
-//                    .foregroundStyle(Color(red: 0.27, green: 0.3, blue: 0.33))
-//                    .padding(.vertical, 6)
                     ScrollView {
                         VStack(spacing: 14){
-                            if(self.arhcivePlaces.count > 0) {
+                            if(archivePlaces.count > 0) {
                                 ForEach(archivePlaces, id: \.self){
                                     place in
                                     Button(action: {
