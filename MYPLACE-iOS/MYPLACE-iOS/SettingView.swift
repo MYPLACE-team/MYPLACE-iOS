@@ -134,9 +134,14 @@ struct SettingView: View {
                               .weight(.semibold)
                           )
                           .foregroundStyle(Color(red: 0.4, green: 0.35, blue: 0.96))
-                        Text("알림 설정")
-                          .font(Font.custom("Apple SD Gothic Neo", size: 16))
-                          .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
+                        Button(action: {
+                            path.append(.notificationSettingView)
+                        })
+                        {
+                            Text("알림 설정")
+                                .font(Font.custom("Apple SD Gothic Neo", size: 16))
+                                .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
+                        }
                     }
                 }
                 .padding(.leading, 33)
