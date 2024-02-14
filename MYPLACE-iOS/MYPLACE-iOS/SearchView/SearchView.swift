@@ -9,11 +9,13 @@ import SwiftUI
 
 struct SearchView: View {
     @ObservedObject var kakaoSearchViewModel: KakaoSearchViewModel
+    @ObservedObject var myPlaceListViewModel: MyPlaceListViewModel
     @StateObject var popupViewModel = PopupViewModel.shared
     
     @Binding var searchText: String
     @Binding var path: [PathModel]
     @Binding var isHeartFilled: Bool
+    @Binding var placeId: Int
     @State private var isPopupPresented = false
     @StateObject var toastViewModel = ToastViewModel.shared
     var body: some View {
@@ -35,6 +37,7 @@ struct SearchView: View {
                                     .padding(.leading, 13)
                                 Button(action: {
                                     kakaoSearchViewModel.search(query: searchText)
+                                    myPlaceListViewModel.getMyPlaceList(keyword: searchText)
                                     UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                                 }) {
                                     Image(systemName: "magnifyingglass")
@@ -60,6 +63,7 @@ struct SearchView: View {
                                 )
                         }
                         .foregroundStyle(.black)
+                        .padding(.top, 5)
                     }
                     ToolbarItem(placement: .topBarTrailing) {
                         ToolBarView(path: $path)
@@ -73,10 +77,12 @@ struct SearchView: View {
                             .custom("Apple SD Gothic Neo", size: 15)
                             .weight(.thin)
                         )
-                    Text("\(kakaoSearchViewModel.meta.pageableCount)")
-                        .font(
-                            .custom("Apple SD Gothic Neo", size: 15)
-                        )
+                    Text("\(min(kakaoSearchViewModel.meta.pageableCount, 45))")
+                            .font(.custom("Apple SD Gothic Neo", size: 15))
+                    if kakaoSearchViewModel.meta.pageableCount >= 45 {
+                        Text("+")
+                            .font(.custom("Apple SD Gothic Neo", size: 15).weight(.thin))
+                    }
                     Text("개")
                         .font(
                             .custom("Apple SD Gothic Neo", size: 15)
@@ -86,14 +92,19 @@ struct SearchView: View {
                 }
                 .padding(.top, 5)
                     VStack {
-                        Button(action: {
-                            path.append(.placeInformationView)
-                        }) {
-                            SearchItemView_Registered(isHeartFilled: $isHeartFilled, path: $path, place: dummyPlaces[1])
-                        }
                         HStack {
                             Spacer()
                             List {
+                                ForEach(myPlaceListViewModel.result.place, id: \.id) { place in
+                                    Button(action: {
+                                        placeId = place.id
+                                        path.append(.placeInformationView)
+                                    }) {
+                                        //MARK: - isHeartFilled - bool로
+                                        SearchItemView_Registered(path: $path, isHeartFilled: false, placeName: PlaceType.emojiForCategory(from: place.category_id) + place.name, placeAddress: place.address)
+                                    }
+                                    .listRowSeparator(.hidden)
+                                }
                                 ForEach(kakaoSearchViewModel.places, id: \.id) { place in
                                     Button(action: {
                                         popupViewModel.setSelectedPlace(x: place.x, y: place.y, placeName: place.placeName, address: place.addressName)
@@ -108,6 +119,7 @@ struct SearchView: View {
                             .scrollIndicators(.hidden)
                             .onAppear {
                                 kakaoSearchViewModel.search(query: searchText)
+                                myPlaceListViewModel.getMyPlaceList(keyword: searchText)
                             }
 
                             Spacer()
@@ -130,6 +142,6 @@ struct SearchView: View {
 
 
 #Preview {
-    SearchView(kakaoSearchViewModel: KakaoSearchViewModel(), searchText: .constant("강원"), path: .constant([]), isHeartFilled: .constant(false))
+    SearchView(kakaoSearchViewModel: KakaoSearchViewModel(), myPlaceListViewModel: MyPlaceListViewModel(), searchText: .constant("도틀"), path: .constant([]), isHeartFilled: .constant(false), placeId: .constant(23))
 }
 

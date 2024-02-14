@@ -6,19 +6,20 @@
 //
 
 import SwiftUI
-import KakaoMapsSDK
-import KakaoMapsSDK_SPM
+import CoreLocation
 
 struct HomeView: View {
-    @StateObject var kakaoSearchViewModel = KakaoSearchViewModel()
     @State var searchText = ""
     @State var path: [PathModel] = []
     @State var isHeartFilled = false
     @State var draw: Bool = false
+    @State var placeId: Int = 0
     @State private var isPopupHidden = false
     @State var selectedDayOffIndices: [Holiday] = []
     @State var selectedServiceIndices: [ProvidedService] = []
-
+    
+    @StateObject var locationManager = LocationManager()
+    
     var body: some View {
         NavigationStack(path: $path) {
             VStack {
@@ -53,15 +54,15 @@ struct HomeView: View {
             }
             ZStack {
                 //MARK: - KakaoMapView
-                KakaoMapView(draw: $draw).onAppear(perform: {
+                KakaoMapView(draw: $draw)
+                    .onAppear(perform: {
                     self.draw = true
                 }).onDisappear(perform: {
                     self.draw = false
                 }).frame(maxWidth: .infinity, maxHeight: .infinity)
                 
                 VStack {
-                    //MARK: - kakaoSearchView
-                    KakaoSearchView(kakaoSearchViewModel: KakaoSearchViewModel(), path: $path, searchText: $searchText)
+                    KakaoSearchView(kakaoSearchViewModel: KakaoSearchViewModel(), myPlaceListViewModel: MyPlaceListViewModel(), path: $path, searchText: $searchText)
                         .padding(EdgeInsets(top: 10, leading: 20, bottom: 0, trailing: 20))
                     
                     HStack {
@@ -106,7 +107,7 @@ struct HomeView: View {
                         case .notificationSettingView:
                             NotificationSettingView(path: $path)
                         case .searchView:
-                            SearchView(kakaoSearchViewModel: KakaoSearchViewModel(), searchText: $searchText, path: $path, isHeartFilled: $isHeartFilled)
+                            SearchView(kakaoSearchViewModel: KakaoSearchViewModel(), myPlaceListViewModel: MyPlaceListViewModel(), searchText: $searchText, path: $path, isHeartFilled: $isHeartFilled, placeId: $placeId)
                         case .favoritePlacesView:
                             FavoritePlacesView(path: $path)
                         case .arciveView:
@@ -120,7 +121,7 @@ struct HomeView: View {
                         case .placeInformationEditView:
                             PlaceInformationEditView(path: $path, isHeartFilled: $isHeartFilled, selectedDayOffIndices: $selectedDayOffIndices, selectedServiceIndices: $selectedServiceIndices)
                         case .placeInformationView:
-                            PlaceInformationView(path: $path, isHeartFilled: $isHeartFilled)
+                            PlaceInformationView(path: $path, isHeartFilled: $isHeartFilled, placeId: $placeId, myPlaceInformationViewModel: MyPlaceInformationViewModel())
                         case .privacyView:
                             PrivacyView(path: $path)
                         case .profileEditView:
@@ -132,8 +133,11 @@ struct HomeView: View {
                     HStack {
                         VStack {
                             Button(action: {
-                                //MARK: - 카카오맵 기능 추가 필요
-                                print("Button Tapped")
+                                locationManager.fetchUserLocation { location in
+                                    if let userLocation = location {
+                                        KakaoMapCoordinator.shared.animateCamera(lon: userLocation.coordinate.longitude, lat: userLocation.coordinate.latitude)
+                                    }
+                                }
                             }) {
                                 Circle()
                                     .fill(Color(red: 0.95, green: 0.95, blue: 0.95))
@@ -226,6 +230,15 @@ struct ViewChangeButton<ViewModel: Hashable>: View {
     
     var body: some View {
         Button(action: {
+            //MARK: - 임시용으로 관심장소 등록 코드 넣어놨습니다.
+            MyPlaceManager.shared.searchFavoritePlaceList() { result in
+                switch result {
+                case .success:
+                    print("GetMyPlaceSuccess!!!!!!!!!!!!!!")
+                case .failure(let error):
+                    print("Error getFavoritePlace: \(error.localizedDescription)")
+                }
+            }
             path.append(destinationView)
         }) {
             RoundedRectangle(cornerRadius: 10)
@@ -248,6 +261,37 @@ struct ViewChangeButton<ViewModel: Hashable>: View {
         }
     }
 }
+class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
+    private var locationManager = CLLocationManager()
+    @Published var userLocation: CLLocation?
+
+    override init() {
+        super.init()
+        self.locationManager.delegate = self
+        self.locationManager.requestWhenInUseAuthorization()
+        self.locationManager.startUpdatingLocation()
+    }
+
+    func fetchUserLocation(completion: @escaping (CLLocation?) -> Void) {
+        if let location = self.userLocation {
+            completion(location)
+        } else {
+            // 위치를 가져올 수 없을 때 처리
+            completion(nil)
+        }
+    }
+
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if let location = locations.last {
+            self.userLocation = location
+        }
+    }
+
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print("Error fetching user location: \(error.localizedDescription)")
+    }
+}
+
 
 #Preview {
     HomeView()

@@ -9,10 +9,10 @@ import SwiftUI
 
 struct ViewComponents: View {
     var body: some View {
-        SearchItemView_Registered(isHeartFilled: .constant(false), path: .constant([]), place: dummyPlaces[1])
+        SearchItemView_Registered(path: .constant([]), isHeartFilled: false, placeName: "test", placeAddress: "test")
         SearchItemView_UnRegistered(path: .constant([]), placeName: "카카오프렌즈카카오프렌즈카카오프렌즈", addressName: "서울")
         FavoriteItemView(path: .constant([]), isVisited: .constant(false), place: dummyPlaces[1])
-        KakaoSearchView(kakaoSearchViewModel: KakaoSearchViewModel(), path: .constant([]), searchText: .constant(""))
+        KakaoSearchView(kakaoSearchViewModel: KakaoSearchViewModel(), myPlaceListViewModel: MyPlaceListViewModel(), path: .constant([]), searchText: .constant(""))
         BlueChip(text: "가나다라마바사", isSelected: false)
         RedChip(text: "가나다라마바사")
     }
@@ -29,24 +29,30 @@ struct BlueChip: View {
     }
     
     var body: some View {
-        Text(text)
-            .font(
-                .custom("Apple SD Gothic Neo", size: 12)
-            )
-            .foregroundStyle(isSelected ? Color.white : Color(red: 0.4, green: 0.35, blue: 0.96))
-            .lineLimit(1)
-            .padding(.horizontal, 10)
-            .padding(.vertical, 5)
-            .background(
-                RoundedRectangle(cornerRadius: 20)
-                    .foregroundStyle(isSelected ? Color.accentColor : Color(red: 0.97, green: 0.95, blue: 1))
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 20)
-                            .stroke(Color(red: 0.4, green: 0.35, blue: 0.96), lineWidth: 1)
-                    )
-            )
-        
-        
+        if !text.isEmpty {
+            Text(text)
+                .font(
+                    .custom("Apple SD Gothic Neo", size: 12)
+                )
+                .foregroundStyle(isSelected ? Color.white : Color(red: 0.4, green: 0.35, blue: 0.96))
+                .lineLimit(1)
+                .padding(.horizontal, 10)
+                .padding(.vertical, 5)
+                .background(
+                    RoundedRectangle(cornerRadius: 20)
+                        .foregroundStyle(isSelected ? Color.accentColor : Color(red: 0.97, green: 0.95, blue: 1))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 20)
+                                .stroke(Color(red: 0.4, green: 0.35, blue: 0.96), lineWidth: 1)
+                        )
+                )
+        }
+        else {
+            Text("선택된 서비스가 없어요")
+                .font(
+                    .custom("Apple SD Gothic Neo", size: 12)
+                )
+        }
     }
 }
 
@@ -58,22 +64,30 @@ struct RedChip: View {
     }
     
     var body: some View {
-        Text(text)
-            .font(
-                .custom("Apple SD Gothic Neo", size: 12)
-            )
-            .foregroundStyle(Color(red: 0.89, green: 0.39, blue: 0.39))
-            .lineLimit(1)
-            .padding(.horizontal, 10)
-            .padding(.vertical, 5)
-            .background(
-                RoundedRectangle(cornerRadius: 20)
-                    .foregroundStyle(Color(red: 1, green: 0.95, blue: 0.95))
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 20)
-                            .stroke(Color(red: 0.89, green: 0.39, blue: 0.39), lineWidth: 1)
-                    )
-            )
+        if !text.isEmpty {
+            Text(text)
+                .font(
+                    .custom("Apple SD Gothic Neo", size: 12)
+                )
+                .foregroundStyle(Color(red: 0.89, green: 0.39, blue: 0.39))
+                .lineLimit(1)
+                .padding(.horizontal, 10)
+                .padding(.vertical, 5)
+                .background(
+                    RoundedRectangle(cornerRadius: 20)
+                        .foregroundStyle(Color(red: 1, green: 0.95, blue: 0.95))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 20)
+                                .stroke(Color(red: 0.89, green: 0.39, blue: 0.39), lineWidth: 1)
+                        )
+                )
+        }
+        else {
+            Text("휴무일을 알 수 없어요")
+                .font(
+                    .custom("Apple SD Gothic Neo", size: 12)
+                )
+        }
     }
 }
 
@@ -89,16 +103,17 @@ struct Xmark: View {
 }
 
 struct SearchItemView_Registered: View {
-    @Binding var isHeartFilled: Bool
     @Binding var path: [PathModel]
-    var place: PlaceModel
+    var isHeartFilled: Bool
+    let placeName: String
+    let placeAddress: String
     var body: some View {
         RoundedRectangle(cornerRadius: 15)
             .fill(Color(red: 0.96, green: 0.96, blue: 0.96))
             .frame(width: 340, height: 80)
             .overlay(
                 HStack {
-                    Image(place.imageName)
+                    Image("DummyImage2")
                         .resizable()
                         .scaledToFit()
                         .frame(width: 70, height: 70)
@@ -107,7 +122,7 @@ struct SearchItemView_Registered: View {
                     
                     VStack(alignment: .leading, spacing: 5) {
                         HStack {
-                            AutoScrollingText(text: place.name, fontName: "Apple SD Gothic Neo", fontSize: 18, fontWeight: .semibold)
+                            AutoScrollingText(text: placeName, fontName: "Apple SD Gothic Neo", fontSize: 18, fontWeight: .semibold)
                                 .frame(width: 165, height: 22)
                                 .clipped()
                                 .foregroundStyle(.black)
@@ -115,7 +130,17 @@ struct SearchItemView_Registered: View {
                             Image(systemName: isHeartFilled ? "heart.fill" : "heart")
                                 .foregroundStyle(isHeartFilled ? .red : .gray)
                                 .onTapGesture {
-                                    isHeartFilled.toggle()
+                                    //MARK: - 서버 toggle 필요
+//                                    isHeartFilled.toggle()
+                                    MyPlaceManager.shared.registerFavoritePlace(placeId: 24) { error in
+                                        if let error = error {
+                                            // 에러 처리
+                                            print("error")
+                                        } else {
+                                            // 성공 처리
+                                            print("success")
+                                        }
+                                    }
                                     let toastMessage = isHeartFilled ? "관심 장소로 저장되었습니다." : "관심 장소 저장이 해제되었습니다."
                                     ToastViewModel.shared.showToastWithString(text: toastMessage)
                                 }
@@ -126,7 +151,7 @@ struct SearchItemView_Registered: View {
                             Image("Map")
                                 .resizable()
                                 .frame(width: 12, height: 15)
-                            AutoScrollingText(text: place.address, fontName: "Apple SD Gothic Neo", fontSize: 15, fontWeight: .thin)
+                            AutoScrollingText(text: placeAddress, fontName: "Apple SD Gothic Neo", fontSize: 15, fontWeight: .thin)
                                 .frame(width: 165, height: 18)
                                 .clipped()
                                 .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
@@ -153,11 +178,11 @@ struct SearchItemView_UnRegistered: View {
                 HStack {
                     RoundedRectangle(cornerRadius: 10)
                         .frame(width: 70, height: 70)
-                        .padding(EdgeInsets(top: 0, leading: 5, bottom: 0, trailing: 0))
                         .foregroundStyle(Color(red: 0.88, green: 0.88, blue: 0.88))
                         .overlay(
                             Image("MyPlaceLogo")
                         )
+                        .padding(EdgeInsets(top: 0, leading: 5, bottom: 0, trailing: 0))
                     
                     VStack(alignment: .leading, spacing: 5) {
                         HStack {
@@ -300,6 +325,7 @@ struct TextWidthPreferenceKey: PreferenceKey {
 
 struct KakaoSearchView: View {
     @ObservedObject var kakaoSearchViewModel: KakaoSearchViewModel
+    @ObservedObject var myPlaceListViewModel: MyPlaceListViewModel
     @Binding var path: [PathModel]
     @Binding var searchText: String
     
@@ -323,6 +349,7 @@ struct KakaoSearchView: View {
                         .padding(.leading, 5)
                     Button(action: {
                         kakaoSearchViewModel.search(query: searchText)
+                        myPlaceListViewModel.getMyPlaceList(keyword: searchText)
                         path.append(.searchView)
                     }) {
                         Image(systemName: "magnifyingglass")

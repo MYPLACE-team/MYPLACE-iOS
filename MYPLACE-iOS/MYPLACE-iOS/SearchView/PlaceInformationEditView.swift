@@ -12,7 +12,7 @@ struct PlaceInformationEditView: View {
     @Binding var path: [PathModel]
     @Binding var isHeartFilled: Bool
     @StateObject var popupViewModel = PopupViewModel.shared
-    @StateObject var myPlaceInformationViewModel = MyPlaceInformationViewModel.shared
+    @StateObject var myPlaceInformationEditViewModel = MyPlaceInformationEditViewModel.shared
     @State private var selectedImage: [UIImage] = []
     
     @State private var isDayOffPopupPresented = false
@@ -45,14 +45,15 @@ struct PlaceInformationEditView: View {
                 }
                 .padding(.top, 10)
                 if let selectedPlace = popupViewModel.selectedPlace {
-                    SearchItemView_UnRegistered(path: $path, placeName: (PlaceType(rawValue: myPlaceInformationViewModel.category)?.emojiForCategory() ?? "") + selectedPlace.placeName, addressName: selectedPlace.address, isEditing: true)
+                    SearchItemView_UnRegistered(path: $path, placeName: (PlaceType( rawValue: myPlaceInformationEditViewModel.categoryId)?.emojiForCategory() ?? "") + selectedPlace.placeName, addressName: selectedPlace.address, isEditing: true)
+                        .padding(.bottom, -10)
                 } else {
-                    SearchItemView_Registered(isHeartFilled: $isHeartFilled, path: $path, place: dummyPlaces[1])
-                        .padding(.top, 10)
+                    Text("뭔가 잘못됐어!!!")
                 }
+                    
                 
                 VStack(spacing: 10) {
-                    SectionView(text: $myPlaceInformationViewModel.recommendedMenu, imageName: "Fork", title: "추천 메뉴", placeholder: "추천 메뉴를 1가지 입력해주세요.", characterLimit: 15)
+                    SectionView(text: $myPlaceInformationEditViewModel.recDish, imageName: "Fork", title: "추천 메뉴", placeholder: "추천 메뉴를 1가지 입력해주세요.", characterLimit: 15)
                     HStack(spacing: 0) {
                         Image("Clock")
                             .resizable()
@@ -156,7 +157,7 @@ struct PlaceInformationEditView: View {
                             .padding(.leading, 37)
                         }
                     }
-                    SectionView(text: $myPlaceInformationViewModel.url, imageName: "CheckMark", title: "인스타그램", placeholder: "장소의 인스타그램 계정을 입력해주세요.", characterLimit: 30)
+                    SectionView(text: $myPlaceInformationEditViewModel.link, imageName: "InstagramLogo", title: "인스타그램", placeholder: "장소의 인스타그램 계정을 입력해주세요.", characterLimit: 30)
                     HStack(spacing: 0) {
                         Text("#태그")
                             .font(
@@ -168,10 +169,10 @@ struct PlaceInformationEditView: View {
                         Spacer()
                     }
                     HStack(spacing: 10) {
-                        TagView(tag: $myPlaceInformationViewModel.tags[0])
+                        TagView(tag: $myPlaceInformationEditViewModel.hashtag[0])
                             .padding(.leading, 37)
-                        TagView(tag: $myPlaceInformationViewModel.tags[1])
-                        TagView(tag: $myPlaceInformationViewModel.tags[2])
+                        TagView(tag: $myPlaceInformationEditViewModel.hashtag[1])
+                        TagView(tag: $myPlaceInformationEditViewModel.hashtag[2])
                         Spacer()
                     }
                 }
@@ -211,26 +212,27 @@ struct PlaceInformationEditView: View {
                 .padding(.top, 5)
                 HStack(spacing: 80) {
                     Button(action:  {
-                        myPlaceInformationViewModel.latitude = popupViewModel.selectedPlace?.x ?? "0"
-                        myPlaceInformationViewModel.longitude = popupViewModel.selectedPlace?.y ?? "0"
+                        myPlaceInformationEditViewModel.lat = popupViewModel.selectedPlace?.x ?? "0"
+                        myPlaceInformationEditViewModel.lon = popupViewModel.selectedPlace?.y ?? "0"
                         updateViewModelWithFormData(images: selectedImage)
-                        MyPlaceManager.shared.registerPlace(query: myPlaceInformationViewModel) { result in
-                            switch result {
-                            case .success:
-                                myPlaceInformationViewModel.reset()
-                                selectedDayOffIndices.removeAll()
-                                selectedServiceIndices.removeAll()
-                                path.removeLast()
-                            case .failure(let error):
-                                myPlaceInformationViewModel.reset()
+                        MyPlaceManager.shared.registerMyPlace(query: myPlaceInformationEditViewModel) { error in
+                            if let error = error {
+                                myPlaceInformationEditViewModel.reset()
                                 selectedDayOffIndices.removeAll()
                                 selectedServiceIndices.removeAll()
                                 print("Error registering place: \(error.localizedDescription)")
                                 path.removeLast()
+                            } else {
+                                print("SUCCESSSSSSSSSSSSSSSSSSSSSSSSSSS")
+                                myPlaceInformationEditViewModel.reset()
+                                selectedDayOffIndices.removeAll()
+                                selectedServiceIndices.removeAll()
+                                path.removeLast()
                             }
                         }
-//                        myPlaceInformationViewModel.reset()
-//                        print("RESET&&&&&&&&&&&&&&&&&&&: \(myPlaceInformationViewModel)")
+
+//                        myPlaceInformationEditViewModel.reset()
+//                        print("RESET&&&&&&&&&&&&&&&&&&&: \(myPlaceInformationEditViewModel)")
 //                        path.removeLast()
                     }) {
                         Text("등록완료")
@@ -246,7 +248,7 @@ struct PlaceInformationEditView: View {
                             )
                     }
                     Button(action:  {
-                        myPlaceInformationViewModel.reset()
+                        myPlaceInformationEditViewModel.reset()
                         selectedDayOffIndices.removeAll()
                         selectedServiceIndices.removeAll()
                         path.removeLast()
