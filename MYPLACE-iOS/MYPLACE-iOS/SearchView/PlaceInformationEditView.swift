@@ -157,7 +157,7 @@ struct PlaceInformationEditView: View {
                             .padding(.leading, 37)
                         }
                     }
-                    SectionView(text: $myPlaceInformationEditViewModel.link, imageName: "CheckMark", title: "인스타그램", placeholder: "장소의 인스타그램 계정을 입력해주세요.", characterLimit: 30)
+                    SectionView(text: $myPlaceInformationEditViewModel.link, imageName: "InstagramLogo", title: "인스타그램", placeholder: "장소의 인스타그램 계정을 입력해주세요.", characterLimit: 30)
                     HStack(spacing: 0) {
                         Text("#태그")
                             .font(

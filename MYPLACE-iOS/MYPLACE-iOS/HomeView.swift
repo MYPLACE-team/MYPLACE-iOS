@@ -6,10 +6,9 @@
 //
 
 import SwiftUI
+import CoreLocation
 
 struct HomeView: View {
-//    @StateObject var kakaoSearchViewModel = KakaoSearchViewModel()
-//    @StateObject var myPlaceListViewModel = MyPlaceListViewModel()
     @State var searchText = ""
     @State var path: [PathModel] = []
     @State var isHeartFilled = false
@@ -19,6 +18,7 @@ struct HomeView: View {
     @State var selectedDayOffIndices: [Holiday] = []
     @State var selectedServiceIndices: [ProvidedService] = []
     
+    @StateObject var locationManager = LocationManager()
     
     var body: some View {
         NavigationStack(path: $path) {
@@ -133,7 +133,11 @@ struct HomeView: View {
                     HStack {
                         VStack {
                             Button(action: {
-                                KakaoMapCoordinator.shared.animateCamera(lon: 127, lat: 37)
+                                locationManager.fetchUserLocation { location in
+                                    if let userLocation = location {
+                                        KakaoMapCoordinator.shared.animateCamera(lon: userLocation.coordinate.longitude, lat: userLocation.coordinate.latitude)
+                                    }
+                                }
                             }) {
                                 Circle()
                                     .fill(Color(red: 0.95, green: 0.95, blue: 0.95))
@@ -257,6 +261,37 @@ struct ViewChangeButton<ViewModel: Hashable>: View {
         }
     }
 }
+class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
+    private var locationManager = CLLocationManager()
+    @Published var userLocation: CLLocation?
+
+    override init() {
+        super.init()
+        self.locationManager.delegate = self
+        self.locationManager.requestWhenInUseAuthorization()
+        self.locationManager.startUpdatingLocation()
+    }
+
+    func fetchUserLocation(completion: @escaping (CLLocation?) -> Void) {
+        if let location = self.userLocation {
+            completion(location)
+        } else {
+            // 위치를 가져올 수 없을 때 처리
+            completion(nil)
+        }
+    }
+
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if let location = locations.last {
+            self.userLocation = location
+        }
+    }
+
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print("Error fetching user location: \(error.localizedDescription)")
+    }
+}
+
 
 #Preview {
     HomeView()

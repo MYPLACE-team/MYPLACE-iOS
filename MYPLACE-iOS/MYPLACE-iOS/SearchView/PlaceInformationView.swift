@@ -140,8 +140,8 @@ struct PlaceInformationView: View {
                             Text(myPlaceInformationViewModel.result.recDish.isEmpty ? "추천 메뉴가 입력되지 않았어요" : myPlaceInformationViewModel.result.recDish)
                                 .font(
                                     myPlaceInformationViewModel.result.recDish.isEmpty ?
-                                    Font.custom("Apple SD Gothic Neo", size: 12).weight(.thin) :
-                                        Font.custom("Apple SD Gothic Neo", size: 18).weight(.thin)
+                                    Font.custom("Apple SD Gothic Neo", size: 12).weight(.regular) :
+                                        Font.custom("Apple SD Gothic Neo", size: 18).weight(.regular)
                                 )
                                 .foregroundStyle(.black)
                             Spacer()
@@ -164,8 +164,8 @@ struct PlaceInformationView: View {
                                 }
                                 .font(
                                     myPlaceInformationViewModel.result.service.isEmpty ?
-                                    Font.custom("Apple SD Gothic Neo", size: 12).weight(.thin) :
-                                        Font.custom("Apple SD Gothic Neo", size: 18).weight(.thin)
+                                    Font.custom("Apple SD Gothic Neo", size: 12).weight(.regular) :
+                                        Font.custom("Apple SD Gothic Neo", size: 18).weight(.regular)
                                 )
                             }
                             Spacer()
@@ -223,8 +223,12 @@ struct PlaceInformationView: View {
                             .padding(.top, -10)
                         }
                         HStack(spacing: 0) {
-                            HStack {
-                                Text("✅인스타그램")
+                            HStack(alignment: .center, spacing: 0) {
+                                Image("InstagramLogo")
+                                    .resizable()
+                                    .frame(width: 20, height: 20)
+                                    .padding(.bottom, 2)
+                                Text("인스타그램")
                                     .font(
                                         .custom("Apple SD Gothic Neo", size: 18)
                                         .weight(.semibold)
@@ -245,7 +249,7 @@ struct PlaceInformationView: View {
                                 Text("인스타그램 몰라!")
                                     .font(
                                         .custom("Apple SD Gothic Neo", size: 12)
-                                        .weight(.semibold)
+                                        .weight(.regular)
                                     )
                             }
                         }
