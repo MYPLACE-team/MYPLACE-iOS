@@ -19,6 +19,7 @@
 		A55106852B5FCCBC004E8D1D /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = A55106842B5FCCBC004E8D1D /* GoogleSignInSwift */; };
 		A55106872B6C0E1A004E8D1D /* PrivacyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A55106862B6C0E1A004E8D1D /* PrivacyView.swift */; };
 		A55106892B6C0E30004E8D1D /* ProfileEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A55106882B6C0E30004E8D1D /* ProfileEditView.swift */; };
+		A59DC1E22B7BEE8600EA8E8E /* NotificationSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59DC1E12B7BEE8600EA8E8E /* NotificationSettingView.swift */; };
 		A59EE2B52B470C57009915D5 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59EE2B42B470C57009915D5 /* LoginView.swift */; };
 		A59EE2BB2B47F80A009915D5 /* LoginPathModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59EE2BA2B47F80A009915D5 /* LoginPathModel.swift */; };
 		A59EE2BD2B47F91B009915D5 /* LoginModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59EE2BC2B47F91B009915D5 /* LoginModel.swift */; };
@@ -26,6 +27,7 @@
 		A5CE892C2B59AA0900ED8F62 /* ArchiveDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5CE892B2B59AA0900ED8F62 /* ArchiveDetailView.swift */; };
 		A5CFD2782B6CDB2200F7DA48 /* NewArchiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5CFD2772B6CDB2200F7DA48 /* NewArchiveView.swift */; };
 		A5F03F862B50FB5700242929 /* ArchiveModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F03F852B50FB5700242929 /* ArchiveModel.swift */; };
+		A5FB3A442B7524A8004E1C60 /* NotificationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5FB3A432B7524A8004E1C60 /* NotificationModel.swift */; };
 		AA05EAF32B3B87A0005596C5 /* MYPLACE_iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA05EAF22B3B87A0005596C5 /* MYPLACE_iOSApp.swift */; };
 		AA05EAF52B3B87A0005596C5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA05EAF42B3B87A0005596C5 /* ContentView.swift */; };
 		AA05EAF72B3B87A1005596C5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA05EAF62B3B87A1005596C5 /* Assets.xcassets */; };
@@ -67,6 +69,7 @@
 /* Begin PBXFileReference section */
 		A55106862B6C0E1A004E8D1D /* PrivacyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyView.swift; sourceTree = "<group>"; };
 		A55106882B6C0E30004E8D1D /* ProfileEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEditView.swift; sourceTree = "<group>"; };
+		A59DC1E12B7BEE8600EA8E8E /* NotificationSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingView.swift; sourceTree = "<group>"; };
 		A59EE2B42B470C57009915D5 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		A59EE2BA2B47F80A009915D5 /* LoginPathModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPathModel.swift; sourceTree = "<group>"; };
 		A59EE2BC2B47F91B009915D5 /* LoginModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginModel.swift; sourceTree = "<group>"; };
@@ -74,6 +77,7 @@
 		A5CE892B2B59AA0900ED8F62 /* ArchiveDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveDetailView.swift; sourceTree = "<group>"; };
 		A5CFD2772B6CDB2200F7DA48 /* NewArchiveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewArchiveView.swift; sourceTree = "<group>"; };
 		A5F03F852B50FB5700242929 /* ArchiveModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveModel.swift; sourceTree = "<group>"; };
+		A5FB3A432B7524A8004E1C60 /* NotificationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationModel.swift; sourceTree = "<group>"; };
 		AA05EAEF2B3B87A0005596C5 /* MYPLACE-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MYPLACE-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA05EAF22B3B87A0005596C5 /* MYPLACE_iOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MYPLACE_iOSApp.swift; sourceTree = "<group>"; };
 		AA05EAF42B3B87A0005596C5 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -178,6 +182,7 @@
 				AAE7CD252B3FCF9C00E02B71 /* Model */,
 				AAAAC9C42B5920F60026C8D9 /* ViewModel */,
 				AA2B64532B3D02A4008CEDBB /* NotificationView.swift */,
+				A59DC1E12B7BEE8600EA8E8E /* NotificationSettingView.swift */,
 				A59EE2B42B470C57009915D5 /* LoginView.swift */,
 				A5CE89292B5980CE00ED8F62 /* NewUserView.swift */,
 				AA05EAF62B3B87A1005596C5 /* Assets.xcassets */,
@@ -235,6 +240,7 @@
 				A59EE2BC2B47F91B009915D5 /* LoginModel.swift */,
 				A5F03F852B50FB5700242929 /* ArchiveModel.swift */,
 				AAB755E12B62970C007B00A1 /* PopupModel.swift */,
+				A5FB3A432B7524A8004E1C60 /* NotificationModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -348,8 +354,10 @@
 				AA2B644D2B3CCA03008CEDBB /* FavoritePlacesView.swift in Sources */,
 				AABAC2962B6C6E10001B1533 /* KakaoSearchManager.swift in Sources */,
 				AAE7CD1F2B3F9C0C00E02B71 /* SearchView.swift in Sources */,
+				A59DC1E22B7BEE8600EA8E8E /* NotificationSettingView.swift in Sources */,
 				AA9E801A2B415F7C00D51447 /* ToastViewModel.swift in Sources */,
 				AA05EAF52B3B87A0005596C5 /* ContentView.swift in Sources */,
+				A5FB3A442B7524A8004E1C60 /* NotificationModel.swift in Sources */,
 				AABAC2902B6B3729001B1533 /* MyPlaceAPI.swift in Sources */,
 				AAAAC9C32B56BF220026C8D9 /* Response.swift in Sources */,
 				AAA411B42B74E60100507E2F /* FavoritePlaceViewModel.swift in Sources */,
