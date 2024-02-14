@@ -53,20 +53,26 @@ struct PlaceInformationEditView: View {
                     
                 
                 VStack(spacing: 10) {
-                    SectionView(text: $myPlaceInformationEditViewModel.recDish, imageName: "Fork", title: "추천 메뉴", placeholder: "추천 메뉴를 1가지 입력해주세요.", characterLimit: 15)
                     HStack(spacing: 0) {
-                        Image("Clock")
-                            .resizable()
-                            .frame(width: 18, height: 16)
-                            .padding(.leading, 33)
-                            .padding(.top, 13)
-                        Text("휴무일")
+                        Text("🍴추천 메뉴")
                             .font(
                                 .custom("Apple SD Gothic Neo", size: 18)
                                 .weight(.bold)
                             )
                             .padding(.top, 15)
-                            .padding(.leading, 4)
+                            .padding(.leading, 33)
+                        Spacer()
+                    }
+                    CustomTextField(text: $myPlaceInformationEditViewModel.recDish, placeholder: "추천 메뉴를 1가지 입력해주세요", characterLimit: 15)
+                    
+                    HStack(spacing: 0) {
+                        Text("⏰휴무일")
+                            .font(
+                                .custom("Apple SD Gothic Neo", size: 18)
+                                .weight(.bold)
+                            )
+                            .padding(.top, 15)
+                            .padding(.leading, 33)
                         Spacer()
                     }
                     if selectedDayOffIndices.isEmpty {
@@ -108,18 +114,13 @@ struct PlaceInformationEditView: View {
                     }
 
                     HStack(spacing: 0) {
-                        Image("MoneyBag")
-                            .resizable()
-                            .frame(width: 18, height: 16)
-                            .padding(.leading, 33)
-                            .padding(.top, 13)
-                        Text("제공 서비스")
+                        Text("💰제공 서비스")
                             .font(
                                 .custom("Apple SD Gothic Neo", size: 18)
                                 .weight(.bold)
                             )
                             .padding(.top, 15)
-                            .padding(.leading, 4)
+                            .padding(.leading, 33)
                         Spacer()
                     }
                     if selectedServiceIndices.isEmpty {
@@ -157,7 +158,22 @@ struct PlaceInformationEditView: View {
                             .padding(.leading, 37)
                         }
                     }
-                    SectionView(text: $myPlaceInformationEditViewModel.link, imageName: "InstagramLogo", title: "인스타그램", placeholder: "장소의 인스타그램 계정을 입력해주세요.", characterLimit: 30)
+                    HStack(spacing: 0) {
+                        Image("InstagramLogo")
+                            .resizable()
+                            .frame(width: 18, height: 18)
+                            .padding(.top, 15)
+                            .padding(.leading, 33)
+                        Text("인스타그램")
+                            .font(
+                                .custom("Apple SD Gothic Neo", size: 18)
+                                .weight(.bold)
+                            )
+                            .padding(.top, 15)
+                            .padding(.leading, 4)
+                        Spacer()
+                    }
+                    CustomTextField(text: $myPlaceInformationEditViewModel.link, placeholder: "장소의 인스타그램 계정을 입력해주세요.", characterLimit: 30)
                     HStack(spacing: 0) {
                         Text("#태그")
                             .font(
@@ -310,34 +326,6 @@ struct PlaceInformationEditView: View {
     }
 
     
-}
-
-struct SectionView: View {
-    @Binding var text: String
-    
-    let imageName: String
-    let title: String
-    let placeholder: String
-    let characterLimit: Int
-
-    var body: some View {
-        HStack(spacing: 0) {
-            Image(imageName)
-                .resizable()
-                .frame(width: 18, height: 16)
-                .padding(.leading, 33)
-                .padding(.top, 13)
-            Text(title)
-                .font(
-                    .custom("Apple SD Gothic Neo", size: 18)
-                    .weight(.bold)
-                )
-                .padding(.top, 15)
-                .padding(.leading, 4)
-            Spacer()
-        }
-        CustomTextField(text: $text, placeholder: placeholder, characterLimit: characterLimit)
-    }
 }
 
 struct CustomTextField: View {
