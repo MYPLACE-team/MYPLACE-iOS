@@ -11,6 +11,7 @@ import Moya
 enum MyPlaceAPI {
     case registerMyPlace(place: MyPlaceInformationEditViewModel)
     case registerFavoritePlace(placeId: Int)
+    case deleteFavoritePlace(placeId: Int)
     case searchFavoritePlaceList
     case getMyPlaceInformation(placeId: Int)
     case getMyPlaceList(keyword: String, page: Int)
@@ -27,6 +28,8 @@ extension MyPlaceAPI: TargetType {
             return "/place"
         case .registerFavoritePlace(let placeId):
             return "/place/like/\(placeId)"
+        case .deleteFavoritePlace(let placeId):
+            return "/place/like/\(placeId)"
         case .searchFavoritePlaceList:
             return "/place/like"
         case .getMyPlaceInformation(let placeId):
@@ -42,12 +45,15 @@ extension MyPlaceAPI: TargetType {
             return .post
         case .registerFavoritePlace:
             return .post
+        case .deleteFavoritePlace:
+            return .delete
         case .searchFavoritePlaceList:
             return .post
         case .getMyPlaceInformation:
             return .get
         case .getMyPlaceList:
             return .get
+            
         }
     }
     
@@ -57,6 +63,8 @@ extension MyPlaceAPI: TargetType {
             let jsonData = try! JSONEncoder().encode(place)
             return .requestData(jsonData)
         case .registerFavoritePlace:
+            return .requestPlain
+        case .deleteFavoritePlace:
             return .requestPlain
         case .searchFavoritePlaceList:
             return .requestPlain

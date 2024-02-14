@@ -32,9 +32,8 @@ struct MyPlaceList: Codable {
     let id: Int
     let name, address: String
     let category_id: Int
-    //MARK: - 데이터 타입 수정 필요
     let thumbnail_url: JSONNull
-    let isLike: Int
+    let isLike: Bool
 
     enum CodingKeys: String, CodingKey {
         case id, name, address
@@ -62,11 +61,13 @@ struct MyPlaceInformation: Codable {
     let insta: String
     let hashtag, images: [String]
     let writer, updatedAt: String
+    let isLike: Bool
 
     enum CodingKeys: String, CodingKey {
         case id, name, address
         case categoryID = "categoryId"
         case recDish, closedDay, service, insta, hashtag, images, writer, updatedAt
+        case isLike
     }
 }
 

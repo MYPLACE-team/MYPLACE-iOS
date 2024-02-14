@@ -62,7 +62,7 @@ struct HomeView: View {
                 }).frame(maxWidth: .infinity, maxHeight: .infinity)
                 
                 VStack {
-                    KakaoSearchView(kakaoSearchViewModel: KakaoSearchViewModel(), myPlaceListViewModel: MyPlaceListViewModel(), path: $path, searchText: $searchText)
+                    KakaoSearchView(kakaoSearchViewModel: KakaoSearchViewModel(), path: $path, searchText: $searchText)
                         .padding(EdgeInsets(top: 10, leading: 20, bottom: 0, trailing: 20))
                     
                     HStack {
@@ -107,7 +107,7 @@ struct HomeView: View {
                         case .notificationSettingView:
                             NotificationSettingView(path: $path)
                         case .searchView:
-                            SearchView(kakaoSearchViewModel: KakaoSearchViewModel(), myPlaceListViewModel: MyPlaceListViewModel(), searchText: $searchText, path: $path, isHeartFilled: $isHeartFilled, placeId: $placeId)
+                            SearchView(kakaoSearchViewModel: KakaoSearchViewModel(), searchText: $searchText, path: $path, isHeartFilled: $isHeartFilled, placeId: $placeId)
                         case .favoritePlacesView:
                             FavoritePlacesView(path: $path)
                         case .arciveView:
@@ -121,7 +121,7 @@ struct HomeView: View {
                         case .placeInformationEditView:
                             PlaceInformationEditView(path: $path, isHeartFilled: $isHeartFilled, selectedDayOffIndices: $selectedDayOffIndices, selectedServiceIndices: $selectedServiceIndices)
                         case .placeInformationView:
-                            PlaceInformationView(path: $path, isHeartFilled: $isHeartFilled, placeId: $placeId, myPlaceInformationViewModel: MyPlaceInformationViewModel())
+                            PlaceInformationView(myPlaceInformationViewModel: MyPlaceInformationViewModel(), path: $path, isHeartFilled: $isHeartFilled, placeId: $placeId)
                         case .privacyView:
                             PrivacyView(path: $path)
                         case .profileEditView:

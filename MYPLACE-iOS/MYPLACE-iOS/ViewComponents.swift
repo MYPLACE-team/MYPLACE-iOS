@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ViewComponents: View {
     var body: some View {
-        SearchItemView_Registered(path: .constant([]), isHeartFilled: false, placeName: "test", placeAddress: "test")
+        SearchItemView_Registered(myPlaceListViewModel: MyPlaceListViewModel(), path: .constant([]), isHeartFilled: false, searchText: .constant(""), placeName: "test", placeAddress: "test", placeId: 50)
         SearchItemView_UnRegistered(path: .constant([]), placeName: "카카오프렌즈카카오프렌즈카카오프렌즈", addressName: "서울")
         FavoriteItemView(path: .constant([]), isVisited: .constant(false), place: dummyPlaces[1])
         KakaoSearchView(kakaoSearchViewModel: KakaoSearchViewModel(), myPlaceListViewModel: MyPlaceListViewModel(), path: .constant([]), searchText: .constant(""))
@@ -103,10 +103,14 @@ struct Xmark: View {
 }
 
 struct SearchItemView_Registered: View {
+//    @ObservedObject var myPlaceListViewModel: MyPlaceListViewModel
+    @StateObject var myPlaceListViewModel = MyPlaceListViewModel.shared
     @Binding var path: [PathModel]
-    var isHeartFilled: Bool
+    @State var isHeartFilled: Bool
+    @Binding var searchText: String
     let placeName: String
     let placeAddress: String
+    let placeId: Int
     var body: some View {
         RoundedRectangle(cornerRadius: 15)
             .fill(Color(red: 0.96, green: 0.96, blue: 0.96))
@@ -130,18 +134,31 @@ struct SearchItemView_Registered: View {
                             Image(systemName: isHeartFilled ? "heart.fill" : "heart")
                                 .foregroundStyle(isHeartFilled ? .red : .gray)
                                 .onTapGesture {
-                                    //MARK: - 서버 toggle 필요
-//                                    isHeartFilled.toggle()
-                                    MyPlaceManager.shared.registerFavoritePlace(placeId: 24) { error in
-                                        if let error = error {
-                                            // 에러 처리
-                                            print("error")
-                                        } else {
-                                            // 성공 처리
-                                            print("success")
+                                    if !isHeartFilled {
+                                        MyPlaceManager.shared.registerFavoritePlace(placeId: placeId) { error in
+                                            if error != nil {
+                                                print("error in registerFavoritePlace")
+                                            } else {
+                                                isHeartFilled.toggle()
+                                                print("!!\(placeName)")
+                                                myPlaceListViewModel.getMyPlaceList(keyword: searchText)
+                                                print("success in registerFavoritePlace")
+                                            }
+                                        }
+                                    } else {
+                                        MyPlaceManager.shared.deleteFavoritePlace(placeId: placeId) {
+                                            error in
+                                            if error != nil {
+                                                print("error in deleteFavoritePlace")
+                                            }
+                                            else {
+                                                isHeartFilled.toggle()
+                                                myPlaceListViewModel.getMyPlaceList(keyword: searchText)
+                                                print("success in deleteFavoritePlace")
+                                            }
                                         }
                                     }
-                                    let toastMessage = isHeartFilled ? "관심 장소로 저장되었습니다." : "관심 장소 저장이 해제되었습니다."
+                                    let toastMessage = !isHeartFilled ? "관심 장소로 저장되었습니다." : "관심 장소 저장이 해제되었습니다."
                                     ToastViewModel.shared.showToastWithString(text: toastMessage)
                                 }
                                 .padding(.trailing, 10)
@@ -325,7 +342,8 @@ struct TextWidthPreferenceKey: PreferenceKey {
 
 struct KakaoSearchView: View {
     @ObservedObject var kakaoSearchViewModel: KakaoSearchViewModel
-    @ObservedObject var myPlaceListViewModel: MyPlaceListViewModel
+//    @ObservedObject var myPlaceListViewModel: MyPlaceListViewModel
+    @StateObject var myPlaceListViewModel = MyPlaceListViewModel.shared
     @Binding var path: [PathModel]
     @Binding var searchText: String
     

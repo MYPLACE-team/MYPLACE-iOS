@@ -36,6 +36,17 @@ struct MyPlaceManager {
         }
     }
     
+    func deleteFavoritePlace(placeId: Int, completion: @escaping (Error?) -> Void) {
+        myPlaceProvider.request(.deleteFavoritePlace(placeId: placeId)) { result in
+            switch result {
+            case .success:
+                completion(nil)
+            case let .failure(error):
+                completion(error)
+            }
+        }
+    }
+    
     func searchFavoritePlaceList(completion: @escaping (Result<FavoritePlaceResponse, Error>) -> Void) {
         myPlaceProvider.request(.searchFavoritePlaceList) { result in
             switch result {
@@ -56,7 +67,6 @@ struct MyPlaceManager {
         }
     }
     
-    //MARK: - path Variable 적용 안된듯?
     func getMyPlaceInformation(placeId: Int, completion: @escaping (Result<MyPlaceInformationResponse, Error>) -> Void) {
         myPlaceProvider.request(.getMyPlaceInformation(placeId: placeId)) { result in
             switch result {
