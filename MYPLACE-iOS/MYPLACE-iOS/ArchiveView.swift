@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import PhotosUI
 
 struct ArchiveView: View {
     @State var searchItem: String = ""
@@ -15,10 +16,10 @@ struct ArchiveView: View {
     @State var isPopupPresented: Bool = false
     
     @State var createFolder: Bool = false
-    @State var folderImage: String = ""
+    @State var folderImage: [UIImage] = []
     @State var folderName: String = ""
-    @State var startDate: String = ""
-    @State var endDate: String = ""
+    @State var startDate = Date()
+    @State var endDate = Date()
     @State var isCreate: Bool = false
     
     @Binding var path: [PathModel]
@@ -86,10 +87,10 @@ struct ArchiveView: View {
                         }
                         else {
                             isCreate = true
-                            folderImage = ""
+                            folderImage = []
                             folderName = ""
-                            startDate = ""
-                            endDate = ""
+                            startDate = Date()
+                            endDate = Date()
                             createFolder.toggle()
                         }
                     }){
@@ -414,7 +415,7 @@ struct ArchiveView: View {
                                                     HStack(alignment: .bottom,spacing: 2){
                                                         Text("부산여행")
                                                             .font(
-                                                                Font.custom("Apple SD Gothic Neo", size: 15)
+                                                                Font.custom("Apple SD Gothic Neo", size: 20)
                                                                     .weight(.bold)
                                                             )
                                                             .foregroundStyle(Color(red: 0.15, green: 0.16, blue: 0.17))
@@ -554,10 +555,10 @@ struct FolderPopupView: View {
 }
 
 struct createFolderView: View {
-    @Binding var image: String
+    @Binding var image: [UIImage]
     @Binding var name: String
-    @Binding var start: String
-    @Binding var end: String
+    @Binding var start: Date
+    @Binding var end: Date
     @Binding var isCreate: Bool
     @Binding var show: Bool
     
@@ -596,31 +597,32 @@ struct createFolderView: View {
                                             .frame(height: 15), alignment: .bottom)
                                     .frame(width: 324, alignment: .leading)
                             }
-                                Image("DummyImage2")
+                            if(image.count > 0) {
+                                Image(uiImage: image.first ?? UIImage())
                                     .resizable()
-                                    .aspectRatio(contentMode: .fill)
                                     .frame(width: 118, height: 118)
                                     .overlay(
-                                        Circle()
-                                            .frame(width: 17, height: 17)
-                                            .foregroundStyle(Color(red: 0.89, green: 0.39, blue: 0.39))
-                                            .overlay(
-                                                Image(systemName: "xmark")
-                                                    .resizable()
-                                                    .frame(width: 7, height: 7)
-                                                    .foregroundStyle(.white)
-                                            )
-                                            .padding(.top, -8)
-                                            .padding(.trailing, -8)
-                                        ,alignment : .topTrailing)
-                                    .padding(.top, 26)
-                                Text("*해당 사진은 폴더의 썸네일로 등록돼요.")
-                                    .font(
-                                        Font.custom("Apple SD Gothic Neo", size: 14)
-                                            .weight(.medium)
+                                        Button(action: {
+                                            image = []
+                                        }) {
+                                            Image(systemName: "xmark.circle.fill")
+                                                .foregroundStyle(.red)
+                                        }
+                                            .offset(x: 118/2, y: -118/2)
+                                        
                                     )
-                                    .foregroundStyle(Color(red: 0.62, green: 0.64, blue: 0.67))
-                                    .padding(.top, 3)
+                                    .padding(.top, 24)
+                            } else {
+                                SquarePhotosPicker(selectedImage: $image, squareWidth: 118, squareHeight: 118)
+                                    .padding(.top, 24)
+                            }
+                            Text("*해당 사진은 폴더의 썸네일로 등록돼요.")
+                                .font(
+                                    Font.custom("Apple SD Gothic Neo", size: 14)
+                                        .weight(.medium)
+                                )
+                                .foregroundStyle(Color(red: 0.62, green: 0.64, blue: 0.67))
+                                .padding(.top, 3)
                             HStack(spacing: 0){
                                 Text("폴더명")
                                     .font(
@@ -637,20 +639,35 @@ struct createFolderView: View {
                             }
                             .padding(.top, 14)
                             .frame(width: 324, alignment: .leading)
-                            TextField("폴더명을 입력해주세요.", text: $name)
-                                .font(
-                                    Font.custom("Apple SD Gothic Neo", size: 16)
-                                        .weight(.medium)
-                                )
-                                .foregroundStyle(Color(red: 0.15, green: 0.16, blue: 0.17))
-                                .padding(.vertical, 5)
-                                .padding(.horizontal, 12)
-                                .frame(width: 324, height: 30)
-                                .background(
-                                    RoundedRectangle(cornerRadius: 5)
-                                        .inset(by: 0.5)
-                                        .stroke(Color(red: 0.62, green: 0.64, blue: 0.67), lineWidth: 1)
-                                )
+                            HStack(spacing: 0) {
+                                TextField("폴더명을 입력해주세요.", text: $name)
+                                    .font(
+                                        Font.custom("Apple SD Gothic Neo", size: 16)
+                                            .weight(.medium)
+                                    )
+                                    .foregroundStyle(Color(red: 0.15, green: 0.16, blue: 0.17))
+                                    .onChange(of: name) {
+                                        if name.count > 8 {
+                                            name = String(name.prefix(8))
+                                        }
+                                    }
+                                Spacer()
+                                Text("\(name.count)/8")
+                                    .font(
+                                        Font.custom("Apple SD Gothic Neo", size: 14)
+                                            .weight(.medium)
+                                    )
+                                    .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
+                            }
+                            .padding(.vertical, 5)
+                            .padding(.horizontal, 12)
+                            .frame(width: 324, height: 30)
+                            .background(
+                                RoundedRectangle(cornerRadius: 5)
+                                    .inset(by: 0.5)
+                                    .stroke(Color(red: 0.62, green: 0.64, blue: 0.67), lineWidth: 1)
+                            )
+                            .padding(.top, 4)
                             Text("방문 날짜")
                                 .font(
                                     Font.custom("Apple SD Gothic Neo", size: 25)
@@ -660,25 +677,64 @@ struct createFolderView: View {
                                 .padding(.top, 27)
                                 .frame(width: 324, alignment: .leading)
                             HStack(spacing: 20) {
-                                Rectangle()
-                                    .foregroundStyle(.clear)
-                                    .frame(width: 152, height: 50)
-                                    .background(Color(red: 0.91, green: 0.92, blue: 0.93))
-                                    .cornerRadius(5)
+                                UnevenRoundedRectangle(cornerRadii: .init(topLeading: 5, topTrailing: 5))
+                                    .frame(width: 135, height: 50)
+                                    .foregroundStyle(Color(red: 0.91, green: 0.92, blue: 0.93))
                                     .overlay(
-                                        RoundedRectangle(cornerRadius: 5)
-                                            .inset(by: 0.5)
-                                            .stroke(.black, lineWidth: 1)
-                                    )
-                                RoundedRectangle(cornerRadius: 5)
-                                    .foregroundStyle(.clear)
-                                    .frame(width: 152, height: 50)
-                                    .background(Color(red: 0.91, green: 0.92, blue: 0.93))
+                                        VStack(alignment: .leading, spacing: 0) {
+                                            Text("Start")
+                                                .font(Font.custom("Apple SD Gothic Neo", size: 12))
+                                                .foregroundStyle(.black)
+                                                .padding(.top, 6)
+                                                .padding(.leading, 9)
+                                            Text(dateFormatter(date: start))
+                                                .font(
+                                                    Font.custom("Apple SD Gothic Neo", size: 16)
+                                                        .weight(.medium)
+                                                )
+                                                .foregroundStyle(.black)
+                                                .padding(.top, 1)
+                                                .padding(.leading, 9)
+                                                .overlay(
+                                                    DatePicker("visitDate", selection: $start, displayedComponents: [.date])
+                                                        .labelsHidden()
+                                                        .blendMode(.destinationOver)
+                                                )
+                                            Spacer()
+                                            Rectangle()
+                                                .frame(height: 1)
+                                                .foregroundStyle(.black)
+                                        }
+                                        , alignment: .topLeading)
+                                UnevenRoundedRectangle(cornerRadii: .init(topLeading: 5, topTrailing: 5))
+                                    .frame(width: 135, height: 50)
+                                    .foregroundStyle(Color(red: 0.91, green: 0.92, blue: 0.93))
                                     .overlay(
-                                        RoundedRectangle(cornerRadius: 5)
-                                            .inset(by: 0.5)
-                                            .stroke(.black, lineWidth: 1)
-                                    )
+                                        VStack(alignment: .leading, spacing: 0) {
+                                            Text("End")
+                                                .font(Font.custom("Apple SD Gothic Neo", size: 12))
+                                                .foregroundStyle(Color.accentColor)
+                                                .padding(.top, 6)
+                                                .padding(.leading, 9)
+                                            Text(dateFormatter(date: end))
+                                                .font(
+                                                    Font.custom("Apple SD Gothic Neo", size: 16)
+                                                        .weight(.medium)
+                                                )
+                                                .foregroundStyle(.black)
+                                                .padding(.top, 1)
+                                                .padding(.leading, 9)
+                                                .overlay(
+                                                    DatePicker("visitDate", selection: $end, displayedComponents: [.date])
+                                                        .labelsHidden()
+                                                        .blendMode(.destinationOver)
+                                                )
+                                            Spacer()
+                                            Rectangle()
+                                                .frame(height: 1)
+                                                .foregroundStyle(Color.accentColor)
+                                        }
+                                        , alignment: .topLeading)
                             }
                             .padding(.top, 5)
                             .frame(width: 324, alignment: .leading)
@@ -716,6 +772,12 @@ struct createFolderView: View {
             }
             .ignoresSafeArea(.all)
         }
+    }
+    
+    func dateFormatter(date: Date) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy.MM.dd"
+        return dateFormatter.string(from: date)
     }
 }
 
