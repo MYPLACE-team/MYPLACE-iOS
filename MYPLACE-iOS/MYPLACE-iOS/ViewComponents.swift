@@ -49,6 +49,9 @@ struct BlueChip: View {
         }
         else {
             Text("선택된 서비스가 없어요")
+                .font(
+                    .custom("Apple SD Gothic Neo", size: 12)
+                )
         }
     }
 }
@@ -80,7 +83,7 @@ struct RedChip: View {
                 )
         }
         else {
-            Text("공휴일을 알 수 없어요")
+            Text("휴무일을 알 수 없어요")
                 .font(
                     .custom("Apple SD Gothic Neo", size: 12)
                 )
@@ -175,11 +178,11 @@ struct SearchItemView_UnRegistered: View {
                 HStack {
                     RoundedRectangle(cornerRadius: 10)
                         .frame(width: 70, height: 70)
-                        .padding(EdgeInsets(top: 0, leading: 5, bottom: 0, trailing: 0))
                         .foregroundStyle(Color(red: 0.88, green: 0.88, blue: 0.88))
                         .overlay(
                             Image("MyPlaceLogo")
                         )
+                        .padding(EdgeInsets(top: 0, leading: 5, bottom: 0, trailing: 0))
                     
                     VStack(alignment: .leading, spacing: 5) {
                         HStack {

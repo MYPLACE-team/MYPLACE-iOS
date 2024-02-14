@@ -17,6 +17,8 @@ struct PlaceInformationView: View {
     @StateObject private var toastViewModel = ToastViewModel()
     @ObservedObject var myPlaceInformationViewModel: MyPlaceInformationViewModel
     
+    
+    let imageHeight = CGFloat(440)
     let hstackWidth = CGFloat(320)
     @State var emoji: String = ""
     
@@ -37,12 +39,12 @@ struct PlaceInformationView: View {
                             .ignoresSafeArea(.all)
                     }
                     .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
-                    .frame(height: 460)
+                    .frame(height: imageHeight)
                     //MARK: - pageControl 일단 보류 시간 오래걸림
 //                    HStack {
 //                        ForEach(0..<3, id: \.self) { index in
 //                            Circle()
-//                                .foregroundStyle(index == currentPage ? Color.black : Color.gray)
+//                               .foregroundStyle(index == currentPage ? Color.black : Color.gray)
 //                                .frame(width: 8, height: 8)
 //                        }
 //                    }
@@ -55,10 +57,13 @@ struct PlaceInformationView: View {
                                 .background(BackgroundBlurView())
                                 .frame(height: 80)
                                 .overlay(
-                                    VStack(spacing: 0) {
+                                    VStack(spacing: 4) {
                                         HStack {
                                             Text(PlaceType.emojiForCategory(from: myPlaceInformationViewModel.result.categoryID) + " " + myPlaceInformationViewModel.result.name)
-                                                .font(.system(size: 25))
+                                                .font(
+                                                    .custom("Apple SD Gothic Neo", size: 25)
+                                                    .weight(.semibold)
+                                                )
                                             Spacer()
                                             Image(systemName: isHeartFilled ? "heart.fill" : "heart")
                                                 .foregroundStyle(isHeartFilled ? .red : .gray)
@@ -73,6 +78,10 @@ struct PlaceInformationView: View {
                                         HStack(spacing: 0) {
                                             Image("Map2")
                                             Text(myPlaceInformationViewModel.result.address)
+                                                .font(
+                                                    .custom("Apple SD Gothic Neo", size: 18)
+                                                    .weight(.semibold)
+                                                )
                                                 .padding(.leading, 5)
                                             Spacer()
                                         }
@@ -87,7 +96,7 @@ struct PlaceInformationView: View {
                         }
                         
                     }
-                    .frame(height: 460)
+                    .frame(height: imageHeight)
                 }
                 
                 if !myPlaceInformationViewModel.result.hashtag.isEmpty {
@@ -116,7 +125,7 @@ struct PlaceInformationView: View {
                 }
                 
                 HStack {
-                    VStack(alignment: .leading, spacing: 20) {
+                    VStack(alignment: .leading, spacing: 15) {
                         HStack(spacing: 0) {
                             HStack {
                                 Text("🍴추천 메뉴")
@@ -150,9 +159,8 @@ struct PlaceInformationView: View {
                             .frame(width: 110)
                             .padding(.trailing, 40)
                             HStack(spacing: 5) {
-                                ForEach(myPlaceInformationViewModel.result.service.isEmpty ? ["제공서비스가 입력되지 않았어요"] : myPlaceInformationViewModel.result.service, id: \.self) { service in
-                                    
-                                    BlueChip(text: emoji + service, isSelected: false)
+                                ForEach(myPlaceInformationViewModel.result.service.isEmpty ? ["제공서비스가 입력되지 않았어요"] : myPlaceInformationViewModel.result.service.prefix(1), id: \.self) { service in
+                                    BlueChip(text: self.emojiForService(service) + service, isSelected: false)
                                 }
                                 .font(
                                     myPlaceInformationViewModel.result.service.isEmpty ?
@@ -160,9 +168,26 @@ struct PlaceInformationView: View {
                                         Font.custom("Apple SD Gothic Neo", size: 18).weight(.thin)
                                 )
                             }
-
                             Spacer()
                         }
+                        
+                        if myPlaceInformationViewModel.result.service.count > 1 {
+                            HStack(spacing: 0) {
+                                HStack {
+                                    EmptyView()
+                                }
+                                .frame(width: 150)
+                                HStack(spacing: 5) {
+                                    ForEach(myPlaceInformationViewModel.result.service.dropFirst(), id: \.self) { service in
+                                        BlueChip(text: self.emojiForService(service) + service, isSelected: false)
+                                    }
+                                }
+                                Spacer()
+                            }
+                            .padding(.top, -10)
+                        }
+                            
+                        
                         HStack(spacing: 0) {
                             HStack {
                                 Text("⏰휴무일")
@@ -182,20 +207,20 @@ struct PlaceInformationView: View {
                                 }
                             }
                         }
-                        
                         //MARK: - 간격 확인 후 수정 필요
                         if myPlaceInformationViewModel.result.closedDay.count > 3 {
                             HStack(spacing: 0) {
                                 HStack {
                                     EmptyView()
                                 }
-                                .frame(width: 130)
+                                .frame(width: 150)
                                 HStack(spacing: 5) {
                                     ForEach(myPlaceInformationViewModel.result.closedDay.dropFirst(3), id: \.self) { closedDayIndex in
                                         RedChip(text: closedDayIndex)
                                     }
                                 }
                             }
+                            .padding(.top, -10)
                         }
                         HStack(spacing: 0) {
                             HStack {
@@ -240,7 +265,7 @@ struct PlaceInformationView: View {
                             .custom("Apple SD Gothic Neo", size: 18)
                             .weight(.semibold)
                         )
-                        .padding(.top, 10)
+                        .padding(.top, 5)
                         .padding(.leading, 4)
                     Spacer()
                     //MARK: - toast창이라도 띄우면 좋을듯?
@@ -339,6 +364,35 @@ struct PlaceInformationView: View {
         }
     }
 
+    //MARK: - 이모지 떼면서 앞에 공백 생겨서 넣어줘야함.
+    func emojiForService(_ service: String) -> String {
+        switch service {
+        case " 저렴한 가격":
+            return "💰"
+        case " 친절한 서비스":
+            return "☺️"
+        case " 좋은 뷰":
+            return "⛰️"
+        case " 주차 가능":
+            return "🚗"
+        case " 편안한 좌석":
+            return "💺"
+        case " 최고의 맛":
+            return "🤤"
+        case " 집중하기 좋은 곳":
+            return "🎧"
+        case " 좋은 분위기":
+            return "💐"
+        case " 키즈존":
+            return "👶🏻"
+        case " 반려동물 동반":
+            return "😻"
+        case " 좋은 음악 큐레이션":
+            return "🎶"
+        default:
+            return "\(service)"
+        }
+    }
     
     func openInstagram(username: String) {
         let instagramUrl = URL(string: "instagram://user?username=\(username)")!
@@ -382,5 +436,5 @@ extension View {
 }
 
 #Preview {
-    PlaceInformationView(path: .constant([]), isHeartFilled: .constant(true), placeId: .constant(49), myPlaceInformationViewModel: MyPlaceInformationViewModel())
+    PlaceInformationView(path: .constant([]), isHeartFilled: .constant(true), placeId: .constant(52), myPlaceInformationViewModel: MyPlaceInformationViewModel())
 }

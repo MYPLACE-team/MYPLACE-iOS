@@ -128,33 +128,6 @@ enum ProvidedService: String, CaseIterable {
     case kidsZone = "👶🏻 키즈존"
     case petFriendly = "😻 반려동물 동반"
     case goodMusic = "🎶 좋은 음악 큐레이션"
-    
-    static func emojiForService(_ service: ProvidedService) -> String {
-        switch service {
-        case .cheapPrice:
-            return "💰"
-        case .friendlyService:
-            return "☺️"
-        case .niceView:
-            return "⛰️"
-        case .parkingAvailable:
-            return "🚗"
-        case .comfortableSeats:
-            return "💺"
-        case .bestTaste:
-            return "🤤"
-        case .quietPlace:
-            return "🎧"
-        case .goodAtmosphere:
-            return "💐"
-        case .kidsZone:
-            return "👶🏻"
-        case .petFriendly:
-            return "😻"
-        case .goodMusic:
-            return "🎶"
-        }
-    }
 }
 
 

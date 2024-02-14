@@ -46,9 +46,11 @@ struct PlaceInformationEditView: View {
                 .padding(.top, 10)
                 if let selectedPlace = popupViewModel.selectedPlace {
                     SearchItemView_UnRegistered(path: $path, placeName: (PlaceType( rawValue: myPlaceInformationEditViewModel.categoryId)?.emojiForCategory() ?? "") + selectedPlace.placeName, addressName: selectedPlace.address, isEditing: true)
+                        .padding(.bottom, -10)
                 } else {
                     Text("뭔가 잘못됐어!!!")
                 }
+                    
                 
                 VStack(spacing: 10) {
                     SectionView(text: $myPlaceInformationEditViewModel.recDish, imageName: "Fork", title: "추천 메뉴", placeholder: "추천 메뉴를 1가지 입력해주세요.", characterLimit: 15)

@@ -6,8 +6,6 @@
 //
 
 import SwiftUI
-import KakaoMapsSDK
-import KakaoMapsSDK_SPM
 
 struct HomeView: View {
 //    @StateObject var kakaoSearchViewModel = KakaoSearchViewModel()
@@ -20,7 +18,8 @@ struct HomeView: View {
     @State private var isPopupHidden = false
     @State var selectedDayOffIndices: [Holiday] = []
     @State var selectedServiceIndices: [ProvidedService] = []
-
+    
+    
     var body: some View {
         NavigationStack(path: $path) {
             VStack {
@@ -55,14 +54,14 @@ struct HomeView: View {
             }
             ZStack {
                 //MARK: - KakaoMapView
-                KakaoMapView(draw: $draw).onAppear(perform: {
+                KakaoMapView(draw: $draw)
+                    .onAppear(perform: {
                     self.draw = true
                 }).onDisappear(perform: {
                     self.draw = false
                 }).frame(maxWidth: .infinity, maxHeight: .infinity)
                 
                 VStack {
-                    //MARK: - kakaoSearchView
                     KakaoSearchView(kakaoSearchViewModel: KakaoSearchViewModel(), myPlaceListViewModel: MyPlaceListViewModel(), path: $path, searchText: $searchText)
                         .padding(EdgeInsets(top: 10, leading: 20, bottom: 0, trailing: 20))
                     
@@ -132,8 +131,7 @@ struct HomeView: View {
                     HStack {
                         VStack {
                             Button(action: {
-                                //MARK: - 카카오맵 기능 추가 필요
-                                print("Button Tapped")
+                                KakaoMapCoordinator.shared.animateCamera(lon: 127, lat: 37)
                             }) {
                                 Circle()
                                     .fill(Color(red: 0.95, green: 0.95, blue: 0.95))

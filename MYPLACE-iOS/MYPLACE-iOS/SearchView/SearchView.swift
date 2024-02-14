@@ -63,6 +63,7 @@ struct SearchView: View {
                                 )
                         }
                         .foregroundStyle(.black)
+                        .padding(.top, 5)
                     }
                     ToolbarItem(placement: .topBarTrailing) {
                         ToolBarView(path: $path)
@@ -79,7 +80,7 @@ struct SearchView: View {
                     Text("\(min(kakaoSearchViewModel.meta.pageableCount, 45))")
                             .font(.custom("Apple SD Gothic Neo", size: 15))
                     if kakaoSearchViewModel.meta.pageableCount >= 45 {
-                        Text("++")
+                        Text("+")
                             .font(.custom("Apple SD Gothic Neo", size: 15).weight(.thin))
                     }
                     Text("개")
