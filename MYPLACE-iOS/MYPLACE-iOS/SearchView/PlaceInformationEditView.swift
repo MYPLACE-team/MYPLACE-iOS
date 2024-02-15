@@ -54,7 +54,7 @@ struct PlaceInformationEditView: View {
                 
                 VStack(spacing: 10) {
                     HStack(spacing: 0) {
-                        Text("🍴추천 메뉴")
+                        Text("추천 메뉴")
                             .font(
                                 .custom("Apple SD Gothic Neo", size: 18)
                                 .weight(.bold)
@@ -66,7 +66,7 @@ struct PlaceInformationEditView: View {
                     CustomTextField(text: $myPlaceInformationEditViewModel.recDish, placeholder: "추천 메뉴를 1가지 입력해주세요", characterLimit: 15)
                     
                     HStack(spacing: 0) {
-                        Text("⏰휴무일")
+                        Text("휴무일")
                             .font(
                                 .custom("Apple SD Gothic Neo", size: 18)
                                 .weight(.bold)
@@ -114,7 +114,7 @@ struct PlaceInformationEditView: View {
                     }
 
                     HStack(spacing: 0) {
-                        Text("💰제공 서비스")
+                        Text("제공 서비스")
                             .font(
                                 .custom("Apple SD Gothic Neo", size: 18)
                                 .weight(.bold)
@@ -159,11 +159,6 @@ struct PlaceInformationEditView: View {
                         }
                     }
                     HStack(spacing: 0) {
-                        Image("InstagramLogo")
-                            .resizable()
-                            .frame(width: 18, height: 18)
-                            .padding(.top, 15)
-                            .padding(.leading, 33)
                         Text("인스타그램")
                             .font(
                                 .custom("Apple SD Gothic Neo", size: 18)

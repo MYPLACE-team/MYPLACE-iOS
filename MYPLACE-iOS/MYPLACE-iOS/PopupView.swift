@@ -141,6 +141,7 @@ struct SearchPopup: View {
 struct FilterPopup: View {
     @Binding var isPopupPresented: Bool
     @State var selectedTypeIndex: PlaceType?
+    @StateObject var favoritePostBodyViewModel = FavoritePostBodyViewModel.shared
     
     var body: some View {
         RoundedRectangle(cornerRadius: 20)
@@ -185,6 +186,8 @@ struct FilterPopup: View {
                                             )
                                             .onTapGesture {
                                                 selectedTypeIndex = selectedTypeIndex == placeType ? nil : placeType
+                                                //MARK: - 번호 맵핑 하고 또 한번 누르면 빼고 그거..
+//                                                favoritePostBodyViewModel.category.append(1)
                                             }
                                     }
                                 }

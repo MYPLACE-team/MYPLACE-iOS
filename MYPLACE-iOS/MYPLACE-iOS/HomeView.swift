@@ -9,6 +9,7 @@ import SwiftUI
 import CoreLocation
 
 struct HomeView: View {
+    @StateObject var homeViewModel = HomeViewModel.shared
     @State var searchText = ""
     @State var path: [PathModel] = []
     @State var isHeartFilled = false
@@ -23,8 +24,13 @@ struct HomeView: View {
     var body: some View {
         NavigationStack(path: $path) {
             VStack {
+//                UnevenRoundedRectangle(bottomLeadingRadius: 25, bottomTrailingRadius: 25)
+//                    .foregroundStyle(Color.accentColor)
+//                    .frame(height: 200)
+//                    .overlay(
+//                        
+//                    )
                 HStack {
-                    //MARK: - UserName 필요, 세부적인 디자인 필요
                     Text("라일락")
                         .font(
                             .custom("Apple SD Gothic Neo", size: 30)
@@ -84,7 +90,8 @@ struct HomeView: View {
                             imageName: "GreenPlus",
                             imageSize: CGSize(width: 14, height: 14),
                             buttonText: "아카이브",
-                            buttonColor: Color(red: 0.3, green: 0.69, blue: 0.31))
+                            buttonColor: Color(red: 0.3, green: 0.69, blue: 0.31)
+                        )
                         
                         Spacer()
                         
@@ -230,15 +237,6 @@ struct ViewChangeButton<ViewModel: Hashable>: View {
     
     var body: some View {
         Button(action: {
-            //MARK: - 임시용으로 관심장소 등록 코드 넣어놨습니다.
-            MyPlaceManager.shared.searchFavoritePlaceList() { result in
-                switch result {
-                case .success:
-                    print("GetMyPlaceSuccess!!!!!!!!!!!!!!")
-                case .failure(let error):
-                    print("Error getFavoritePlace: \(error.localizedDescription)")
-                }
-            }
             path.append(destinationView)
         }) {
             RoundedRectangle(cornerRadius: 10)

@@ -7,6 +7,13 @@
 
 import Foundation
 
+//MARK: - HomeViewResponse
+struct HomeViewResponse: Codable {
+    let isSuccess: Bool
+    let code, message: String
+    let result: HomeData
+}
+
 // MARK: - MyPlaceListResponse
 struct MyPlaceListResponse: Codable {
     let isSuccess: Bool
@@ -74,22 +81,21 @@ struct MyPlaceInformation: Codable {
 //MARK: - FavoritePlaceResponse
 struct FavoritePlaceResponse: Codable {
     let isSuccess: Bool
-    let code: String
-    let message: String
+    let code, message: String
     let result: [FavoritePlace]
 }
 
 //MARK: - FavoritePlace
-struct FavoritePlace: Codable, Identifiable {
+struct FavoritePlace: Codable {
     let id: Int
     let name, address: String
     let categoryID: Int
-    let lat, con: String
+    let lat, lon: String
 
     enum CodingKeys: String, CodingKey {
         case id, name, address
         case categoryID = "categoryId"
-        case lat, con
+        case lat, lon
     }
 }
 

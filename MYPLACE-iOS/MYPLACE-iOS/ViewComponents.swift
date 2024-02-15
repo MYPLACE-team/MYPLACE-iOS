@@ -11,7 +11,7 @@ struct ViewComponents: View {
     var body: some View {
         SearchItemView_Registered(myPlaceListViewModel: MyPlaceListViewModel(), path: .constant([]), isHeartFilled: false, searchText: .constant(""), placeName: "test", placeAddress: "test", placeId: 50)
         SearchItemView_UnRegistered(path: .constant([]), placeName: "카카오프렌즈카카오프렌즈카카오프렌즈", addressName: "서울")
-        FavoriteItemView(path: .constant([]), isVisited: .constant(false), place: dummyPlaces[1])
+        FavoriteItemView(path: .constant([]), isVisited: .constant(false), place: FavoritePlace(id: 1, name: "testName", address: "testAddress", categoryID: 50, lat: "1", lon: "1"))
         KakaoSearchView(kakaoSearchViewModel: KakaoSearchViewModel(), myPlaceListViewModel: MyPlaceListViewModel(), path: .constant([]), searchText: .constant(""))
         BlueChip(text: "가나다라마바사", isSelected: false)
         RedChip(text: "가나다라마바사")
@@ -247,14 +247,14 @@ struct SearchItemView_UnRegistered: View {
 struct FavoriteItemView: View {
     @Binding var path: [PathModel]
     @Binding var isVisited: Bool
-    var place: PlaceModel
+    var place: FavoritePlace
     var body: some View {
         RoundedRectangle(cornerRadius: 15)
             .frame(width: 340, height: 80)
             .foregroundStyle(isVisited ? Color(red: 0.96, green: 0.96, blue: 0.96) : Color(red: 0.93, green: 0.93, blue: 1))
             .overlay(
                 HStack {
-                    Image(place.imageName)
+                    Image("DummyImage2")
                         .resizable()
                         .scaledToFit()
                         .frame(width: 70, height: 70)
@@ -263,10 +263,7 @@ struct FavoriteItemView: View {
                     
                     VStack(alignment: .leading, spacing: 5) {
                         HStack {
-                            Image("CafeIcon")
-                                .resizable()
-                                .frame(width: 20, height: 20)
-                            AutoScrollingText(text: place.name, fontName: "Apple SD Gothic Neo", fontSize: 18, fontWeight: .semibold)
+                            AutoScrollingText(text: PlaceType.emojiForCategory(from: place.categoryID) + place.name, fontName: "Apple SD Gothic Neo", fontSize: 18, fontWeight: .semibold)
                                 .frame(width: 165, height: 22)
                                 .clipped()
                                 .foregroundStyle(.black)

@@ -12,8 +12,29 @@ struct MyPlaceManager {
     static let shared = MyPlaceManager()
     let myPlaceProvider = MoyaProvider<MyPlaceAPI>(plugins: [NetworkLoggerPlugin()])
     
+    func getHoemViewInformation(completion: @escaping (Result<HomeViewResponse, Error>) -> Void) {
+        print("getHomeViewInformation hi!!!!!!!!!")
+        myPlaceProvider.request(.getHomeViewInformation) { result in
+            switch result {
+            case let .success(response):
+                do {
+                    let decoder = JSONDecoder()
+                    let result = try decoder.decode(HomeViewResponse.self, from: response.data)
+                    completion(.success(result))
+                } catch {
+                    print("Error decoding JSON: \(error)")
+                    completion(.failure(error))
+                }
+                
+            case let .failure(error):
+                print("Network request failed: \(error)")
+                completion(.failure(error))
+            }
+        }
+    }
+    
     func registerMyPlace(query: MyPlaceInformationEditViewModel, completion: @escaping (Error?) -> Void) {
-        print("Registering place with query@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@: \(query) hi!!!!!!!!!")
+        print("Registering place with \(query)")
         
         myPlaceProvider.request(.registerMyPlace(place: query)) { result in
             switch result {
@@ -47,15 +68,18 @@ struct MyPlaceManager {
         }
     }
     
-    func searchFavoritePlaceList(completion: @escaping (Result<FavoritePlaceResponse, Error>) -> Void) {
-        myPlaceProvider.request(.searchFavoritePlaceList) { result in
+    //MARK: - 관심장소 조회/필터링/카테고리
+    func searchFavoritePlaceList(body: FavoritePostBodyViewModel, completion: @escaping (Result<FavoritePlaceResponse, Error>) -> Void) {
+        myPlaceProvider.request(.searchFavoritePlaceList(body: body)) { result in
             switch result {
             case let .success(response):
                 do {
                     let decoder = JSONDecoder()
                     let result = try decoder.decode(FavoritePlaceResponse.self, from: response.data)
+                    print("success in searchFavoritePlaceList")
                     completion(.success(result))
                 } catch {
+                    print("\(body)")
                     print("Error decoding JSON: \(error)")
                     completion(.failure(error))
                 }
