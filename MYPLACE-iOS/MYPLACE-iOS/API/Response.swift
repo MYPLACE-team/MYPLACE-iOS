@@ -129,6 +129,64 @@ struct KakaoPlace: Codable, Identifiable {
     }
 }
 
+// MARK: - GoogleloginResponse
+struct GoogleLoginResponse: Codable {
+    let isSuccess: Bool
+    let code: Int
+    let message: String
+    let result: UserInformation
+}
+
+// MARK: - UserInformation (login에서 쓸 정보)
+struct UserInformation: Codable, Identifiable {
+    let id: Int
+    let userId: Int
+    let username, email, profile_img, accessToken: String
+}
+
+// MARK: - ArchiveUserResponse
+struct ArchiveUserResponse: Codable {
+    let isSuccess: Bool
+    let code: Int
+    let message: String
+    let result: ArchiveUserResult
+}
+
+// MARK: - ArchiveUserResult
+struct ArchiveUserResult: Codable {
+    let user: ArchiveUser
+    let folder: [ArchiveFolder]
+}
+
+// MARK: - ArchiveUser
+struct ArchiveUser: Codable, Identifiable {
+    let id: Int
+    let username: String
+    let profileImg: String?
+    let monthPlaceCount: Int
+    let level: Int
+    let archiveCount: Int
+    
+    enum CodingKeys: String, CodingKey {
+        case id = "userId"
+        case username, profileImg, monthPlaceCount, level, archiveCount
+    }
+}
+
+// MARK: - ArchiveFolder
+struct ArchiveFolder: Codable, Identifiable, Hashable {
+    let id: Int
+    let title: String
+    let dateStart: String
+    let dateEnd: String
+    let image: String?
+    
+    enum CodingKeys: String, CodingKey {
+        case id = "folderId"
+        case title, dateStart, dateEnd, image
+    }
+}
+
 // MARK: - Meta
 struct Meta: Codable {
     let sameName: SameName

@@ -11,7 +11,7 @@ import PhotosUI
 struct ArchiveView: View {
     @State var searchItem: String = ""
     @State var searchItemList: [String] = []
-    @State var isTotalView: Bool = true
+    @State var isTotalView: Bool = false
     
     @State var isPopupPresented: Bool = false
     
@@ -21,6 +21,8 @@ struct ArchiveView: View {
     @State var startDate = Date()
     @State var endDate = Date()
     @State var isCreate: Bool = false
+    
+    @StateObject var archiveUserViewModel = ArchiveUserViewModel.shared
     
     @Binding var path: [PathModel]
     
@@ -39,7 +41,7 @@ struct ArchiveView: View {
                         )
                         .padding(.top, 20)
                     HStack {
-                        Text("라일락")
+                        Text(archiveUserViewModel.user.username)
                             .font(
                                 Font.custom("Apple SD Gothic Neo", size: 25)
                                     .weight(.semibold)
@@ -49,7 +51,7 @@ struct ArchiveView: View {
                             .frame(width: 30, height: 14)
                             .foregroundStyle(Color(red: 0.68, green: 0.65, blue: 1))
                             .overlay(
-                                Text("Lv.0")
+                                Text("Lv.\(archiveUserViewModel.user.level)")
                                     .font(Font.custom("Apple SD Gothic Neo", size: 9))
                                     .foregroundStyle(Color(red: 0.27, green: 0.3, blue: 0.33))
                                     .bold()
@@ -65,7 +67,7 @@ struct ArchiveView: View {
                                     .weight(.medium)
                             )
                             .foregroundStyle(Color(red: 0.27, green: 0.3, blue: 0.33))
-                        Text("10곳 달성 ")
+                        Text("\(archiveUserViewModel.user.monthPlaceCount)곳 달성 ")
                             .font(
                                 Font.custom("Apple SD Gothic Neo", size: 23)
                                     .weight(.medium)
@@ -87,7 +89,7 @@ struct ArchiveView: View {
                         }
                         else {
                             isCreate = true
-                            folderImage = []
+                            folderImage.removeAll()
                             folderName = ""
                             startDate = Date()
                             endDate = Date()
@@ -136,7 +138,7 @@ struct ArchiveView: View {
                                                 Font.custom("Apple SD Gothic Neo", size: 16)
                                                     .weight(.bold)
                                             )
-                                        Text(String(archivePlaces.count))
+                                        Text("\(archiveUserViewModel.user.archiveCount)")
                                             .font(
                                             Font.custom("Apple SD Gothic Neo", size: 12)
                                             .weight(.medium)
@@ -372,7 +374,7 @@ struct ArchiveView: View {
                         Spacer()
                         Text("총")
                             .font(Font.custom("Apple SD Gothic Neo", size: 14))
-                        Text(String(7))
+                        Text("\(archiveUserViewModel.folders.count)")
                             .font(Font.custom("Apple SD Gothic Neo", size: 18).weight(.semibold))
                         Text("건")
                             .font(Font.custom("Apple SD Gothic Neo", size: 14))
@@ -382,8 +384,8 @@ struct ArchiveView: View {
                     .padding(.vertical, 18)
                     ScrollView {
                         LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing:18) {
-                            ForEach(0..<7) { index in
-                                Image("DummyImage2")
+                            ForEach(archiveUserViewModel.folders, id:\.self) { folder in
+                                Image("DummyImage")
                                     .resizable()
                                     .aspectRatio(contentMode: .fill)
                                     .frame(width: 130, height: 110)
@@ -413,14 +415,15 @@ struct ArchiveView: View {
                                                     .padding(.top, 7)
                                                     .padding(.trailing, 8)
                                                     HStack(alignment: .bottom,spacing: 2){
-                                                        Text("부산여행")
+                                                        Text("\(folder.title)")
                                                             .font(
-                                                                Font.custom("Apple SD Gothic Neo", size: 20)
+                                                                Font.custom("Apple SD Gothic Neo", size: 15)
                                                                     .weight(.bold)
                                                             )
                                                             .foregroundStyle(Color(red: 0.15, green: 0.16, blue: 0.17))
+                                                            
                                                         Button(action: {
-                                                            folderName = "부산여행"
+                                                            folderName = "\(folder.title)"
                                                             isCreate = false
                                                             createFolder.toggle()
                                                         })
@@ -431,8 +434,8 @@ struct ArchiveView: View {
                                                         }
                                                     }
                                                     .padding(.leading, 6)
-                                                    .padding(.top, 40)
-                                                    Text("2023.10.19~2023.10.21")
+                                                    .padding(.top, 46)
+                                                    Text("4?")
                                                         .font(
                                                             Font.custom("Apple SD Gothic Neo", size: 10)
                                                                 .weight(.semibold)
@@ -456,6 +459,9 @@ struct ArchiveView: View {
                 FolderPopupView(isPopupPresented: $isPopupPresented)
             }
         }
+        .onAppear {
+            //archiveUserViewModel.getArchiveUserInfo()
+        }
         .navigationBarBackButtonHidden()
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
@@ -477,6 +483,13 @@ struct ArchiveView: View {
                 ToolBarView(path: $path)
             }
         }
+    }
+    
+    func dateFormatter(date: String) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy.MM.dd"
+        let newDate = dateFormatter.date(from: date)
+        return dateFormatter.string(from: newDate!)
     }
 }
 
