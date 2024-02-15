@@ -116,7 +116,7 @@ struct HomeView: View {
                         case .searchView:
                             SearchView(kakaoSearchViewModel: KakaoSearchViewModel(), searchText: $searchText, path: $path, isHeartFilled: $isHeartFilled, placeId: $placeId)
                         case .favoritePlacesView:
-                            FavoritePlacesView(path: $path)
+                            FavoritePlacesView(path: $path, placeId: $placeId, isHeartFilled: $isHeartFilled)
                         case .arciveView:
                             ArchiveView(path: $path)
                         case .newArchiveView:

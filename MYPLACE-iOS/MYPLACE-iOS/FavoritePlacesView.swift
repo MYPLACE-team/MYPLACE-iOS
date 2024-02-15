@@ -12,7 +12,8 @@ struct FavoritePlacesView: View {
     @StateObject var favoritePostBodyViewModel = FavoritePostBodyViewModel.shared
     
     @Binding var path: [PathModel]
-//    @Binding var placeId: Int
+    @Binding var placeId: Int
+    @Binding var isHeartFilled: Bool
     
     @State private var selectedTab: String = "전체"
     @StateObject private var toastViewModel = ToastViewModel.shared
@@ -35,7 +36,7 @@ struct FavoritePlacesView: View {
                                 .foregroundStyle(Color(red: 0.95, green: 0.96, blue: 0.97))
                                 .frame(width: 24, height: 20)
                                 .overlay(
-                                    Text("6")
+                                    Text("\(favoritePlaceViewModel.result.count)")
                                         .font(
                                             Font.custom("Apple SD Gothic Neo", size: 14)
                                                 .weight(.medium)
@@ -144,6 +145,7 @@ struct FavoritePlacesView: View {
                 .padding(.top, 20)
                 .padding(.bottom, 10)
                 
+                //MARK: - 전체
                 if selectedTab == "전체" {
                     if favoritePlaceViewModel.result.isEmpty {
                         VStack {
@@ -157,7 +159,7 @@ struct FavoritePlacesView: View {
                                 .lineSpacing(5)
                                 .padding(.top, 30)
                             Button(action: {
-                                
+                                path.append(.searchView)
                             }) {
                                 RoundedRectangle(cornerRadius: 10)
                                     .foregroundStyle(Color.accentColor)
@@ -178,66 +180,77 @@ struct FavoritePlacesView: View {
                         .background(Color(red: 0.94, green: 0.93, blue: 1).opacity(0.7))
                     }
                     else {
-                        Group {
-                            ForEach(favoritePlaceViewModel.result, id: \.id) { favoritePlace in
-                                Section {
-                                    SwipeItem(content: {
-                                        FavoriteItemView(path: $path, isVisited: $isVisited, place: favoritePlace)
-                                            .background( Color(red: 0.93, green: 0.93, blue: 1))
-                                    },  left: {
-                                        ZStack {
-                                            UnevenRoundedRectangle(topLeadingRadius: 10, bottomLeadingRadius: 10)
-                                                .fill(Color.green)
-                                            
-                                            Button(action: {
-                                                
-                                                isVisited = true
-                                                let toastMessage = "다녀올 장소에 저장되었어요"
-                                                ToastViewModel.shared.showToastWithString(text: toastMessage)
-                                            }) {
-                                                Image(systemName: "archivebox")
-                                                    .foregroundStyle(.white)
-                                                    .font(.largeTitle)
-                                            }
-                                            .tint(.green)
-                                        }
-                                    },  right: {
-                                        ZStack {
-                                            UnevenRoundedRectangle(bottomTrailingRadius: 10, topTrailingRadius: 10)
-                                                .fill(Color.red)
-                                            
-                                            Button(action: {
-                                                MyPlaceManager.shared.deleteFavoritePlace(placeId: favoritePlace.id) { error in
-                                                    if error != nil {
-                                                        print("관심장소 삭제 실패")
-                                                    }
-                                                    else {
-                                                        print("관심장소 삭제 성공")
-                                                    }
-                                                }
-                                                let toastMessage = "관심 장소 저장이 해제되었습니다."
-                                                ToastViewModel.shared.showToastWithString(text: toastMessage)
-                                            }) {
-                                                Image(systemName: "trash")
-                                                    .foregroundStyle(.white)
-                                                    .font(.largeTitle)
-                                            }
-                                            .tint(.red)
-                                        }
-                                    }, itemHeight: 80, path: $path)
-                                }
-                                .frame(height: 80)
-                                .clipShape(RoundedRectangle(cornerRadius: 15))
-                                .listRowSeparator(.hidden)
-                                .listSectionSpacing(0)
-                            }
-                        }
-                        .frame(width: 340)
-                        .padding(.top, 15)
                         
-                        Spacer()
+                            Group {
+                                ForEach(favoritePlaceViewModel.result, id: \.id) { favoritePlace in
+                                    Section {
+                                        SwipeItem(content: {
+                                            FavoriteItemView(path: $path, isVisited: $isVisited, place: favoritePlace)
+                                                .background( Color(red: 0.93, green: 0.93, blue: 1))
+                                                .onTapGesture {
+                                                    placeId = favoritePlace.id
+                                                    isHeartFilled = true
+                                                    path.append(.placeInformationView)
+                                                }
+                                            
+                                        },  left: {
+                                            ZStack {
+                                                UnevenRoundedRectangle(topLeadingRadius: 10, bottomLeadingRadius: 10)
+                                                    .fill(Color.green)
+                                                
+                                                Button(action: {
+                                                    isVisited = true
+                                                    let toastMessage = "다녀올 장소에 저장되었어요"
+                                                    ToastViewModel.shared.showToastWithString(text: toastMessage)
+                                                }) {
+                                                    Image(systemName: "archivebox")
+                                                        .foregroundStyle(.white)
+                                                        .font(.largeTitle)
+                                                }
+                                                .tint(.green)
+                                            }
+                                        },  right: {
+                                            ZStack {
+                                                UnevenRoundedRectangle(bottomTrailingRadius: 10, topTrailingRadius: 10)
+                                                    .fill(Color.red)
+                                                
+                                                Button(action: {
+                                                    MyPlaceManager.shared.deleteFavoritePlace(placeId: favoritePlace.id) { error in
+                                                        if error != nil {
+                                                            print("관심장소 삭제 실패")
+                                                        }
+                                                        else {
+                                                            favoritePlaceViewModel.searchMyPlaceList()
+                                                            print("관심장소 삭제 성공")
+                                                        }
+                                                    }
+                                                    let toastMessage = "관심 장소 저장이 해제되었습니다."
+                                                    ToastViewModel.shared.showToastWithString(text: toastMessage)
+                                                    
+                                                }) {
+                                                    Image(systemName: "trash")
+                                                        .foregroundStyle(.white)
+                                                        .font(.largeTitle)
+                                                }
+                                                .tint(.red)
+                                            }
+                                        }, itemHeight: 80, path: $path)
+                                    }
+                                    .frame(height: 80)
+                                    .clipShape(RoundedRectangle(cornerRadius: 15))
+                                    .listRowSeparator(.hidden)
+                                    .listSectionSpacing(0)
+                                }
+                            }
+                            .frame(width: 340)
+                            .padding(.top, 15)
+                            
+                            Spacer()
+                        
+                        
                     }
                 }
+                //MARK: - 다녀온 장소
                 else if selectedTab == "다녀온 장소" {
                     VStack {
                         Image("FavoritePlaceMissing2")
@@ -270,6 +283,7 @@ struct FavoritePlacesView: View {
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .background(Color(red: 0.94, green: 0.93, blue: 1).opacity(0.7))
                 }
+                //MARK: - 다녀올 장소
                 else if selectedTab == "다녀올 장소" {
                     VStack {
                         Image("FavoritePlaceMissing3")
@@ -312,9 +326,6 @@ struct FavoritePlacesView: View {
                 
                 ToolbarItem(placement: .principal) {
                     HStack {
-                        Image("Star")
-                            .resizable()
-                            .frame(width: 20, height: 20)
                         Text("관심장소")
                             .font(
                                 .custom("Apple SD Gothic Neo", size: 20)
@@ -330,7 +341,6 @@ struct FavoritePlacesView: View {
                 }
             }
             .onAppear {
-                print("APPEAR")
                 favoritePlaceViewModel.searchMyPlaceList()
             }
             .blur(radius: isPopupPresented ? 10 : 0)
@@ -403,10 +413,19 @@ struct SwipeItem<Content: View, Left: View, Right: View>: View {
             }
             .onEnded { value in
                 withAnimation {
-                    if rightPast {
+                    if rightPast && isSwipeActive {
+                        anchor = 0
+                        isSwipeActive = false
+                    }
+                    else if leftPast && isSwipeActive {
+                        anchor = 0
+                        isSwipeActive = false
+                    }
+                    else if rightPast {
                         anchor = -anchorWidth
                         isSwipeActive = true
                     } else if leftPast {
+                        print("6")
                         anchor = anchorWidth
                         isSwipeActive = true
                     }
@@ -426,18 +445,7 @@ struct SwipeItem<Content: View, Left: View, Right: View>: View {
                 content()
                     .frame(width: geo.size.width)
                     .zIndex(1)
-                    .onTapGesture {
-                        if isSwipeActive {
-                            withAnimation {
-                                anchor = 0
-                                hoffset = 0
-                            }
-                            isSwipeActive = false
-                        }
-                        else {
-                            path.append(.placeInformationView)
-                        }
-                    }
+
                 right()
                     .frame(width: anchorWidth)
                     .zIndex(0)
@@ -453,5 +461,5 @@ struct SwipeItem<Content: View, Left: View, Right: View>: View {
 }
 
 #Preview {
-    FavoritePlacesView(path: .constant([]))
+    FavoritePlacesView(path: .constant([]), placeId: .constant(1), isHeartFilled: .constant(true))
 }

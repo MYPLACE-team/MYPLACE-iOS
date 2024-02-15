@@ -50,7 +50,6 @@ struct PlaceInformationEditView: View {
                 } else {
                     Text("뭔가 잘못됐어!!!")
                 }
-                    
                 
                 VStack(spacing: 10) {
                     HStack(spacing: 0) {
