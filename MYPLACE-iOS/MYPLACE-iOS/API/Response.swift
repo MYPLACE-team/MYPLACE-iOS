@@ -7,6 +7,13 @@
 
 import Foundation
 
+//MARK: - HomeViewResponse
+struct HomeViewResponse: Codable {
+    let isSuccess: Bool
+    let code, message: String
+    let result: HomeData
+}
+
 // MARK: - MyPlaceListResponse
 struct MyPlaceListResponse: Codable {
     let isSuccess: Bool
@@ -32,9 +39,8 @@ struct MyPlaceList: Codable {
     let id: Int
     let name, address: String
     let category_id: Int
-    //MARK: - 데이터 타입 수정 필요
     let thumbnail_url: JSONNull
-    let isLike: Int
+    let isLike: Bool
 
     enum CodingKeys: String, CodingKey {
         case id, name, address
@@ -62,33 +68,34 @@ struct MyPlaceInformation: Codable {
     let insta: String
     let hashtag, images: [String]
     let writer, updatedAt: String
+    let isLike: Bool
 
     enum CodingKeys: String, CodingKey {
         case id, name, address
         case categoryID = "categoryId"
         case recDish, closedDay, service, insta, hashtag, images, writer, updatedAt
+        case isLike
     }
 }
 
 //MARK: - FavoritePlaceResponse
 struct FavoritePlaceResponse: Codable {
     let isSuccess: Bool
-    let code: String
-    let message: String
+    let code, message: String
     let result: [FavoritePlace]
 }
 
 //MARK: - FavoritePlace
-struct FavoritePlace: Codable, Identifiable {
+struct FavoritePlace: Codable {
     let id: Int
     let name, address: String
     let categoryID: Int
-    let lat, con: String
+    let lat, lon: String
 
     enum CodingKeys: String, CodingKey {
         case id, name, address
         case categoryID = "categoryId"
-        case lat, con
+        case lat, lon
     }
 }
 

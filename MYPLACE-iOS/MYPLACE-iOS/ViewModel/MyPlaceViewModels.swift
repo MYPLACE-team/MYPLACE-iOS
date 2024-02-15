@@ -9,21 +9,20 @@ import SwiftUI
 import Moya
 
 class MyPlaceListViewModel: ObservableObject {
+    static let shared = MyPlaceListViewModel()
     let myPlaceManager = MyPlaceManager()
     
     @Published var isSuccess: Bool = false
     @Published var code: Int = 0
     @Published var message: String = ""
-    //MARK: - isLike 바꾸기
-    @Published var result: MyPlaceListInfo = MyPlaceListInfo(totalNum: 0, hasNext: false, place: [MyPlaceList(id: 24, name: "test", address: "test", category_id: 24, thumbnail_url: JSONNull(), isLike: 1)])
+    @Published var result: MyPlaceListInfo = MyPlaceListInfo(totalNum: 0, hasNext: false, place: [MyPlaceList(id: 24, name: "test", address: "test", category_id: 24, thumbnail_url: JSONNull(), isLike: false)])
     
     var description: String {
-            return "isSuccess: \(isSuccess), code: \(code), message: \(message), result: \(result)"
-        }
-    
+        return "isSuccess: \(isSuccess), code: \(code), message: \(message), result: \(result)"
+    }
     
     func getMyPlaceList(keyword: String) {
-        //MARK: - 사용자 입력 값으로 업데이트 필요
+        //MARK: - page 어떻게 넘길건지
         myPlaceManager.getMyPlaceList(keyword: keyword, page: 1) { result in
             switch result {
             case .success(let response):
@@ -48,9 +47,8 @@ class MyPlaceInformationViewModel: ObservableObject {
     @Published var isSuccess: Bool = false
     @Published var code: Int = 0
     @Published var message: String = ""
-    @Published var result: MyPlaceInformation = MyPlaceInformation(id: 0, name: "name", address: "address", categoryID: 0, recDish: "", closedDay: ["공휴일", "일요일", "연중무휴", "test"], service: [], insta: "", hashtag: ["#1", "#2", "#3"], images: [], writer: "", updatedAt: "")
+    @Published var result: MyPlaceInformation = MyPlaceInformation(id: 0, name: "name", address: "address", categoryID: 0, recDish: "", closedDay: ["공휴일", "일요일", "연중무휴", "test"], service: [], insta: "", hashtag: ["#1", "#2", "#3"], images: [], writer: "", updatedAt: "", isLike: false)
     
-    //MARK: - test용 23
     func getMyPlaceInformation(placeId: Int) {
         myPlaceManager.getMyPlaceInformation(placeId: placeId) { result in
             switch result {

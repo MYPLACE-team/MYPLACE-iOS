@@ -10,6 +10,8 @@ import UIKit
 import KakaoMapsSDK
 import CoreLocation
 
+//홈뷰                         homeViewModel.getHomeViewInformation() 하고 핀찍어야함
+
 struct KakaoMapView: UIViewRepresentable {
     @Binding var draw: Bool
     

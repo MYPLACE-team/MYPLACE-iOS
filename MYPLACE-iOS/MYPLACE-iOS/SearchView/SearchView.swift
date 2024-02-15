@@ -9,8 +9,11 @@ import SwiftUI
 
 struct SearchView: View {
     @ObservedObject var kakaoSearchViewModel: KakaoSearchViewModel
-    @ObservedObject var myPlaceListViewModel: MyPlaceListViewModel
+//    @ObservedObject var myPlaceListViewModel: MyPlaceListViewModel
+    @StateObject var myPlaceListViewModel = MyPlaceListViewModel.shared
     @StateObject var popupViewModel = PopupViewModel.shared
+    
+    @State var isNeedUpdate: Bool = false
     
     @Binding var searchText: String
     @Binding var path: [PathModel]
@@ -36,8 +39,7 @@ struct SearchView: View {
                                     .foregroundStyle(.gray)
                                     .padding(.leading, 13)
                                 Button(action: {
-                                    kakaoSearchViewModel.search(query: searchText)
-                                    myPlaceListViewModel.getMyPlaceList(keyword: searchText)
+                                    updateView()
                                     UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                                 }) {
                                     Image(systemName: "magnifyingglass")
@@ -45,7 +47,7 @@ struct SearchView: View {
                                 }
                                 .padding(.trailing, 13)
                             }
-                    )
+                        )
                     Spacer()
                 }
                 .padding(.top, 10)
@@ -69,7 +71,7 @@ struct SearchView: View {
                         ToolBarView(path: $path)
                     }
                 }
-            
+                
                 HStack(spacing: 0) {
                     Spacer()
                     Text("총 ")
@@ -78,7 +80,7 @@ struct SearchView: View {
                             .weight(.thin)
                         )
                     Text("\(min(kakaoSearchViewModel.meta.pageableCount, 45))")
-                            .font(.custom("Apple SD Gothic Neo", size: 15))
+                        .font(.custom("Apple SD Gothic Neo", size: 15))
                     if kakaoSearchViewModel.meta.pageableCount >= 45 {
                         Text("+")
                             .font(.custom("Apple SD Gothic Neo", size: 15).weight(.thin))
@@ -91,41 +93,81 @@ struct SearchView: View {
                         .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 30))
                 }
                 .padding(.top, 5)
-                    VStack {
-                        HStack {
-                            Spacer()
-                            List {
-                                ForEach(myPlaceListViewModel.result.place, id: \.id) { place in
-                                    Button(action: {
-                                        placeId = place.id
-                                        path.append(.placeInformationView)
-                                    }) {
-                                        //MARK: - isHeartFilled - bool로
-                                        SearchItemView_Registered(path: $path, isHeartFilled: false, placeName: PlaceType.emojiForCategory(from: place.category_id) + place.name, placeAddress: place.address)
-                                    }
-                                    .listRowSeparator(.hidden)
-                                }
-                                ForEach(kakaoSearchViewModel.places, id: \.id) { place in
-                                    Button(action: {
-                                        popupViewModel.setSelectedPlace(x: place.x, y: place.y, placeName: place.placeName, address: place.addressName)
-                                        isPopupPresented.toggle()
-                                    }) {
-                                        SearchItemView_UnRegistered(path: $path, placeName: place.placeName, addressName: place.addressName)
-                                    }
-                                    .listRowSeparator(.hidden)
-                                }
-                            }
-                            .listStyle(PlainListStyle())
-                            .scrollIndicators(.hidden)
-                            .onAppear {
-                                kakaoSearchViewModel.search(query: searchText)
-                                myPlaceListViewModel.getMyPlaceList(keyword: searchText)
-                            }
-
-                            Spacer()
-                        }
+                VStack {
+                    HStack {
                         Spacer()
+                        if myPlaceListViewModel.result.place.isEmpty && kakaoSearchViewModel.places.isEmpty {
+                            VStack {
+                                Image("SearchMissing")
+                                Text("해당 장소가 존재하지 않아요. \n 장소 이름을 다시 한번 확인해 주세요!")
+                                    .font(
+                                        Font.custom("Apple SD Gothic Neo", size: 20)
+                                            .weight(.semibold)
+                                    )
+                                    .multilineTextAlignment(.center)
+                                    .lineSpacing(5)
+                                    .padding(.top, 30)
+                            }
+                        } else {
+                            if isNeedUpdate {
+                                List {
+                                    ForEach(myPlaceListViewModel.result.place, id: \.id) { place in
+                                        Button(action: {
+                                            placeId = place.id
+                                            isHeartFilled = place.isLike
+                                            path.append(.placeInformationView)
+                                        }) {
+                                            SearchItemView_Registered(path: $path, isHeartFilled: place.isLike, searchText: $searchText, placeName: PlaceType.emojiForCategory(from: place.category_id) + place.name, placeAddress: place.address, placeId: place.id)
+                                        }
+                                        .listRowSeparator(.hidden)
+                                    }
+                                    ForEach(kakaoSearchViewModel.places, id: \.id) { place in
+                                        Button(action: {
+                                            popupViewModel.setSelectedPlace(x: place.x, y: place.y, placeName: place.placeName, address: place.addressName)
+                                            isPopupPresented.toggle()
+                                        }) {
+                                            SearchItemView_UnRegistered(path: $path, placeName: place.placeName, addressName: place.addressName)
+                                        }
+                                        .listRowSeparator(.hidden)
+                                    }
+                                }
+                            }
+                            else {
+                                List {
+                                    ForEach(myPlaceListViewModel.result.place, id: \.id) { place in
+                                        Button(action: {
+                                            placeId = place.id
+                                            isHeartFilled = place.isLike
+                                            path.append(.placeInformationView)
+                                        }) {
+                                            SearchItemView_Registered(path: $path, isHeartFilled: place.isLike, searchText: $searchText, placeName: PlaceType.emojiForCategory(from: place.category_id) + place.name, placeAddress: place.address, placeId: place.id)
+                                        }
+                                        .listRowSeparator(.hidden)
+                                    }
+                                    ForEach(kakaoSearchViewModel.places, id: \.id) { place in
+                                        Button(action: {
+                                            popupViewModel.setSelectedPlace(x: place.x, y: place.y, placeName: place.placeName, address: place.addressName)
+                                            isPopupPresented.toggle()
+                                        }) {
+                                            SearchItemView_UnRegistered(path: $path, placeName: place.placeName, addressName: place.addressName)
+                                        }
+                                        .listRowSeparator(.hidden)
+                                    }
+                                }
+                            }
+                        }
                     }
+                    .listStyle(PlainListStyle())
+                    .scrollIndicators(.hidden)
+                    .onAppear {
+                        updateView()
+                        isNeedUpdate.toggle()
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                            isNeedUpdate.toggle()
+                        }
+                    }
+                    Spacer()
+                }
                 Spacer()
             }
             .blur(radius: isPopupPresented ? 10 : 0)
@@ -136,6 +178,11 @@ struct SearchView: View {
         }
         .toast(message: toastViewModel.toastMessage, isShowing: $toastViewModel.showToast, duration: Toast.time)
         .padding(.top, 10)
+    }
+    
+    private func updateView() {
+        kakaoSearchViewModel.search(query: searchText)
+        myPlaceListViewModel.getMyPlaceList(keyword: searchText)
     }
 }
 

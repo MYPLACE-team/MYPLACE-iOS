@@ -8,15 +8,16 @@
 import SwiftUI
 
 struct PlaceInformationView: View {
+    @ObservedObject var myPlaceInformationViewModel: MyPlaceInformationViewModel
+//    @ObservedObject var myPlaceListViewModel: MyPlaceListViewModel
+    @StateObject var myPlaceListViewModel = MyPlaceListViewModel.shared
     @Binding var path: [PathModel]
     @State private var currentPage = 0
+//    @State private var isHeartFilled = false
     @Binding var isHeartFilled: Bool
     @State private var userInput: String = ""
     @Binding var placeId: Int
-    //MARK: - 토스트 메시지 뷰 두개에 띄워지는거 해결해야함
     @StateObject private var toastViewModel = ToastViewModel()
-    @ObservedObject var myPlaceInformationViewModel: MyPlaceInformationViewModel
-    
     
     let imageHeight = CGFloat(440)
     let hstackWidth = CGFloat(320)
@@ -65,12 +66,37 @@ struct PlaceInformationView: View {
                                                     .weight(.semibold)
                                                 )
                                             Spacer()
+                                            
                                             Image(systemName: isHeartFilled ? "heart.fill" : "heart")
                                                 .foregroundStyle(isHeartFilled ? .red : .gray)
                                                 .onTapGesture {
-                                                    isHeartFilled.toggle()
-                                                    let toastMessage = isHeartFilled ? "관심 장소로 저장되었습니다." : "관심 장소 저장이 해제되었습니다."
-                                                    toastViewModel.showToastWithString(text: toastMessage)
+                                                    if isHeartFilled {
+                                                        MyPlaceManager.shared.deleteFavoritePlace(placeId: placeId) { error in
+                                                            if error != nil {
+                                                                print("error in deleteFavoritePlace")
+                                                            }
+                                                            else {
+                                                                isHeartFilled.toggle()
+                                                                print("success in deleteFavoritePlace")
+                                                            }
+                                                        }
+                                                        let toastMessage = "관심 장소 저장이 해제되었습니다."
+                                                        toastViewModel.showToastWithString(text: toastMessage)
+                                                    }
+                                                    else {
+                                                        MyPlaceManager.shared.registerFavoritePlace(placeId: placeId) { error in
+                                                            if error != nil {
+                                                                print("error in registerFavoritePlace")
+                                                            } else {
+                                                                isHeartFilled.toggle()
+                                                                print("success in registerFavoritePlace")
+                                                            }
+                                                        }
+                                                        let toastMessage = "관심 장소로 저장되었습니다."
+                                                        toastViewModel.showToastWithString(text: toastMessage)
+                                                    }
+                                                    print("!!\(myPlaceInformationViewModel.result.name)")
+                                                    myPlaceListViewModel.getMyPlaceList(keyword: myPlaceInformationViewModel.result.name)
                                                 }
                                                 .padding(.trailing, 10)
                                         }
@@ -94,7 +120,6 @@ struct PlaceInformationView: View {
                                         .padding(.leading, 10)
                                 )
                         }
-                        
                     }
                     .frame(height: imageHeight)
                 }
@@ -246,7 +271,7 @@ struct PlaceInformationView: View {
                                 })
                             }
                             else {
-                                Text("인스타그램 몰라!")
+                                Text("인스타그램 계정이 입력되지 않았어요")
                                     .font(
                                         .custom("Apple SD Gothic Neo", size: 12)
                                         .weight(.regular)
@@ -440,5 +465,5 @@ extension View {
 }
 
 #Preview {
-    PlaceInformationView(path: .constant([]), isHeartFilled: .constant(true), placeId: .constant(52), myPlaceInformationViewModel: MyPlaceInformationViewModel())
+    PlaceInformationView(myPlaceInformationViewModel: MyPlaceInformationViewModel(), myPlaceListViewModel: MyPlaceListViewModel(), path: .constant([]), isHeartFilled: .constant(true), placeId: .constant(52))
 }
