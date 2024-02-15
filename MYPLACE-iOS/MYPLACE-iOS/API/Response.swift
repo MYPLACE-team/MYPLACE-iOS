@@ -38,14 +38,14 @@ struct MyPlaceListInfo: Codable {
 struct MyPlaceList: Codable {
     let id: Int
     let name, address: String
-    let category_id: Int
-    let thumbnail_url: JSONNull
+    let categoryId: Int
+    let thumbnailUrl: JSONNull
     let isLike: Bool
 
     enum CodingKeys: String, CodingKey {
         case id, name, address
-        case category_id = "category_id"
-        case thumbnail_url = "thumbnail_url"
+        case categoryId = "categoryId"
+        case thumbnailUrl = "thumbnailUrl"
         case isLike
     }
 }
