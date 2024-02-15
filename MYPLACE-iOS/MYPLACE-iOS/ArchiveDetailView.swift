@@ -8,10 +8,11 @@
 import SwiftUI
 struct ArchiveDetailView: View {
     @State var archiveData = archiveDetail
-    @State var isLocationView: Bool = true
+    @State var isLocationView: Bool = false
     @State var isPopupPresented: Bool = false
     @State var popupMode: String = ""
     @State var isCommentPresented: Bool = false
+    @State private var tags: [String] = ["한옥", "크로플", "안국역"]
     @StateObject private var toastViewModel = ToastViewModel.shared
     
     @Binding var path: [PathModel]
@@ -357,47 +358,27 @@ struct ArchiveDetailView: View {
                                                         }
                                                         .frame(width: 219, alignment: .top)
                                                         .padding(.top, 24)
-                                                        HStack(spacing: 10){
-                                                            Text("# 한옥")
-                                                                .font(Font.custom("Apple SD Gothic Neo", size: 12))
-                                                                .foregroundStyle(Color(red: 0.4, green: 0.35, blue: 0.96))
-                                                                .padding(.horizontal, 15)
-                                                                .padding(.vertical, 6)
-                                                                .background(Color(red: 0.97, green: 0.95, blue: 1))
-                                                                .cornerRadius(19)
-                                                                .overlay(
-                                                                    RoundedRectangle(cornerRadius: 19)
-                                                                        .inset(by: 0.5)
-                                                                        .stroke(Color(red: 0.4, green: 0.35, blue: 0.96), lineWidth: 1)
-                                                                )
-                                                            Text("# 크로플")
-                                                                .font(Font.custom("Apple SD Gothic Neo", size: 12))
-                                                                .foregroundStyle(Color(red: 0.4, green: 0.35, blue: 0.96))
-                                                                .padding(.horizontal, 15)
-                                                                .padding(.vertical, 6)
-                                                                .background(Color(red: 0.97, green: 0.95, blue: 1))
-                                                                .cornerRadius(19)
-                                                                .overlay(
-                                                                    RoundedRectangle(cornerRadius: 19)
-                                                                        .inset(by: 0.5)
-                                                                        .stroke(Color(red: 0.4, green: 0.35, blue: 0.96), lineWidth: 1)
-                                                                )
-                                                            Text("# 안국역")
-                                                                .font(Font.custom("Apple SD Gothic Neo", size: 12))
-                                                                .foregroundStyle(Color(red: 0.4, green: 0.35, blue: 0.96))
-                                                                .multilineTextAlignment(.leading)
-                                                                .padding(.horizontal, 15)
-                                                                .padding(.vertical, 6)
-                                                                .background(Color(red: 0.97, green: 0.95, blue: 1))
-                                                                .cornerRadius(19)
-                                                                .overlay(
-                                                                    RoundedRectangle(cornerRadius: 19)
-                                                                        .inset(by: 0.5)
-                                                                        .stroke(Color(red: 0.4, green: 0.35, blue: 0.96), lineWidth: 1)
-                                                                )
-                                                        }
-                                                        .frame(width: 219)
-                                                        .padding(.vertical, 12)
+                                                        TagCloudView(tags: tags)
+                                                            .frame(width: 240)
+                                                            .padding(.vertical, 12)
+//                                                        HStack(spacing: 10){
+//                                                            ForEach(tags, id:\.self) { tag in
+//                                                                Text("# \(tag)")
+//                                                                    .font(Font.custom("Apple SD Gothic Neo", size: 12))
+//                                                                    .foregroundStyle(Color(red: 0.4, green: 0.35, blue: 0.96))
+//                                                                    .padding(.horizontal, 15)
+//                                                                    .padding(.vertical, 6)
+//                                                                    .background(Color(red: 0.97, green: 0.95, blue: 1))
+//                                                                    .cornerRadius(19)
+//                                                                    .overlay(
+//                                                                        RoundedRectangle(cornerRadius: 19)
+//                                                                            .inset(by: 0.5)
+//                                                                            .stroke(Color(red: 0.4, green: 0.35, blue: 0.96), lineWidth: 1)
+//                                                                    )
+//                                                            }
+//                                                        }
+//                                                        .frame(width: 219)
+//                                                        .padding(.vertical, 12)
                                                     }
                                                 }
                                                 .frame(width: 272)
@@ -519,7 +500,6 @@ struct ArchiveDetailView: View {
                                                 }
                                             }
                                             .padding(.top, 18)
-                                            .padding(.bottom, 36)
                                         }
                                         .id("scroll_top")
                                     }
@@ -724,6 +704,80 @@ struct CommentView : View {
             .padding(.all, 18)
             .background(.white)
             .clipShape(RoundedRectangle(cornerRadius: 10))
+        }
+    }
+}
+
+struct TagCloudView: View {
+    var tags: [String]
+    
+    @State private var totalHeight = CGFloat.zero
+
+    var body: some View {
+        VStack {
+            GeometryReader { geometry in
+                self.generateContent(in: geometry)
+            }
+        }
+        .frame(height: totalHeight)
+    }
+
+    private func generateContent(in g: GeometryProxy) -> some View {
+        var width = CGFloat.zero
+        var height = CGFloat.zero
+
+        return ZStack(alignment: .topLeading) {
+            ForEach(self.tags, id: \.self) { tag in
+                self.item(for: tag)
+                    .padding(.horizontal, 5)
+                    .padding(.bottom, 7)
+                    .alignmentGuide(.leading, computeValue: { d in
+                        if (abs(width - d.width) > g.size.width)
+                        {
+                            width = 0
+                            height -= d.height
+                        }
+                        let result = width
+                        if tag == self.tags.last! {
+                            width = 0 //last item
+                        } else {
+                            width -= d.width
+                        }
+                        return result
+                    })
+                    .alignmentGuide(.top, computeValue: {d in
+                        let result = height
+                        if tag == self.tags.last! {
+                            height = 0
+                        }
+                        return result
+                    })
+            }
+        }.background(viewHeightReader($totalHeight))
+    }
+
+    private func item(for text: String) -> some View {
+        Text("# \(text)")
+            .font(Font.custom("Apple SD Gothic Neo", size: 12))
+            .foregroundStyle(Color(red: 0.4, green: 0.35, blue: 0.96))
+            .padding(.horizontal, 15)
+            .padding(.vertical, 6)
+            .background(Color(red: 0.97, green: 0.95, blue: 1))
+            .cornerRadius(19)
+            .overlay(
+                RoundedRectangle(cornerRadius: 19)
+                    .inset(by: 0.5)
+                    .stroke(Color(red: 0.4, green: 0.35, blue: 0.96), lineWidth: 1)
+            )
+    }
+
+    private func viewHeightReader(_ binding: Binding<CGFloat>) -> some View {
+        return GeometryReader { geometry -> Color in
+            let rect = geometry.frame(in: .local)
+            DispatchQueue.main.async {
+                binding.wrappedValue = rect.size.height
+            }
+            return .clear
         }
     }
 }

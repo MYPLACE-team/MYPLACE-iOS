@@ -18,9 +18,23 @@ class LoginModel: ObservableObject {
             
             guard let profile = result.user.profile else {return }
             
-            let image = profile.imageURL(withDimension: 180)
+            guard let image = profile.imageURL(withDimension: 180) else {return}
             let name = profile.name
-            guard let idToken = result.user.idToken else {return}
+            guard let idToken = result.user.idToken?.tokenString else {return}
+            
+            LoginManager.shared.googleLogin(accessToken: idToken) { result in
+                switch result {
+                case .success(let response):
+                    DispatchQueue.main.async {
+                        print(response.isSuccess)
+                        print(response.code)
+                        print(response.message)
+                        print(response.result)
+                    }
+                case .failure(let error):
+                    print("Search errorWhat!!!!!!!!!!!!: \(error.localizedDescription)")
+                }
+            }
             
             completion(true)
             
