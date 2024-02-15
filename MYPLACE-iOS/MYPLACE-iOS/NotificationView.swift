@@ -382,7 +382,7 @@ struct NotificationCellView: View {
                     )
                     .foregroundStyle(Color(red: 0.15, green: 0.16, blue: 0.17))
                 HStack(spacing: 0) {
-                    ForEach(item.content.indices) {idx in
+                    ForEach(item.content.indices, id: \.self) {idx in
                         if(idx % 2 == 0) {
                             Text(item.content[idx])
                                 .font(Font.custom("Apple SD Gothic Neo", size: 17))
