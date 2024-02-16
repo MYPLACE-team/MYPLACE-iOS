@@ -12,7 +12,7 @@ struct CommunityView: View {
     @State private var searchText: String = ""
     @State private var isLatestSelected: String = "인기순"
     @State private var isScrapSelected: Bool = false
-    @State private var isTextClicked: Bool = false
+    @State private var isTextClicked: [Bool] = [false, false, false, false]
     var body: some View {
             RoundedRectangle(cornerRadius: 10)
                 .foregroundStyle(Color(red: 0.97, green: 0.97, blue: 0.98))
@@ -65,10 +65,10 @@ struct CommunityView: View {
             }
             Spacer()
             HStack(spacing: 25) {
-                customTextRoundedRecClikable(text: "종로구", isClicked: isTextClicked)
-                customTextRoundedRecClikable(text: "송파구", isClicked: isTextClicked)
-                customTextRoundedRecClikable(text: "마포구", isClicked: isTextClicked)
-                customTextRoundedRecClikable(text: "강남구", isClicked: isTextClicked)
+                customTextRoundedRecClikable(text: "종로구", isClicked: $isTextClicked[0])
+                customTextRoundedRecClikable(text: "송파구", isClicked: $isTextClicked[1])
+                customTextRoundedRecClikable(text: "마포구", isClicked: $isTextClicked[2])
+                customTextRoundedRecClikable(text: "강남구", isClicked: $isTextClicked[3])
             }
             .fontWeight(.bold)
             Spacer()
@@ -88,26 +88,27 @@ struct CommunityView: View {
         ScrollView {
             communityContent(userProfileImage: "MyPlaceLogo", username: "minjae", date: "2023.10.21", location: "강남구", image: "DummyImage2", imageTag: "🍷와인바", tags: ["#와인", "#양식", "수서역"], scrapCount: "122")
                 .padding(.top, 10)
-            EmptyView()
-                .toolbar {
-                    ToolbarItem(placement: .topBarLeading) {
-                        BasicBackButton(path: $path)
-                    }
-                    ToolbarItem(placement: .principal) {
-                        HStack {
-                            Text("커뮤니티")
-                                .font(
-                                    .custom("Apple SD Gothic Neo", size: 20)
-                                    .weight(.semibold)
-                                )
-                        }
-                        .foregroundStyle(.black)
-                        .padding(.top, 5)
-                    }
-                    ToolbarItem(placement: .topBarTrailing) {
-                        ToolBarView(path: $path)
-                    }
+        }
+        .scrollIndicators(.hidden)
+        .navigationBarBackButtonHidden()
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                BasicBackButton(path: $path)
+            }
+            ToolbarItem(placement: .principal) {
+                HStack {
+                    Text("커뮤니티")
+                        .font(
+                            .custom("Apple SD Gothic Neo", size: 20)
+                            .weight(.semibold)
+                        )
                 }
+                .foregroundStyle(.black)
+                .padding(.top, 5)
+            }
+            ToolbarItem(placement: .topBarTrailing) {
+                ToolBarView(path: $path)
+            }
         }
     }
     
@@ -130,26 +131,26 @@ struct CommunityView: View {
             )
     }
     
-    func customTextRoundedRecClikable(text: String, isClicked: Bool) -> some View {
+    func customTextRoundedRecClikable(text: String, isClicked: Binding<Bool>) -> some View {
         Text(text)
             .font(
                 .custom("Apple SD Gothic Neo", size: 13)
                 .weight(.regular)
             )
-            .foregroundStyle(isClicked ? .white : Color.accentColor)
+            .foregroundStyle(isClicked.wrappedValue ? .white : Color.accentColor)
             .background(
                 RoundedRectangle(cornerRadius: 40)
                     .foregroundStyle(.white)
                     .overlay(
                         RoundedRectangle(cornerRadius: 40)
-                            .fill(isClicked ? Color.accentColor: .white)
+                            .fill(isClicked.wrappedValue ? Color.accentColor: .white)
                             .stroke(Color.accentColor, lineWidth: 1.3)
                             .padding(EdgeInsets(top: -5, leading: -10, bottom: -4, trailing: -10))
                     )
             )
             .onTapGesture {
                 withAnimation {
-                    isTextClicked.toggle()
+                    isClicked.wrappedValue.toggle()
                 }
             }
     }
