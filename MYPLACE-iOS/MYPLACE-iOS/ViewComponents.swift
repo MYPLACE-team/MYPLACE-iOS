@@ -138,7 +138,9 @@ struct SearchItemView_Registered: View {
                                             if error != nil {
                                                 print("error in registerFavoritePlace")
                                             } else {
-                                                isHeartFilled.toggle()
+                                                withAnimation {
+                                                    isHeartFilled.toggle()
+                                                }
                                                 print("!!\(placeName)")
                                                 myPlaceListViewModel.getMyPlaceList(keyword: searchText)
                                                 print("success in registerFavoritePlace")
@@ -151,7 +153,9 @@ struct SearchItemView_Registered: View {
                                                 print("error in deleteFavoritePlace")
                                             }
                                             else {
-                                                isHeartFilled.toggle()
+                                                withAnimation {
+                                                    isHeartFilled.toggle()
+                                                }
                                                 myPlaceListViewModel.getMyPlaceList(keyword: searchText)
                                                 print("success in deleteFavoritePlace")
                                             }
