@@ -92,7 +92,9 @@ struct PlaceInformationEditView: View {
                                 }
                             )
                             .onTapGesture {
-                                isDayOffPopupPresented.toggle()
+                                withAnimation {
+                                    isDayOffPopupPresented.toggle()
+                                }
                             }
                     }
                     else {
@@ -102,7 +104,9 @@ struct PlaceInformationEditView: View {
                                     RedChip(text: holiday.rawValue)
                                 }
                                 .onTapGesture {
-                                    isDayOffPopupPresented.toggle()
+                                    withAnimation {
+                                        isDayOffPopupPresented.toggle()
+                                    }
                                 }
                                 Spacer()
                             }
@@ -140,12 +144,16 @@ struct PlaceInformationEditView: View {
                                 }
                             )
                             .onTapGesture {
-                                isServicePopupPresented.toggle()
+                                withAnimation {
+                                    isServicePopupPresented.toggle()
+                                }
                             }
                     }
                     else {
                         Button (action: {
-                            isServicePopupPresented.toggle()
+                            withAnimation {
+                                isServicePopupPresented.toggle()
+                            }
                         }) {
                             HStack(alignment: .center, spacing: 8) {
                                 ForEach(selectedServiceIndices, id: \.self) { service in
@@ -378,10 +386,14 @@ struct TagView: View {
                                     }
                                     else if !tag.hasPrefix("#") {
                                         tag = "#" + tag
-                                        isSubmitted.toggle()
+                                        withAnimation {
+                                            isSubmitted.toggle()
+                                        }
                                     }
                                     else {
-                                        isSubmitted.toggle()
+                                        withAnimation {
+                                            isSubmitted.toggle()
+                                        }
                                     }
                                 }
                                 .autocapitalization(.none)
@@ -416,7 +428,9 @@ struct TagView: View {
                     )
                     .padding([.leading, .trailing], 10)
                     .onTapGesture {
-                        isSubmitted.toggle()
+                        withAnimation {
+                            isSubmitted.toggle()
+                        }
                     }
             }
         }

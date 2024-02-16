@@ -133,7 +133,9 @@ struct FavoritePlacesView: View {
                     Spacer()
                     //MARK: - Filter button
                     Button(action: {
-                        isPopupPresented.toggle()
+                        withAnimation {
+                            isPopupPresented.toggle()
+                        }
                     }) {
                         Image("Setting")
                             .resizable()

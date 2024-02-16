@@ -123,7 +123,9 @@ struct SearchView: View {
                                     ForEach(kakaoSearchViewModel.places, id: \.id) { place in
                                         Button(action: {
                                             popupViewModel.setSelectedPlace(x: place.x, y: place.y, placeName: place.placeName, address: place.addressName)
-                                            isPopupPresented.toggle()
+                                            withAnimation {
+                                                isPopupPresented.toggle()
+                                            }
                                         }) {
                                             SearchItemView_UnRegistered(path: $path, placeName: place.placeName, addressName: place.addressName)
                                         }
@@ -146,7 +148,9 @@ struct SearchView: View {
                                     ForEach(kakaoSearchViewModel.places, id: \.id) { place in
                                         Button(action: {
                                             popupViewModel.setSelectedPlace(x: place.x, y: place.y, placeName: place.placeName, address: place.addressName)
-                                            isPopupPresented.toggle()
+                                            withAnimation {
+                                                isPopupPresented.toggle()
+                                            }
                                         }) {
                                             SearchItemView_UnRegistered(path: $path, placeName: place.placeName, addressName: place.addressName)
                                         }

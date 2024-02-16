@@ -143,7 +143,7 @@ struct HomeView: View {
                         case .archiveDetailView:
                             ArchiveDetailView(path: $path)
                         case .communityView:
-                            CommunityView()
+                            CommunityView(path: $path)
                         case .placeInformationEditView:
                             PlaceInformationEditView(path: $path, isHeartFilled: $isHeartFilled, selectedDayOffIndices: $selectedDayOffIndices, selectedServiceIndices: $selectedServiceIndices)
                         case .placeInformationView:
