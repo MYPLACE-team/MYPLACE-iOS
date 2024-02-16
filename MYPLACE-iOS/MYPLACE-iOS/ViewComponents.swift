@@ -348,7 +348,6 @@ struct KakaoSearchView: View {
         RoundedRectangle(cornerRadius: 10)
             .foregroundStyle(Color(red: 0.97, green: 0.97, blue: 0.98))
             .frame(height: 40)
-            .shadow(color: .black.opacity(0.25), radius: 2, x: 0, y: 4)
             .overlay(
                 HStack {
                     Image("Map")

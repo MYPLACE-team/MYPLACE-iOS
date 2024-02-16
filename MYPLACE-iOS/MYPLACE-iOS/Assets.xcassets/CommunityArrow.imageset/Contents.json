@@ -1,17 +1,15 @@
 {
   "images" : [
     {
-      "filename" : "Community.svg",
+      "filename" : "Vector 200.svg",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Community 1.svg",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "Community 2.svg",
       "idiom" : "universal",
       "scale" : "3x"
     }

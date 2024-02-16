@@ -180,74 +180,72 @@ struct FavoritePlacesView: View {
                         .background(Color(red: 0.94, green: 0.93, blue: 1).opacity(0.7))
                     }
                     else {
-                        
-                            Group {
-                                ForEach(favoritePlaceViewModel.result, id: \.id) { favoritePlace in
-                                    Section {
-                                        SwipeItem(content: {
-                                            FavoriteItemView(path: $path, isVisited: $isVisited, place: favoritePlace)
-                                                .background( Color(red: 0.93, green: 0.93, blue: 1))
-                                                .onTapGesture {
-                                                    placeId = favoritePlace.id
-                                                    isHeartFilled = true
-                                                    path.append(.placeInformationView)
-                                                }
+                        Group {
+                            ForEach(favoritePlaceViewModel.result, id: \.id) { favoritePlace in
+                                Section {
+                                    SwipeItem(content: {
+                                        FavoriteItemView(path: $path, isVisited: $isVisited, place: favoritePlace)
+                                            .background( Color(red: 0.93, green: 0.93, blue: 1))
+                                            .onTapGesture {
+                                                placeId = favoritePlace.id
+                                                isHeartFilled = true
+                                                path.append(.placeInformationView)
+                                            }
+                                        
+                                    },  left: {
+                                        ZStack {
+                                            UnevenRoundedRectangle(topLeadingRadius: 10, bottomLeadingRadius: 10)
+                                                .fill(Color.green)
                                             
-                                        },  left: {
-                                            ZStack {
-                                                UnevenRoundedRectangle(topLeadingRadius: 10, bottomLeadingRadius: 10)
-                                                    .fill(Color.green)
+                                            Button(action: {
+                                                isVisited = true
+                                                let toastMessage = "다녀올 장소에 저장되었어요"
+                                                ToastViewModel.shared.showToastWithString(text: toastMessage)
                                                 
-                                                Button(action: {
-                                                    isVisited = true
-                                                    let toastMessage = "다녀올 장소에 저장되었어요"
-                                                    ToastViewModel.shared.showToastWithString(text: toastMessage)
-                                                }) {
-                                                    Image(systemName: "archivebox")
-                                                        .foregroundStyle(.white)
-                                                        .font(.largeTitle)
-                                                }
-                                                .tint(.green)
+                                            }) {
+                                                Image(systemName: "archivebox")
+                                                    .foregroundStyle(.white)
+                                                    .font(.largeTitle)
                                             }
-                                        },  right: {
-                                            ZStack {
-                                                UnevenRoundedRectangle(bottomTrailingRadius: 10, topTrailingRadius: 10)
-                                                    .fill(Color.red)
-                                                
-                                                Button(action: {
-                                                    MyPlaceManager.shared.deleteFavoritePlace(placeId: favoritePlace.id) { error in
-                                                        if error != nil {
-                                                            print("관심장소 삭제 실패")
-                                                        }
-                                                        else {
-                                                            favoritePlaceViewModel.searchMyPlaceList()
-                                                            print("관심장소 삭제 성공")
-                                                        }
+                                            .tint(.green)
+                                        }
+                                    },  right: {
+                                        ZStack {
+                                            UnevenRoundedRectangle(bottomTrailingRadius: 10, topTrailingRadius: 10)
+                                                .fill(Color.red)
+                                            
+                                            Button(action: {
+                                                MyPlaceManager.shared.deleteFavoritePlace(placeId: favoritePlace.id) { error in
+                                                    if error != nil {
+                                                        print("관심장소 삭제 실패")
                                                     }
-                                                    let toastMessage = "관심 장소 저장이 해제되었습니다."
-                                                    ToastViewModel.shared.showToastWithString(text: toastMessage)
-                                                    
-                                                }) {
-                                                    Image(systemName: "trash")
-                                                        .foregroundStyle(.white)
-                                                        .font(.largeTitle)
+                                                    else {
+                                                        favoritePlaceViewModel.searchMyPlaceList()
+                                                        print("관심장소 삭제 성공")
+                                                    }
                                                 }
-                                                .tint(.red)
+                                                let toastMessage = "관심 장소 저장이 해제되었습니다."
+                                                ToastViewModel.shared.showToastWithString(text: toastMessage)
+                                                
+                                            }) {
+                                                Image(systemName: "trash")
+                                                    .foregroundStyle(.white)
+                                                    .font(.largeTitle)
                                             }
-                                        }, itemHeight: 80, path: $path)
-                                    }
-                                    .frame(height: 80)
-                                    .clipShape(RoundedRectangle(cornerRadius: 15))
-                                    .listRowSeparator(.hidden)
-                                    .listSectionSpacing(0)
+                                            .tint(.red)
+                                        }
+                                    }, itemHeight: 80, path: $path)
                                 }
+                                .frame(height: 80)
+                                .clipShape(RoundedRectangle(cornerRadius: 15))
+                                .listRowSeparator(.hidden)
+                                .listSectionSpacing(0)
                             }
-                            .frame(width: 340)
-                            .padding(.top, 15)
-                            
-                            Spacer()
+                        }
+                        .frame(width: 340)
+                        .padding(.top, 15)
                         
-                        
+                        Spacer()
                     }
                 }
                 //MARK: - 다녀온 장소
@@ -425,7 +423,6 @@ struct SwipeItem<Content: View, Left: View, Right: View>: View {
                         anchor = -anchorWidth
                         isSwipeActive = true
                     } else if leftPast {
-                        print("6")
                         anchor = anchorWidth
                         isSwipeActive = true
                     }

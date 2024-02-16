@@ -9,6 +9,7 @@ import SwiftUI
 import CoreLocation
 
 struct HomeView: View {
+    @StateObject var favoritePlaceViewModel = FavoritePlaceViewModel.shared
     @StateObject var homeViewModel = HomeViewModel.shared
     @State var searchText = ""
     @State var path: [PathModel] = []
@@ -23,87 +24,105 @@ struct HomeView: View {
     
     var body: some View {
         NavigationStack(path: $path) {
-            VStack {
-//                UnevenRoundedRectangle(bottomLeadingRadius: 25, bottomTrailingRadius: 25)
-//                    .foregroundStyle(Color.accentColor)
-//                    .frame(height: 200)
-//                    .overlay(
-//                        
-//                    )
-                HStack {
-                    Text("라일락")
-                        .font(
-                            .custom("Apple SD Gothic Neo", size: 30)
-                            .weight(.bold)
-                        )
-                        .foregroundStyle(Color(red: 0.39, green: 0.37, blue: 0.6))
-                        .padding(.leading, 20)
-                    Text("님,")
-                        .font(
-                            .custom("Apple SD Gothic Neo", size: 20)
-                        )
-                        .padding(.top, 10)
-                    Spacer()
-                    VStack {
-                        ToolBarView(path: $path)
-                            .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 20))
-                    }
-                }
-                HStack {
-                    Text("오늘도 잘 다녀오셨나요?")
-                        .font(
-                            .custom("Apple SD Gothic Neo", size: 20)
-                        )
-                        .padding(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 0))
-                    Spacer()
-                }
-            }
             ZStack {
-                //MARK: - KakaoMapView
-                KakaoMapView(draw: $draw)
-                    .onAppear(perform: {
-                    self.draw = true
-                }).onDisappear(perform: {
-                    self.draw = false
-                }).frame(maxWidth: .infinity, maxHeight: .infinity)
-                
                 VStack {
-                    KakaoSearchView(kakaoSearchViewModel: KakaoSearchViewModel(), path: $path, searchText: $searchText)
-                        .padding(EdgeInsets(top: 10, leading: 20, bottom: 0, trailing: 20))
-                    
+                    UnevenRoundedRectangle(bottomLeadingRadius: 25, bottomTrailingRadius: 25)
+                        .foregroundStyle(.white)
+                        .frame(height: 280)
+                        .overlay(
+                            VStack {
+                                UnevenRoundedRectangle(bottomLeadingRadius: 25, bottomTrailingRadius: 25)
+                                    .foregroundStyle(Color.accentColor)
+                                    .frame(height: 200)
+                                    .overlay(
+                                        VStack {
+                                            HStack {
+                                                VStack {
+                                                    HStack {
+                                                        Text("\(homeViewModel.result.username)")
+                                                            .font(
+                                                                .custom("Apple SD Gothic Neo", size: 30)
+                                                                .weight(.bold)
+                                                            )
+                                                            .foregroundStyle(Color.white)
+                                                        Text("님,")
+                                                            .font(
+                                                                .custom("Apple SD Gothic Neo", size: 20)
+                                                                .weight(.semibold)
+                                                            )
+                                                            .foregroundStyle(Color.white)
+                                                        Spacer()
+                                                    }
+                                                    HStack {
+                                                        Text("오늘도 잘 다녀오셨나요?")
+                                                            .font(
+                                                                .custom("Apple SD Gothic Neo", size: 20)
+                                                                .weight(.semibold)
+                                                            )
+                                                            .foregroundStyle(Color.white)
+                                                        Spacer()
+                                                    }
+                                                }
+                                                .padding(.leading, 30)
+                                                .padding(.top, 60)
+                                                Spacer()
+                                                ToolBarView(path: $path)
+                                                    .padding(EdgeInsets(top: 30, leading: 0, bottom: 10, trailing: 20))
+                                            }
+                                            
+                                            
+                                            KakaoSearchView(kakaoSearchViewModel: KakaoSearchViewModel(), path: $path, searchText: $searchText)
+                                                .padding(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20))
+                                        }
+                                    )
+                                HStack(spacing: 40) {
+                                    ViewChangeButton(
+                                        path: $path,
+                                        destinationView: .favoritePlacesView,
+                                        imageName: "FavoriteHeart",
+                                        buttonText: "관심장소",
+                                        buttonColor: Color(red: 0.96, green: 0.26, blue: 0.21)
+                                    )
+                                    
+                                    ViewChangeButton(
+                                        path: $path,
+                                        destinationView: .arciveView,
+                                        imageName: "ArchiveFlag",
+                                        buttonText: "아카이브",
+                                        buttonColor: Color(red: 0.4, green: 0.37, blue: 0.70)
+                                    )
+                                    
+                                    ViewChangeButton(
+                                        path: $path,
+                                        destinationView: .communityView,
+                                        imageName: "CommunityArrow",
+                                        buttonText: "커뮤니티",
+                                        buttonColor: Color(red: 1, green: 0.72, blue: 0.3)
+                                    )
+                                }
+                                .padding(.bottom, 20)
+                            }
+                        )
+                        .zIndex(1)
+                        .edgesIgnoringSafeArea(.top)
+                        .onAppear {
+                            favoritePlaceViewModel.searchMyPlaceList()
+                            homeViewModel.getHomeViewInformation()
+                        }
+                    //MARK: - KakaoMapView
+                    KakaoMapView(draw: $draw)
+                        .onAppear(perform: {
+                            self.draw = true
+                        })
+                        .onDisappear(perform: {
+                            self.draw = false
+                        })
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .padding(.top, -20)
+                }
+                VStack {
                     HStack {
-                        ViewChangeButton(
-                            path: $path,
-                            destinationView: .favoritePlacesView,
-                            imageName: "Vector",
-                            imageSize: CGSize(width: 11, height: 14),
-                            buttonText: "관심장소",
-                            buttonColor: Color(red: 0.96, green: 0.26, blue: 0.21)
-                        )
-                        .padding(.leading, 20)
-                        
-                        Spacer()
-                        
-                        ViewChangeButton(
-                            path: $path,
-                            destinationView: .arciveView,
-                            imageName: "GreenPlus",
-                            imageSize: CGSize(width: 14, height: 14),
-                            buttonText: "아카이브",
-                            buttonColor: Color(red: 0.3, green: 0.69, blue: 0.31)
-                        )
-                        
-                        Spacer()
-                        
-                        ViewChangeButton(
-                            path: $path,
-                            destinationView: .communityView,
-                            imageName: "Community",
-                            imageSize: CGSize(width: 15, height: 15),
-                            buttonText: "커뮤니티",
-                            buttonColor: Color(red: 1, green: 0.72, blue: 0.3)
-                        )
-                        .padding(.trailing, 20)
+                       EmptyView()
                     }
                     .navigationDestination(for: PathModel.self) { pathModel in
                         switch pathModel {
@@ -135,8 +154,6 @@ struct HomeView: View {
                             ProfileEditView(path: $path)
                         }
                     }
-                    .padding(.top, 10)
-                    
                     HStack {
                         VStack {
                             Button(action: {
@@ -157,7 +174,7 @@ struct HomeView: View {
                                     )
                             }
                         }
-                        .padding(EdgeInsets(top: 15, leading: 20, bottom: 0, trailing: 0))
+                        .padding(EdgeInsets(top: 300, leading: 20, bottom: 0, trailing: 0))
                         Spacer()
                     }
                     Spacer()
@@ -166,43 +183,25 @@ struct HomeView: View {
                     ZStack {
                         if !isPopupHidden {
                             RoundedRectangle(cornerRadius: 60)
-                                .fill(Color.white)
+                                .foregroundStyle(Color.white)
                                 .frame(width: 300, height: 100)
                                 .shadow(color: .black.opacity(0.25), radius: 2, x: 0, y: 4)
                                 .overlay(
                                     ZStack {
                                         VStack(spacing: 0) {
                                             HStack(spacing: 0) {
-                                                Text("오늘")
-                                                Text(" ☕️ 도틀 ")
-                                                Text("방문하면")
-                                            }
-                                            .font(.custom("Apple SD Gothic Neo", size: 20))
-                                            
-                                            HStack(spacing: 0) {
-                                                Text("스콘 1개 무료")
-                                                    .foregroundStyle(Color(red: 0.4, green: 0.35, blue: 0.96))
+                                                Text("고즈넉한 분위기에서\n서촌을 즐기는 법☕️")
                                                     .font(
-                                                        .custom("Apple SD Gothic Neo", size: 22)
-                                                        .weight(.semibold)
+                                                        .custom("Apple SD Gothic Neo", size: 18)
                                                     )
-                                                Text(" 증정!")
-                                                    .font(.system(size: 20))
                                                 Image(systemName: "chevron.right")
                                                     .resizable()
-                                                    .frame(width: 5, height: 8)
+                                                        .aspectRatio(contentMode: .fit)
+                                                        .frame(width: 12, height: 12)
                                                     .foregroundStyle(Color(red: 0.4, green: 0.35, blue: 0.96))
                                                     .bold()
-                                                    .padding(EdgeInsets(top: 0, leading: 5, bottom: 3, trailing: 0))
+                                                    .padding(EdgeInsets(top: 21, leading: 5, bottom: 3, trailing: 0))
                                             }
-                                            HStack(spacing: 0) {
-                                                Text("500m 이내")
-                                                    .fontWeight(.semibold)
-                                                    .foregroundStyle(Color(red: 0.54, green: 0.51, blue: 0.81))
-                                                Text("에 위치합니다.")
-                                                    .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
-                                            }
-                                            .font(.custom("Apple SD Gothic Neo", size: 10))
                                         }
                                         Button(action: {
                                             isPopupHidden = true
@@ -231,7 +230,6 @@ struct ViewChangeButton<ViewModel: Hashable>: View {
     @Binding var path: [ViewModel]
     let destinationView: ViewModel
     let imageName: String
-    let imageSize: CGSize
     let buttonText: String
     let buttonColor: Color
     
@@ -239,19 +237,18 @@ struct ViewChangeButton<ViewModel: Hashable>: View {
         Button(action: {
             path.append(destinationView)
         }) {
-            RoundedRectangle(cornerRadius: 10)
-                .fill(Color(red: 0.95, green: 0.95, blue: 0.95))
-                .frame(width: 110, height: 28)
-                .shadow(color: .black.opacity(0.25), radius: 2, x: 0, y: 4)
+            Circle()
+                .fill(Color(red: 0.93, green: 0.93, blue: 1))
+                .frame(width: 70, height: 70)
+                .shadow(color: Color(red: 0.68, green: 0.65, blue: 0.65).opacity(0.1), radius: 2, x: 0, y: 7)
+                .shadow(color: Color(red: 0.68, green: 0.65, blue: 0.65).opacity(0.1), radius: 1.5, x: 0, y: 3)
                 .overlay(
-                    HStack {
+                    VStack {
                         Image(imageName)
-                            .resizable()
-                            .frame(width: imageSize.width, height: imageSize.height)
+                            .frame(width: 20, height: 20)
                         Text(buttonText)
                             .font(
-                                .custom("Apple SD Gothic Neo", size: 14)
-                                .weight(.bold)
+                                .custom("Apple SD Gothic Neo", size: 12)
                             )
                             .foregroundStyle(buttonColor)
                     }
