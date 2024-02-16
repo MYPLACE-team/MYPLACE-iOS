@@ -50,7 +50,6 @@ struct PlaceInformationEditView: View {
                 } else {
                     Text("뭔가 잘못됐어!!!")
                 }
-                    
                 
                 VStack(spacing: 10) {
                     HStack(spacing: 0) {
@@ -165,7 +164,7 @@ struct PlaceInformationEditView: View {
                                 .weight(.bold)
                             )
                             .padding(.top, 15)
-                            .padding(.leading, 4)
+                            .padding(.leading,33)
                         Spacer()
                     }
                     CustomTextField(text: $myPlaceInformationEditViewModel.link, placeholder: "장소의 인스타그램 계정을 입력해주세요.", characterLimit: 30)
@@ -223,8 +222,8 @@ struct PlaceInformationEditView: View {
                 .padding(.top, 5)
                 HStack(spacing: 80) {
                     Button(action:  {
-                        myPlaceInformationEditViewModel.lat = popupViewModel.selectedPlace?.x ?? "0"
-                        myPlaceInformationEditViewModel.lon = popupViewModel.selectedPlace?.y ?? "0"
+                        myPlaceInformationEditViewModel.lon = popupViewModel.selectedPlace?.x ?? "0"
+                        myPlaceInformationEditViewModel.lat = popupViewModel.selectedPlace?.y ?? "0"
                         updateViewModelWithFormData(images: selectedImage)
                         MyPlaceManager.shared.registerMyPlace(query: myPlaceInformationEditViewModel) { error in
                             if let error = error {
@@ -241,10 +240,6 @@ struct PlaceInformationEditView: View {
                                 path.removeLast()
                             }
                         }
-
-//                        myPlaceInformationEditViewModel.reset()
-//                        print("RESET&&&&&&&&&&&&&&&&&&&: \(myPlaceInformationEditViewModel)")
-//                        path.removeLast()
                     }) {
                         Text("등록완료")
                             .font(

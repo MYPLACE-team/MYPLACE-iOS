@@ -14,6 +14,7 @@ enum MyPlaceAPI {
     case registerFavoritePlace(placeId: Int)
     case deleteFavoritePlace(placeId: Int)
     case searchFavoritePlaceList(body: FavoritePostBodyViewModel)
+    case patchFavoritePlaceIsVisited(placeId: Int)
     case getMyPlaceInformation(placeId: Int)
     case getMyPlaceList(keyword: String, page: Int)
 }
@@ -50,6 +51,8 @@ extension MyPlaceAPI: TargetType {
             return "/place/like/\(placeId)"
         case .searchFavoritePlaceList(let body):
             return "/place/like"
+        case .patchFavoritePlaceIsVisited(let placeId):
+            return "/place/visit/\(placeId)"
         case .getMyPlaceInformation(let placeId):
             return "/place/\(placeId)"
         case .getMyPlaceList:
@@ -69,11 +72,12 @@ extension MyPlaceAPI: TargetType {
             return .delete
         case .searchFavoritePlaceList:
             return .post
+        case .patchFavoritePlaceIsVisited:
+            return .patch
         case .getMyPlaceInformation:
             return .get
         case .getMyPlaceList:
             return .get
-            
         }
     }
     
@@ -91,6 +95,8 @@ extension MyPlaceAPI: TargetType {
         case .searchFavoritePlaceList(let body):
             let jsonData = try! JSONEncoder().encode(body)
             return .requestData(jsonData)
+        case .patchFavoritePlaceIsVisited:
+            return .requestPlain
         case .getMyPlaceInformation:
             return .requestPlain
         case .getMyPlaceList(let keyword, let page):

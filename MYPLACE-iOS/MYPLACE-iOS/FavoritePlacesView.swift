@@ -12,12 +12,12 @@ struct FavoritePlacesView: View {
     @StateObject var favoritePostBodyViewModel = FavoritePostBodyViewModel.shared
     
     @Binding var path: [PathModel]
-//    @Binding var placeId: Int
+    @Binding var placeId: Int
+    @Binding var isHeartFilled: Bool
     
     @State private var selectedTab: String = "전체"
     @StateObject private var toastViewModel = ToastViewModel.shared
     @State var isPopupPresented = false
-    @State var isVisited = false
     @State var isLatestSelected: String = "등록순"
     var body: some View {
         ZStack {
@@ -35,7 +35,7 @@ struct FavoritePlacesView: View {
                                 .foregroundStyle(Color(red: 0.95, green: 0.96, blue: 0.97))
                                 .frame(width: 24, height: 20)
                                 .overlay(
-                                    Text("6")
+                                    Text("\(favoritePlaceViewModel.result.count)")
                                         .font(
                                             Font.custom("Apple SD Gothic Neo", size: 14)
                                                 .weight(.medium)
@@ -144,6 +144,7 @@ struct FavoritePlacesView: View {
                 .padding(.top, 20)
                 .padding(.bottom, 10)
                 
+                //MARK: - 전체
                 if selectedTab == "전체" {
                     if favoritePlaceViewModel.result.isEmpty {
                         VStack {
@@ -157,7 +158,7 @@ struct FavoritePlacesView: View {
                                 .lineSpacing(5)
                                 .padding(.top, 30)
                             Button(action: {
-                                
+                                path.append(.searchView)
                             }) {
                                 RoundedRectangle(cornerRadius: 10)
                                     .foregroundStyle(Color.accentColor)
@@ -182,18 +183,28 @@ struct FavoritePlacesView: View {
                             ForEach(favoritePlaceViewModel.result, id: \.id) { favoritePlace in
                                 Section {
                                     SwipeItem(content: {
-                                        FavoriteItemView(path: $path, isVisited: $isVisited, place: favoritePlace)
+                                        let isVisitedBool: Bool = favoritePlace.isVisited == 1 ? true : false
+                                        FavoriteItemView(path: $path, isVisited: isVisitedBool, place: favoritePlace)
                                             .background( Color(red: 0.93, green: 0.93, blue: 1))
+                                            .onTapGesture {
+                                                placeId = favoritePlace.id
+                                                isHeartFilled = true
+                                                path.append(.placeInformationView)
+                                            }
+                                        
                                     },  left: {
                                         ZStack {
                                             UnevenRoundedRectangle(topLeadingRadius: 10, bottomLeadingRadius: 10)
                                                 .fill(Color.green)
                                             
                                             Button(action: {
-                                                
-                                                isVisited = true
+                                                favoritePlaceViewModel.patchFavoritePlaceIsVisited(placeId: favoritePlace.id)
+                                                favoritePlaceViewModel.searchMyPlaceList()
                                                 let toastMessage = "다녀올 장소에 저장되었어요"
                                                 ToastViewModel.shared.showToastWithString(text: toastMessage)
+                                                withAnimation {
+                                                    selectedTab = "로딩 화면"
+                                                }
                                             }) {
                                                 Image(systemName: "archivebox")
                                                     .foregroundStyle(.white)
@@ -212,6 +223,7 @@ struct FavoritePlacesView: View {
                                                         print("관심장소 삭제 실패")
                                                     }
                                                     else {
+                                                        favoritePlaceViewModel.searchMyPlaceList()
                                                         print("관심장소 삭제 성공")
                                                     }
                                                 }
@@ -238,6 +250,7 @@ struct FavoritePlacesView: View {
                         Spacer()
                     }
                 }
+                //MARK: - 다녀온 장소
                 else if selectedTab == "다녀온 장소" {
                     VStack {
                         Image("FavoritePlaceMissing2")
@@ -270,6 +283,7 @@ struct FavoritePlacesView: View {
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .background(Color(red: 0.94, green: 0.93, blue: 1).opacity(0.7))
                 }
+                //MARK: - 다녀올 장소
                 else if selectedTab == "다녀올 장소" {
                     VStack {
                         Image("FavoritePlaceMissing3")
@@ -302,7 +316,28 @@ struct FavoritePlacesView: View {
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .background(Color(red: 0.94, green: 0.93, blue: 1).opacity(0.7))
                 }
-                    
+                else if selectedTab == "로딩 화면" {
+                    VStack {
+                        //FavoritePlaceLoading
+                        Image("FavoritePlaceMissing2")
+                            .onAppear {
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                                    withAnimation {
+                                        selectedTab = "전체"
+                                    }
+                                }
+                            }
+                        Text("로딩중이에요......")
+                            .font(
+                                Font.custom("Apple SD Gothic Neo", size: 20)
+                                    .weight(.semibold)
+                            )
+                            .multilineTextAlignment(.center)
+                            .lineSpacing(5)
+                            .padding(.top, 30)
+                        Spacer()
+                    }
+                }
             }
             .navigationBarBackButtonHidden()
             .toolbar {
@@ -312,9 +347,6 @@ struct FavoritePlacesView: View {
                 
                 ToolbarItem(placement: .principal) {
                     HStack {
-                        Image("Star")
-                            .resizable()
-                            .frame(width: 20, height: 20)
                         Text("관심장소")
                             .font(
                                 .custom("Apple SD Gothic Neo", size: 20)
@@ -330,7 +362,6 @@ struct FavoritePlacesView: View {
                 }
             }
             .onAppear {
-                print("APPEAR")
                 favoritePlaceViewModel.searchMyPlaceList()
             }
             .blur(radius: isPopupPresented ? 10 : 0)
@@ -403,7 +434,15 @@ struct SwipeItem<Content: View, Left: View, Right: View>: View {
             }
             .onEnded { value in
                 withAnimation {
-                    if rightPast {
+                    if rightPast && isSwipeActive {
+                        anchor = 0
+                        isSwipeActive = false
+                    }
+                    else if leftPast && isSwipeActive {
+                        anchor = 0
+                        isSwipeActive = false
+                    }
+                    else if rightPast {
                         anchor = -anchorWidth
                         isSwipeActive = true
                     } else if leftPast {
@@ -426,18 +465,7 @@ struct SwipeItem<Content: View, Left: View, Right: View>: View {
                 content()
                     .frame(width: geo.size.width)
                     .zIndex(1)
-                    .onTapGesture {
-                        if isSwipeActive {
-                            withAnimation {
-                                anchor = 0
-                                hoffset = 0
-                            }
-                            isSwipeActive = false
-                        }
-                        else {
-                            path.append(.placeInformationView)
-                        }
-                    }
+
                 right()
                     .frame(width: anchorWidth)
                     .zIndex(0)
@@ -453,5 +481,5 @@ struct SwipeItem<Content: View, Left: View, Right: View>: View {
 }
 
 #Preview {
-    FavoritePlacesView(path: .constant([]))
+    FavoritePlacesView(path: .constant([]), placeId: .constant(1), isHeartFilled: .constant(true))
 }
