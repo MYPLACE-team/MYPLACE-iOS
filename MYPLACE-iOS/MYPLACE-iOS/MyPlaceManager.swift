@@ -91,6 +91,18 @@ struct MyPlaceManager {
         }
     }
     
+    //MARK: - 다녀온 장소 / 안 다녀온 당소 등록
+    func patchFavoritePlaceIsVisited(placeId: Int, completion: @escaping (Error?) -> Void) {
+        myPlaceProvider.request(.patchFavoritePlaceIsVisited(placeId: placeId)) { result in
+            switch result {
+            case .success:
+                completion(nil)
+            case let .failure(error):
+                completion(error)
+            }
+        }
+    }
+    
     func getMyPlaceInformation(placeId: Int, completion: @escaping (Result<MyPlaceInformationResponse, Error>) -> Void) {
         myPlaceProvider.request(.getMyPlaceInformation(placeId: placeId)) { result in
             switch result {

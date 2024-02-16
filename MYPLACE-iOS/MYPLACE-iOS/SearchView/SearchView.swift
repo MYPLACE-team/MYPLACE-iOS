@@ -95,7 +95,6 @@ struct SearchView: View {
                 .padding(.top, 5)
                 VStack {
                     HStack {
-                        Spacer()
                         if myPlaceListViewModel.result.place.isEmpty && kakaoSearchViewModel.places.isEmpty {
                             VStack {
                                 Image("SearchMissing")

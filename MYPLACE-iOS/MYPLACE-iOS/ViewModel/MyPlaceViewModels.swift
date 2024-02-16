@@ -15,7 +15,7 @@ class MyPlaceListViewModel: ObservableObject {
     @Published var isSuccess: Bool = false
     @Published var code: Int = 0
     @Published var message: String = ""
-    @Published var result: MyPlaceListInfo = MyPlaceListInfo(totalNum: 0, hasNext: false, place: [MyPlaceList(id: 24, name: "test", address: "test", categoryId: 24, thumbnailUrl: JSONNull(), isLike: false)])
+    @Published var result: MyPlaceListInfo = MyPlaceListInfo(totalNum: 0, hasNext: false, place: [])
     
     var description: String {
         return "isSuccess: \(isSuccess), code: \(code), message: \(message), result: \(result)"

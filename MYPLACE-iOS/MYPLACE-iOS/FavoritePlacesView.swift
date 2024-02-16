@@ -18,7 +18,6 @@ struct FavoritePlacesView: View {
     @State private var selectedTab: String = "전체"
     @StateObject private var toastViewModel = ToastViewModel.shared
     @State var isPopupPresented = false
-    @State var isVisited = false
     @State var isLatestSelected: String = "등록순"
     var body: some View {
         ZStack {
@@ -184,7 +183,8 @@ struct FavoritePlacesView: View {
                             ForEach(favoritePlaceViewModel.result, id: \.id) { favoritePlace in
                                 Section {
                                     SwipeItem(content: {
-                                        FavoriteItemView(path: $path, isVisited: $isVisited, place: favoritePlace)
+                                        let isVisitedBool: Bool = favoritePlace.isVisited == 1 ? true : false
+                                        FavoriteItemView(path: $path, isVisited: isVisitedBool, place: favoritePlace)
                                             .background( Color(red: 0.93, green: 0.93, blue: 1))
                                             .onTapGesture {
                                                 placeId = favoritePlace.id
@@ -198,10 +198,13 @@ struct FavoritePlacesView: View {
                                                 .fill(Color.green)
                                             
                                             Button(action: {
-                                                isVisited = true
+                                                favoritePlaceViewModel.patchFavoritePlaceIsVisited(placeId: favoritePlace.id)
+                                                favoritePlaceViewModel.searchMyPlaceList()
                                                 let toastMessage = "다녀올 장소에 저장되었어요"
                                                 ToastViewModel.shared.showToastWithString(text: toastMessage)
-                                                
+                                                withAnimation {
+                                                    selectedTab = "로딩 화면"
+                                                }
                                             }) {
                                                 Image(systemName: "archivebox")
                                                     .foregroundStyle(.white)
@@ -226,7 +229,6 @@ struct FavoritePlacesView: View {
                                                 }
                                                 let toastMessage = "관심 장소 저장이 해제되었습니다."
                                                 ToastViewModel.shared.showToastWithString(text: toastMessage)
-                                                
                                             }) {
                                                 Image(systemName: "trash")
                                                     .foregroundStyle(.white)
@@ -314,7 +316,28 @@ struct FavoritePlacesView: View {
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .background(Color(red: 0.94, green: 0.93, blue: 1).opacity(0.7))
                 }
-                    
+                else if selectedTab == "로딩 화면" {
+                    VStack {
+                        //FavoritePlaceLoading
+                        Image("FavoritePlaceMissing2")
+                            .onAppear {
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                                    withAnimation {
+                                        selectedTab = "전체"
+                                    }
+                                }
+                            }
+                        Text("로딩중이에요......")
+                            .font(
+                                Font.custom("Apple SD Gothic Neo", size: 20)
+                                    .weight(.semibold)
+                            )
+                            .multilineTextAlignment(.center)
+                            .lineSpacing(5)
+                            .padding(.top, 30)
+                        Spacer()
+                    }
+                }
             }
             .navigationBarBackButtonHidden()
             .toolbar {

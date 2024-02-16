@@ -11,7 +11,7 @@ struct ViewComponents: View {
     var body: some View {
         SearchItemView_Registered(myPlaceListViewModel: MyPlaceListViewModel(), path: .constant([]), isHeartFilled: false, searchText: .constant(""), placeName: "test", placeAddress: "test", placeId: 50)
         SearchItemView_UnRegistered(path: .constant([]), placeName: "카카오프렌즈카카오프렌즈카카오프렌즈", addressName: "서울")
-        FavoriteItemView(path: .constant([]), isVisited: .constant(false), place: FavoritePlace(id: 1, name: "testName", address: "testAddress", categoryID: 50, lat: "1", lon: "1"))
+        FavoriteItemView(path: .constant([]), isVisited: false, place: FavoritePlace(id: 1, name: "testName", address: "testAddress", categoryID: 50, lat: "1", lon: "1", isVisited: 0))
         KakaoSearchView(kakaoSearchViewModel: KakaoSearchViewModel(), myPlaceListViewModel: MyPlaceListViewModel(), path: .constant([]), searchText: .constant(""))
         BlueChip(text: "가나다라마바사", isSelected: false)
         RedChip(text: "가나다라마바사")
@@ -103,7 +103,6 @@ struct Xmark: View {
 }
 
 struct SearchItemView_Registered: View {
-//    @ObservedObject var myPlaceListViewModel: MyPlaceListViewModel
     @StateObject var myPlaceListViewModel = MyPlaceListViewModel.shared
     @Binding var path: [PathModel]
     @State var isHeartFilled: Bool
@@ -246,7 +245,7 @@ struct SearchItemView_UnRegistered: View {
 
 struct FavoriteItemView: View {
     @Binding var path: [PathModel]
-    @Binding var isVisited: Bool
+    @State var isVisited: Bool
     var place: FavoritePlace
     var body: some View {
         RoundedRectangle(cornerRadius: 15)

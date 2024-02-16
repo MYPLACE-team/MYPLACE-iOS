@@ -222,8 +222,8 @@ struct PlaceInformationEditView: View {
                 .padding(.top, 5)
                 HStack(spacing: 80) {
                     Button(action:  {
-                        myPlaceInformationEditViewModel.lat = popupViewModel.selectedPlace?.x ?? "0"
-                        myPlaceInformationEditViewModel.lon = popupViewModel.selectedPlace?.y ?? "0"
+                        myPlaceInformationEditViewModel.lon = popupViewModel.selectedPlace?.x ?? "0"
+                        myPlaceInformationEditViewModel.lat = popupViewModel.selectedPlace?.y ?? "0"
                         updateViewModelWithFormData(images: selectedImage)
                         MyPlaceManager.shared.registerMyPlace(query: myPlaceInformationEditViewModel) { error in
                             if let error = error {
@@ -240,10 +240,6 @@ struct PlaceInformationEditView: View {
                                 path.removeLast()
                             }
                         }
-
-//                        myPlaceInformationEditViewModel.reset()
-//                        print("RESET&&&&&&&&&&&&&&&&&&&: \(myPlaceInformationEditViewModel)")
-//                        path.removeLast()
                     }) {
                         Text("등록완료")
                             .font(
