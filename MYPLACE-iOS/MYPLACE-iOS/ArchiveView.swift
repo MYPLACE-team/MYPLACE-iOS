@@ -23,6 +23,7 @@ struct ArchiveView: View {
     @State var isCreate: Bool = false
     
     @StateObject var archiveUserViewModel = ArchiveUserViewModel.shared
+    @StateObject var archiveListViewModel = ArchiveListViewModel.shared
     
     @Binding var path: [PathModel]
     
@@ -109,7 +110,6 @@ struct ArchiveView: View {
                                             .padding(.top, 1)
                                     }
                                     else {
-                                        
                                         Text("새 폴더")
                                             .font(Font.custom("Apple SD Gothic Neo", size: 12)
                                                 .weight(.medium))
@@ -267,18 +267,13 @@ struct ArchiveView: View {
                     .padding(.bottom, 24)
                     ScrollView {
                         LazyVStack(spacing: 14){
-                            if(archivePlaces.count > 0) {
-                                ForEach(archivePlaces, id: \.self){place in
+                            if(archiveListViewModel.archivePlaceList.count > 0) {
+                                ForEach(archiveListViewModel.archivePlaceList, id: \.self){ place in
                                     Button(action: {
                                         path.append(.archiveDetailView)
                                     })
                                     {
-                                        ArchivePlaceView(image: place.imageName, category: 1, title: place.name, address: place.address, score: place.stars, tags: place.tag)
-                                    }
-                                    .onAppear {
-                                        if(archivePlaces.lastIndex(of: place) == archivePlaces.count - 1) {
-                                            // 서버에서 넥스트 페이지 불러오기 ^^
-                                        }
+                                        ArchivePlaceView(image: place.thumbnailUrl ?? "DummyImage", category: 1, title: place.name, address: place.address, score: place.score, tags: place.hashtag)
                                     }
                                 }
                             }
@@ -379,7 +374,8 @@ struct ArchiveView: View {
             }
         }
         .onAppear {
-            archiveUserViewModel.getArchiveUserInfo()
+            // archiveUserViewModel.getArchiveUserInfo()
+            // archiveListViewModel.getArchiveList()            
         }
         .navigationBarBackButtonHidden()
         .toolbar {
@@ -587,6 +583,9 @@ struct createFolderView: View {
     var body: some View {
         ZStack {
             Color.black.opacity(0.5).edgesIgnoringSafeArea(.all)
+                .onTapGesture {
+                    show.toggle()
+                }
             VStack{
                 Spacer()
                 UnevenRoundedRectangle(cornerRadii: .init(topLeading: 40, topTrailing: 40))

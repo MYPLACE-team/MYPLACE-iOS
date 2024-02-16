@@ -29,6 +29,7 @@
 		A5BE8DE92B7E220300579EBF /* ArchiveManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BE8DE82B7E220300579EBF /* ArchiveManager.swift */; };
 		A5BE8DEB2B7E289100579EBF /* ArchiveViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BE8DEA2B7E289100579EBF /* ArchiveViewModel.swift */; };
 		A5BE8DEF2B7E6B5A00579EBF /* secret.plist in Resources */ = {isa = PBXBuildFile; fileRef = A5BE8DEE2B7E6B5A00579EBF /* secret.plist */; };
+		A5BE8DF12B7F1F3E00579EBF /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BE8DF02B7F1F3E00579EBF /* LoginViewModel.swift */; };
 		A5CE892A2B5980CE00ED8F62 /* NewUserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5CE89292B5980CE00ED8F62 /* NewUserView.swift */; };
 		A5CE892C2B59AA0900ED8F62 /* ArchiveDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5CE892B2B59AA0900ED8F62 /* ArchiveDetailView.swift */; };
 		A5CFD2782B6CDB2200F7DA48 /* NewArchiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5CFD2772B6CDB2200F7DA48 /* NewArchiveView.swift */; };
@@ -87,6 +88,7 @@
 		A5BE8DE82B7E220300579EBF /* ArchiveManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveManager.swift; sourceTree = "<group>"; };
 		A5BE8DEA2B7E289100579EBF /* ArchiveViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveViewModel.swift; sourceTree = "<group>"; };
 		A5BE8DEE2B7E6B5A00579EBF /* secret.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = secret.plist; path = ../../../Downloads/secret.plist; sourceTree = "<group>"; };
+		A5BE8DF02B7F1F3E00579EBF /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		A5CE89292B5980CE00ED8F62 /* NewUserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewUserView.swift; sourceTree = "<group>"; };
 		A5CE892B2B59AA0900ED8F62 /* ArchiveDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveDetailView.swift; sourceTree = "<group>"; };
 		A5CFD2772B6CDB2200F7DA48 /* NewArchiveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewArchiveView.swift; sourceTree = "<group>"; };
@@ -240,6 +242,7 @@
 				AAAAC9C92B59858D0026C8D9 /* PopupViewModel.swift */,
 				AA9E80192B415F7C00D51447 /* ToastViewModel.swift */,
 				A5BE8DEA2B7E289100579EBF /* ArchiveViewModel.swift */,
+				A5BE8DF02B7F1F3E00579EBF /* LoginViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -383,6 +386,7 @@
 				AA2B644D2B3CCA03008CEDBB /* FavoritePlacesView.swift in Sources */,
 				A5BE8DEB2B7E289100579EBF /* ArchiveViewModel.swift in Sources */,
 				AABAC2962B6C6E10001B1533 /* KakaoSearchManager.swift in Sources */,
+				A5BE8DF12B7F1F3E00579EBF /* LoginViewModel.swift in Sources */,
 				AAE7CD1F2B3F9C0C00E02B71 /* SearchView.swift in Sources */,
 				A59DC1E22B7BEE8600EA8E8E /* NotificationSettingView.swift in Sources */,
 				AA9E801A2B415F7C00D51447 /* ToastViewModel.swift in Sources */,

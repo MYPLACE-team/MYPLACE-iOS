@@ -274,8 +274,8 @@ struct NewArchiveView: View {
                         )
                         .foregroundStyle(Color(red: 0.15, green: 0.16, blue: 0.17))
                         .onChange(of: menu) {
-                            if menu.count > 30 {
-                                menu = String(menu.prefix(30))
+                            if menu.count > 24 {
+                                menu = String(menu.prefix(24))
                             }
                         }
                         .padding(.horizontal, 12)
@@ -287,7 +287,7 @@ struct NewArchiveView: View {
                                 .stroke(.black.opacity(0.23), lineWidth: 1)
                         )
                         .overlay(
-                            Text("먹은 메뉴:")
+                            Text("대표 메뉴:")
                                 .font(
                                     Font.custom("Apple SD Gothic Neo", size: 15)
                                         .weight(.semibold)

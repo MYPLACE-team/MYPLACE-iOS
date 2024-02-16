@@ -12,6 +12,8 @@ struct PrivacyView: View {
     @State private var showWithDrawalAlert: Bool = false
     @State private var alertTitle: String = ""
     
+    @StateObject var user = UserInfoViewModel.shared
+    
     @Binding var path: [PathModel]
 
     var body: some View {
@@ -49,7 +51,7 @@ struct PrivacyView: View {
                         .padding(.leading, 20)
                         .padding(.vertical, 13)
                     Spacer()
-                    Text("라일락10글자10글자")
+                    Text(user.username)
                         .font(Font.custom("Apple SD Gothic Neo", size: 14))
                         .foregroundStyle(Color(red: 0.27, green: 0.3, blue: 0.33))
                         .padding(.trailing, 20)
@@ -67,7 +69,7 @@ struct PrivacyView: View {
                         .padding(.horizontal, 20)
                         .padding(.vertical, 13)
                     Spacer()
-                    Text(verbatim: "라일락입니다.라일락입니다.라일락입니다.라일락입니다.라일락입니다.라일락입니다")
+                    Text(verbatim: user.profile)
                         .baselineOffset(4)
                         .multilineTextAlignment(.trailing)
                         .font(Font.custom("Apple SD Gothic Neo", size: 14))
@@ -88,7 +90,7 @@ struct PrivacyView: View {
                         .padding(.horizontal, 20)
                         .padding(.vertical, 13)
                     Spacer()
-                    Text(verbatim: "cjtysnsj@naver.com")
+                    Text(verbatim: user.email)
                         .multilineTextAlignment(.leading)
                         .font(Font.custom("Apple SD Gothic Neo", size: 14))
                         .foregroundStyle(Color(red: 0.27, green: 0.3, blue: 0.33))
@@ -113,7 +115,7 @@ struct PrivacyView: View {
                     .foregroundStyle(Color(red: 0.15, green: 0.16, blue: 0.17))
                     .padding(.leading, 20)
                 Spacer()
-                Image("AppleIcon")
+                Image(user.provider == "kakao" ? "KakaoIcon" : "googleIcon")
                     .resizable()
                     .frame(width: 20, height: 20)
                     .padding(.trailing, 56)

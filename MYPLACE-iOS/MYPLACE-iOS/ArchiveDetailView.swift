@@ -13,7 +13,9 @@ struct ArchiveDetailView: View {
     @State var popupMode: String = ""
     @State var isCommentPresented: Bool = false
     @State private var tags: [String] = ["한옥", "크로플", "안국역"]
+    
     @StateObject private var toastViewModel = ToastViewModel.shared
+    @StateObject private var archiveUserViewModel = ArchiveUserViewModel.shared
     
     @Binding var path: [PathModel]
     
@@ -29,7 +31,7 @@ struct ArchiveDetailView: View {
                         VStack{
                             HStack(spacing: 90){
                                 VStack(spacing: 8){
-                                    Text("0")
+                                    Text("\(archiveUserViewModel.user.level)")
                                         .font(
                                             Font.custom("Apple SD Gothic Neo", size: 15)
                                                 .weight(.bold)
@@ -40,7 +42,7 @@ struct ArchiveDetailView: View {
                                         .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
                                 }.frame(width: 120, height: 50)
                                 VStack(spacing: 8){
-                                    Text("14")
+                                    Text("\(archiveUserViewModel.user.archiveCount)")
                                         .font(
                                             Font.custom("Apple SD Gothic Neo", size: 15)
                                                 .weight(.bold)
@@ -52,7 +54,7 @@ struct ArchiveDetailView: View {
                                 }.frame(width: 120, height: 50)
                             }
                             .padding(.top, 15)
-                            Text("라일락")
+                            Text(archiveUserViewModel.user.username)
                                 .font(
                                     Font.custom("Apple SD Gothic Neo", size: 16)
                                         .weight(.bold)
@@ -273,9 +275,9 @@ struct ArchiveDetailView: View {
                                                                     .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
                                                                     .padding(.leading, 10)
                                                                 Spacer()
-                                                                Text("20,000원")
+                                                                Text("\(priceFormatter(price:20000))원")
                                                                     .font(
-                                                                        Font.custom("Apple SD Gothic Neo", size: 15)
+                                                                        Font.custom("Apple SD Gothic Neo", size: 14)
                                                                             .weight(.medium)
                                                                     )
                                                                     .foregroundStyle(Color(red: 0.15, green: 0.16, blue: 0.17))
@@ -294,15 +296,15 @@ struct ArchiveDetailView: View {
                                                                         .foregroundStyle(Color(red: 0.76, green: 0.76, blue: 0.77))
                                                                     }
                                                                 )
-                                                            HStack{
-                                                                Text("🍭 메뉴")
+                                                            HStack(alignment: .top){
+                                                                Text("🍭 대표메뉴")
                                                                     .font(Font.custom("Apple SD Gothic Neo", size: 16).weight(.semibold))
                                                                     .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
                                                                     .padding(.leading, 10)
                                                                 Spacer()
-                                                                Text("크림라떼")
+                                                                Text("아이스자몽허니블랙티")
                                                                     .font(
-                                                                        Font.custom("Apple SD Gothic Neo", size: 15)
+                                                                        Font.custom("Apple SD Gothic Neo", size: 14)
                                                                             .weight(.medium)
                                                                     )
                                                                     .foregroundStyle(Color(red: 0.15, green: 0.16, blue: 0.17))
@@ -361,24 +363,6 @@ struct ArchiveDetailView: View {
                                                         TagCloudView(tags: tags)
                                                             .frame(width: 240)
                                                             .padding(.vertical, 12)
-//                                                        HStack(spacing: 10){
-//                                                            ForEach(tags, id:\.self) { tag in
-//                                                                Text("# \(tag)")
-//                                                                    .font(Font.custom("Apple SD Gothic Neo", size: 12))
-//                                                                    .foregroundStyle(Color(red: 0.4, green: 0.35, blue: 0.96))
-//                                                                    .padding(.horizontal, 15)
-//                                                                    .padding(.vertical, 6)
-//                                                                    .background(Color(red: 0.97, green: 0.95, blue: 1))
-//                                                                    .cornerRadius(19)
-//                                                                    .overlay(
-//                                                                        RoundedRectangle(cornerRadius: 19)
-//                                                                            .inset(by: 0.5)
-//                                                                            .stroke(Color(red: 0.4, green: 0.35, blue: 0.96), lineWidth: 1)
-//                                                                    )
-//                                                            }
-//                                                        }
-//                                                        .frame(width: 219)
-//                                                        .padding(.vertical, 12)
                                                     }
                                                 }
                                                 .frame(width: 272)
@@ -398,7 +382,7 @@ struct ArchiveDetailView: View {
                                                             .foregroundStyle(Color(red: 0.15, green: 0.16, blue: 0.17))
                                                     }
                                                     .frame(width: 228, alignment: .leading)
-                                                    Text("안국역 북촌한옥마을 근처에 위치한 한옥 카페이다. 시그니처인 크림라떼를 먹었는데 굉장히 부드럽고 맛있었다.")
+                                                    Text(String("안국역 북촌한옥마을 근처에 위치한 한옥 카페이다. 시그니처인 크림라떼를 먹었는데 굉장히 부드럽고 맛있었다.".prefix(63)))
                                                         .font(
                                                             Font.custom("Apple SD Gothic Neo", size: 13)
                                                                 .weight(.medium)
@@ -407,7 +391,7 @@ struct ArchiveDetailView: View {
                                                         .lineLimit(3)
                                                         .multilineTextAlignment(.leading)
                                                         .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
-                                                        .frame(width: 228)
+                                                        .frame(width: 228, height: 60)
                                                         .padding(.top, 8)
                                                     HStack {
                                                         Spacer()
@@ -544,6 +528,12 @@ struct ArchiveDetailView: View {
                 ToolBarView(path: $path)
             }
         }
+    }
+    
+    func priceFormatter(price: Int) -> String {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        return formatter.string(from: price as NSNumber) ?? "10"
     }
 }
 
@@ -691,7 +681,7 @@ struct CommentView : View {
                     
                 }
                 .frame(width: 236)
-                Text("생일 기념으로 방문한 30번째 장소 !서대문구에 위치하고, 제일 기본인 명동돈까스가 제일 맛있었다.\n돈까스 일 인분 기준이 약 2만원 정도로생일 기념으로 방문한 30번째 장소!\n서대문구에 위치하고, 제일 기본인 명동돈까스가 제일 맛있었다.\n돈까스 일 인분 기준이 약 2만원 정도로 약간 비싼 감이 있지만 너무너무 맛있었다!\n사람이 많아서 대기 시간이 있었지만, 재방문 의사있음! ")
+                Text("생일 기념으로 방문한 30번째 장소 !서대문구에 위치하고, 제일 기본인 명동돈까스가 제일 맛있었다.\n돈까스 일 인분 기준이 약 2만원 정도로생일 기념으로 방문한 30번째 장소!\n서대문구에 위치하고, 제일 기본인 명동돈까스가 제일 맛있었다.\n돈까스 일 인분 기준이 약 2만원 정도로 약간 비싼 감이 있지만 너무너무 맛있었다!\n사람이 많아서 대기 시간이 있었지만, 재방문 의사있음!")
                   .font(
                     Font.custom("Apple SD Gothic Neo", size: 14)
                       .weight(.medium)

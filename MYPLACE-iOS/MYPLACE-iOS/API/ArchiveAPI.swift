@@ -12,6 +12,7 @@ enum ArchiveAPI {
     case getArchiveUser
     case getArchiveList(page: Int)
     case getArchiveListWithTag(tag: [String], page: Int)
+    case getArchiveDetail(archiveId: Int)
 }
 
 extension ArchiveAPI: TargetType {
@@ -41,6 +42,8 @@ extension ArchiveAPI: TargetType {
             return "/archive/search"
         case .getArchiveListWithTag:
             return "/archive/search"
+        case .getArchiveDetail(let archiveId):
+            return "/archive/\(archiveId)"
         }
     }
     
@@ -51,6 +54,8 @@ extension ArchiveAPI: TargetType {
         case .getArchiveList:
             return .get
         case .getArchiveListWithTag:
+            return .get
+        case .getArchiveDetail:
             return .get
         }
     }
@@ -68,6 +73,8 @@ extension ArchiveAPI: TargetType {
             else {
                 return .requestParameters(parameters: ["tag": tag[0]+","+tag[1], "page": page], encoding: URLEncoding.queryString)
             }
+        case .getArchiveDetail(let archiveId):
+            return .requestPlain
         }
     }
     
@@ -78,6 +85,8 @@ extension ArchiveAPI: TargetType {
         case .getArchiveList:
             return ["Content-type": "application/json"]
         case .getArchiveListWithTag:
+            return ["Content-type": "application/json"]
+        case .getArchiveDetail:
             return ["Content-type": "application/json"]
         }
     }
