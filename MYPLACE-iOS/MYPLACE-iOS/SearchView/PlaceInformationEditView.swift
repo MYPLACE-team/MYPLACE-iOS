@@ -164,7 +164,7 @@ struct PlaceInformationEditView: View {
                                 .weight(.bold)
                             )
                             .padding(.top, 15)
-                            .padding(.leading, 4)
+                            .padding(.leading,33)
                         Spacer()
                     }
                     CustomTextField(text: $myPlaceInformationEditViewModel.link, placeholder: "장소의 인스타그램 계정을 입력해주세요.", characterLimit: 30)

@@ -352,7 +352,8 @@ struct KakaoSearchView: View {
                 HStack {
                     Image("Map")
                         .resizable()
-                        .frame(width: 16, height: 19)
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 19, height: 19)
                         .padding(.leading, 15)
                     TextField("장소명 검색하기", text: $searchText)
                         .font(
