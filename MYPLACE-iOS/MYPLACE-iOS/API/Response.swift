@@ -187,6 +187,54 @@ struct ArchiveFolder: Codable, Identifiable, Hashable {
     }
 }
 
+// MARK: - ArchiveListResponse
+struct ArchivePlaceListResponse: Codable {
+    let isSuccess: Bool
+    let code: Int
+    let message: String
+    let result: ArchivePlaceListResult
+}
+
+// MARK: - ArchiveListResult
+struct ArchivePlaceListResult: Codable {
+    let totalNum: Int
+    let hasNext: Bool
+    let list: [ArchivePlaceList]
+}
+
+// MARK: - ArchivePlaceList
+struct ArchivePlaceList: Codable, Identifiable {
+    let id: Int
+    let place: ArchivePlace
+    let archive: Archive
+}
+
+
+// MARK: - ArchivePlace
+struct ArchivePlace: Codable, Identifiable {
+    let id: Int
+    let isLike: Bool
+    let name, thumnail: String
+    let categoryId: Int
+    
+    enum CodingKeys: String, CodingKey {
+        case id = "placeId"
+        case isLike, name, thumnail, categoryId
+    }
+}
+
+// MARK: - Archive
+struct Archive: Codable, Identifiable {
+    let id: Int
+    let hashtag: [String]
+    let score: Int
+    
+    enum CodingKeys: String, CodingKey {
+        case id = "archiveId"
+        case hashtag, score
+    }
+}
+
 // MARK: - Meta
 struct Meta: Codable {
     let sameName: SameName

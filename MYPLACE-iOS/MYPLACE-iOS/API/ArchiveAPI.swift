@@ -10,6 +10,8 @@ import Moya
 
 enum ArchiveAPI {
     case getArchiveUser
+    case getArchiveList(page: Int)
+    case getArchiveListWithTag(tag: [String], page: Int)
 }
 
 extension ArchiveAPI: TargetType {
@@ -35,12 +37,20 @@ extension ArchiveAPI: TargetType {
         switch self {
         case .getArchiveUser:
             return "/archive"
+        case .getArchiveList:
+            return "/archive/search"
+        case .getArchiveListWithTag:
+            return "/archive/search"
         }
     }
     
     var method: Moya.Method {
         switch self {
         case .getArchiveUser:
+            return .get
+        case .getArchiveList:
+            return .get
+        case .getArchiveListWithTag:
             return .get
         }
     }
@@ -49,12 +59,25 @@ extension ArchiveAPI: TargetType {
         switch self {
         case .getArchiveUser:
             return .requestPlain
+        case .getArchiveList(let page):
+            return .requestParameters(parameters: ["page": page], encoding: URLEncoding.queryString)
+        case .getArchiveListWithTag(let tag, let page):
+            if (tag.count == 1) {
+                return .requestParameters(parameters: ["tag": tag[0], "page": page], encoding: URLEncoding.queryString)
+            }
+            else {
+                return .requestParameters(parameters: ["tag": tag[0]+","+tag[1], "page": page], encoding: URLEncoding.queryString)
+            }
         }
     }
     
     var headers: [String: String]? {
         switch self {
         case .getArchiveUser:
+            return ["Content-type": "application/json"]
+        case .getArchiveList:
+            return ["Content-type": "application/json"]
+        case .getArchiveListWithTag:
             return ["Content-type": "application/json"]
         }
     }

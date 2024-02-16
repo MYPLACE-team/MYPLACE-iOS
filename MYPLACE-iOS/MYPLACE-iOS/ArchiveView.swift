@@ -11,7 +11,7 @@ import PhotosUI
 struct ArchiveView: View {
     @State var searchItem: String = ""
     @State var searchItemList: [String] = []
-    @State var isTotalView: Bool = false
+    @State var isTotalView: Bool = true
     
     @State var isPopupPresented: Bool = false
     
@@ -205,15 +205,6 @@ struct ArchiveView: View {
                 .clipShape(UnevenRoundedRectangle(topLeadingRadius: 0, bottomLeadingRadius: 20, bottomTrailingRadius: 20, topTrailingRadius: 0))
                 if isTotalView {
                     HStack(spacing: 8){
-                        //                        RoundedRectangle(cornerRadius: 4)
-                        //                            .frame(width: 53, height: 20, alignment: .center)
-                        //                            .foregroundStyle(Color(red: 0.03, green: 0.25, blue: 0.83))
-                        //                            .overlay(
-                        //                                Text("태그명")
-                        //                                    .font(Font.custom("Apple SD Gothic Neo", size: 14)
-                        //                                        .weight(.medium))
-                        //                                    .foregroundStyle(.white)
-                        //                            )
                         if searchItemList.count > 0 {
                             ForEach(searchItemList.indices, id: \.self) { index in
                                 HStack(spacing: 3){
@@ -275,91 +266,19 @@ struct ArchiveView: View {
                     .padding(.top, 15)
                     .padding(.bottom, 24)
                     ScrollView {
-                        VStack(spacing: 14){
+                        LazyVStack(spacing: 14){
                             if(archivePlaces.count > 0) {
-                                ForEach(archivePlaces, id: \.self){
-                                    place in
+                                ForEach(archivePlaces, id: \.self){place in
                                     Button(action: {
                                         path.append(.archiveDetailView)
                                     })
                                     {
-                                        HStack{
-                                            Image(place.imageName)
-                                                .resizable()
-                                                .aspectRatio(contentMode: .fill)
-                                                .frame(width: 76, height: 76)
-                                                .clipShape(RoundedRectangle(cornerRadius: 6))
-                                                .padding(.leading, 7)
-                                            VStack(alignment:.leading){
-                                                HStack(spacing: 6){
-                                                    Image("CafeIcon")
-                                                        .resizable()
-                                                        .frame(width: 24, height: 24)
-                                                    Text(place.name)
-                                                        .font(
-                                                            Font.custom("Apple SD Gothic Neo", size: 20)
-                                                                .weight(.bold)
-                                                        )
-                                                        .foregroundStyle(Color(red: 0.27, green: 0.3, blue: 0.33))
-                                                }
-                                                .padding(.bottom, 2)
-                                                HStack(spacing: 6){
-                                                    Image("map")
-                                                        .resizable()
-                                                        .frame(width:14, height:18)
-                                                        .padding(.horizontal,4)
-                                                    Text(place.address)
-                                                        .font(Font.custom("Apple SD Gothic Neo", size: 15))
-                                                        .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
-                                                }
-                                            }
-                                            .padding(.leading, 6)
-                                            Spacer()
-                                            VStack(alignment: .trailing){
-                                                HStack(spacing: 2){
-                                                    ForEach(0..<place.stars, id: \.self)
-                                                    {star in
-                                                        Image("StarFill")
-                                                    }
-                                                    ForEach(0..<5 - place.stars, id: \.self) {star in
-                                                        Image("StarEmpty")
-                                                    }
-                                                }
-                                                .padding(.bottom, 6)
-                                                HStack(spacing: 3){
-                                                    Text("#\(place.tag[0])")
-                                                        .font(Font.custom("Apple SD Gothic Neo", size: 12))
-                                                        .foregroundStyle(Color(red: 0.4, green: 0.35, blue: 0.96))
-                                                        .frame(height: 22)
-                                                        .padding(.horizontal, 8)
-                                                        .padding(.top, 2)
-                                                        .background(Color(red: 0.97, green: 0.95, blue: 1))
-                                                        .clipShape(RoundedRectangle(cornerRadius: 20))
-                                                        .overlay(
-                                                            RoundedRectangle(cornerRadius: 20)
-                                                                .inset(by: 0.5)
-                                                                .stroke(Color(red: 0.4, green: 0.35, blue: 0.96), lineWidth: 1)
-                                                        )
-                                                    Text("#\(place.tag[1])")
-                                                        .font(Font.custom("Apple SD Gothic Neo", size: 12))
-                                                        .foregroundStyle(Color(red: 0.4, green: 0.35, blue: 0.96))
-                                                        .frame(height: 22)
-                                                        .padding(.horizontal, 8)
-                                                        .padding(.top, 2)
-                                                        .background(Color(red: 0.97, green: 0.95, blue: 1))
-                                                        .clipShape(RoundedRectangle(cornerRadius: 20))
-                                                        .overlay(
-                                                            RoundedRectangle(cornerRadius: 20)
-                                                                .inset(by: 0.5)
-                                                                .stroke(Color(red: 0.4, green: 0.35, blue: 0.96), lineWidth: 1)
-                                                        )
-                                                }
-                                            }
-                                            .padding(.trailing, 8)
+                                        ArchivePlaceView(image: place.imageName, category: 1, title: place.name, address: place.address, score: place.stars, tags: place.tag)
+                                    }
+                                    .onAppear {
+                                        if(archivePlaces.lastIndex(of: place) == archivePlaces.count - 1) {
+                                            // 서버에서 넥스트 페이지 불러오기 ^^
                                         }
-                                        .frame(width: 343, height: 88)
-                                        .background(.white)
-                                        .clipShape(RoundedRectangle(cornerRadius: 12))
                                     }
                                 }
                             }
@@ -460,7 +379,7 @@ struct ArchiveView: View {
             }
         }
         .onAppear {
-            //archiveUserViewModel.getArchiveUserInfo()
+            archiveUserViewModel.getArchiveUserInfo()
         }
         .navigationBarBackButtonHidden()
         .toolbar {
@@ -491,6 +410,96 @@ struct ArchiveView: View {
         let newDate = dateFormatter.date(from: date)
         return dateFormatter.string(from: newDate!)
     }
+}
+
+struct ArchivePlaceView: View {
+    let image: String
+    let category: Int
+    let title, address: String
+    let score: Int
+    let tags: [String]
+    
+    var body: some View {
+        
+        HStack{
+            Image(image)
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(width: 76, height: 76)
+                .clipShape(RoundedRectangle(cornerRadius: 6))
+                .padding(.leading, 7)
+            VStack(alignment:.leading){
+                HStack(spacing: 6){
+                    Image(category == 1 ? "CafeIcon" : "CafeIcon")
+                        .resizable()
+                        .frame(width: 24, height: 24)
+                    Text(title)
+                        .font(
+                            Font.custom("Apple SD Gothic Neo", size: 20)
+                                .weight(.bold)
+                        )
+                        .foregroundStyle(Color(red: 0.27, green: 0.3, blue: 0.33))
+                }
+                .padding(.bottom, 2)
+                HStack(spacing: 6){
+                    Image("map")
+                        .resizable()
+                        .frame(width:14, height:18)
+                        .padding(.horizontal,4)
+                    Text(address)
+                        .font(Font.custom("Apple SD Gothic Neo", size: 15))
+                        .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
+                }
+            }
+            .padding(.leading, 6)
+            Spacer()
+            VStack(alignment: .trailing){
+                HStack(spacing: 2){
+                    ForEach(0..<score, id: \.self)
+                    {star in
+                        Image("StarFill")
+                    }
+                    ForEach(0..<5 - score, id: \.self) {star in
+                        Image("StarEmpty")
+                    }
+                }
+                .padding(.bottom, 6)
+                HStack(spacing: 3){
+                    Text("#\(tags[0])")
+                        .font(Font.custom("Apple SD Gothic Neo", size: 12))
+                        .foregroundStyle(Color(red: 0.4, green: 0.35, blue: 0.96))
+                        .frame(height: 22)
+                        .padding(.horizontal, 8)
+                        .padding(.top, 2)
+                        .background(Color(red: 0.97, green: 0.95, blue: 1))
+                        .clipShape(RoundedRectangle(cornerRadius: 20))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 20)
+                                .inset(by: 0.5)
+                                .stroke(Color(red: 0.4, green: 0.35, blue: 0.96), lineWidth: 1)
+                        )
+                    Text("#\(tags[1])")
+                        .font(Font.custom("Apple SD Gothic Neo", size: 12))
+                        .foregroundStyle(Color(red: 0.4, green: 0.35, blue: 0.96))
+                        .frame(height: 22)
+                        .padding(.horizontal, 8)
+                        .padding(.top, 2)
+                        .background(Color(red: 0.97, green: 0.95, blue: 1))
+                        .clipShape(RoundedRectangle(cornerRadius: 20))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 20)
+                                .inset(by: 0.5)
+                                .stroke(Color(red: 0.4, green: 0.35, blue: 0.96), lineWidth: 1)
+                        )
+                }
+            }
+            .padding(.trailing, 8)
+        }
+        .frame(width: 343, height: 88)
+        .background(.white)
+        .clipShape(RoundedRectangle(cornerRadius: 12))
+    }
+    
 }
 
 struct FolderPopupView: View {
