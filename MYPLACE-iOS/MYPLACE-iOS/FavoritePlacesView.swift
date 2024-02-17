@@ -47,7 +47,9 @@ struct FavoritePlacesView: View {
                             .foregroundStyle(selectedTab == "전체" ? Color.accentColor : .clear)
                     }
                     .onTapGesture {
-                        selectedTab = "전체"
+                        withAnimation {
+                            selectedTab = "전체"
+                        }
                     }
                     VStack(spacing: 10){
                         HStack(spacing: 5) {
@@ -61,7 +63,7 @@ struct FavoritePlacesView: View {
                                 .foregroundStyle(Color(red: 0.95, green: 0.96, blue: 0.97))
                                 .frame(width: 24, height: 20)
                                 .overlay(
-                                    Text("6")
+                                    Text("\(favoritePlaceViewModel.result.filter { $0.isVisited == 1 }.count)")
                                         .font(
                                             Font.custom("Apple SD Gothic Neo", size: 14)
                                                 .weight(.medium)
@@ -73,7 +75,9 @@ struct FavoritePlacesView: View {
                             .foregroundStyle(selectedTab == "다녀온 장소" ? Color.accentColor : .clear)
                     }
                     .onTapGesture {
-                        selectedTab = "다녀온 장소"
+                        withAnimation {
+                            selectedTab = "다녀온 장소"
+                        }
                     }
                     VStack(spacing: 10){
                         HStack(spacing: 5) {
@@ -87,7 +91,7 @@ struct FavoritePlacesView: View {
                                 .foregroundStyle(Color(red: 0.95, green: 0.96, blue: 0.97))
                                 .frame(width: 24, height: 20)
                                 .overlay(
-                                    Text("6")
+                                    Text("\(favoritePlaceViewModel.result.filter { $0.isVisited == 0 }.count)")
                                         .font(
                                             Font.custom("Apple SD Gothic Neo", size: 14)
                                                 .weight(.medium)
@@ -99,7 +103,9 @@ struct FavoritePlacesView: View {
                             .foregroundStyle(selectedTab == "다녀올 장소" ? Color.accentColor : .clear)
                     }
                     .onTapGesture {
-                        selectedTab = "다녀올 장소"
+                        withAnimation {
+                            selectedTab = "다녀올 장소"
+                        }
                     }
                 }
                 .padding(.top, 5)
@@ -131,7 +137,33 @@ struct FavoritePlacesView: View {
                             .foregroundStyle(isLatestSelected == "이름순" ? Color.accentColor : Color(red: 0.62, green: 0.64, blue: 0.67))
                     }
                     Spacer()
-                    //MARK: - Filter button
+                    ScrollView(.horizontal) {
+                        HStack(spacing: 25) {
+                            ForEach(favoritePostBodyViewModel.category.compactMap { PlaceType(rawValue: $0)?.stringValue }, id: \.self) { categoryText in
+                                Text("\(categoryText)")
+                                    .font(
+                                        .custom("Apple SD Gothic Neo", size: 13)
+                                        .weight(.regular)
+                                    )
+                                    .foregroundStyle(Color.accentColor)
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 40)
+                                            .foregroundStyle(.white)
+                                            .overlay(
+                                                RoundedRectangle(cornerRadius: 40)
+                                                    .fill(Color.white)
+                                                    .stroke(Color.accentColor, lineWidth: 1.3)
+                                                    .padding(EdgeInsets(top: -5, leading: -10, bottom: -4, trailing: -10))
+                                            )
+                                    )
+                            }
+                        }
+                        .padding(.leading, 20)
+                        .frame(height: 30)
+                    }
+                    .scrollIndicators(.hidden)
+                    
+                    Spacer()
                     Button(action: {
                         withAnimation {
                             isPopupPresented.toggle()
@@ -202,8 +234,15 @@ struct FavoritePlacesView: View {
                                             Button(action: {
                                                 favoritePlaceViewModel.patchFavoritePlaceIsVisited(placeId: favoritePlace.id)
                                                 favoritePlaceViewModel.searchMyPlaceList()
-                                                let toastMessage = "다녀올 장소에 저장되었어요"
-                                                ToastViewModel.shared.showToastWithString(text: toastMessage)
+                                                if favoritePlace.isVisited == 1 {
+                                                    let toastMessage = "다녀올 장소에 저장되었어요"
+                                                    ToastViewModel.shared.showToastWithString(text: toastMessage)
+                                                }
+                                                else if favoritePlace.isVisited == 0 {
+                                                    let toastMessage = "다녀올 장소에서 삭제되었어요"
+                                                    ToastViewModel.shared.showToastWithString(text: toastMessage)
+                                                }
+                                                
                                                 withAnimation {
                                                     selectedTab = "로딩 화면"
                                                 }
@@ -254,76 +293,226 @@ struct FavoritePlacesView: View {
                 }
                 //MARK: - 다녀온 장소
                 else if selectedTab == "다녀온 장소" {
-                    VStack {
-                        Image("FavoritePlaceMissing2")
-                        Text("다녀온 장소가 없어요.\n원활한 방문을 위해 알림을 보내드릴까요?")
-                            .font(
-                                Font.custom("Apple SD Gothic Neo", size: 20)
-                                    .weight(.semibold)
-                            )
-                            .multilineTextAlignment(.center)
-                            .lineSpacing(5)
-                            .padding(.top, 30)
-                        Button(action: {
-                            
-                        }) {
-                            RoundedRectangle(cornerRadius: 10)
-                                .foregroundStyle(Color.accentColor)
-                                .frame(width: 240, height: 50)
-                                .overlay(
-                                    Text("알림 설정")
-                                        .foregroundStyle(.white)
-                                        .font(
-                                            Font.custom("Apple SD Gothic Neo", size: 20)
-                                                .weight(.semibold)
-                                        )
-                                    
+                    if !favoritePlaceViewModel.result.contains(where: { $0.isVisited == 1 }) {
+                        VStack {
+                            Image("FavoritePlaceMissing2")
+                            Text("다녀온 장소가 없어요.\n원활한 방문을 위해 알림을 보내드릴까요?")
+                                .font(
+                                    Font.custom("Apple SD Gothic Neo", size: 20)
+                                        .weight(.semibold)
                                 )
-                                .padding(.top, 25)
+                                .multilineTextAlignment(.center)
+                                .lineSpacing(5)
+                                .padding(.top, 30)
+                            Button(action: {
+                                
+                            }) {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .foregroundStyle(Color.accentColor)
+                                    .frame(width: 240, height: 50)
+                                    .overlay(
+                                        Text("알림 설정")
+                                            .foregroundStyle(.white)
+                                            .font(
+                                                Font.custom("Apple SD Gothic Neo", size: 20)
+                                                    .weight(.semibold)
+                                            )
+                                        
+                                    )
+                                    .padding(.top, 25)
+                            }
                         }
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .background(Color(red: 0.94, green: 0.93, blue: 1).opacity(0.7))
                     }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .background(Color(red: 0.94, green: 0.93, blue: 1).opacity(0.7))
+                    else {
+                        Group {
+                            ForEach(favoritePlaceViewModel.result, id: \.id) { favoritePlace in
+                                Section {
+                                    if favoritePlace.isVisited == 1 {
+                                        SwipeItem(content: {
+                                            let isVisitedBool: Bool = favoritePlace.isVisited == 1 ? true : false
+                                            FavoriteItemView(path: $path, isVisited: isVisitedBool, place: favoritePlace)
+                                                .background( Color(red: 0.93, green: 0.93, blue: 1))
+                                                .onTapGesture {
+                                                    placeId = favoritePlace.id
+                                                    isHeartFilled = true
+                                                    path.append(.placeInformationView)
+                                                }
+                                            
+                                        },  left: {
+                                            ZStack {
+                                                UnevenRoundedRectangle(topLeadingRadius: 10, bottomLeadingRadius: 10)
+                                                    .fill(Color.green)
+                                                
+                                                Button(action: {
+                                                    favoritePlaceViewModel.patchFavoritePlaceIsVisited(placeId: favoritePlace.id)
+                                                    favoritePlaceViewModel.searchMyPlaceList()
+                                                    let toastMessage = "다녀올 장소에 저장되었어요"
+                                                    ToastViewModel.shared.showToastWithString(text: toastMessage)
+                                                    withAnimation {
+                                                        selectedTab = "로딩 화면"
+                                                    }
+                                                }) {
+                                                    Image(systemName: "archivebox")
+                                                        .foregroundStyle(.white)
+                                                        .font(.largeTitle)
+                                                }
+                                                .tint(.green)
+                                            }
+                                        },  right: {
+                                            ZStack {
+                                                UnevenRoundedRectangle(bottomTrailingRadius: 10, topTrailingRadius: 10)
+                                                    .fill(Color.red)
+                                                
+                                                Button(action: {
+                                                    MyPlaceManager.shared.deleteFavoritePlace(placeId: favoritePlace.id) { error in
+                                                        if error != nil {
+                                                            print("관심장소 삭제 실패")
+                                                        }
+                                                        else {
+                                                            favoritePlaceViewModel.searchMyPlaceList()
+                                                            print("관심장소 삭제 성공")
+                                                        }
+                                                    }
+                                                    let toastMessage = "관심 장소 저장이 해제되었습니다."
+                                                    ToastViewModel.shared.showToastWithString(text: toastMessage)
+                                                }) {
+                                                    Image(systemName: "trash")
+                                                        .foregroundStyle(.white)
+                                                        .font(.largeTitle)
+                                                }
+                                                .tint(.red)
+                                            }
+                                        }, itemHeight: 80, path: $path)
+                                    }
+                                }
+                                .frame(height: 80)
+                                .clipShape(RoundedRectangle(cornerRadius: 15))
+                                .listRowSeparator(.hidden)
+                                .listSectionSpacing(0)
+                            }
+                        }
+                        .frame(width: 340)
+                        .padding(.top, 15)
+                        
+                        Spacer()
+                    }
                 }
                 //MARK: - 다녀올 장소
                 else if selectedTab == "다녀올 장소" {
-                    VStack {
-                        Image("FavoritePlaceMissing3")
-                        Text("관심장소를 모두 방문했어요. \n새로운 관심장소를 찾아볼까요?")
-                            .font(
-                                Font.custom("Apple SD Gothic Neo", size: 20)
-                                    .weight(.semibold)
-                            )
-                            .multilineTextAlignment(.center)
-                            .lineSpacing(5)
-                            .padding(.top, 30)
-                        Button(action: {
-                            
-                        }) {
-                            RoundedRectangle(cornerRadius: 10)
-                                .foregroundStyle(Color.accentColor)
-                                .frame(width: 240, height: 50)
-                                .overlay(
-                                    Text("장소 둘러보기")
-                                        .foregroundStyle(.white)
-                                        .font(
-                                            Font.custom("Apple SD Gothic Neo", size: 20)
-                                                .weight(.semibold)
-                                        )
-                                    
+                    if !favoritePlaceViewModel.result.contains(where: { $0.isVisited == 0 }) {
+                        VStack {
+                            Image("FavoritePlaceMissing3")
+                            Text("관심장소를 모두 방문했어요. \n새로운 관심장소를 찾아볼까요?")
+                                .font(
+                                    Font.custom("Apple SD Gothic Neo", size: 20)
+                                        .weight(.semibold)
                                 )
-                                .padding(.top, 25)
+                                .multilineTextAlignment(.center)
+                                .lineSpacing(5)
+                                .padding(.top, 30)
+                            Button(action: {
+                                
+                            }) {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .foregroundStyle(Color.accentColor)
+                                    .frame(width: 240, height: 50)
+                                    .overlay(
+                                        Text("장소 둘러보기")
+                                            .foregroundStyle(.white)
+                                            .font(
+                                                Font.custom("Apple SD Gothic Neo", size: 20)
+                                                    .weight(.semibold)
+                                            )
+                                        
+                                    )
+                                    .padding(.top, 25)
+                            }
                         }
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .background(Color(red: 0.94, green: 0.93, blue: 1).opacity(0.7))
                     }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .background(Color(red: 0.94, green: 0.93, blue: 1).opacity(0.7))
+                    else {
+                        Group {
+                            ForEach(favoritePlaceViewModel.result, id: \.id) { favoritePlace in
+                                Section {
+                                    if favoritePlace.isVisited == 0 {
+                                        SwipeItem(content: {
+                                            let isVisitedBool: Bool = favoritePlace.isVisited == 1 ? true : false
+                                            FavoriteItemView(path: $path, isVisited: isVisitedBool, place: favoritePlace)
+                                                .background( Color(red: 0.93, green: 0.93, blue: 1))
+                                                .onTapGesture {
+                                                    placeId = favoritePlace.id
+                                                    isHeartFilled = true
+                                                    path.append(.placeInformationView)
+                                                }
+                                            
+                                        },  left: {
+                                            ZStack {
+                                                UnevenRoundedRectangle(topLeadingRadius: 10, bottomLeadingRadius: 10)
+                                                    .fill(Color.green)
+                                                
+                                                Button(action: {
+                                                    favoritePlaceViewModel.patchFavoritePlaceIsVisited(placeId: favoritePlace.id)
+                                                    favoritePlaceViewModel.searchMyPlaceList()
+                                                    let toastMessage = "다녀올 장소에 저장되었어요"
+                                                    ToastViewModel.shared.showToastWithString(text: toastMessage)
+                                                    withAnimation {
+                                                        selectedTab = "로딩 화면"
+                                                    }
+                                                }) {
+                                                    Image(systemName: "archivebox")
+                                                        .foregroundStyle(.white)
+                                                        .font(.largeTitle)
+                                                }
+                                                .tint(.green)
+                                            }
+                                        },  right: {
+                                            ZStack {
+                                                UnevenRoundedRectangle(bottomTrailingRadius: 10, topTrailingRadius: 10)
+                                                    .fill(Color.red)
+                                                
+                                                Button(action: {
+                                                    MyPlaceManager.shared.deleteFavoritePlace(placeId: favoritePlace.id) { error in
+                                                        if error != nil {
+                                                            print("관심장소 삭제 실패")
+                                                        }
+                                                        else {
+                                                            favoritePlaceViewModel.searchMyPlaceList()
+                                                            print("관심장소 삭제 성공")
+                                                        }
+                                                    }
+                                                    let toastMessage = "관심 장소 저장이 해제되었습니다."
+                                                    ToastViewModel.shared.showToastWithString(text: toastMessage)
+                                                }) {
+                                                    Image(systemName: "trash")
+                                                        .foregroundStyle(.white)
+                                                        .font(.largeTitle)
+                                                }
+                                                .tint(.red)
+                                            }
+                                        }, itemHeight: 80, path: $path)
+                                    }
+                                }
+                                .frame(height: 80)
+                                .clipShape(RoundedRectangle(cornerRadius: 15))
+                                .listRowSeparator(.hidden)
+                                .listSectionSpacing(0)
+                            }
+                        }
+                        .frame(width: 340)
+                        .padding(.top, 15)
+                        
+                        Spacer()
+                    }
                 }
                 else if selectedTab == "로딩 화면" {
                     VStack {
                         //FavoritePlaceLoading
                         Image("FavoritePlaceMissing2")
                             .onAppear {
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                                     withAnimation {
                                         selectedTab = "전체"
                                     }
@@ -370,6 +559,12 @@ struct FavoritePlacesView: View {
             .disabled(isPopupPresented)
             if isPopupPresented {
                 FilterPopup(isPopupPresented: $isPopupPresented)
+                    .onDisappear {
+                        withAnimation {
+                            selectedTab = "로딩 화면"
+                            favoritePlaceViewModel.searchMyPlaceList()
+                        }
+                    }
             }
         }
         .toast(message: toastViewModel.toastMessage, isShowing: $toastViewModel.showToast, duration: Toast.time)
