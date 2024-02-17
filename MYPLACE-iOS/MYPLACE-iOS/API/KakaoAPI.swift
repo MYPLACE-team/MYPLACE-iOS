@@ -43,7 +43,20 @@ extension KakaoAPI: TargetType {
     }
 
     var headers: [String: String]? {
-        return ["Authorization": "KakaoAK b6650aaa90b6bd0106949403f59b04c5"]
+        guard let path = Bundle.main.path(forResource: "secret", ofType: "plist") else {
+            fatalError("secret.plist 파일을 찾을 수 없습니다.")
+        }
+        guard let data = FileManager.default.contents(atPath: path) else {
+            fatalError("secret.plist 파일을 읽어올 수 없습니다.")
+        }
+        guard let plistDictionary = try? PropertyListSerialization.propertyList(from: data, options: [], format: nil) as? [String: Any] else {
+            fatalError("secret.plist를 NSDictionary로 변환할 수 없습니다.")
+        }
+        if let kakaoAK = plistDictionary["KakaoAK"] as? String {
+            return ["Authorization": "KakaoAK \(kakaoAK)"]
+        } else {
+            fatalError("KakaoAK을 찾을 수 없거나 유효하지 않습니다.")
+        }
     }
 }
 
