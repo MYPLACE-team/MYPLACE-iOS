@@ -8,8 +8,9 @@
 import SwiftUI
 
 struct SearchView: View {
-    @ObservedObject var kakaoSearchViewModel: KakaoSearchViewModel
+//    @ObservedObject var kakaoSearchViewModel: KakaoSearchViewModel
 //    @ObservedObject var myPlaceListViewModel: MyPlaceListViewModel
+    @StateObject var kakaoSearchViewModel = KakaoSearchViewModel.shared
     @StateObject var myPlaceListViewModel = MyPlaceListViewModel.shared
     @StateObject var popupViewModel = PopupViewModel.shared
     

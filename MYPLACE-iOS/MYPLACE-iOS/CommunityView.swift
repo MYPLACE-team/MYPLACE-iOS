@@ -121,10 +121,10 @@ struct CommunityView: View {
             .foregroundStyle(Color.accentColor)
             .background(
                 RoundedRectangle(cornerRadius: 40)
-                    .foregroundStyle(.white)
+                    .foregroundStyle(.clear)
                     .overlay(
                         RoundedRectangle(cornerRadius: 40)
-                            .fill(Color.white)
+                            .fill(Color.clear)
                             .stroke(Color.accentColor, lineWidth: 1.3)
                             .padding(EdgeInsets(top: -5, leading: -10, bottom: -4, trailing: -10))
                     )
