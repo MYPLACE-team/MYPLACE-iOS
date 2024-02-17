@@ -28,11 +28,11 @@
 		A5BE8DE72B7E1FBE00579EBF /* ArchiveAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BE8DE62B7E1FBE00579EBF /* ArchiveAPI.swift */; };
 		A5BE8DE92B7E220300579EBF /* ArchiveManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BE8DE82B7E220300579EBF /* ArchiveManager.swift */; };
 		A5BE8DEB2B7E289100579EBF /* ArchiveViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BE8DEA2B7E289100579EBF /* ArchiveViewModel.swift */; };
-		A5BE8DEF2B7E6B5A00579EBF /* secret.plist in Resources */ = {isa = PBXBuildFile; fileRef = A5BE8DEE2B7E6B5A00579EBF /* secret.plist */; };
 		A5BE8DF12B7F1F3E00579EBF /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BE8DF02B7F1F3E00579EBF /* LoginViewModel.swift */; };
 		A5CE892A2B5980CE00ED8F62 /* NewUserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5CE89292B5980CE00ED8F62 /* NewUserView.swift */; };
 		A5CE892C2B59AA0900ED8F62 /* ArchiveDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5CE892B2B59AA0900ED8F62 /* ArchiveDetailView.swift */; };
 		A5CFD2782B6CDB2200F7DA48 /* NewArchiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5CFD2772B6CDB2200F7DA48 /* NewArchiveView.swift */; };
+		A5E8B3D42B81261A0062B011 /* secret.plist in Resources */ = {isa = PBXBuildFile; fileRef = A5E8B3D32B81261A0062B011 /* secret.plist */; };
 		A5F03F862B50FB5700242929 /* ArchiveModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F03F852B50FB5700242929 /* ArchiveModel.swift */; };
 		A5FB3A442B7524A8004E1C60 /* NotificationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5FB3A432B7524A8004E1C60 /* NotificationModel.swift */; };
 		AA05EAF32B3B87A0005596C5 /* MYPLACE_iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA05EAF22B3B87A0005596C5 /* MYPLACE_iOSApp.swift */; };
@@ -87,11 +87,11 @@
 		A5BE8DE62B7E1FBE00579EBF /* ArchiveAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveAPI.swift; sourceTree = "<group>"; };
 		A5BE8DE82B7E220300579EBF /* ArchiveManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveManager.swift; sourceTree = "<group>"; };
 		A5BE8DEA2B7E289100579EBF /* ArchiveViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveViewModel.swift; sourceTree = "<group>"; };
-		A5BE8DEE2B7E6B5A00579EBF /* secret.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = secret.plist; path = ../../../Downloads/secret.plist; sourceTree = "<group>"; };
 		A5BE8DF02B7F1F3E00579EBF /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		A5CE89292B5980CE00ED8F62 /* NewUserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewUserView.swift; sourceTree = "<group>"; };
 		A5CE892B2B59AA0900ED8F62 /* ArchiveDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveDetailView.swift; sourceTree = "<group>"; };
 		A5CFD2772B6CDB2200F7DA48 /* NewArchiveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewArchiveView.swift; sourceTree = "<group>"; };
+		A5E8B3D32B81261A0062B011 /* secret.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = secret.plist; path = ../../../Downloads/secret.plist; sourceTree = "<group>"; };
 		A5F03F852B50FB5700242929 /* ArchiveModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveModel.swift; sourceTree = "<group>"; };
 		A5FB3A432B7524A8004E1C60 /* NotificationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationModel.swift; sourceTree = "<group>"; };
 		AA05EAEF2B3B87A0005596C5 /* MYPLACE-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MYPLACE-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -182,7 +182,7 @@
 				A59DC1E52B7D485900EA8E8E /* LoginManager.swift */,
 				A5BE8DE82B7E220300579EBF /* ArchiveManager.swift */,
 				AA2B64502B3CFEA9008CEDBB /* Info.plist */,
-				A5BE8DEE2B7E6B5A00579EBF /* secret.plist */,
+				A5E8B3D32B81261A0062B011 /* secret.plist */,
 				AA05EAF22B3B87A0005596C5 /* MYPLACE_iOSApp.swift */,
 				AA05EAF42B3B87A0005596C5 /* ContentView.swift */,
 				AA2B64552B3D0E7E008CEDBB /* KakaoMapView.swift */,
@@ -354,7 +354,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AA05EAFA2B3B87A1005596C5 /* Preview Assets.xcassets in Resources */,
-				A5BE8DEF2B7E6B5A00579EBF /* secret.plist in Resources */,
+				A5E8B3D42B81261A0062B011 /* secret.plist in Resources */,
 				AA05EAF72B3B87A1005596C5 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
