@@ -43,6 +43,7 @@ class ArchiveListViewModel: ObservableObject {
             case .success(let response):
                 DispatchQueue.main.async {
                     self.archivePlaceList = response.result
+                    print(self.archivePlaceList)
                 }
             case .failure(let error):
                 print(String(describing: error))
@@ -51,8 +52,14 @@ class ArchiveListViewModel: ObservableObject {
     }
     
     // MARK: - 되는지 검사해야함
-    func getArchiveList(tag: [String]) {
-        archiveManager.getArchivePlaceListWithTag(tag: tag, page: 1) { result in
+    func getArchiveListWithTag(tag: [String]) {
+        var param = ""
+        if(tag.count == 1) {
+            param = tag[0]
+        } else if(tag.count == 2) {
+            param = tag.joined(separator: ",")
+        }
+        archiveManager.getArchivePlaceListWithTag(tag: param, page: 1) { result in
             switch result {
             case .success(let response):
                 DispatchQueue.main.async {
@@ -63,14 +70,28 @@ class ArchiveListViewModel: ObservableObject {
             }
         }
     }
-    
 }
 
 class ArchiveDetailViewModel: ObservableObject {
     static let shared = ArchiveDetailViewModel()
     let archiveManager = ArchiveManager.shared
     
+    @Published var archiveDetail: ArchiveDetail = ArchiveDetail(archiveID: 1, title: "test", createdAt: "2023-02-27T15:00:00.000Z", count: 1, price: 1, menu: "test", score: 1, comment: "test", images: ["DummyImg"], hashtag: ["tag1", "tag2"], visitedDate: "2023-02-27T15:00:00.000Z", isPublic: true, folderID: 1, folderName: "test")
+    @Published var archiveDetailPlace: ArchiveDetailPlace = ArchiveDetailPlace(placeID: 1, name: "test", address: "test", categoryID: 1, isLike: 1, thumbnail: "DummyImg")
     
-    
+    // MARK: - 되는지 검사해야함
+    func getArchiveDetail(archiveId: Int) {
+        archiveManager.getArchiveDetail(archiveId: archiveId) { result in
+            switch result {
+            case .success(let response):
+                DispatchQueue.main.async {
+                    self.archiveDetail = response.result.archive
+                    self.archiveDetailPlace = response.result.place
+                }
+            case .failure(let error):
+                print(String(describing: error))
+            }
+        }
+    }
     
 }

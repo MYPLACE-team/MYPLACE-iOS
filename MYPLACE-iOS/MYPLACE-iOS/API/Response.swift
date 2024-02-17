@@ -250,23 +250,45 @@ struct ArchiveDetailResponse: Codable {
 }
 
 struct ArchiveDetailResult: Codable {
-    let place: ArchivePlace
+    let place: ArchiveDetailPlace
     let archive: ArchiveDetail
 }
 
-struct ArchiveDetail: Codable, Identifiable {
-    let id: Int
-    let title: String
-    let createdAt: String
-    let count: Int
-    let cost: Int
+// MARK: - ArchiveDetail
+struct ArchiveDetail: Codable {
+    let archiveID: Int
+    let title, createdAt: String
+    let count, price: Int
     let menu: String
-    let hashtag: [String]
     let score: Int
-    
+    let comment: String
+    let images: [String]
+    let hashtag: [String]
+    let visitedDate: String
+    let isPublic: Bool
+    let folderID: Int
+    let folderName: String
+
     enum CodingKeys: String, CodingKey {
-        case id = "archiveId"
-        case title,createdAt,count,cost,menu,hashtag, score
+        case archiveID = "archiveId"
+        case title, createdAt, count, price, menu, score, comment, images, hashtag, visitedDate, isPublic
+        case folderID = "folderId"
+        case folderName
+    }
+}
+
+// MARK: - Place
+struct ArchiveDetailPlace: Codable {
+    let placeID: Int
+    let name, address: String
+    let categoryID, isLike: Int
+    let thumbnail: String?
+
+    enum CodingKeys: String, CodingKey {
+        case placeID = "placeId"
+        case name, address
+        case categoryID = "categoryId"
+        case isLike, thumbnail
     }
 }
 

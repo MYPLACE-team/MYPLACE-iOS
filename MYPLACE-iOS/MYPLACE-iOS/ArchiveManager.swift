@@ -52,7 +52,7 @@ struct ArchiveManager {
         }
     }
     
-    func getArchivePlaceListWithTag (tag: [String], page: Int, completion: @escaping (Result<ArchivePlaceListResponse, Error>) -> Void) {
+    func getArchivePlaceListWithTag (tag: String, page: Int, completion: @escaping (Result<ArchivePlaceListResponse, Error>) -> Void) {
         archiveProvider.request(.getArchiveListWithTag(tag: tag, page: page)) { result in
             switch result {
             case .success(let response):
@@ -72,4 +72,23 @@ struct ArchiveManager {
         }
     }
     
+    func getArchiveDetail(archiveId: Int, completion: @escaping (Result<ArchiveDetailResponse, Error>) -> Void) {
+        archiveProvider.request(.getArchiveDetail(archiveId: archiveId)) { result in
+            switch result {
+            case .success(let response):
+                do {
+                    let decoder = JSONDecoder()
+                    let responseData = try decoder.decode(ArchiveDetailResponse.self, from: response.data)
+                    print("success")
+                    completion(.success(responseData))
+                } catch let error {
+                    print("error 1")
+                    completion(.failure(error))
+                }
+            case .failure(let error):
+                print("error 2")
+                completion(.failure(error))
+            }
+        }
+    }
 }

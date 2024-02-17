@@ -208,10 +208,9 @@ struct ArchiveView: View {
                         if searchItemList.count > 0 {
                             ForEach(searchItemList.indices, id: \.self) { index in
                                 HStack(spacing: 3){
-                                    Text(searchItemList[index])
+                                    Text("#"+searchItemList[index])
                                         .font(
                                             Font.custom("Apple SD Gothic Neo", size: 12)
-                                                .weight(.bold)
                                         )
                                         .foregroundStyle(Color(red: 0.4, green: 0.35, blue: 0.96))
                                         .padding(.top, 2)
@@ -247,17 +246,26 @@ struct ArchiveView: View {
                                 .submitLabel(.done)
                                 .onSubmit {
                                     if(searchItem != "") {
-                                        searchItemList.append("#" + searchItem)
+                                        searchItemList.append(searchItem)
                                         searchItem = ""
                                     }
                                 }
                                 .autocapitalization(.none)
                         }
                         Spacer()
-                        Image(systemName: "magnifyingglass")
-                            .resizable()
-                            .frame(width: 16, height: 16)
-                            .foregroundStyle(.gray)
+                        Button(action: {
+                            if(searchItemList.count == 0) {
+                                archiveListViewModel.getArchiveList()
+                            } else {
+                                archiveListViewModel.getArchiveListWithTag(tag: searchItemList)
+                            }
+                        })
+                        {
+                            Image(systemName: "magnifyingglass")
+                                .resizable()
+                                .frame(width: 16, height: 16)
+                                .foregroundStyle(.gray)
+                        }
                     }
                     .frame(width: 344, height: 32)
                     .padding(.horizontal, 13)
@@ -267,14 +275,13 @@ struct ArchiveView: View {
                     .padding(.bottom, 24)
                     ScrollView {
                         LazyVStack(spacing: 14){
-                            if(archiveListViewModel.archivePlaceList.count > 0) {
-                                ForEach(archiveListViewModel.archivePlaceList, id: \.self){ place in
-                                    Button(action: {
-                                        path.append(.archiveDetailView)
-                                    })
-                                    {
-                                        ArchivePlaceView(image: place.thumbnailUrl ?? "DummyImage", category: 1, title: place.name, address: place.address, score: place.score, tags: place.hashtag)
-                                    }
+                            ForEach(archiveListViewModel.archivePlaceList){ place in
+                                Button(action: {
+                                    ArchiveDetailViewModel.shared.getArchiveDetail(archiveId: place.id)
+                                    path.append(.archiveDetailView)
+                                })
+                                {
+                                    ArchivePlaceView(image: place.thumbnailUrl ?? "DummyImage", category: place.categoryId, title: place.name, address: place.address, score: place.score, tags: place.hashtag)
                                 }
                             }
                         }
@@ -374,8 +381,8 @@ struct ArchiveView: View {
             }
         }
         .onAppear {
-            // archiveUserViewModel.getArchiveUserInfo()
-            // archiveListViewModel.getArchiveList()            
+//             archiveUserViewModel.getArchiveUserInfo()
+//             archiveListViewModel.getArchiveList()
         }
         .navigationBarBackButtonHidden()
         .toolbar {
@@ -429,7 +436,7 @@ struct ArchivePlaceView: View {
                     Image(category == 1 ? "CafeIcon" : "CafeIcon")
                         .resizable()
                         .frame(width: 24, height: 24)
-                    Text(title)
+                    Text(title.prefix(6))
                         .font(
                             Font.custom("Apple SD Gothic Neo", size: 20)
                                 .weight(.bold)
@@ -442,7 +449,7 @@ struct ArchivePlaceView: View {
                         .resizable()
                         .frame(width:14, height:18)
                         .padding(.horizontal,4)
-                    Text(address)
+                    Text(getSubAddress(address:address))
                         .font(Font.custom("Apple SD Gothic Neo", size: 15))
                         .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
                 }
@@ -461,33 +468,23 @@ struct ArchivePlaceView: View {
                 }
                 .padding(.bottom, 6)
                 HStack(spacing: 3){
-                    Text("#\(tags[0])")
-                        .font(Font.custom("Apple SD Gothic Neo", size: 12))
-                        .foregroundStyle(Color(red: 0.4, green: 0.35, blue: 0.96))
-                        .frame(height: 22)
-                        .padding(.horizontal, 8)
-                        .padding(.top, 2)
-                        .background(Color(red: 0.97, green: 0.95, blue: 1))
-                        .clipShape(RoundedRectangle(cornerRadius: 20))
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 20)
-                                .inset(by: 0.5)
-                                .stroke(Color(red: 0.4, green: 0.35, blue: 0.96), lineWidth: 1)
-                        )
-                    Text("#\(tags[1])")
-                        .font(Font.custom("Apple SD Gothic Neo", size: 12))
-                        .foregroundStyle(Color(red: 0.4, green: 0.35, blue: 0.96))
-                        .frame(height: 22)
-                        .padding(.horizontal, 8)
-                        .padding(.top, 2)
-                        .background(Color(red: 0.97, green: 0.95, blue: 1))
-                        .clipShape(RoundedRectangle(cornerRadius: 20))
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 20)
-                                .inset(by: 0.5)
-                                .stroke(Color(red: 0.4, green: 0.35, blue: 0.96), lineWidth: 1)
-                        )
+                    ForEach(tags.indices) {idx in
+                        Text("#"+tags[idx])
+                            .font(Font.custom("Apple SD Gothic Neo", size: 12))
+                            .foregroundStyle(Color(red: 0.4, green: 0.35, blue: 0.96))
+                            .frame(height: 22)
+                            .padding(.horizontal, 8)
+                            .padding(.top, 2)
+                            .background(Color(red: 0.97, green: 0.95, blue: 1))
+                            .clipShape(RoundedRectangle(cornerRadius: 20))
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 20)
+                                    .inset(by: 0.5)
+                                    .stroke(Color(red: 0.4, green: 0.35, blue: 0.96), lineWidth: 1)
+                            )
+                    }
                 }
+                .frame(height: 22)
             }
             .padding(.trailing, 8)
         }
@@ -495,6 +492,17 @@ struct ArchivePlaceView: View {
         .background(.white)
         .clipShape(RoundedRectangle(cornerRadius: 12))
     }
+    
+    func getSubAddress(address: String) -> String {
+           let components = address.components(separatedBy: " ")
+           
+           if components.count >= 3 {
+               let substring = components[0] + " " + components[1]
+               return substring
+           } else {
+               return address
+           }
+       }
     
 }
 

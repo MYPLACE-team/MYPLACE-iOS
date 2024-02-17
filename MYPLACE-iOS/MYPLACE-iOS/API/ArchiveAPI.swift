@@ -11,7 +11,7 @@ import Moya
 enum ArchiveAPI {
     case getArchiveUser
     case getArchiveList(page: Int)
-    case getArchiveListWithTag(tag: [String], page: Int)
+    case getArchiveListWithTag(tag: String, page: Int)
     case getArchiveDetail(archiveId: Int)
 }
 
@@ -67,13 +67,8 @@ extension ArchiveAPI: TargetType {
         case .getArchiveList(let page):
             return .requestParameters(parameters: ["page": page], encoding: URLEncoding.queryString)
         case .getArchiveListWithTag(let tag, let page):
-            if (tag.count == 1) {
-                return .requestParameters(parameters: ["tag": tag[0], "page": page], encoding: URLEncoding.queryString)
-            }
-            else {
-                return .requestParameters(parameters: ["tag": tag[0]+","+tag[1], "page": page], encoding: URLEncoding.queryString)
-            }
-        case .getArchiveDetail(let archiveId):
+            return .requestParameters(parameters: ["tag": tag, "page": page], encoding: URLEncoding.queryString)
+        case .getArchiveDetail:
             return .requestPlain
         }
     }
