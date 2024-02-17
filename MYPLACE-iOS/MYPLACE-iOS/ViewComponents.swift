@@ -341,8 +341,9 @@ struct TextWidthPreferenceKey: PreferenceKey {
 }
 
 struct KakaoSearchView: View {
-    @ObservedObject var kakaoSearchViewModel: KakaoSearchViewModel
+//    @ObservedObject var kakaoSearchViewModel: KakaoSearchViewModel
 //    @ObservedObject var myPlaceListViewModel: MyPlaceListViewModel
+    @StateObject var kakaoSearchViewModel = KakaoSearchViewModel.shared
     @StateObject var myPlaceListViewModel = MyPlaceListViewModel.shared
     @Binding var path: [PathModel]
     @Binding var searchText: String

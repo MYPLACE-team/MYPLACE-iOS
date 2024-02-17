@@ -49,7 +49,7 @@ extension MyPlaceAPI: TargetType {
             return "/place/like/\(placeId)"
         case .deleteFavoritePlace(let placeId):
             return "/place/like/\(placeId)"
-        case .searchFavoritePlaceList(let body):
+        case .searchFavoritePlaceList:
             return "/place/like"
         case .patchFavoritePlaceIsVisited(let placeId):
             return "/place/visit/\(placeId)"

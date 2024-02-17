@@ -91,15 +91,15 @@ enum PlaceType: Int, CaseIterable, RawRepresentable {
         case .dessert:
             return "🍰"
         case .culturalSpace:
-            return "📒"
+            return "🎪"
         case .asian:
-            return "🧋"
+            return "🍜"
         case .meat:
             return "🥩"
         case .popupStore:
             return "🛍️"
         case .etc:
-            return "📂"
+            return "🏠"
         }
     }
 }
