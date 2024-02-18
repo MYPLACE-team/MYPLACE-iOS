@@ -9,6 +9,7 @@ import SwiftUI
 
 struct SettingView: View {
     @Binding var path: [PathModel]
+    @StateObject var user = UserInfoViewModel.shared
     
     var body: some View {
         ZStack{
@@ -42,14 +43,14 @@ struct SettingView: View {
                                         , alignment: .bottomTrailing)
                                 VStack(alignment: .leading, spacing: 2){
                                     HStack(alignment: .bottom, spacing: 5){
-                                        Text("라일락")
+                                        Text(user.username)
                                             .font(
                                                 Font.custom("Apple SD Gothic Neo", size: 20)
                                                     .weight(.semibold)
                                             )
                                             .foregroundStyle(.white)
                                         
-                                        Text("Lv.0")
+                                        Text("Lv.\(user.level)")
                                             .font(Font.custom("Apple SD Gothic Neo", size: 9))
                                             .foregroundStyle(Color(red: 0.27, green: 0.3, blue: 0.33))
                                             .padding(.vertical, 2.8)
@@ -59,7 +60,7 @@ struct SettingView: View {
                                             .padding(.bottom, 2)
                                     }
                                     .padding(.top, 27)
-                                    Text(verbatim: "jcjtysnsj@naver.com ")
+                                    Text(verbatim: user.email)
                                         .font(
                                             Font.custom("Apple SD Gothic Neo", size: 16)
                                                 .weight(.medium)
@@ -76,7 +77,7 @@ struct SettingView: View {
                                                 .weight(.semibold)
                                         )
                                         .foregroundStyle(.white)
-                                    Text("86 건")
+                                    Text("\(user.placeCount) 건")
                                         .font(
                                             Font.custom("Apple SD Gothic Neo", size: 17)
                                                 .weight(.bold)
@@ -92,7 +93,7 @@ struct SettingView: View {
                                                 .weight(.semibold)
                                         )
                                         .foregroundStyle(.white)
-                                    Text("43 건")
+                                    Text("\(user.archiveCount) 건")
                                         .font(
                                             Font.custom("Apple SD Gothic Neo", size: 17)
                                                 .weight(.bold)
@@ -213,7 +214,7 @@ struct SettingView: View {
                                       .weight(.semibold)
                                   )
                                   .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
-                                Text("2,700 MP")
+                                Text("\(user.point) MP")
                                   .font(
                                     Font.custom("Apple SD Gothic Neo", size: 14)
                                       .weight(.bold)
@@ -232,13 +233,13 @@ struct SettingView: View {
                                   )
                                   .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
                                 HStack(spacing: 2) {
-                                    ForEach(0..<4, id: \.self)
+                                    ForEach(0..<user.avgRate, id: \.self)
                                     {star in
                                         Image("StarFill")
                                             .resizable()
                                             .frame(width: 18, height: 18)
                                     }
-                                    ForEach(0..<5 - 4, id: \.self) {star in
+                                    ForEach(0..<5 - user.avgRate, id: \.self) {star in
                                         Image("StarEmpty")
                                             .resizable()
                                             .frame(width: 18, height: 18)
@@ -283,6 +284,9 @@ struct SettingView: View {
                         .foregroundStyle(.black)
                 }
             }
+        }
+        .onAppear {
+            user.getUserInfo(userId: "\(user.userId)")
         }
     }
 }

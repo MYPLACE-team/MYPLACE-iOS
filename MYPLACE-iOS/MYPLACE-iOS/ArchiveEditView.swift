@@ -1,48 +1,46 @@
 //
-//  NewArchiveView.swift
+//  ArchiveEditView.swift
 //  MYPLACE-iOS
 //
-//  Created by 김민지 on 2/2/24.
+//  Created by 김민지 on 2/18/24.
 //
 
 import SwiftUI
 import PhotosUI
 
-struct NewArchiveView: View {
-    @State var placeName: String = "명동돈까스"
-    @State var placeLocation: String = "서울특별시 중구 명동3로"
-    @State var placeImage: String = "DummyImage"
-    @State var isplaceHeart: Bool = false
-    
+struct ArchiveEditView: View {
     @State private var showPublicInfo: Bool = false
     
     @State private var folderName: String = ""
     
     @State private var images: [UIImage] = []
     @State private var tag: String = ""
-    @State private var price: Int?
-    @State private var date = Date()
-    
-    @State private var selectedOption: String?
+    @State var price: Int? = ArchiveInformationViewModel.shared.price
+
     @State private var showFolderList: Bool = false
     @State private var folders: [String] = ["속초여행", "데이트"]
+    @State var date = Date()
     
     @StateObject private var archive = ArchiveInformationViewModel.shared
     @StateObject private var toastViewModel = ToastViewModel.shared
     
-    @State var createFolder: Bool = false
+    @State var createFolder: Bool = true
     @State var folderImage: [UIImage] = []
     @State var newFolderName: String = ""
     @State var startDate = Date()
     @State var endDate = Date()
 
     @Binding var path: [PathModel]
+    var archiveId = ArchiveDetailViewModel.shared.archiveDetail.archiveID
+    var placeName = ArchiveDetailViewModel.shared.archiveDetailPlace.name
+    var placeLocation = ArchiveDetailViewModel.shared.archiveDetailPlace.address
+    var isLike = ArchiveDetailViewModel.shared.archiveDetailPlace.isLike
         
     var body: some View {
         ZStack{
             ScrollView{
                 VStack(spacing: 0){
-                    placeView(name: placeName, location: placeLocation, image: placeImage, isHeartFilled: isplaceHeart)
+                    placeView(name: placeName, location: placeLocation, image: "DummyImage", isHeartFilled: isLike == 0 ? false : true)
                         .padding(.top, 32)
                     HStack(spacing: 0) {
                         VStack(alignment: .leading, spacing: 2) {
@@ -371,20 +369,18 @@ struct NewArchiveView: View {
                     .frame(width: 358, alignment: .leading)
                     Button(action: {
                         if(archive.title == "" || archive.comment == "" || archive.menu == "" || price == nil || folderName == "" || folderName == "새 폴더") {
-                            toastViewModel.showToastWithString(text: "title, comment, menu, price를 모두 입력해주세요.")
+                            toastViewModel.showToastWithString(text: "title, folder, comment, menu, price를 모두 입력해주세요.")
                         } else {
                             archive.price = price ?? 0
                             archive.visitedDate = dateFormatter(date: date)
-                            ArchiveManager.shared.registerArchive(query: archive) { result in
+                            ArchiveManager.shared.editArchive(archiveId: archiveId, query: archive) { result in
                                 if(result == nil) {
-                                    toastViewModel.showToastWithString(text: "아카이브 게시물 등록에 실패했습니다.")
+                                    toastViewModel.showToastWithString(text: "아카이브 게시물 수정에 실패했습니다.")
                                 } else {
-                                    ArchiveDetailViewModel.shared.getArchiveDetail(archiveId: result ?? 0)
+                                    ArchiveDetailViewModel.shared.getArchiveDetail(archiveId: archiveId)
                                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                                        // MARK: - 수정 필요
                                         path.removeLast()
                                         archive.reset()
-                                        path.append(.archiveDetailView)
                                     }
                                 }
                             }
@@ -410,6 +406,9 @@ struct NewArchiveView: View {
             if (folderName == "새 폴더" && createFolder) {
                 createFolderView(image: $folderImage, name: $newFolderName, start: $startDate, end: $endDate, show: $createFolder, isCreate: true)
             }
+        }
+        .onAppear {
+            date = stringToDate(date: archive.visitedDate)
         }
         .toast(message: toastViewModel.toastMessage, isShowing: $toastViewModel.showToast, duration: Toast.time)
         .navigationBarBackButtonHidden()
@@ -451,176 +450,14 @@ struct NewArchiveView: View {
         dateFormatter.dateFormat = "yyyy.MM.dd"
         return dateFormatter.string(from: date)
     }
-}
-
-struct placeView: View{
-    var name: String
-    var location: String
-    var image: String
-    var isHeartFilled: Bool
     
-    var body: some View {
-        HStack(spacing: 0){
-            Image(image)
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .frame(width: 77, height: 77)
-                .clipShape(RoundedRectangle(cornerRadius: 6))
-                .padding(.all, 6)
-            VStack(alignment: .leading, spacing: 9){
-                Text("☕️ 명돈돈까스")
-                    .font(
-                        Font.custom("Apple SD Gothic Neo", size: 18)
-                            .weight(.semibold)
-                    )
-                    .foregroundStyle(Color(red: 0.27, green: 0.3, blue: 0.33))
-                HStack(spacing: 3) {
-                    Image("map")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 14, height: 14)
-                    Text("서울특별시 중구 명동3로")
-                      .font(Font.custom("Apple SD Gothic Neo", size: 15))
-                      .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
-                }
-            }
-            .padding(.leading, 20)
-            .frame(maxWidth: 250, alignment: .leading)
-            Spacer()
-            VStack(spacing: 0){
-                Image(systemName: isHeartFilled ? "heart.fill" : "heart")
-                    .foregroundStyle(isHeartFilled ? .red : .gray)
-                    .padding(.top, 18)
-                    .padding(.trailing, 9)
-                Spacer()
-            }
-            
-        }
-        .frame(width: 343, height: 88)
-        .background(.white)
-        .cornerRadius(15)
-        .shadow(color: .black.opacity(0.25), radius: 2, x: 0, y: 2)
-    }
-}
-
-struct folderSelectView: View {
-    @Binding var list: [String]
-    @Binding var select: String
-    @Binding var show: Bool
-    
-    var body: some View {
-        HStack(spacing: 0){
-            Text(select == "" ? "폴더 선택" : select)
-                .font(
-                    Font.custom("Apple SD Gothic Neo", size: 16)
-                        .weight(.medium)
-                )
-                .foregroundStyle(select == "" ? Color(red: 0.45, green: 0.47, blue: 0.5) : Color(red: 0.15, green: 0.16, blue: 0.17))
-            Spacer()
-            if select == "" {
-                Image(systemName: "chevron.down")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 16, height: 16)
-                    .bold()
-            }
-        }
-        .padding(.horizontal, 12)
-        .padding(.vertical, 16)
-        .frame(width: 358,height: 56)
-        .background(
-            Rectangle()
-                .inset(by: 1)
-                .stroke(.black.opacity(0.23), lineWidth: 1)
-        )
-        .onTapGesture {
-            show.toggle()
-        }
-        .overlay(
-            VStack(spacing: 0) {
-                if (show) {
-                    HStack(spacing: 0) {
-                        Text(select == "" ? "폴더 선택" : select)
-                            .font(
-                                Font.custom("Apple SD Gothic Neo", size: 16)
-                                    .weight(.medium)
-                            )
-                            .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
-                        Spacer()
-                        Image(systemName: "chevron.up")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 16, height: 16)
-                            .bold()
-                    }
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 16)
-                    .frame(width: 358,height: 56)
-                    .background(.white)
-                    .overlay(
-                        Rectangle()
-                            .inset(by: 1)
-                            .stroke(.black.opacity(0.23), lineWidth: 1))
-                    .onTapGesture {
-                        show.toggle()
-                    }
-                    VStack(spacing: 0){
-                        ForEach(list, id: \.self) { item in
-                            Rectangle()
-                                .foregroundStyle(select == item ? Color(red: 0.91, green: 0.92, blue: 0.93) : .white)
-                                .frame(width: 358, height: 40)
-                                .overlay(
-                                    HStack(spacing: 0) {
-                                        Text(item)
-                                            .font(Font.custom("Apple SD Gothic Neo", size: 16))
-                                        Spacer()
-                                        Image(systemName:"checkmark")
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fit)
-                                            .frame(width: 12, height: 12)
-                                            .bold()
-                                            .foregroundStyle(select == item ? Color(red: 0.15, green: 0.16, blue: 0.17) : .clear)
-                                    }
-                                        .foregroundStyle(Color(red: 0.15, green: 0.16, blue: 0.17))
-                                        .padding(.horizontal, 12))
-                                .onTapGesture {
-                                    select = item
-                                }
-                        }
-                        Rectangle()
-                            .fill(.white)
-                            .frame(width: 358, height: 40)
-                            .overlay(
-                                HStack(spacing: 0) {
-                                    Text("새 폴더")
-                                        .font(Font.custom("Apple SD Gothic Neo", size: 16))
-                                    Spacer()
-                                    Image(systemName:"checkmark")
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(width: 12, height: 12)
-                                        .bold()
-                                        .foregroundStyle(.clear)
-                                }
-                                    .foregroundStyle(Color(red: 0.15, green: 0.16, blue: 0.17))
-                                    .padding(.horizontal, 12))
-                            .onTapGesture {
-                                select = "새 폴더"
-                            }
-                    }
-                    .padding(.top, -2)
-                    .overlay(
-                        Rectangle()
-                            .inset(by: 1)
-                            .stroke(.black.opacity(0.23), lineWidth: 1)
-                            .padding(.top, -2)
-                    )
-                }
-            }
-            ,alignment: .top)
+    func stringToDate(date: String) -> Date {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+        return dateFormatter.date(from: date) ?? Date()
     }
 }
 
 #Preview {
-    NewArchiveView(path: .constant([]))
+    ArchiveEditView(path: .constant([]))
 }

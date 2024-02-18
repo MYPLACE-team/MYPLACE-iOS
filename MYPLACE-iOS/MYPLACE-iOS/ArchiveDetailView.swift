@@ -8,12 +8,15 @@
 import SwiftUI
 struct ArchiveDetailView: View {
     @State var archiveData = archiveDetail
-    @State var isLocationView: Bool = false
+    @State var isLocationView: Bool = true
     @State var isPopupPresented: Bool = false
     @State var popupMode: String = ""
     @State var isCommentPresented: Bool = false
     @State private var tags: [String] = ["한옥", "크로플", "안국역"]
+    
     @StateObject private var toastViewModel = ToastViewModel.shared
+    @StateObject private var archiveUserViewModel = ArchiveUserViewModel.shared
+    @StateObject private var archiveDetailViewModel = ArchiveDetailViewModel.shared
     
     @Binding var path: [PathModel]
     
@@ -29,7 +32,7 @@ struct ArchiveDetailView: View {
                         VStack{
                             HStack(spacing: 90){
                                 VStack(spacing: 8){
-                                    Text("0")
+                                    Text("\(archiveUserViewModel.user.level)")
                                         .font(
                                             Font.custom("Apple SD Gothic Neo", size: 15)
                                                 .weight(.bold)
@@ -40,7 +43,7 @@ struct ArchiveDetailView: View {
                                         .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
                                 }.frame(width: 120, height: 50)
                                 VStack(spacing: 8){
-                                    Text("14")
+                                    Text("\(archiveUserViewModel.user.archiveCount)")
                                         .font(
                                             Font.custom("Apple SD Gothic Neo", size: 15)
                                                 .weight(.bold)
@@ -52,7 +55,7 @@ struct ArchiveDetailView: View {
                                 }.frame(width: 120, height: 50)
                             }
                             .padding(.top, 15)
-                            Text("라일락")
+                            Text(archiveUserViewModel.user.username)
                                 .font(
                                     Font.custom("Apple SD Gothic Neo", size: 16)
                                         .weight(.bold)
@@ -149,7 +152,7 @@ struct ArchiveDetailView: View {
                                     if isLocationView {
                                         VStack {
                                             HStack{
-                                                Image(archiveData.imageName)
+                                                Image("DummyImage")
                                                     .resizable()
                                                     .aspectRatio(contentMode: .fill)
                                                     .frame(width: 76, height: 76)
@@ -160,7 +163,7 @@ struct ArchiveDetailView: View {
                                                         Image("CafeIcon")
                                                             .resizable()
                                                             .frame(width: 24, height: 24)
-                                                        Text(archiveData.name)
+                                                        Text(archiveDetailViewModel.archiveDetailPlace.name)
                                                             .font(
                                                                 Font.custom("Apple SD Gothic Neo", size: 20)
                                                                     .weight(.bold)
@@ -173,7 +176,7 @@ struct ArchiveDetailView: View {
                                                             .resizable()
                                                             .frame(width:14, height:18)
                                                             .padding(.horizontal,4)
-                                                        Text(archiveData.address)
+                                                        Text(archiveDetailViewModel.archiveDetailPlace.address)
                                                             .font(Font.custom("Apple SD Gothic Neo", size: 15))
                                                             .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
                                                     }
@@ -197,7 +200,7 @@ struct ArchiveDetailView: View {
                                     else {
                                         VStack(spacing: 0){
                                             VStack(spacing: 0){
-                                                Text("카페수달🍯💯")
+                                                Text(archiveDetailViewModel.archiveDetail.title)
                                                     .font(
                                                         Font.custom("Apple SD Gothic Neo", size: 22)
                                                             .weight(.semibold)
@@ -205,7 +208,7 @@ struct ArchiveDetailView: View {
                                                     .foregroundStyle(Color(red: 0.15, green: 0.16, blue: 0.17))
                                                     .padding(.top, 20)
                                                     .padding(.bottom, 8)
-                                                Text("2023.10.21")
+                                                Text(dateFormatter(date: stringToDate(date: archiveDetailViewModel.archiveDetail.visitedDate)))
                                                     .font(Font.custom("Apple SD Gothic Neo", size: 15))
                                                     .foregroundStyle(Color(red: 0.27, green: 0.3, blue: 0.33))
                                                 Divider()
@@ -273,9 +276,9 @@ struct ArchiveDetailView: View {
                                                                     .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
                                                                     .padding(.leading, 10)
                                                                 Spacer()
-                                                                Text("20,000원")
+                                                                Text("\(priceFormatter(price:archiveDetailViewModel.archiveDetail.price))원")
                                                                     .font(
-                                                                        Font.custom("Apple SD Gothic Neo", size: 15)
+                                                                        Font.custom("Apple SD Gothic Neo", size: 14)
                                                                             .weight(.medium)
                                                                     )
                                                                     .foregroundStyle(Color(red: 0.15, green: 0.16, blue: 0.17))
@@ -294,15 +297,15 @@ struct ArchiveDetailView: View {
                                                                         .foregroundStyle(Color(red: 0.76, green: 0.76, blue: 0.77))
                                                                     }
                                                                 )
-                                                            HStack{
-                                                                Text("🍭 메뉴")
+                                                            HStack(alignment: .top){
+                                                                Text("🍭 대표메뉴")
                                                                     .font(Font.custom("Apple SD Gothic Neo", size: 16).weight(.semibold))
                                                                     .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
                                                                     .padding(.leading, 10)
                                                                 Spacer()
-                                                                Text("크림라떼")
+                                                                Text(archiveDetailViewModel.archiveDetail.menu)
                                                                     .font(
-                                                                        Font.custom("Apple SD Gothic Neo", size: 15)
+                                                                        Font.custom("Apple SD Gothic Neo", size: 14)
                                                                             .weight(.medium)
                                                                     )
                                                                     .foregroundStyle(Color(red: 0.15, green: 0.16, blue: 0.17))
@@ -328,13 +331,13 @@ struct ArchiveDetailView: View {
                                                                     .padding(.leading, 10)
                                                                 Spacer()
                                                                 HStack(spacing: 2) {
-                                                                    ForEach(0..<4, id: \.self)
+                                                                    ForEach(0..<archiveDetailViewModel.archiveDetail.score, id: \.self)
                                                                     {star in
                                                                         Image("StarFill")
                                                                             .resizable()
                                                                             .frame(width: 12, height: 12)
                                                                     }
-                                                                    ForEach(0..<5 - 4, id: \.self) {star in
+                                                                    ForEach(0..<5 - archiveDetailViewModel.archiveDetail.score, id: \.self) {star in
                                                                         Image("StarEmpty")
                                                                             .resizable()
                                                                             .frame(width: 12, height: 12)
@@ -358,27 +361,9 @@ struct ArchiveDetailView: View {
                                                         }
                                                         .frame(width: 219, alignment: .top)
                                                         .padding(.top, 24)
-                                                        TagCloudView(tags: tags)
+                                                        TagCloudView(tags: archiveDetailViewModel.archiveDetail.hashtag)
                                                             .frame(width: 240)
                                                             .padding(.vertical, 12)
-//                                                        HStack(spacing: 10){
-//                                                            ForEach(tags, id:\.self) { tag in
-//                                                                Text("# \(tag)")
-//                                                                    .font(Font.custom("Apple SD Gothic Neo", size: 12))
-//                                                                    .foregroundStyle(Color(red: 0.4, green: 0.35, blue: 0.96))
-//                                                                    .padding(.horizontal, 15)
-//                                                                    .padding(.vertical, 6)
-//                                                                    .background(Color(red: 0.97, green: 0.95, blue: 1))
-//                                                                    .cornerRadius(19)
-//                                                                    .overlay(
-//                                                                        RoundedRectangle(cornerRadius: 19)
-//                                                                            .inset(by: 0.5)
-//                                                                            .stroke(Color(red: 0.4, green: 0.35, blue: 0.96), lineWidth: 1)
-//                                                                    )
-//                                                            }
-//                                                        }
-//                                                        .frame(width: 219)
-//                                                        .padding(.vertical, 12)
                                                     }
                                                 }
                                                 .frame(width: 272)
@@ -398,7 +383,7 @@ struct ArchiveDetailView: View {
                                                             .foregroundStyle(Color(red: 0.15, green: 0.16, blue: 0.17))
                                                     }
                                                     .frame(width: 228, alignment: .leading)
-                                                    Text("안국역 북촌한옥마을 근처에 위치한 한옥 카페이다. 시그니처인 크림라떼를 먹었는데 굉장히 부드럽고 맛있었다.")
+                                                    Text(archiveDetailViewModel.archiveDetail.comment.prefix(60))
                                                         .font(
                                                             Font.custom("Apple SD Gothic Neo", size: 13)
                                                                 .weight(.medium)
@@ -409,21 +394,23 @@ struct ArchiveDetailView: View {
                                                         .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
                                                         .frame(width: 228)
                                                         .padding(.top, 8)
-                                                    HStack {
-                                                        Spacer()
-                                                        Button(action: {
-                                                            isCommentPresented.toggle()
-                                                        })
-                                                        {
-                                                            Image(systemName: "ellipsis")
-                                                                .resizable()
-                                                                .frame(width: 16, height: 3)
-                                                                .foregroundStyle(Color(red: 0.27, green: 0.3, blue: 0.33))
-                                                                .frame(width: 16, height: 16)
+                                                    if(archiveDetailViewModel.archiveDetail.comment.count > 60) {
+                                                        HStack {
+                                                            Spacer()
+                                                            Button(action: {
+                                                                isCommentPresented.toggle()
+                                                            })
+                                                            {
+                                                                Image(systemName: "ellipsis")
+                                                                    .resizable()
+                                                                    .frame(width: 16, height: 3)
+                                                                    .foregroundStyle(Color(red: 0.27, green: 0.3, blue: 0.33))
+                                                                    .frame(width: 16, height: 16)
+                                                            }
                                                         }
+                                                        .frame(width: 228, alignment: .top)
+                                                        .padding(.trailing, -16)
                                                     }
-                                                    .frame(width: 228, alignment: .top)
-                                                    .padding(.trailing, -16)
                                                 }
                                                 .padding(.horizontal, 22)
                                                 .padding(.vertical, 16)
@@ -461,7 +448,19 @@ struct ArchiveDetailView: View {
                                             .padding(.top, 12)
                                             HStack(spacing: 10){
                                                 Button(action: {
-                                                    
+                                                    let archive = ArchiveInformationViewModel.shared
+                                                    archive.placeId = archiveDetailViewModel.archiveDetailPlace.placeID
+                                                    archive.score = archiveDetailViewModel.archiveDetail.score
+                                                    archive.isPublic = archiveDetailViewModel.archiveDetail.isPublic
+                                                    archive.folder = archiveDetailViewModel.archiveDetail.folderID
+                                                    archive.title = archiveDetailViewModel.archiveDetail.title
+                                                    archive.comment = archiveDetailViewModel.archiveDetail.comment
+                                                    archive.images = []
+                                                    archive.hashtag = archiveDetailViewModel.archiveDetail.hashtag
+                                                    archive.menu = archiveDetailViewModel.archiveDetail.menu
+                                                    archive.price = archiveDetailViewModel.archiveDetail.price
+                                                    archive.visitedDate = archiveDetailViewModel.archiveDetail.visitedDate
+                                                    path.append(.archiveEditView)
                                                 })
                                                 {
                                                     RoundedRectangle(cornerRadius: 7)
@@ -528,10 +527,10 @@ struct ArchiveDetailView: View {
                 Spacer()
             }
             if isPopupPresented {
-                ArchivePopupView(isPopupPresented: $isPopupPresented, mode: $popupMode)
+                ArchivePopupView(isPopupPresented: $isPopupPresented, mode: $popupMode, path: $path)
             }
             if isCommentPresented {
-                CommentView(isPresented: $isCommentPresented)
+                CommentView(isPresented: $isCommentPresented, comment: archiveDetailViewModel.archiveDetail.comment)
             }
         }
         .toast(message: toastViewModel.toastMessage, isShowing: $toastViewModel.showToast, duration: Toast.time)
@@ -545,6 +544,24 @@ struct ArchiveDetailView: View {
             }
         }
     }
+    
+    func priceFormatter(price: Int) -> String {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        return formatter.string(from: price as NSNumber) ?? "10"
+    }
+    
+    func dateFormatter(date: Date) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy.MM.dd"
+        return dateFormatter.string(from: date)
+    }
+    
+    func stringToDate(date: String) -> Date {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+        return dateFormatter.date(from: date) ?? Date()
+    }
 }
 
 struct ArchivePopupView: View {
@@ -557,6 +574,7 @@ struct ArchivePopupView: View {
     
     @Binding var isPopupPresented: Bool
     @Binding var mode: String
+    @Binding var path: [PathModel]
     
     var body: some View {
         ZStack {
@@ -589,13 +607,23 @@ struct ArchivePopupView: View {
                 HStack(spacing: 10) {
                     Button(action: {
                         if mode == "delete" {
-                            ToastViewModel.shared.showToastWithString(text: "아카이브 게시물을 삭제했어요.")
+                            ArchiveManager.shared.deleteArchive(archiveId: ArchiveDetailViewModel.shared.archiveDetail.archiveID) { error in
+                                if let error = error {
+                                    print(String(describing: error))
+                                } else {
+                                    ToastViewModel.shared.showToastWithString(text: "아카이브 게시물을 삭제했어요.")
+                                    ArchiveListViewModel.shared.getArchiveList()
+                                    isPopupPresented.toggle()
+                                    path.removeLast()
+                                }
+                            }
                         } else if mode == "share" {
                             ToastViewModel.shared.showToastWithString(text: "URL이 복사되었어요.")
+                            isPopupPresented.toggle()
                         } else if mode == "store" {
                             ToastViewModel.shared.showToastWithString(text: "사진 앱에 사진이 저장되었어요.")
+                            isPopupPresented.toggle()
                         }
-                        isPopupPresented.toggle()
                     })
                     {
                         RoundedRectangle(cornerRadius: 14)
@@ -660,6 +688,9 @@ struct ArchivePopupView: View {
 
 struct CommentView : View {
     @Binding var isPresented: Bool
+    var comment: String
+    
+    
     var body: some View {
         ZStack{
             Color.black.opacity(0.5).edgesIgnoringSafeArea(.all)
@@ -691,7 +722,7 @@ struct CommentView : View {
                     
                 }
                 .frame(width: 236)
-                Text("생일 기념으로 방문한 30번째 장소 !서대문구에 위치하고, 제일 기본인 명동돈까스가 제일 맛있었다.\n돈까스 일 인분 기준이 약 2만원 정도로생일 기념으로 방문한 30번째 장소!\n서대문구에 위치하고, 제일 기본인 명동돈까스가 제일 맛있었다.\n돈까스 일 인분 기준이 약 2만원 정도로 약간 비싼 감이 있지만 너무너무 맛있었다!\n사람이 많아서 대기 시간이 있었지만, 재방문 의사있음! ")
+                Text(comment)
                   .font(
                     Font.custom("Apple SD Gothic Neo", size: 14)
                       .weight(.medium)
@@ -784,6 +815,5 @@ struct TagCloudView: View {
 
 #Preview {
     ArchiveDetailView(path: .constant([]))
-//    ArchivePopupView(isPopupPresented: .constant(true), mode: .constant("delete"))
 }
 

@@ -10,6 +10,12 @@ import Moya
 
 enum ArchiveAPI {
     case getArchiveUser
+    case getArchiveList(page: Int)
+    case getArchiveListWithTag(tag: String, page: Int)
+    case getArchiveDetail(archiveId: Int)
+    case registerArchive(archive: ArchiveInformationViewModel)
+    case editArchive(archiveId:Int, archive: ArchiveInformationViewModel)
+    case deleteArchive(archiveId: Int)
 }
 
 extension ArchiveAPI: TargetType {
@@ -35,6 +41,18 @@ extension ArchiveAPI: TargetType {
         switch self {
         case .getArchiveUser:
             return "/archive"
+        case .getArchiveList:
+            return "/archive/search"
+        case .getArchiveListWithTag:
+            return "/archive/search"
+        case .getArchiveDetail(let archiveId):
+            return "/archive/\(archiveId)"
+        case .registerArchive:
+            return "/archive"
+        case .editArchive(let archiveId, let archive):
+            return "/archive/\(archiveId)"
+        case .deleteArchive(let archiveId):
+            return "/archive/\(archiveId)"
         }
     }
     
@@ -42,6 +60,18 @@ extension ArchiveAPI: TargetType {
         switch self {
         case .getArchiveUser:
             return .get
+        case .getArchiveList:
+            return .get
+        case .getArchiveListWithTag:
+            return .get
+        case .getArchiveDetail:
+            return .get
+        case .registerArchive:
+            return .post
+        case .editArchive:
+            return .put
+        case .deleteArchive:
+            return .delete
         }
     }
     
@@ -49,14 +79,25 @@ extension ArchiveAPI: TargetType {
         switch self {
         case .getArchiveUser:
             return .requestPlain
+        case .getArchiveList(let page):
+            return .requestParameters(parameters: ["page": page], encoding: URLEncoding.queryString)
+        case .getArchiveListWithTag(let tag, let page):
+            return .requestParameters(parameters: ["tag": tag, "page": page], encoding: URLEncoding.queryString)
+        case .getArchiveDetail:
+            return .requestPlain
+        case .registerArchive(let archive):
+            let jsonData = try! JSONEncoder().encode(archive)
+            return .requestData(jsonData)
+        case .editArchive(let archiveId, let archive):
+            let jsonData = try! JSONEncoder().encode(archive)
+            return .requestData(jsonData)
+        case .deleteArchive:
+            return .requestPlain
         }
     }
     
     var headers: [String: String]? {
-        switch self {
-        case .getArchiveUser:
-            return ["Content-type": "application/json"]
-        }
+        return ["Content-type": "application/json"]
     }
     
     var sampleData: Data {
