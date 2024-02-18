@@ -9,11 +9,9 @@ import SwiftUI
 
 struct PlaceInformationView: View {
     @ObservedObject var myPlaceInformationViewModel: MyPlaceInformationViewModel
-//    @ObservedObject var myPlaceListViewModel: MyPlaceListViewModel
     @StateObject var myPlaceListViewModel = MyPlaceListViewModel.shared
     @Binding var path: [PathModel]
     @State private var currentPage = 0
-//    @State private var isHeartFilled = false
     @Binding var isHeartFilled: Bool
     @State private var userInput: String = ""
     @Binding var placeId: Int
@@ -76,7 +74,9 @@ struct PlaceInformationView: View {
                                                                 print("error in deleteFavoritePlace")
                                                             }
                                                             else {
-                                                                isHeartFilled.toggle()
+                                                                withAnimation {
+                                                                    isHeartFilled.toggle()
+                                                                }
                                                                 print("success in deleteFavoritePlace")
                                                             }
                                                         }
@@ -88,7 +88,9 @@ struct PlaceInformationView: View {
                                                             if error != nil {
                                                                 print("error in registerFavoritePlace")
                                                             } else {
-                                                                isHeartFilled.toggle()
+                                                                withAnimation {
+                                                                    isHeartFilled.toggle()
+                                                                }
                                                                 print("success in registerFavoritePlace")
                                                             }
                                                         }

@@ -8,8 +8,9 @@
 import SwiftUI
 
 struct SearchView: View {
-    @ObservedObject var kakaoSearchViewModel: KakaoSearchViewModel
+//    @ObservedObject var kakaoSearchViewModel: KakaoSearchViewModel
 //    @ObservedObject var myPlaceListViewModel: MyPlaceListViewModel
+    @StateObject var kakaoSearchViewModel = KakaoSearchViewModel.shared
     @StateObject var myPlaceListViewModel = MyPlaceListViewModel.shared
     @StateObject var popupViewModel = PopupViewModel.shared
     
@@ -95,7 +96,6 @@ struct SearchView: View {
                 .padding(.top, 5)
                 VStack {
                     HStack {
-                        Spacer()
                         if myPlaceListViewModel.result.place.isEmpty && kakaoSearchViewModel.places.isEmpty {
                             VStack {
                                 Image("SearchMissing")
@@ -124,7 +124,9 @@ struct SearchView: View {
                                     ForEach(kakaoSearchViewModel.places, id: \.id) { place in
                                         Button(action: {
                                             popupViewModel.setSelectedPlace(x: place.x, y: place.y, placeName: place.placeName, address: place.addressName)
-                                            isPopupPresented.toggle()
+                                            withAnimation {
+                                                isPopupPresented.toggle()
+                                            }
                                         }) {
                                             SearchItemView_UnRegistered(path: $path, placeName: place.placeName, addressName: place.addressName)
                                         }
@@ -147,7 +149,9 @@ struct SearchView: View {
                                     ForEach(kakaoSearchViewModel.places, id: \.id) { place in
                                         Button(action: {
                                             popupViewModel.setSelectedPlace(x: place.x, y: place.y, placeName: place.placeName, address: place.addressName)
-                                            isPopupPresented.toggle()
+                                            withAnimation {
+                                                isPopupPresented.toggle()
+                                            }
                                         }) {
                                             SearchItemView_UnRegistered(path: $path, placeName: place.placeName, addressName: place.addressName)
                                         }

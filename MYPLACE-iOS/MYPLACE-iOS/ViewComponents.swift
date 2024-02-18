@@ -11,7 +11,7 @@ struct ViewComponents: View {
     var body: some View {
         SearchItemView_Registered(myPlaceListViewModel: MyPlaceListViewModel(), path: .constant([]), isHeartFilled: false, searchText: .constant(""), placeName: "test", placeAddress: "test", placeId: 50)
         SearchItemView_UnRegistered(path: .constant([]), placeName: "카카오프렌즈카카오프렌즈카카오프렌즈", addressName: "서울")
-        FavoriteItemView(path: .constant([]), isVisited: .constant(false), place: FavoritePlace(id: 1, name: "testName", address: "testAddress", categoryID: 50, lat: "1", lon: "1"))
+        FavoriteItemView(path: .constant([]), isVisited: false, place: FavoritePlace(id: 1, name: "testName", address: "testAddress", categoryID: 50, lat: "1", lon: "1", isVisited: 0))
         KakaoSearchView(kakaoSearchViewModel: KakaoSearchViewModel(), myPlaceListViewModel: MyPlaceListViewModel(), path: .constant([]), searchText: .constant(""))
         BlueChip(text: "가나다라마바사", isSelected: false)
         RedChip(text: "가나다라마바사")
@@ -103,7 +103,6 @@ struct Xmark: View {
 }
 
 struct SearchItemView_Registered: View {
-//    @ObservedObject var myPlaceListViewModel: MyPlaceListViewModel
     @StateObject var myPlaceListViewModel = MyPlaceListViewModel.shared
     @Binding var path: [PathModel]
     @State var isHeartFilled: Bool
@@ -139,7 +138,9 @@ struct SearchItemView_Registered: View {
                                             if error != nil {
                                                 print("error in registerFavoritePlace")
                                             } else {
-                                                isHeartFilled.toggle()
+                                                withAnimation {
+                                                    isHeartFilled.toggle()
+                                                }
                                                 print("!!\(placeName)")
                                                 myPlaceListViewModel.getMyPlaceList(keyword: searchText)
                                                 print("success in registerFavoritePlace")
@@ -152,7 +153,9 @@ struct SearchItemView_Registered: View {
                                                 print("error in deleteFavoritePlace")
                                             }
                                             else {
-                                                isHeartFilled.toggle()
+                                                withAnimation {
+                                                    isHeartFilled.toggle()
+                                                }
                                                 myPlaceListViewModel.getMyPlaceList(keyword: searchText)
                                                 print("success in deleteFavoritePlace")
                                             }
@@ -246,7 +249,7 @@ struct SearchItemView_UnRegistered: View {
 
 struct FavoriteItemView: View {
     @Binding var path: [PathModel]
-    @Binding var isVisited: Bool
+    @State var isVisited: Bool
     var place: FavoritePlace
     var body: some View {
         RoundedRectangle(cornerRadius: 15)
@@ -338,8 +341,9 @@ struct TextWidthPreferenceKey: PreferenceKey {
 }
 
 struct KakaoSearchView: View {
-    @ObservedObject var kakaoSearchViewModel: KakaoSearchViewModel
+//    @ObservedObject var kakaoSearchViewModel: KakaoSearchViewModel
 //    @ObservedObject var myPlaceListViewModel: MyPlaceListViewModel
+    @StateObject var kakaoSearchViewModel = KakaoSearchViewModel.shared
     @StateObject var myPlaceListViewModel = MyPlaceListViewModel.shared
     @Binding var path: [PathModel]
     @Binding var searchText: String
@@ -348,12 +352,12 @@ struct KakaoSearchView: View {
         RoundedRectangle(cornerRadius: 10)
             .foregroundStyle(Color(red: 0.97, green: 0.97, blue: 0.98))
             .frame(height: 40)
-            .shadow(color: .black.opacity(0.25), radius: 2, x: 0, y: 4)
             .overlay(
                 HStack {
                     Image("Map")
                         .resizable()
-                        .frame(width: 16, height: 19)
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 19, height: 19)
                         .padding(.leading, 15)
                     TextField("장소명 검색하기", text: $searchText)
                         .font(

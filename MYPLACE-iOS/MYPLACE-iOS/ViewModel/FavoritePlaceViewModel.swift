@@ -12,6 +12,7 @@ import Foundation
      "sort": 2000, // default: 2000 등록 순, 2001 : 이름 순
      "visit": 3000 // default: 3000 (전체), 3001: 다녀온 장소, 3002: 다녀올 장소
  */
+
 class FavoritePostBodyViewModel: ObservableObject, Codable {
     static let shared = FavoritePostBodyViewModel()
     
@@ -68,6 +69,17 @@ class FavoritePlaceViewModel: ObservableObject {
                    
             case let .failure(error):
                 print("Network request failed: \(error)")
+            }
+        }
+    }
+    
+    func patchFavoritePlaceIsVisited(placeId: Int) {
+        myPlaceManager.patchFavoritePlaceIsVisited(placeId: placeId) { result in
+            switch result {
+            case nil:
+                print("patchFavoritePlaceIsVisited success")
+            case .some(let error):
+                print("patchFavoritePlaceIsVisited failed: \(error)")
             }
         }
     }

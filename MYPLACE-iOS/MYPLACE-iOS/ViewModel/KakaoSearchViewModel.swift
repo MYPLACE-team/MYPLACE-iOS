@@ -8,6 +8,7 @@
 import Foundation
 
 class KakaoSearchViewModel: ObservableObject {
+    static let shared = KakaoSearchViewModel()
     let kakaoSearchManager = KakaoSearchManager()
     
     @Published var places: [KakaoPlace] = []

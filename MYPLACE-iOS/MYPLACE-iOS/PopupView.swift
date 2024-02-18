@@ -11,9 +11,9 @@ struct PopupView: View {
     var body: some View {
         ScrollView {
             PlaceInformation_DayOffPopup(isPopupPresented: .constant(true), selectedDayOffIndices: .constant([]))
-            PlaceInformation_ServicePopup(isPopupPresented: .constant(true), selectedServiceIndices: .constant(([])))
+            PlaceInformation_ServicePopup(isPopupPresented: .constant(true), selectedServiceIndices: .constant([]))
             SearchPopup(path: .constant([]), isPopupPresented: .constant(true), popupViewModel: PopupViewModel())
-            FilterPopup(isPopupPresented: .constant(true))
+//            FilterPopup(isPopupPresented: .constant(true))
         }
     }
 }
@@ -34,7 +34,9 @@ struct SearchPopup: View {
                     HStack {
                         Spacer()
                         Button(action: {
-                            isPopupPresented.toggle()
+                            withAnimation {
+                                isPopupPresented.toggle()
+                            }
                         }) {
                             Xmark()
                         }
@@ -107,7 +109,9 @@ struct SearchPopup: View {
                                                     .stroke(Color(red: 0.4, green: 0.35, blue: 0.96), lineWidth: 1)
                                             )
                                             .onTapGesture {
-                                                selectedType = placeType
+                                                withAnimation {
+                                                    selectedType = placeType
+                                                }
                                             }
                                     }
                                 }
@@ -119,7 +123,9 @@ struct SearchPopup: View {
                         myPlaceInformationEditViewModel.name = popupViewModel.selectedPlace?.placeName ?? "장소"
                         myPlaceInformationEditViewModel.address = popupViewModel.selectedPlace?.address ?? "주소"
                         myPlaceInformationEditViewModel.categoryId = selectedType!.rawValue
-                        isPopupPresented.toggle()
+                        withAnimation {
+                            isPopupPresented.toggle()
+                        }
                         path.append(.placeInformationEditView)
                     }) {
                         RoundedRectangle(cornerRadius: 5)
@@ -140,9 +146,9 @@ struct SearchPopup: View {
 
 struct FilterPopup: View {
     @Binding var isPopupPresented: Bool
-    @State var selectedTypeIndex: PlaceType?
     @StateObject var favoritePostBodyViewModel = FavoritePostBodyViewModel.shared
-    
+    @State var selectedTypeIndex: [Int] = []
+
     var body: some View {
         RoundedRectangle(cornerRadius: 20)
             .fill(Color(red: 0.13, green: 0.13, blue: 0.13).opacity(0.6))
@@ -152,7 +158,9 @@ struct FilterPopup: View {
                     HStack {
                         Spacer()
                         Button(action: {
-                            isPopupPresented.toggle()
+                            withAnimation {
+                                isPopupPresented.toggle()
+                            }
                         }) {
                             Xmark()
                         }
@@ -172,12 +180,13 @@ struct FilterPopup: View {
                                     if index < PlaceType.allCases.count {
                                         let placeType = PlaceType.allCases[index]
                                         RoundedRectangle(cornerRadius: 20)
-                                            .foregroundStyle(selectedTypeIndex == placeType ? Color.accentColor : Color(red: 0.97, green: 0.95, blue: 1))
+                                            .foregroundStyle(selectedTypeIndex.contains(placeType.rawValue) ? Color.accentColor : Color(red: 0.97, green: 0.95, blue: 1))
+
                                             .frame(width: 58, height: 24)
                                             .overlay(
                                                 Text("\(placeType.stringValue)")
                                                     .font(Font.custom("Apple SD Gothic Neo", size: 12))
-                                                    .foregroundStyle(selectedTypeIndex == placeType ? Color.white : Color(red: 0.4, green: 0.35, blue: 0.96))
+                                                    .foregroundStyle(selectedTypeIndex.contains(placeType.rawValue) ? Color.white : Color(red: 0.4, green: 0.35, blue: 0.96))
                                                     .padding(.top, 2)
                                             )
                                             .overlay(
@@ -185,9 +194,16 @@ struct FilterPopup: View {
                                                     .stroke(Color(red: 0.4, green: 0.35, blue: 0.96), lineWidth: 1)
                                             )
                                             .onTapGesture {
-                                                selectedTypeIndex = selectedTypeIndex == placeType ? nil : placeType
-                                                //MARK: - 번호 맵핑 하고 또 한번 누르면 빼고 그거..
-//                                                favoritePostBodyViewModel.category.append(1)
+                                                withAnimation {
+                                                    if selectedTypeIndex.contains(placeType.rawValue) {
+                                                        selectedTypeIndex.removeAll { $0 == placeType.rawValue }
+                                                    } else {
+                                                        selectedTypeIndex.append(placeType.rawValue)
+                                                    }
+                                                    let mappedValues = selectedTypeIndex.map { $0 }
+                                                    favoritePostBodyViewModel.category = mappedValues
+                                                    print("\(favoritePostBodyViewModel.category)")
+                                                }
                                             }
                                     }
                                 }
@@ -195,7 +211,9 @@ struct FilterPopup: View {
                         }
                     }
                     Button(action: {
-                        isPopupPresented.toggle()
+                        withAnimation {
+                            isPopupPresented.toggle()
+                        }
                     }) {
                         RoundedRectangle(cornerRadius: 5)
                             .frame(width: 70, height: 30)
@@ -206,10 +224,12 @@ struct FilterPopup: View {
                             )
                     }
                     .padding(.top, 15)
-                    .disabled(selectedTypeIndex == nil)
                     Spacer()
                 }
             )
+            .onAppear {
+                selectedTypeIndex = favoritePostBodyViewModel.category
+            }
     }
 }
 
@@ -227,7 +247,9 @@ struct PlaceInformation_DayOffPopup: View {
                     HStack {
                         Spacer()
                         Button(action: {
-                            isPopupPresented.toggle()
+                            withAnimation {
+                                isPopupPresented.toggle()
+                            }
                         }) {
                             Xmark()
                         }
@@ -260,10 +282,12 @@ struct PlaceInformation_DayOffPopup: View {
                                                     .stroke(Color(red: 0.4, green: 0.35, blue: 0.96), lineWidth: 1)
                                             )
                                             .onTapGesture {
-                                                if selectedDayOffIndices.contains(holiday) {
-                                                    selectedDayOffIndices.removeAll { $0 == holiday }
-                                                } else {
-                                                    selectedDayOffIndices.append(holiday)
+                                                withAnimation {
+                                                    if selectedDayOffIndices.contains(holiday) {
+                                                        selectedDayOffIndices.removeAll { $0 == holiday }
+                                                    } else {
+                                                        selectedDayOffIndices.append(holiday)
+                                                    }
                                                 }
                                             }
                                     }
@@ -274,7 +298,9 @@ struct PlaceInformation_DayOffPopup: View {
                     .padding(.top, 10)
                     Button(action: {
                         myPlaceInformationEditViewModel.closedDay = selectedDayOffIndices.map { $0.rawValue }
-                        isPopupPresented.toggle()
+                        withAnimation {
+                            isPopupPresented.toggle()
+                        }
                     }) {
                         RoundedRectangle(cornerRadius: 5)
                             .frame(width: 70, height: 30)
@@ -305,7 +331,9 @@ struct PlaceInformation_ServicePopup: View {
                     HStack {
                         Spacer()
                         Button(action: {
-                            isPopupPresented.toggle()
+                            withAnimation {
+                                isPopupPresented.toggle()
+                            }
                         }) {
                             Xmark()
                         }
@@ -343,10 +371,12 @@ struct PlaceInformation_ServicePopup: View {
                                                     .padding(EdgeInsets(top: 0, leading: -10, bottom: 0, trailing: -10))
                                             )
                                             .onTapGesture {
-                                                if selectedServiceIndices.contains(service) {
-                                                    selectedServiceIndices.removeAll { $0 == service }
-                                                } else if selectedServiceIndices.count < 2 {
-                                                    selectedServiceIndices.append(service)
+                                                withAnimation {
+                                                    if selectedServiceIndices.contains(service) {
+                                                        selectedServiceIndices.removeAll { $0 == service }
+                                                    } else if selectedServiceIndices.count < 2 {
+                                                        selectedServiceIndices.append(service)
+                                                    }
                                                 }
                                             }
                                     }
@@ -363,8 +393,9 @@ struct PlaceInformation_ServicePopup: View {
                             serviceString.removeFirst()
                             return serviceString
                         }
-
-                        isPopupPresented.toggle()
+                        withAnimation {
+                            isPopupPresented.toggle()
+                        }
                     }) {
                         RoundedRectangle(cornerRadius: 5)
                             .frame(width: 70, height: 30)

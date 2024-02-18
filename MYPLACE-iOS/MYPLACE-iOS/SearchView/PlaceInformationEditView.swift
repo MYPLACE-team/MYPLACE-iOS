@@ -50,7 +50,6 @@ struct PlaceInformationEditView: View {
                 } else {
                     Text("뭔가 잘못됐어!!!")
                 }
-                    
                 
                 VStack(spacing: 10) {
                     HStack(spacing: 0) {
@@ -93,7 +92,9 @@ struct PlaceInformationEditView: View {
                                 }
                             )
                             .onTapGesture {
-                                isDayOffPopupPresented.toggle()
+                                withAnimation {
+                                    isDayOffPopupPresented.toggle()
+                                }
                             }
                     }
                     else {
@@ -103,7 +104,9 @@ struct PlaceInformationEditView: View {
                                     RedChip(text: holiday.rawValue)
                                 }
                                 .onTapGesture {
-                                    isDayOffPopupPresented.toggle()
+                                    withAnimation {
+                                        isDayOffPopupPresented.toggle()
+                                    }
                                 }
                                 Spacer()
                             }
@@ -141,12 +144,16 @@ struct PlaceInformationEditView: View {
                                 }
                             )
                             .onTapGesture {
-                                isServicePopupPresented.toggle()
+                                withAnimation {
+                                    isServicePopupPresented.toggle()
+                                }
                             }
                     }
                     else {
                         Button (action: {
-                            isServicePopupPresented.toggle()
+                            withAnimation {
+                                isServicePopupPresented.toggle()
+                            }
                         }) {
                             HStack(alignment: .center, spacing: 8) {
                                 ForEach(selectedServiceIndices, id: \.self) { service in
@@ -165,7 +172,7 @@ struct PlaceInformationEditView: View {
                                 .weight(.bold)
                             )
                             .padding(.top, 15)
-                            .padding(.leading, 4)
+                            .padding(.leading,33)
                         Spacer()
                     }
                     CustomTextField(text: $myPlaceInformationEditViewModel.link, placeholder: "장소의 인스타그램 계정을 입력해주세요.", characterLimit: 30)
@@ -223,8 +230,8 @@ struct PlaceInformationEditView: View {
                 .padding(.top, 5)
                 HStack(spacing: 80) {
                     Button(action:  {
-                        myPlaceInformationEditViewModel.lat = popupViewModel.selectedPlace?.x ?? "0"
-                        myPlaceInformationEditViewModel.lon = popupViewModel.selectedPlace?.y ?? "0"
+                        myPlaceInformationEditViewModel.lon = popupViewModel.selectedPlace?.x ?? "0"
+                        myPlaceInformationEditViewModel.lat = popupViewModel.selectedPlace?.y ?? "0"
                         updateViewModelWithFormData(images: selectedImage)
                         MyPlaceManager.shared.registerMyPlace(query: myPlaceInformationEditViewModel) { error in
                             if let error = error {
@@ -241,10 +248,6 @@ struct PlaceInformationEditView: View {
                                 path.removeLast()
                             }
                         }
-
-//                        myPlaceInformationEditViewModel.reset()
-//                        print("RESET&&&&&&&&&&&&&&&&&&&: \(myPlaceInformationEditViewModel)")
-//                        path.removeLast()
                     }) {
                         Text("등록완료")
                             .font(
@@ -383,10 +386,14 @@ struct TagView: View {
                                     }
                                     else if !tag.hasPrefix("#") {
                                         tag = "#" + tag
-                                        isSubmitted.toggle()
+                                        withAnimation {
+                                            isSubmitted.toggle()
+                                        }
                                     }
                                     else {
-                                        isSubmitted.toggle()
+                                        withAnimation {
+                                            isSubmitted.toggle()
+                                        }
                                     }
                                 }
                                 .autocapitalization(.none)
@@ -421,7 +428,9 @@ struct TagView: View {
                     )
                     .padding([.leading, .trailing], 10)
                     .onTapGesture {
-                        isSubmitted.toggle()
+                        withAnimation {
+                            isSubmitted.toggle()
+                        }
                     }
             }
         }
