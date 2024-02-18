@@ -208,7 +208,7 @@ struct ArchiveDetailView: View {
                                                     .foregroundStyle(Color(red: 0.15, green: 0.16, blue: 0.17))
                                                     .padding(.top, 20)
                                                     .padding(.bottom, 8)
-                                                Text("2023.10.21")
+                                                Text(dateFormatter(date: stringToDate(date: archiveDetailViewModel.archiveDetail.visitedDate)))
                                                     .font(Font.custom("Apple SD Gothic Neo", size: 15))
                                                     .foregroundStyle(Color(red: 0.27, green: 0.3, blue: 0.33))
                                                 Divider()
@@ -448,7 +448,19 @@ struct ArchiveDetailView: View {
                                             .padding(.top, 12)
                                             HStack(spacing: 10){
                                                 Button(action: {
-                                                    
+                                                    let archive = ArchiveInformationViewModel.shared
+                                                    archive.placeId = archiveDetailViewModel.archiveDetailPlace.placeID
+                                                    archive.score = archiveDetailViewModel.archiveDetail.score
+                                                    archive.isPublic = archiveDetailViewModel.archiveDetail.isPublic
+                                                    archive.folder = archiveDetailViewModel.archiveDetail.folderID
+                                                    archive.title = archiveDetailViewModel.archiveDetail.title
+                                                    archive.comment = archiveDetailViewModel.archiveDetail.comment
+                                                    archive.images = []
+                                                    archive.hashtag = archiveDetailViewModel.archiveDetail.hashtag
+                                                    archive.menu = archiveDetailViewModel.archiveDetail.menu
+                                                    archive.price = archiveDetailViewModel.archiveDetail.price
+                                                    archive.visitedDate = archiveDetailViewModel.archiveDetail.visitedDate
+                                                    path.append(.archiveEditView)
                                                 })
                                                 {
                                                     RoundedRectangle(cornerRadius: 7)
@@ -515,7 +527,7 @@ struct ArchiveDetailView: View {
                 Spacer()
             }
             if isPopupPresented {
-                ArchivePopupView(isPopupPresented: $isPopupPresented, mode: $popupMode)
+                ArchivePopupView(isPopupPresented: $isPopupPresented, mode: $popupMode, path: $path)
             }
             if isCommentPresented {
                 CommentView(isPresented: $isCommentPresented, comment: archiveDetailViewModel.archiveDetail.comment)
@@ -538,6 +550,18 @@ struct ArchiveDetailView: View {
         formatter.numberStyle = .decimal
         return formatter.string(from: price as NSNumber) ?? "10"
     }
+    
+    func dateFormatter(date: Date) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy.MM.dd"
+        return dateFormatter.string(from: date)
+    }
+    
+    func stringToDate(date: String) -> Date {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+        return dateFormatter.date(from: date) ?? Date()
+    }
 }
 
 struct ArchivePopupView: View {
@@ -550,6 +574,7 @@ struct ArchivePopupView: View {
     
     @Binding var isPopupPresented: Bool
     @Binding var mode: String
+    @Binding var path: [PathModel]
     
     var body: some View {
         ZStack {
@@ -582,13 +607,23 @@ struct ArchivePopupView: View {
                 HStack(spacing: 10) {
                     Button(action: {
                         if mode == "delete" {
-                            ToastViewModel.shared.showToastWithString(text: "아카이브 게시물을 삭제했어요.")
+                            ArchiveManager.shared.deleteArchive(archiveId: ArchiveDetailViewModel.shared.archiveDetail.archiveID) { error in
+                                if let error = error {
+                                    print(String(describing: error))
+                                } else {
+                                    ToastViewModel.shared.showToastWithString(text: "아카이브 게시물을 삭제했어요.")
+                                    ArchiveListViewModel.shared.getArchiveList()
+                                    isPopupPresented.toggle()
+                                    path.removeLast()
+                                }
+                            }
                         } else if mode == "share" {
                             ToastViewModel.shared.showToastWithString(text: "URL이 복사되었어요.")
+                            isPopupPresented.toggle()
                         } else if mode == "store" {
                             ToastViewModel.shared.showToastWithString(text: "사진 앱에 사진이 저장되었어요.")
+                            isPopupPresented.toggle()
                         }
-                        isPopupPresented.toggle()
                     })
                     {
                         RoundedRectangle(cornerRadius: 14)
@@ -780,6 +815,5 @@ struct TagCloudView: View {
 
 #Preview {
     ArchiveDetailView(path: .constant([]))
-//    ArchivePopupView(isPopupPresented: .constant(true), mode: .constant("delete"))
 }
 

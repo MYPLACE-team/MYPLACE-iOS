@@ -98,11 +98,4 @@ class UserInfoViewModel: ObservableObject, Codable {
             }
         }
     }
-
-}
-
-extension UserInfoViewModel: CustomStringConvertible {
-    var description: String {
-        return "userId: \(userId), username: \(username), profileImg: \(profileImg), profile: \(profile)"
-    }
 }

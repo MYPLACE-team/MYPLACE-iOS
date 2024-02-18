@@ -33,6 +33,8 @@
 		A5CE892C2B59AA0900ED8F62 /* ArchiveDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5CE892B2B59AA0900ED8F62 /* ArchiveDetailView.swift */; };
 		A5CFD2782B6CDB2200F7DA48 /* NewArchiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5CFD2772B6CDB2200F7DA48 /* NewArchiveView.swift */; };
 		A5E8B3D42B81261A0062B011 /* secret.plist in Resources */ = {isa = PBXBuildFile; fileRef = A5E8B3D32B81261A0062B011 /* secret.plist */; };
+		A5E8B3D62B8147570062B011 /* ArchiveEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E8B3D52B8147570062B011 /* ArchiveEditView.swift */; };
+		A5E8B3D82B82BFEC0062B011 /* ArchivePlaceSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E8B3D72B82BFEC0062B011 /* ArchivePlaceSearchView.swift */; };
 		A5F03F862B50FB5700242929 /* ArchiveModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F03F852B50FB5700242929 /* ArchiveModel.swift */; };
 		A5FB3A442B7524A8004E1C60 /* NotificationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5FB3A432B7524A8004E1C60 /* NotificationModel.swift */; };
 		AA05EAF32B3B87A0005596C5 /* MYPLACE_iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA05EAF22B3B87A0005596C5 /* MYPLACE_iOSApp.swift */; };
@@ -92,6 +94,8 @@
 		A5CE892B2B59AA0900ED8F62 /* ArchiveDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveDetailView.swift; sourceTree = "<group>"; };
 		A5CFD2772B6CDB2200F7DA48 /* NewArchiveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewArchiveView.swift; sourceTree = "<group>"; };
 		A5E8B3D32B81261A0062B011 /* secret.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = secret.plist; path = ../../../Downloads/secret.plist; sourceTree = "<group>"; };
+		A5E8B3D52B8147570062B011 /* ArchiveEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveEditView.swift; sourceTree = "<group>"; };
+		A5E8B3D72B82BFEC0062B011 /* ArchivePlaceSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchivePlaceSearchView.swift; sourceTree = "<group>"; };
 		A5F03F852B50FB5700242929 /* ArchiveModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveModel.swift; sourceTree = "<group>"; };
 		A5FB3A432B7524A8004E1C60 /* NotificationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationModel.swift; sourceTree = "<group>"; };
 		AA05EAEF2B3B87A0005596C5 /* MYPLACE-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MYPLACE-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -189,7 +193,9 @@
 				AA05EB002B3B918E005596C5 /* HomeView.swift */,
 				AAE7CD1C2B3E3A9300E02B71 /* ToolBarView.swift */,
 				AA2B64482B3CC713008CEDBB /* ArchiveView.swift */,
+				A5E8B3D72B82BFEC0062B011 /* ArchivePlaceSearchView.swift */,
 				A5CFD2772B6CDB2200F7DA48 /* NewArchiveView.swift */,
+				A5E8B3D52B8147570062B011 /* ArchiveEditView.swift */,
 				A5CE892B2B59AA0900ED8F62 /* ArchiveDetailView.swift */,
 				AA2B644C2B3CCA03008CEDBB /* FavoritePlacesView.swift */,
 				AA2B644E2B3CCA21008CEDBB /* CommunityView.swift */,
@@ -369,6 +375,7 @@
 				A5BE8DE92B7E220300579EBF /* ArchiveManager.swift in Sources */,
 				AA9E801C2B41641D00D51447 /* ToastView.swift in Sources */,
 				AAAAC9CA2B59858D0026C8D9 /* PopupViewModel.swift in Sources */,
+				A5E8B3D62B8147570062B011 /* ArchiveEditView.swift in Sources */,
 				A59DC1E42B7D484500EA8E8E /* LoginAPI.swift in Sources */,
 				AA2B644F2B3CCA21008CEDBB /* CommunityView.swift in Sources */,
 				AAE7CD232B3FCF6400E02B71 /* PlaceInformationEditView.swift in Sources */,
@@ -402,6 +409,7 @@
 				A5CFD2782B6CDB2200F7DA48 /* NewArchiveView.swift in Sources */,
 				A5F03F862B50FB5700242929 /* ArchiveModel.swift in Sources */,
 				AAAAC9C12B56BC180026C8D9 /* KakaoSearchViewModel.swift in Sources */,
+				A5E8B3D82B82BFEC0062B011 /* ArchivePlaceSearchView.swift in Sources */,
 				AA9E80202B479E6600D51447 /* PlaceInformationView.swift in Sources */,
 				AABAC2942B6C6AFD001B1533 /* MyPlaceManager.swift in Sources */,
 				AABAC2922B6B3E96001B1533 /* MyPlaceViewModels.swift in Sources */,

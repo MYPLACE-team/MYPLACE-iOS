@@ -374,15 +374,15 @@ struct ArchiveView: View {
                 }
             }
             if createFolder {
-                createFolderView(image: $folderImage, name: $folderName, start: $startDate, end: $endDate, isCreate: $isCreate, show: $createFolder)
+                createFolderView(image: $folderImage, name: $folderName, start: $startDate, end: $endDate, show: $createFolder, isCreate: isCreate)
             }
             if isPopupPresented {
                 FolderPopupView(isPopupPresented: $isPopupPresented)
             }
         }
         .onAppear {
-//             archiveUserViewModel.getArchiveUserInfo()
-//             archiveListViewModel.getArchiveList()
+             archiveUserViewModel.getArchiveUserInfo()
+             archiveListViewModel.getArchiveList()
         }
         .navigationBarBackButtonHidden()
         .toolbar {
@@ -585,8 +585,8 @@ struct createFolderView: View {
     @Binding var name: String
     @Binding var start: Date
     @Binding var end: Date
-    @Binding var isCreate: Bool
     @Binding var show: Bool
+    var isCreate: Bool
     
     var body: some View {
         ZStack {

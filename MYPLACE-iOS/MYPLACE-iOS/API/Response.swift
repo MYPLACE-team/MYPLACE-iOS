@@ -277,6 +277,14 @@ struct ArchiveDetail: Codable {
     }
 }
 
+// MARK: - ArchiveInformationResponse
+struct ArchiveInformationResponse: Codable {
+    let isSuccess: Bool
+    let code: Int
+    let message: String
+    let result: Int
+}
+
 // MARK: - Place
 struct ArchiveDetailPlace: Codable {
     let placeID: Int

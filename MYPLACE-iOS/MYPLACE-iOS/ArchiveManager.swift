@@ -91,4 +91,59 @@ struct ArchiveManager {
             }
         }
     }
+    
+    // MARK: - 서버 수정 시 response에 따라 ArchiveInformationResponse 수정 필요할 수 있음.
+    func registerArchive(query: ArchiveInformationViewModel, completion: @escaping (Int?) -> Void) {
+        print("Registering Archive with \(query)")
+        archiveProvider.request(.registerArchive(archive: query)) { result in
+            switch result {
+            case .success(let response):
+                do {
+                    let decoder = JSONDecoder()
+                    let responseData = try decoder.decode(ArchiveInformationResponse.self, from: response.data)
+                    completion(responseData.result)
+                } catch let error {
+                    print("error 1")
+                    print(String(describing: error))
+                    completion(nil)
+                }
+            case let .failure(error):
+                print(String(describing: error))
+                completion(nil)
+            }
+        }
+    }
+    
+    // MARK: - 서버 수정 시 response에 따라 ArchiveInformationResponse 수정 필요할 수 있음.
+    func editArchive(archiveId: Int, query: ArchiveInformationViewModel, completion: @escaping (Int?) -> Void) {
+        print("Registering Archive with \(query)")
+        archiveProvider.request(.editArchive(archiveId: archiveId,archive: query)) { result in
+            switch result {
+            case .success(let response):
+                do {
+                    let decoder = JSONDecoder()
+                    let responseData = try decoder.decode(ArchiveInformationResponse.self, from: response.data)
+                    completion(responseData.result)
+                } catch let error {
+                    print("error 1")
+                    print(String(describing: error))
+                    completion(nil)
+                }
+            case let .failure(error):
+                print(String(describing: error))
+                completion(nil)
+            }
+        }
+    }
+    
+    func deleteArchive(archiveId: Int, completion: @escaping (Error?) -> Void) {
+        archiveProvider.request(.deleteArchive(archiveId: archiveId)) { result in
+            switch result {
+            case .success:
+                completion(nil)
+            case let .failure(error):
+                completion(error)
+            }
+        }
+    }
 }
