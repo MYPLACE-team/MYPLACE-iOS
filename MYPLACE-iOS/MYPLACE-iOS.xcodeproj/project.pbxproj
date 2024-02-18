@@ -57,7 +57,6 @@
 		AAA411B42B74E60100507E2F /* FavoritePlaceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA411B32B74E60100507E2F /* FavoritePlaceViewModel.swift */; };
 		AAA411B82B7E1C6B00507E2F /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA411B72B7E1C6B00507E2F /* HomeViewModel.swift */; };
 		AAA411BA2B7E288700507E2F /* HomeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA411B92B7E288700507E2F /* HomeModel.swift */; };
-		AAA411BE2B7E7E8000507E2F /* secret.plist in Resources */ = {isa = PBXBuildFile; fileRef = AAA411BD2B7E7E8000507E2F /* secret.plist */; };
 		AAAAC9B62B56AA590026C8D9 /* KakaoAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAAAC9B52B56AA590026C8D9 /* KakaoAPI.swift */; };
 		AAAAC9B92B56AA910026C8D9 /* CombineMoya in Frameworks */ = {isa = PBXBuildFile; productRef = AAAAC9B82B56AA910026C8D9 /* CombineMoya */; };
 		AAAAC9BB2B56AA910026C8D9 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = AAAAC9BA2B56AA910026C8D9 /* Moya */; };
@@ -120,7 +119,6 @@
 		AAA411B32B74E60100507E2F /* FavoritePlaceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritePlaceViewModel.swift; sourceTree = "<group>"; };
 		AAA411B72B7E1C6B00507E2F /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		AAA411B92B7E288700507E2F /* HomeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeModel.swift; sourceTree = "<group>"; };
-		AAA411BD2B7E7E8000507E2F /* secret.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = secret.plist; sourceTree = "<group>"; };
 		AAAAC9B52B56AA590026C8D9 /* KakaoAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoAPI.swift; sourceTree = "<group>"; };
 		AAAAC9C02B56BC180026C8D9 /* KakaoSearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoSearchViewModel.swift; sourceTree = "<group>"; };
 		AAAAC9C22B56BF220026C8D9 /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
@@ -163,11 +161,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A5E30A072B82C7BC008A9BBF /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
 		AA05EAE62B3B87A0005596C5 = {
 			isa = PBXGroup;
 			children = (
 				AA05EAF12B3B87A0005596C5 /* MYPLACE-iOS */,
 				AA05EAF02B3B87A0005596C5 /* Products */,
+				A5E30A072B82C7BC008A9BBF /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -361,7 +367,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AAA411BE2B7E7E8000507E2F /* secret.plist in Resources */,
 				AA05EAFA2B3B87A1005596C5 /* Preview Assets.xcassets in Resources */,
 				A5E8B3D42B81261A0062B011 /* secret.plist in Resources */,
 				AA05EAF72B3B87A1005596C5 /* Assets.xcassets in Resources */,
