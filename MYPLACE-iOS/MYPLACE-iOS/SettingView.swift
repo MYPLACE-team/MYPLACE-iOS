@@ -165,9 +165,14 @@ struct SettingView: View {
                         Text("개인정보 처리 방침")
                           .font(Font.custom("Apple SD Gothic Neo", size: 16))
                           .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
-                        Text("위치기반 서비스 이용 약관")
-                          .font(Font.custom("Apple SD Gothic Neo", size: 16))
-                          .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
+                        Button(action: {
+                            path.append(.locationPolicyView)
+                        })
+                        {
+                            Text("위치기반 서비스 이용 약관")
+                                .font(Font.custom("Apple SD Gothic Neo", size: 16))
+                                .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
+                        }
                     }
                 }
                 .padding(.leading, 33)
@@ -286,7 +291,7 @@ struct SettingView: View {
             }
         }
         .onAppear {
-            user.getUserInfo(userId: "\(user.userId)")
+            user.getUserInfo(userId: user.userId)
         }
     }
 }

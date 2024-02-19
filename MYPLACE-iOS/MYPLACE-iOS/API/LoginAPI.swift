@@ -12,8 +12,8 @@ import Moya
 enum LoginAPI {
     case googleLogin(accessToken: String)
     case kakaoLogin
-    case getUserInfo(userId: String)
-    case setUserInfo(userId: String, info: UserInfoViewModel)
+    case getUserInfo(userId: Int)
+    case setUserInfo(userId: Int, info: UserEditViewModel)
 }
 
 extension LoginAPI: TargetType {

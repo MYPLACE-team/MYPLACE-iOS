@@ -160,10 +160,7 @@ struct ArchiveDetailView: View {
                                                     .padding(.leading, 7)
                                                 VStack(alignment:.leading){
                                                     HStack(spacing: 6){
-                                                        Image("CafeIcon")
-                                                            .resizable()
-                                                            .frame(width: 24, height: 24)
-                                                        Text(archiveDetailViewModel.archiveDetailPlace.name)
+                                                        Text(PlaceType.emojiForCategory(from: archiveDetailViewModel.archiveDetailPlace.categoryID) + " " + archiveDetailViewModel.archiveDetailPlace.name)
                                                             .font(
                                                                 Font.custom("Apple SD Gothic Neo", size: 20)
                                                                     .weight(.bold)

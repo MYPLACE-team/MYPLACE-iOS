@@ -284,7 +284,11 @@ struct ArchiveInformationResponse: Codable {
     let isSuccess: Bool
     let code: Int
     let message: String
-    let result: Int
+    let result: ArchiveInformationResult
+}
+
+struct ArchiveInformationResult: Codable {
+    let archiveId: Int
 }
 
 // MARK: - Place
@@ -300,6 +304,13 @@ struct ArchiveDetailPlace: Codable {
         case categoryID = "categoryId"
         case isLike, thumbnail
     }
+}
+
+struct SetUserResponse: Codable {
+    let isSuccess: Bool
+    let code: String
+    let message: String
+    let result: String
 }
 
 // MARK: - Meta

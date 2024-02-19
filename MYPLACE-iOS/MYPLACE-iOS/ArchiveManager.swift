@@ -92,7 +92,6 @@ struct ArchiveManager {
         }
     }
     
-    // MARK: - 서버 수정 시 response에 따라 ArchiveInformationResponse 수정 필요할 수 있음.
     func registerArchive(query: ArchiveInformationViewModel, completion: @escaping (Int?) -> Void) {
         print("Registering Archive with \(query)")
         archiveProvider.request(.registerArchive(archive: query)) { result in
@@ -101,7 +100,8 @@ struct ArchiveManager {
                 do {
                     let decoder = JSONDecoder()
                     let responseData = try decoder.decode(ArchiveInformationResponse.self, from: response.data)
-                    completion(responseData.result)
+                    print(responseData)
+                    completion(responseData.result.archiveId)
                 } catch let error {
                     print("error 1")
                     print(String(describing: error))
@@ -114,16 +114,15 @@ struct ArchiveManager {
         }
     }
     
-    // MARK: - 서버 수정 시 response에 따라 ArchiveInformationResponse 수정 필요할 수 있음.
     func editArchive(archiveId: Int, query: ArchiveInformationViewModel, completion: @escaping (Int?) -> Void) {
-        print("Registering Archive with \(query)")
+        print("Editing Archive with \(query)")
         archiveProvider.request(.editArchive(archiveId: archiveId,archive: query)) { result in
             switch result {
             case .success(let response):
                 do {
                     let decoder = JSONDecoder()
                     let responseData = try decoder.decode(ArchiveInformationResponse.self, from: response.data)
-                    completion(responseData.result)
+                    completion(responseData.result.archiveId)
                 } catch let error {
                     print("error 1")
                     print(String(describing: error))
@@ -138,6 +137,42 @@ struct ArchiveManager {
     
     func deleteArchive(archiveId: Int, completion: @escaping (Error?) -> Void) {
         archiveProvider.request(.deleteArchive(archiveId: archiveId)) { result in
+            switch result {
+            case .success:
+                completion(nil)
+            case let .failure(error):
+                completion(error)
+            }
+        }
+    }
+    
+    func registFolder(query: ArchiveFolderViewModel, completion: @escaping (Error?) -> Void) {
+        print("Registering ArchiveFolder with \(query)")
+        archiveProvider.request(.registerFolder(folder: query)) { result in
+            switch result {
+            case .success:
+                completion(nil)
+            case let .failure(error):
+                completion(error)
+            }
+        }
+    }
+    
+    func editFolder(folderId: Int, query: ArchiveFolderViewModel, completion: @escaping (Error?) -> Void) {
+        print("Editing ArchiveFolder with \(query)")
+        archiveProvider.request(.editFolder(folderId: folderId, folder: query)) { result in
+            switch result {
+            case .success:
+                completion(nil)
+            case let .failure(error):
+                completion(error)
+            }
+        }
+    }
+    
+    func deleteFolder(folderId: Int, completion: @escaping (Error?) -> Void) {
+        print("Deleting ArchiveFolder")
+        archiveProvider.request(.deleteFolder(folderId: folderId)) { result in
             switch result {
             case .success:
                 completion(nil)

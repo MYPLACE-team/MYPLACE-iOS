@@ -163,6 +163,12 @@ struct HomeView: View {
                             PrivacyView(path: $path)
                         case .profileEditView:
                             ProfileEditView(path: $path)
+                        case .servicePolicyView:
+                            ServicePolicyView(path: $path)
+                        case .privacyPolicyView:
+                            PrivacyPolicyView(path: $path)
+                        case .locationPolicyView:
+                            LocationPolicyView(path: $path)
                         }
                     }
                     HStack {

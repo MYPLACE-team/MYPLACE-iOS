@@ -23,4 +23,7 @@ enum PathModel {
     case placeInformationView
     case privacyView
     case profileEditView
+    case servicePolicyView
+    case privacyPolicyView
+    case locationPolicyView
 }

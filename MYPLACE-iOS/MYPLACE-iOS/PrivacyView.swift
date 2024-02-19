@@ -36,6 +36,7 @@ struct PrivacyView: View {
                                 .frame(width: 16, height: 16)
                         )
                         .onTapGesture {
+                            UserEditViewModel.shared.userId = user.userId
                             path.append(.profileEditView)
                         }
                     , alignment: .bottomTrailing)
@@ -69,7 +70,7 @@ struct PrivacyView: View {
                         .padding(.horizontal, 20)
                         .padding(.vertical, 13)
                     Spacer()
-                    Text(verbatim: user.profile)
+                    Text(user.profile)
                         .baselineOffset(4)
                         .multilineTextAlignment(.trailing)
                         .font(Font.custom("Apple SD Gothic Neo", size: 14))

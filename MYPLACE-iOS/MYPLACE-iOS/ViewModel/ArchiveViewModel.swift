@@ -12,7 +12,9 @@ class ArchiveUserViewModel: ObservableObject {
     let archiveManager = ArchiveManager.shared
     
     @Published var user: ArchiveUser = ArchiveUser(id: 0, username: "", profileImg: "", monthPlaceCount: 0, level: 0, archiveCount: 0)
-    @Published var folders: [ArchiveFolder] = []
+    @Published var folders: [ArchiveFolder] = [ArchiveFolder(id: 1, title: "데이트", dateStart: "2023-02-27T15:00:00.000Z", dateEnd: "", image: ""),
+                                               ArchiveFolder(id: 2, title: "속초여행", dateStart: "", dateEnd: "", image: ""),
+                                               ArchiveFolder(id: 3, title: "강릉여행", dateStart: "", dateEnd: "", image: "")]
     
     // MARK: - 성공
     func getArchiveUserInfo() {
@@ -34,7 +36,7 @@ class ArchiveListViewModel: ObservableObject {
     static let shared = ArchiveListViewModel()
     let archiveManager = ArchiveManager.shared
     
-    @Published var archivePlaceList: [ArchivePlace] = [ArchivePlace(id: 1, score: 1, userId: 1, name: "test", address: "test", thumbnailUrl: "DummyImg", categoryId: 1, hashtag: ["탕수육", "짜장면"])]
+    @Published var archivePlaceList: [ArchivePlace] = [ArchivePlace(id: 1, score: 1, userId: 1, name: "test", address: "test", thumbnailUrl: "DummyImage", categoryId: 3, hashtag: ["탕수육", "짜장면"])]
     
     // MARK: - 되는지 검사해야함
     func getArchiveList() {
@@ -43,7 +45,6 @@ class ArchiveListViewModel: ObservableObject {
             case .success(let response):
                 DispatchQueue.main.async {
                     self.archivePlaceList = response.result
-                    print(self.archivePlaceList)
                 }
             case .failure(let error):
                 print(String(describing: error))
@@ -76,10 +77,9 @@ class ArchiveDetailViewModel: ObservableObject {
     static let shared = ArchiveDetailViewModel()
     let archiveManager = ArchiveManager.shared
     
-    @Published var archiveDetail: ArchiveDetail = ArchiveDetail(archiveID: 1, title: "test", createdAt: "2023-02-27T15:00:00.000Z", count: 1, price: 1, menu: "test", score: 1, comment: "test", images: ["DummyImg"], hashtag: ["tag1", "tag2"], visitedDate: "2023-02-27T15:00:00.000Z", isPublic: true, folderID: 1, folderName: "test")
-    @Published var archiveDetailPlace: ArchiveDetailPlace = ArchiveDetailPlace(placeID: 1, name: "test", address: "test", categoryID: 1, isLike: 1, thumbnail: "DummyImg")
+    @Published var archiveDetail: ArchiveDetail = ArchiveDetail(archiveID: 1, title: "test", createdAt: "2023-02-27T15:00:00.000Z", count: 1, price: 1, menu: "test", score: 1, comment: "test", images: ["DummyImage"], hashtag: ["tag1", "tag2"], visitedDate: "2023-02-27T15:00:00.000Z", isPublic: true, folderID: 1, folderName: "test")
+    @Published var archiveDetailPlace: ArchiveDetailPlace = ArchiveDetailPlace(placeID: 1, name: "test", address: "test", categoryID: 1, isLike: 1, thumbnail: "DummyImage")
     
-    // MARK: - 되는지 검사해야함
     func getArchiveDetail(archiveId: Int) {
         archiveManager.getArchiveDetail(archiveId: archiveId) { result in
             switch result {
@@ -101,7 +101,7 @@ class ArchiveInformationViewModel: ObservableObject, Codable {
     @Published var placeId: Int
     @Published var score: Int
     @Published var isPublic: Bool
-    @Published var folder: Int
+    @Published var folder: Int?
     @Published var title: String
     @Published var comment: String
     @Published var images: [String]
@@ -114,7 +114,7 @@ class ArchiveInformationViewModel: ObservableObject, Codable {
         self.placeId = 0
         self.score = 0
         self.isPublic = true
-        self.folder = 0
+        self.folder = nil
         self.title = ""
         self.comment = ""
         self.images = []
@@ -174,7 +174,7 @@ class ArchiveInformationViewModel: ObservableObject, Codable {
         self.placeId = 0
         self.score = 0
         self.isPublic = true
-        self.folder = 0
+        self.folder = nil
         self.title = ""
         self.comment = ""
         self.images = []
@@ -185,6 +185,48 @@ class ArchiveInformationViewModel: ObservableObject, Codable {
     }
 }
 
-class ArchiveFolderViewModel: ObservableObject {
+class ArchiveFolderViewModel: ObservableObject, Codable {
+    static let shared = ArchiveFolderViewModel()
     
+    @Published var thumbnailImage: String
+    @Published var name: String
+    @Published var start: String
+    @Published var end: String
+    
+    private init() {
+        self.thumbnailImage = ""
+        self.name = ""
+        self.start = ""
+        self.end = ""
+    }
+    
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        thumbnailImage = try container.decode(String.self, forKey: .thumbnailImage)
+        name = try container.decode(String.self, forKey: .name)
+        start = try container.decode(String.self, forKey: .start)
+        end = try container.decode(String.self, forKey: .end)
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(thumbnailImage, forKey: .thumbnailImage)
+        try container.encode(name, forKey: .name)
+        try container.encode(start, forKey: .start)
+        try container.encode(end, forKey: .end)
+    }
+    
+    private enum CodingKeys: String, CodingKey {
+        case thumbnailImage
+        case name
+        case start
+        case end
+    }
+    
+    func reset() {
+        self.thumbnailImage = ""
+        self.name = ""
+        self.start = ""
+        self.end = ""
+    }
 }

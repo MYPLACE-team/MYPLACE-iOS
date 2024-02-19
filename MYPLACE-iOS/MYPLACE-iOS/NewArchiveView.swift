@@ -9,14 +9,10 @@ import SwiftUI
 import PhotosUI
 
 struct NewArchiveView: View {
-    @State var placeName: String = "명동돈까스"
-    @State var placeLocation: String = "서울특별시 중구 명동3로"
-    @State var placeImage: String = "DummyImage"
-    @State var isplaceHeart: Bool = false
-    
     @State private var showPublicInfo: Bool = false
     
     @State private var folderName: String = ""
+    @State private var folderId: Int = 0
     
     @State private var images: [UIImage] = []
     @State private var tag: String = ""
@@ -24,9 +20,8 @@ struct NewArchiveView: View {
     @State private var date = Date()
     
     @State private var selectedOption: String?
-    @State private var showFolderList: Bool = false
-    @State private var folders: [String] = ["속초여행", "데이트"]
     
+    @StateObject private var place = SearchPlaceViewModel.shared
     @StateObject private var archive = ArchiveInformationViewModel.shared
     @StateObject private var toastViewModel = ToastViewModel.shared
     
@@ -42,7 +37,7 @@ struct NewArchiveView: View {
         ZStack{
             ScrollView{
                 VStack(spacing: 0){
-                    placeView(name: placeName, location: placeLocation, image: placeImage, isHeartFilled: isplaceHeart)
+                    placeView(name: place.name, location: place.address, image: "DummyImage", isHeartFilled: place.isLike, categoryId: place.categoryId)
                         .padding(.top, 32)
                     HStack(spacing: 0) {
                         VStack(alignment: .leading, spacing: 2) {
@@ -118,7 +113,7 @@ struct NewArchiveView: View {
                     .padding(.horizontal, 1)
                     .frame(width: 358)
                     .padding(.top, 32)
-                    folderSelectView(list: $folders, select: $folderName, show: $showFolderList)
+                    folderSelectView(select: $folderName, id: $folderId, createFolder: $createFolder)
                         .padding(.top, 24)
                         .zIndex(2)
                     HStack(spacing: 0){
@@ -370,11 +365,25 @@ struct NewArchiveView: View {
                     }
                     .frame(width: 358, alignment: .leading)
                     Button(action: {
-                        if(archive.title == "" || archive.comment == "" || archive.menu == "" || price == nil || folderName == "" || folderName == "새 폴더") {
+                        if(archive.title == "" || archive.comment == "" || archive.menu == "" || price == nil || folderName == "" ) {
                             toastViewModel.showToastWithString(text: "title, comment, menu, price를 모두 입력해주세요.")
                         } else {
                             archive.price = price ?? 0
+                            archive.folder = folderId
                             archive.visitedDate = dateFormatter(date: date)
+                            archive.placeId = place.placeId
+                            
+//                            print(archive.placeId,
+//                                  archive.score,
+//                                  archive.isPublic,
+//                                  archive.folder,
+//                                  archive.title,
+//                                  archive.comment,
+//                                  archive.images,
+//                                  archive.hashtag,
+//                                  archive.menu,
+//                                  archive.price,
+//                                  archive.visitedDate)
                             ArchiveManager.shared.registerArchive(query: archive) { result in
                                 if(result == nil) {
                                     toastViewModel.showToastWithString(text: "아카이브 게시물 등록에 실패했습니다.")
@@ -407,15 +416,31 @@ struct NewArchiveView: View {
                     Spacer()
                 }
             }
-            if (folderName == "새 폴더" && createFolder) {
-                createFolderView(image: $folderImage, name: $newFolderName, start: $startDate, end: $endDate, show: $createFolder, isCreate: true)
+            .sheet(isPresented: $createFolder, onDismiss: {
+                ArchiveFolderViewModel.shared.reset()
+            }) {
+                createFolderView(image: $folderImage, start: $startDate, end: $endDate, show: $createFolder, isCreate: true, id: folderId)
+                    .presentationDetents([.height(520)])
+                    .presentationDragIndicator(.visible)
             }
         }
         .toast(message: toastViewModel.toastMessage, isShowing: $toastViewModel.showToast, duration: Toast.time)
         .navigationBarBackButtonHidden()
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
-                BasicBackButton(path: $path)
+                Button(action: {
+                    if path.count > 0 {
+                        path.removeLast()
+                        archive.reset()
+                        place.reset()
+                        print("archive리셋")
+                    }
+                }) {
+                    HStack {
+                        Image(systemName: "chevron.left")
+                    }
+                    .foregroundStyle(.black)
+                }
             }
             ToolbarItem(placement: .principal) {
                 Text("아카이브")
@@ -458,6 +483,7 @@ struct placeView: View{
     var location: String
     var image: String
     var isHeartFilled: Bool
+    var categoryId: Int
     
     var body: some View {
         HStack(spacing: 0){
@@ -468,7 +494,7 @@ struct placeView: View{
                 .clipShape(RoundedRectangle(cornerRadius: 6))
                 .padding(.all, 6)
             VStack(alignment: .leading, spacing: 9){
-                Text("☕️ 명돈돈까스")
+                Text(PlaceType.emojiForCategory(from: categoryId) + " " + name)
                     .font(
                         Font.custom("Apple SD Gothic Neo", size: 18)
                             .weight(.semibold)
@@ -479,7 +505,7 @@ struct placeView: View{
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 14, height: 14)
-                    Text("서울특별시 중구 명동3로")
+                    Text(location)
                       .font(Font.custom("Apple SD Gothic Neo", size: 15))
                       .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
                 }
@@ -504,9 +530,11 @@ struct placeView: View{
 }
 
 struct folderSelectView: View {
-    @Binding var list: [String]
+    @StateObject var userViewModel = ArchiveUserViewModel.shared
+    @State var show: Bool = false
     @Binding var select: String
-    @Binding var show: Bool
+    @Binding var id: Int
+    @Binding var createFolder: Bool
     
     var body: some View {
         HStack(spacing: 0){
@@ -565,13 +593,13 @@ struct folderSelectView: View {
                         show.toggle()
                     }
                     VStack(spacing: 0){
-                        ForEach(list, id: \.self) { item in
+                        ForEach(userViewModel.folders, id: \.self) { folder in
                             Rectangle()
-                                .foregroundStyle(select == item ? Color(red: 0.91, green: 0.92, blue: 0.93) : .white)
+                                .foregroundStyle(select == folder.title ? Color(red: 0.91, green: 0.92, blue: 0.93) : .white)
                                 .frame(width: 358, height: 40)
                                 .overlay(
                                     HStack(spacing: 0) {
-                                        Text(item)
+                                        Text(folder.title)
                                             .font(Font.custom("Apple SD Gothic Neo", size: 16))
                                         Spacer()
                                         Image(systemName:"checkmark")
@@ -579,12 +607,14 @@ struct folderSelectView: View {
                                             .aspectRatio(contentMode: .fit)
                                             .frame(width: 12, height: 12)
                                             .bold()
-                                            .foregroundStyle(select == item ? Color(red: 0.15, green: 0.16, blue: 0.17) : .clear)
+                                            .foregroundStyle(select == folder.title ? Color(red: 0.15, green: 0.16, blue: 0.17) : .clear)
                                     }
                                         .foregroundStyle(Color(red: 0.15, green: 0.16, blue: 0.17))
                                         .padding(.horizontal, 12))
                                 .onTapGesture {
-                                    select = item
+                                    select = folder.title
+                                    id = folder.id
+                                    show.toggle()
                                 }
                         }
                         Rectangle()
@@ -605,7 +635,8 @@ struct folderSelectView: View {
                                     .foregroundStyle(Color(red: 0.15, green: 0.16, blue: 0.17))
                                     .padding(.horizontal, 12))
                             .onTapGesture {
-                                select = "새 폴더"
+                                select = ""
+                                createFolder.toggle()
                             }
                     }
                     .padding(.top, -2)

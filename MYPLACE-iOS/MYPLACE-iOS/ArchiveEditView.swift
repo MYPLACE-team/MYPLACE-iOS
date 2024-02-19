@@ -11,20 +11,19 @@ import PhotosUI
 struct ArchiveEditView: View {
     @State private var showPublicInfo: Bool = false
     
-    @State private var folderName: String = ""
+    @State private var folderName: String = ArchiveDetailViewModel.shared.archiveDetail.folderName
+    @State private var folderId: Int = ArchiveDetailViewModel.shared.archiveDetail.folderID
     
     @State private var images: [UIImage] = []
     @State private var tag: String = ""
     @State var price: Int? = ArchiveInformationViewModel.shared.price
 
-    @State private var showFolderList: Bool = false
-    @State private var folders: [String] = ["속초여행", "데이트"]
     @State var date = Date()
     
     @StateObject private var archive = ArchiveInformationViewModel.shared
     @StateObject private var toastViewModel = ToastViewModel.shared
     
-    @State var createFolder: Bool = true
+    @State var createFolder: Bool = false
     @State var folderImage: [UIImage] = []
     @State var newFolderName: String = ""
     @State var startDate = Date()
@@ -35,12 +34,13 @@ struct ArchiveEditView: View {
     var placeName = ArchiveDetailViewModel.shared.archiveDetailPlace.name
     var placeLocation = ArchiveDetailViewModel.shared.archiveDetailPlace.address
     var isLike = ArchiveDetailViewModel.shared.archiveDetailPlace.isLike
+    var categoryId = ArchiveDetailViewModel.shared.archiveDetailPlace.categoryID
         
     var body: some View {
         ZStack{
             ScrollView{
                 VStack(spacing: 0){
-                    placeView(name: placeName, location: placeLocation, image: "DummyImage", isHeartFilled: isLike == 0 ? false : true)
+                    placeView(name: placeName, location: placeLocation, image: "DummyImage", isHeartFilled: isLike == 0 ? false : true, categoryId: categoryId)
                         .padding(.top, 32)
                     HStack(spacing: 0) {
                         VStack(alignment: .leading, spacing: 2) {
@@ -116,7 +116,7 @@ struct ArchiveEditView: View {
                     .padding(.horizontal, 1)
                     .frame(width: 358)
                     .padding(.top, 32)
-                    folderSelectView(list: $folders, select: $folderName, show: $showFolderList)
+                    folderSelectView(select: $folderName, id: $folderId, createFolder: $createFolder)
                         .padding(.top, 24)
                         .zIndex(2)
                     HStack(spacing: 0){
@@ -368,11 +368,24 @@ struct ArchiveEditView: View {
                     }
                     .frame(width: 358, alignment: .leading)
                     Button(action: {
-                        if(archive.title == "" || archive.comment == "" || archive.menu == "" || price == nil || folderName == "" || folderName == "새 폴더") {
+                        if(archive.title == "" || archive.comment == "" || archive.menu == "" || price == nil || folderName == "" ) {
                             toastViewModel.showToastWithString(text: "title, folder, comment, menu, price를 모두 입력해주세요.")
                         } else {
                             archive.price = price ?? 0
+                            archive.folder = folderId
                             archive.visitedDate = dateFormatter(date: date)
+                            archive.placeId = ArchiveDetailViewModel.shared.archiveDetailPlace.placeID
+                            print(archive.placeId,
+                                  archive.score,
+                                  archive.isPublic,
+                                  archive.folder,
+                                  archive.title,
+                                  archive.comment,
+                                  archive.images,
+                                  archive.hashtag,
+                                  archive.menu,
+                                  archive.price,
+                                  archive.visitedDate)
                             ArchiveManager.shared.editArchive(archiveId: archiveId, query: archive) { result in
                                 if(result == nil) {
                                     toastViewModel.showToastWithString(text: "아카이브 게시물 수정에 실패했습니다.")
@@ -403,18 +416,33 @@ struct ArchiveEditView: View {
                     Spacer()
                 }
             }
-            if (folderName == "새 폴더" && createFolder) {
-                createFolderView(image: $folderImage, name: $newFolderName, start: $startDate, end: $endDate, show: $createFolder, isCreate: true)
-            }
         }
         .onAppear {
             date = stringToDate(date: archive.visitedDate)
         }
         .toast(message: toastViewModel.toastMessage, isShowing: $toastViewModel.showToast, duration: Toast.time)
+        .sheet(isPresented: $createFolder, onDismiss: {
+            ArchiveFolderViewModel.shared.reset()
+        }) {
+            createFolderView(image: $folderImage, start: $startDate, end: $endDate, show: $createFolder, isCreate: true, id: folderId)
+                .presentationDetents([.height(520)])
+                .presentationDragIndicator(.visible)
+        }
         .navigationBarBackButtonHidden()
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
-                BasicBackButton(path: $path)
+                Button(action: {
+                    if path.count > 0 {
+                        path.removeLast()
+                        archive.reset()
+                        print("archive리셋")
+                    }
+                }) {
+                    HStack {
+                        Image(systemName: "chevron.left")
+                    }
+                    .foregroundStyle(.black)
+                }
             }
             ToolbarItem(placement: .principal) {
                 Text("아카이브")
