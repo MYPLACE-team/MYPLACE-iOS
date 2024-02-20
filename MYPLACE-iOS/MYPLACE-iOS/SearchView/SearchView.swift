@@ -80,9 +80,9 @@ struct SearchView: View {
                             .custom("Apple SD Gothic Neo", size: 15)
                             .weight(.thin)
                         )
-                    Text("\(min(kakaoSearchViewModel.meta.pageableCount, 45))")
+                    Text("\(min(kakaoSearchViewModel.meta.pageableCount + myPlaceListViewModel.result.place.count, 45))")
                         .font(.custom("Apple SD Gothic Neo", size: 15))
-                    if kakaoSearchViewModel.meta.pageableCount >= 45 {
+                    if kakaoSearchViewModel.meta.pageableCount + myPlaceListViewModel.result.place.count >= 45 {
                         Text("+")
                             .font(.custom("Apple SD Gothic Neo", size: 15).weight(.thin))
                     }

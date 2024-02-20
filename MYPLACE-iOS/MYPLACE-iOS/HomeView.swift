@@ -486,6 +486,7 @@ struct HomeView: View {
                                                 )
                                                 .presentationDetents([.medium, .large])
                                         }
+                                        .background(Color(red: 0.97, green: 0.95, blue: 1))
                                         .padding(.bottom, 20)
                                     }
                                     .padding(.bottom, 20)

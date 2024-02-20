@@ -13,7 +13,7 @@ class MyPlaceListViewModel: ObservableObject {
     let myPlaceManager = MyPlaceManager()
     
     @Published var isSuccess: Bool = false
-    @Published var code: Int = 0
+    @Published var code: String = ""
     @Published var message: String = ""
     @Published var result: MyPlaceListInfo = MyPlaceListInfo(totalNum: 0, hasNext: false, place: [])
     
@@ -45,7 +45,7 @@ class MyPlaceInformationViewModel: ObservableObject {
     let myPlaceManager = MyPlaceManager()
     
     @Published var isSuccess: Bool = false
-    @Published var code: Int = 0
+    @Published var code: String = ""
     @Published var message: String = ""
     @Published var result: MyPlaceInformation = MyPlaceInformation(id: 0, name: "name", address: "address", categoryID: 0, recDish: "", closedDay: ["공휴일", "일요일", "연중무휴", "test"], service: [], insta: "", hashtag: ["#1", "#2", "#3"], images: [], writer: "", updatedAt: "", isLike: false)
     
