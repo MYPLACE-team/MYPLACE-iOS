@@ -134,7 +134,7 @@ struct KakaoPlace: Codable, Identifiable {
 // MARK: - GoogleloginResponse
 struct GoogleLoginResponse: Codable {
     let isSuccess: Bool
-    let code: Int
+    let code: String
     let message: String
     let result: LoginUserInformation
 }
@@ -149,7 +149,7 @@ struct LoginUserInformation: Codable, Identifiable {
 // MARK: - ArchiveUserResponse
 struct ArchiveUserResponse: Codable {
     let isSuccess: Bool
-    let code: Int
+    let code: String
     let message: String
     let result: ArchiveUserResult
 }
@@ -223,13 +223,6 @@ struct Archive: Codable, Identifiable {
 // MARK: - UserInfoResponse
 struct UserInfoResponse: Codable {
     let isSuccess: Bool
-    let code: Int
-    let message: String
-    let result: UserInformation
-}
-
-struct UserInfoEditResponse: Codable {
-    let isSuccess: Bool
     let code: String
     let message: String
     let result: UserInformation
@@ -253,7 +246,7 @@ struct UserInformation: Codable, Identifiable {
 // MARK: - ArchiveDetailResponse
 struct ArchiveDetailResponse: Codable {
     let isSuccess: Bool
-    let code: Int
+    let code: String
     let message: String
     let result: ArchiveDetailResult
 }
@@ -289,7 +282,7 @@ struct ArchiveDetail: Codable {
 // MARK: - ArchiveInformationResponse
 struct ArchiveInformationResponse: Codable {
     let isSuccess: Bool
-    let code: Int
+    let code: String
     let message: String
     let result: ArchiveInformationResult
 }
