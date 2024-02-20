@@ -36,7 +36,7 @@ class ArchiveListViewModel: ObservableObject {
     static let shared = ArchiveListViewModel()
     let archiveManager = ArchiveManager.shared
     
-    @Published var archivePlaceList: [ArchivePlace] = [ArchivePlace(id: 1, score: 1, userId: 1, name: "test", address: "test", thumbnailUrl: "DummyImage", categoryId: 3, hashtag: ["탕수육", "짜장면"])]
+    @Published var archivePlaceList: [ArchivePlace] = [ArchivePlace(id: 1, score: 1, userId: 1, name: "testtesttesttesttest", address: "test", thumbnailUrl: "DummyImage", categoryId: 3, hashtag: ["탕수육", "짜장면"])]
     
     // MARK: - 되는지 검사해야함
     func getArchiveList() {

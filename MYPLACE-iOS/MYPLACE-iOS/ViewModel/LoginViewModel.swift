@@ -53,7 +53,6 @@ class UserInfoViewModel: ObservableObject {
                     self.archiveCount = response.result.archiveCount
                     self.avgRate = response.result.avgRate
                     self.provider = response.result.provider
-                    print(self.profile)
                 }
             case .failure(let error):
                 print(String(describing: error))
@@ -65,6 +64,7 @@ class UserInfoViewModel: ObservableObject {
 
 class UserEditViewModel: ObservableObject, Codable {
     static let shared = UserEditViewModel()
+    let loginManager = LoginManager.shared
     
     @Published var userId: Int
     @Published var username: String
@@ -97,5 +97,35 @@ class UserEditViewModel: ObservableObject, Codable {
     private enum CodingKeys: String, CodingKey {
         case userId
         case username, profileImg, profile
+    }
+    
+    func setUserInfo(userId: Int, info: UserEditViewModel, completion: @escaping (Result<Bool, Error>) -> Void) {
+        loginManager.setUserInfo(userId: userId, info: info) { result in
+            switch result {
+            case .success(let response):
+                DispatchQueue.main.async {
+                    if(response.isSuccess) {
+                        let user = UserInfoViewModel.shared
+                        user.userId = response.result.id
+                        user.email = response.result.email
+                        user.username  = response.result.username
+                        user.profileImg = response.result.profileImg ?? ""
+                        user.profile = response.result.profile
+                        user.level = response.result.level
+                        user.point = response.result.point
+                        user.placeCount = response.result.placeCount
+                        user.archiveCount = response.result.archiveCount
+                        user.avgRate = response.result.avgRate
+                        user.provider = response.result.provider
+                        completion(.success(true))
+                    } else {
+                        completion(.success(false))
+                    }
+                }
+            case .failure(let error):
+                print(String(describing: error))
+                completion(.failure(error))
+            }
+        }
     }
 }

@@ -39,6 +39,8 @@ struct ArchivePlaceSearchView: View {
                                     )
                                     .foregroundStyle(.gray)
                                     .padding(.leading, 13)
+                                    .autocapitalization(.none)
+                                    .autocorrectionDisabled()
                                 Button(action: {
                                     updateView()
                                     UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)

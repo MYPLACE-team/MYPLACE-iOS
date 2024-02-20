@@ -7,12 +7,11 @@
 
 import SwiftUI
 struct ArchiveDetailView: View {
-    @State var archiveData = archiveDetail
     @State var isLocationView: Bool = true
     @State var isPopupPresented: Bool = false
     @State var popupMode: String = ""
     @State var isCommentPresented: Bool = false
-    @State private var tags: [String] = ["한옥", "크로플", "안국역"]
+    @State var images: [String] = ["DummyImage", "DummyImage2", "DummyImage3"]
     
     @StateObject private var toastViewModel = ToastViewModel.shared
     @StateObject private var archiveUserViewModel = ArchiveUserViewModel.shared
@@ -186,11 +185,18 @@ struct ArchiveDetailView: View {
                                             .clipShape(RoundedRectangle(cornerRadius: 12))
                                             .shadow(color: .black.opacity(0.25), radius: 2, x: 0, y: 2)
                                             .padding(.top, 12)
-                                            Image("DummyImage")
-                                                .resizable()
-                                                .aspectRatio(contentMode: .fill)
-                                                .frame(width: 356, height: 356)
-                                                .padding(.vertical, 40)
+                                            TabView() {
+                                                ForEach(images, id: \.self) {
+                                                    Image($0)
+                                                        .resizable()
+                                                        .scaledToFill()
+                                                        .frame(width: 356, height: 400)
+                                                }
+                                            }
+                                            .tabViewStyle(.page)
+                                            .frame(width: 356, height: 400)
+                                            .clipShape(RoundedRectangle(cornerRadius: 30))
+                                            .padding(.vertical, 40)
                                         }
                                         .id("scroll_top")
                                     }
@@ -237,7 +243,7 @@ struct ArchiveDetailView: View {
                                                 .padding(.top, 4)
                                                 .padding(.horizontal, -2)
                                                 HStack {
-                                                    Text("30번째 장소")
+                                                    Text("\(archiveDetailViewModel.archiveDetail.count)번째 장소")
                                                         .font(Font.custom("Apple SD Gothic Neo", size: 15))
                                                         .foregroundStyle(Color(red: 0.4, green: 0.35, blue: 0.96))
                                                 }

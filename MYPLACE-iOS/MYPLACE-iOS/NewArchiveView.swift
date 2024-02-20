@@ -128,6 +128,8 @@ struct NewArchiveView: View {
                                     archive.title = String(archive.title.prefix(10))
                                 }
                             }
+                            .autocapitalization(.none)
+                            .autocorrectionDisabled()
                     }
                     .padding(.horizontal, 12)
                     .padding(.vertical, 16)
@@ -139,17 +141,32 @@ struct NewArchiveView: View {
                     )
                     .padding(.top, 16)
                     VStack(spacing: 0){
-                        TextField("comment (300자 이내)",text: $archive.comment, axis: .vertical)
-                            .font(
-                                Font.custom("Apple SD Gothic Neo", size: 16)
-                                    .weight(.medium)
-                            )
-                            .foregroundStyle(Color(red: 0.15, green: 0.16, blue: 0.17))
-                            .onChange(of: archive.comment) {
-                                if archive.comment.count > 300 {
-                                    archive.comment = String(archive.comment.prefix(300))
+                            TextEditor(text: $archive.comment)
+                                .font(
+                                    Font.custom("Apple SD Gothic Neo", size: 16)
+                                        .weight(.medium)
+                                )
+                                .foregroundStyle(Color(red: 0.15, green: 0.16, blue: 0.17))
+                                .onChange(of: archive.comment) {
+                                    if archive.comment.count > 300 {
+                                        archive.comment = String(archive.comment.prefix(300))
+                                    }
                                 }
-                            }
+                                .scrollContentBackground(.hidden)
+                                .autocapitalization(.none)
+                                .autocorrectionDisabled()
+                                .frame(minHeight: 36)
+                                .padding(.top, -4)
+                                .padding(.leading, -3)
+                                .background(
+                                    Text("comment (300자 이내)")
+                                        .font(
+                                            Font.custom("Apple SD Gothic Neo", size: 16)
+                                        )
+                                        .foregroundStyle(archive.comment.count == 0 ? .gray.opacity(0.5) : .clear)
+                                        .padding(.top, 4)
+                                        .padding(.leading, 1)
+                                    ,alignment: .topLeading)
                         Spacer()
                         HStack {
                             Spacer()
@@ -247,8 +264,8 @@ struct NewArchiveView: View {
                                             .inset(by: 0.5)
                                             .stroke(.black.opacity(0.23), lineWidth: 1)
                                     )
-                                    .autocorrectionDisabled()
-                                    .onSubmit {
+                                    .autocapitalization(.none)
+                                    .autocorrectionDisabled()                                   .onSubmit {
                                         if(tag != "") {
                                             archive.hashtag.append(tag)
                                             tag = ""
@@ -276,6 +293,8 @@ struct NewArchiveView: View {
                                     archive.menu = String(archive.menu.prefix(24))
                                 }
                             }
+                            .autocapitalization(.none)
+                            .autocorrectionDisabled()
                             .padding(.horizontal, 12)
                             .padding(.vertical, 16)
                             .frame(width: 358, alignment: .leading)
@@ -372,18 +391,6 @@ struct NewArchiveView: View {
                             archive.folder = folderId
                             archive.visitedDate = dateFormatter(date: date)
                             archive.placeId = place.placeId
-                            
-//                            print(archive.placeId,
-//                                  archive.score,
-//                                  archive.isPublic,
-//                                  archive.folder,
-//                                  archive.title,
-//                                  archive.comment,
-//                                  archive.images,
-//                                  archive.hashtag,
-//                                  archive.menu,
-//                                  archive.price,
-//                                  archive.visitedDate)
                             ArchiveManager.shared.registerArchive(query: archive) { result in
                                 if(result == nil) {
                                     toastViewModel.showToastWithString(text: "아카이브 게시물 등록에 실패했습니다.")
@@ -505,6 +512,7 @@ struct placeView: View{
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 14, height: 14)
+                        .padding(.horizontal, 3)
                     Text(location)
                       .font(Font.custom("Apple SD Gothic Neo", size: 15))
                       .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))

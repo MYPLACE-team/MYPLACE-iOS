@@ -71,6 +71,8 @@ struct ProfileEditView: View {
                         }
                         .font(Font.custom("Apple SD Gothic Neo", size: 16))
                         .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
+                        .autocapitalization(.none)
+                        .autocorrectionDisabled()
                     Spacer()
                     Text("\(name.count)/10")
                         .font(Font.custom("Apple SD Gothic Neo", size: 12))
@@ -102,6 +104,8 @@ struct ProfileEditView: View {
                         }
                         .font(Font.custom("Apple SD Gothic Neo", size: 16))
                         .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
+                        .autocapitalization(.none)
+                        .autocorrectionDisabled()
                     Spacer()
                     Text("\(profile.count)/30")
                         .font(Font.custom("Apple SD Gothic Neo", size: 12))
@@ -118,14 +122,18 @@ struct ProfileEditView: View {
                         toastViewModel.showToastWithString(text: "새로운 닉네임을 입력해주세요.")
                     } else {
                         userEditViewModel.username = name
-                        userEditViewModel.profileImg = ""
                         userEditViewModel.profile = profile
-                        LoginManager.shared.setUserInfo (userId: userEditViewModel.userId, info: userEditViewModel) { error in
-                            if let error = error {
-                                toastViewModel.showToastWithString(text: "프로필 수정에 실패했습니다.")
+                        userEditViewModel.setUserInfo (userId: userEditViewModel.userId, info: userEditViewModel) { result in
+                            switch result {
+                            case .success(let result):
+                                if(result) {
+                                    path.removeLast()
+                                } else {
+                                    toastViewModel.showToastWithString(text: "이미 존재하는 닉네임입니다.")
+                                }
+                            case .failure(let error):
                                 print(String(describing: error))
-                            } else {
-                                path.removeLast()
+                                toastViewModel.showToastWithString(text: "프로필 수정에 실패했습니다.")
                             }
                         }
                     }

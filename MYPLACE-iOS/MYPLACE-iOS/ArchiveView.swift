@@ -252,6 +252,7 @@ struct ArchiveView: View {
                                     }
                                 }
                                 .autocapitalization(.none)
+                                .autocorrectionDisabled()
                         }
                         Spacer()
                         Button(action: {
@@ -453,15 +454,17 @@ struct ArchivePlaceView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 6))
                 .padding(.leading, 7)
             VStack(alignment:.leading){
-                HStack(spacing: 6){
-                    Text(PlaceType.emojiForCategory(from: category) + " " + title.prefix(6))
-                        .font(
-                            Font.custom("Apple SD Gothic Neo", size: 20)
-                                .weight(.bold)
-                        )
-                        .foregroundStyle(Color(red: 0.27, green: 0.3, blue: 0.33))
+                HStack(spacing: 0) {
+                    Text(PlaceType.emojiForCategory(from: category) + " ")
+                        .font(Font.custom("Apple SD Gothic Neo", size: 20))
+                        .bold()
+                    AutoScrollingText(text: title, fontName: "Apple SD Gothic Neo", fontSize: 20, fontWeight: .bold)
+                        .frame(width: 100, height: 22)
+                        .clipped()
                 }
+                .foregroundStyle(Color(red: 0.27, green: 0.3, blue: 0.33))
                 .padding(.bottom, 2)
+                .frame(width: 120, alignment: .leading)
                 HStack(spacing: 6){
                     Image("map")
                         .resizable()
@@ -704,6 +707,8 @@ struct createFolderView: View {
                                         folder.name = String(folder.name.prefix(8))
                                     }
                                 }
+                                .autocapitalization(.none)
+                                .autocorrectionDisabled()
                             Spacer()
                             Text("\(folder.name.count)/8")
                                 .font(
