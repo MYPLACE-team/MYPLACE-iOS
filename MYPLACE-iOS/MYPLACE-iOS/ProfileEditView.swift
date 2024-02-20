@@ -10,8 +10,9 @@ import PhotosUI
 
 struct ProfileEditView: View {
     @State private var name: String = ""
-    @State private var profileImg = UIImage()
     @State private var profile: String = ""
+    @State private var profileImage: Image = Image("profile")
+    @State private var profileItem: PhotosPickerItem? = nil
     
     @StateObject var toastViewModel = ToastViewModel.shared
     @StateObject var userEditViewModel = UserEditViewModel.shared
@@ -20,32 +21,39 @@ struct ProfileEditView: View {
     
     var body: some View {
         VStack(spacing: 0){
-            Image("profile")
+            profileImage
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .frame(width: 126, height: 126)
                 .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
                 .overlay(
-                    Circle()
-                        .frame(width: 32, height: 32)
-                        .foregroundStyle(.white)
-                        .padding(.trailing, 1)
-                        .padding(.bottom, 1)
-                        .shadow(color: .black.opacity(0.25), radius: 3.9, x: 1, y: 4)
-                        .overlay(
-                            Button(action: {
-                                
-                            })
-                            {
-                                Image(systemName: "camera")
-                                    .resizable()
-                                    .aspectRatio(contentMode: /*@START_MENU_TOKEN@*/.fill/*@END_MENU_TOKEN@*/)
-                                    .frame(width: 13, height: 13)
-                                    .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
+                    PhotosPicker(
+                        selection: $profileItem,
+                        matching: .images,
+                        photoLibrary: .shared()) {
+                            Circle()
+                                .frame(width: 32, height: 32)
+                                .foregroundStyle(.white)
+                                .padding(.trailing, 1)
+                                .padding(.bottom, 1)
+                                .shadow(color: .black.opacity(0.25), radius: 3.9, x: 1, y: 4)
+                                .overlay(
+                                    Image(systemName: "camera")
+                                        .resizable()
+                                        .aspectRatio(contentMode: /*@START_MENU_TOKEN@*/.fill/*@END_MENU_TOKEN@*/)
+                                        .frame(width: 13, height: 13)
+                                        .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
+                                )
+                        }
+                        .onChange(of: profileItem) {
+                            Task {
+                                if let image = try? await profileItem?.loadTransferable(type: Image.self) {
+                                    profileImage = image
+                                    profileItem = nil
+                                }
                             }
-                        )
+                        }
                     , alignment: .bottomTrailing)
-                .padding(.top, 25)
             VStack(spacing: 0) {
                 HStack(alignment: .top, spacing: 0){
                     Text("닉네임")
@@ -184,8 +192,19 @@ struct ProfileEditView: View {
             }
         }
     }
+    func resizeImage(image: UIImage, targetSize: CGSize) -> UIImage {
+            UIGraphicsBeginImageContext(targetSize)
+            image.draw(in: CGRect(x: 0, y: 0, width: targetSize.width, height: targetSize.height))
+            let newImage = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
+            return newImage!
+        }
 }
 
 #Preview {
     ProfileEditView(path: .constant([]))
 }
+
+
+
+

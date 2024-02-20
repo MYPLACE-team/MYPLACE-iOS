@@ -411,6 +411,7 @@ struct ArchiveEditView: View {
                     Spacer()
                 }
             }
+            .scrollIndicators(.hidden)
         }
         .onAppear {
             date = stringToDate(date: archive.visitedDate)

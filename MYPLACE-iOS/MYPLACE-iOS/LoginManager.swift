@@ -52,14 +52,14 @@ struct LoginManager {
         }
     }
     
-    func setUserInfo (userId: Int, info: UserEditViewModel, completion: @escaping (Result<UserInfoEditResponse, Error>) -> Void) {
+    func setUserInfo (userId: Int, info: UserEditViewModel, completion: @escaping (Result<UserInfoResponse, Error>) -> Void) {
         print("Registering Archive with \(info)")
         loginProvider.request(.setUserInfo(userId: userId, info: info)) { result in
             switch result {
             case .success(let response):
                 do {
                     let decoder = JSONDecoder()
-                    let responseData = try decoder.decode(UserInfoEditResponse.self, from: response.data)
+                    let responseData = try decoder.decode(UserInfoResponse.self, from: response.data)
                     completion(.success(responseData))
                 } catch let error {
                     print("error 1")

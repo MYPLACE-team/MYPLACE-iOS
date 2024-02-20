@@ -347,6 +347,7 @@ struct PrivacyPolicyView: View {
             .padding(.horizontal, 24)
             .frame(maxWidth: .infinity,alignment: .leading)
         }
+        .scrollIndicators(.hidden)
         .navigationBarBackButtonHidden()
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {

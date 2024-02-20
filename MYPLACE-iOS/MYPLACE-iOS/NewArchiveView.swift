@@ -423,6 +423,7 @@ struct NewArchiveView: View {
                     Spacer()
                 }
             }
+            .scrollIndicators(.hidden)
             .sheet(isPresented: $createFolder, onDismiss: {
                 ArchiveFolderViewModel.shared.reset()
             }) {
