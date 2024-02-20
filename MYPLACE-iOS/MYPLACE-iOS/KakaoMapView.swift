@@ -81,22 +81,27 @@ final class KakaoMapCoordinator: NSObject, MapControllerDelegate {
       /// 엔진 생성 및 초기화 이후, 렌더링 준비가 완료되면 아래 addViews를 호출한다.
       /// 원하는 뷰를 생성한다.
     func addViews() {
-        let defaultPosition: MapPoint = MapPoint(longitude: 126.9770, latitude: 37.57861)
+        let defaultPosition: MapPoint = MapPoint(longitude: 126.969060248121, latitude: 37.5783548144367)
         let mapviewInfo: MapviewInfo = MapviewInfo(viewName: "mapview", viewInfoName: "map", defaultPosition: defaultPosition)
         
         if controller?.addView(mapviewInfo) == Result.OK {
             let _ = controller?.getView("mapview") as! KakaoMap
         }
-        animateCamera(lon: 126.9770, lat: 37.57861)
+        animateCamera(lon: 126.969060248121, lat: 37.5783548144367)
         
         createLabelLayer()
         createPoiStyle()
         for place in favoritePlaceViewModel.result {
-            createPois(lon: Double(place.lon) ?? 127, lat: Double(place.lat) ?? 37.5, categoryID: place.categoryID, poiColor: "purple")
+            if place.isVisited == 3000 { //방문 했던 장소는 회색으로 설정
+                createPois(lon: Double(place.lon) ?? 127, lat: Double(place.lat) ?? 37.5, categoryID: place.categoryID, poiColor: "gray")
+            }
+            else {                       //방문 할 장소는 보라색으로 설정
+                createPois(lon: Double(place.lon) ?? 127, lat: Double(place.lat) ?? 37.5, categoryID: place.categoryID, poiColor: "purple")
+            }
             print("\(place.lon), \(place.lat), \(place.categoryID)")
         }
 //        createPois(lon: 126.9800979573524, lat: 37.578627489574416, categoryID: 2, poiColor: "yellow")
-        createPois(lon: 126.9900979573524, lat: 37.578627489574416, categoryID: 4, poiColor: "purple")
+        createPois(lon: 126.969060248121, lat: 37.5783548144367, categoryID: 4, poiColor: "yellow")
     }
     
     /// KMViewContainer 리사이징 될 때 호출.
@@ -104,7 +109,7 @@ final class KakaoMapCoordinator: NSObject, MapControllerDelegate {
         let mapView: KakaoMap? = controller?.getView("mapview") as? KakaoMap
         mapView?.viewRect = CGRect(origin: CGPoint(x: 0.0, y: 0.0), size: size)
         if first {
-            let cameraUpdate: CameraUpdate = CameraUpdate.make(target: MapPoint(longitude: 126.9770, latitude: 37.57861), zoomLevel: 15, mapView: mapView!)
+            let cameraUpdate: CameraUpdate = CameraUpdate.make(target: MapPoint(longitude: 126.969060248121, latitude: 37.5783548144367), zoomLevel: 15, mapView: mapView!)
             mapView?.moveCamera(cameraUpdate)
             first = false
         }
@@ -134,10 +139,15 @@ final class KakaoMapCoordinator: NSObject, MapControllerDelegate {
         let yellowPoi = PoiStyle(styleID: "yellow", styles: [perLevelStyleYellow])
         manager.addPoiStyle(yellowPoi)
         
-        let purpleIcon = PoiIconStyle(symbol: UIImage(named: "PoiIcon"), anchorPoint: CGPoint(x: 0.5, y: 0.95))
+        let purpleIcon = PoiIconStyle(symbol: UIImage(named: "PoiIcon_Purple"), anchorPoint: CGPoint(x: 0.5, y: 0.995))
         let perLevelStylePurple = PerLevelPoiStyle(iconStyle: purpleIcon, level: 0)
         let purplePoi = PoiStyle(styleID: "purple", styles: [perLevelStylePurple])
         manager.addPoiStyle(purplePoi)
+        
+        let grayIcon = PoiIconStyle(symbol: UIImage(named: "PoiIcon_Black"), anchorPoint: CGPoint(x: 0.5, y: 0.995))
+        let perLevelStyleGray = PerLevelPoiStyle(iconStyle: grayIcon, level: 0)
+        let grayPoi = PoiStyle(styleID: "gray", styles: [perLevelStyleGray])
+        manager.addPoiStyle(grayPoi)
     }
     
     func createPois(lon: Double, lat: Double, categoryID: Int, poiColor: String) {
@@ -177,8 +187,37 @@ final class KakaoMapCoordinator: NSObject, MapControllerDelegate {
         default:
             BadgeImageName = "EtcIcon"
         }
+        var badgeOffset: CGPoint
+        switch BadgeImageName {
+        case "CafeIcon":
+            badgeOffset = CGPoint(x: 0.5, y: 0.38)
+        case "ChineseFoodIcon":
+            badgeOffset = CGPoint(x: 0.5, y: 0.38)
+        case "JapaneseFoodIcon":
+            badgeOffset = CGPoint(x: 0.5, y: 0.38)
+        case "WesternFoodIcon":
+            badgeOffset = CGPoint(x: 0.5, y: 0.41)
+        case "KoreanFoodIcon":
+            badgeOffset = CGPoint(x: 0.5, y: 0.38)
+        case "BarIcon":
+            badgeOffset = CGPoint(x: 0.5, y: 0.38)
+        case "DessertIcon":
+            badgeOffset = CGPoint(x: 0.5, y: 0.35)
+        case "CulturalSpaceIcon":
+            badgeOffset = CGPoint(x: 0.5, y: 0.38)
+        case "AsianIcon":
+            badgeOffset = CGPoint(x: 0.5, y: 0.38)
+        case "MeatIcon":
+            badgeOffset = CGPoint(x: 0.5, y: 0.38)
+        case "PopupStoreIcon":
+            badgeOffset = CGPoint(x: 0.5, y: 0.38)
+        case "EtcIcon":
+            badgeOffset = CGPoint(x: 0.5, y: 0.38)
+        default:
+            badgeOffset = CGPoint(x: 0.5, y: 0.38)
+        }
         let resizedImage = resizeImage(image: UIImage(named: BadgeImageName)!, targetSize: CGSize(width: 60, height: 60))
-        let badge = PoiBadge(badgeID: PlaceType(rawValue: categoryID)?.emojiForCategory() ?? "Cafe", image: resizedImage, offset: CGPoint(x: 0.5, y: 0.3), zOrder: 1)
+        let badge = PoiBadge(badgeID: PlaceType(rawValue: categoryID)?.emojiForCategory() ?? "Cafe", image: resizedImage, offset: badgeOffset, zOrder: 1)
         poi1?.addBadge(badge)
         poi1?.show()
         layer?.showAllPois()

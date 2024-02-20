@@ -9,9 +9,20 @@ import SwiftUI
 import KakaoSDKCommon
 import KakaoSDKAuth
 import GoogleSignIn
+import FirebaseCore
+
+class AppDelegate: NSObject, UIApplicationDelegate {
+  func application(_ application: UIApplication,
+                   didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+    FirebaseApp.configure()
+
+    return true
+  }
+}
 
 @main
 struct MYPLACE_iOSApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     init() {
         // Kakao SDK 초기화
         guard let path = Bundle.main.path(forResource: "secret", ofType: "plist") else {

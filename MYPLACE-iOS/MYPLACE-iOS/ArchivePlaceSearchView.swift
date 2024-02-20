@@ -123,7 +123,7 @@ struct ArchivePlaceSearchView: View {
                                             searchPlaceViewModel.categoryId = place.categoryId
                                             path.append(.newArchiveView)
                                         }) {
-                                            SearchItemView_Registered(path: $path, isHeartFilled: place.isLike, searchText: $searchText, placeName: PlaceType.emojiForCategory(from: place.categoryId) + place.name, placeAddress: place.address, placeId: place.id)
+                                            SearchItemView_Registered(path: $path, isHeartFilled: place.isLike, searchText: $searchText, thumbnailUrl: place.thumbnailUrl, placeName: PlaceType.emojiForCategory(from: place.categoryId) + place.name, placeAddress: place.address, placeId: place.id)
                                         }
                                         .listRowSeparator(.hidden)
                                     }
@@ -151,7 +151,7 @@ struct ArchivePlaceSearchView: View {
                                             searchPlaceViewModel.categoryId = place.categoryId
                                             path.append(.newArchiveView)
                                         }) {
-                                            SearchItemView_Registered(path: $path, isHeartFilled: place.isLike, searchText: $searchText, placeName: PlaceType.emojiForCategory(from: place.categoryId) + place.name, placeAddress: place.address, placeId: place.id)
+                                            SearchItemView_Registered(path: $path, isHeartFilled: place.isLike, searchText: $searchText, thumbnailUrl: place.thumbnailUrl, placeName: PlaceType.emojiForCategory(from: place.categoryId) + place.name, placeAddress: place.address, placeId: place.id)
                                         }
                                         .listRowSeparator(.hidden)
                                     }

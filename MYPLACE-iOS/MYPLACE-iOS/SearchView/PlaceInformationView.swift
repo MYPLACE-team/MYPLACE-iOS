@@ -27,15 +27,27 @@ struct PlaceInformationView: View {
                 ZStack {
                     //MARK: - 이미지 이동하려는 순간 살짝 아래로 내려와서 위에 여백 생김
                     TabView(selection: $currentPage) {
-                        Image("DummyImage2")
-                            .resizable()
-                            .ignoresSafeArea(.all)
-                        Image("DummyImage")
-                            .resizable()
-                            .ignoresSafeArea(.all)
-                        Image("DummyImage2")
-                            .resizable()
-                            .ignoresSafeArea(.all)
+                        ForEach(myPlaceInformationViewModel.result.images, id: \.self) { urlString in
+                            AsyncImage(url: URL(string: urlString)) { phase in
+                                  switch phase {
+                                  case .success(let image):
+                                      image
+                                          .resizable()
+                                          .aspectRatio(contentMode: .fit)
+                                          // 원하는 다른 작업 수행
+                                  case .failure(_):
+                                      Image("DummyImage2")
+                                          .resizable()
+                                          .aspectRatio(contentMode: .fit)
+                                          // 실패 시 처리
+                                  case .empty:
+                                      ProgressView()
+                                          .progressViewStyle(CircularProgressViewStyle())
+                                  @unknown default:
+                                      fatalError()
+                                  }
+                              }
+                        }
                     }
                     .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
                     .frame(height: imageHeight)
@@ -359,6 +371,7 @@ struct PlaceInformationView: View {
                     }) {
                         Circle()
                             .frame(width: 50, height: 50)
+                            .shadow(color: .black.opacity(0.25), radius: 2, x: 0, y: 4)
                             .foregroundStyle(.white)
                             .overlay(
                                 Image(systemName: "chevron.backward")

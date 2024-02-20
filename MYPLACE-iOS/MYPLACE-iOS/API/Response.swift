@@ -17,7 +17,7 @@ struct HomeViewResponse: Codable {
 // MARK: - MyPlaceListResponse
 struct MyPlaceListResponse: Codable {
     let isSuccess: Bool
-    let code: Int
+    let code: String
     let message: String
     let result: MyPlaceListInfo
     
@@ -39,7 +39,7 @@ struct MyPlaceList: Codable {
     let id: Int
     let name, address: String
     let categoryId: Int
-    let thumbnailUrl: JSONNull
+    let thumbnailUrl: String
     let isLike: Bool
 
     enum CodingKeys: String, CodingKey {
@@ -53,7 +53,7 @@ struct MyPlaceList: Codable {
 // MARK: - MyPlaceInformationResponse
 struct MyPlaceInformationResponse: Codable {
     let isSuccess: Bool
-    let code: Int
+    let code: String
     let message: String
     let result: MyPlaceInformation
 }

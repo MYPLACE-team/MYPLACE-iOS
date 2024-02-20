@@ -80,9 +80,9 @@ struct SearchView: View {
                             .custom("Apple SD Gothic Neo", size: 15)
                             .weight(.thin)
                         )
-                    Text("\(min(kakaoSearchViewModel.meta.pageableCount, 45))")
+                    Text("\(min(kakaoSearchViewModel.meta.pageableCount + myPlaceListViewModel.result.place.count, 45))")
                         .font(.custom("Apple SD Gothic Neo", size: 15))
-                    if kakaoSearchViewModel.meta.pageableCount >= 45 {
+                    if kakaoSearchViewModel.meta.pageableCount + myPlaceListViewModel.result.place.count >= 45 {
                         Text("+")
                             .font(.custom("Apple SD Gothic Neo", size: 15).weight(.thin))
                     }
@@ -117,7 +117,7 @@ struct SearchView: View {
                                             isHeartFilled = place.isLike
                                             path.append(.placeInformationView)
                                         }) {
-                                            SearchItemView_Registered(path: $path, isHeartFilled: place.isLike, searchText: $searchText, placeName: PlaceType.emojiForCategory(from: place.categoryId) + place.name, placeAddress: place.address, placeId: place.id)
+                                            SearchItemView_Registered(path: $path, isHeartFilled: place.isLike, searchText: $searchText, thumbnailUrl: place.thumbnailUrl, placeName: PlaceType.emojiForCategory(from: place.categoryId) + place.name, placeAddress: place.address, placeId: place.id)
                                         }
                                         .listRowSeparator(.hidden)
                                     }
@@ -142,7 +142,7 @@ struct SearchView: View {
                                             isHeartFilled = place.isLike
                                             path.append(.placeInformationView)
                                         }) {
-                                            SearchItemView_Registered(path: $path, isHeartFilled: place.isLike, searchText: $searchText, placeName: PlaceType.emojiForCategory(from: place.categoryId) + place.name, placeAddress: place.address, placeId: place.id)
+                                            SearchItemView_Registered(path: $path, isHeartFilled: place.isLike, searchText: $searchText, thumbnailUrl: place.thumbnailUrl, placeName: PlaceType.emojiForCategory(from: place.categoryId) + place.name, placeAddress: place.address, placeId: place.id)
                                         }
                                         .listRowSeparator(.hidden)
                                     }
