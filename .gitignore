@@ -90,3 +90,4 @@ iOSInjectionProject/
 
 # Secret plist file
 secret.plist
+GoogleService-Info.plist

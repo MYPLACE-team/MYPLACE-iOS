@@ -39,7 +39,7 @@ struct MyPlaceList: Codable {
     let id: Int
     let name, address: String
     let categoryId: Int
-    let thumbnailUrl: JSONNull
+    let thumbnailUrl: String
     let isLike: Bool
 
     enum CodingKeys: String, CodingKey {

@@ -7,6 +7,8 @@
 
 import SwiftUI
 import PhotosUI
+import FirebaseStorage
+import Firebase
 
 struct PlaceInformationEditView: View {
     @Binding var path: [PathModel]
@@ -232,22 +234,42 @@ struct PlaceInformationEditView: View {
                     Button(action:  {
                         myPlaceInformationEditViewModel.lon = popupViewModel.selectedPlace?.x ?? "0"
                         myPlaceInformationEditViewModel.lat = popupViewModel.selectedPlace?.y ?? "0"
-                        updateViewModelWithFormData(images: selectedImage)
-                        MyPlaceManager.shared.registerMyPlace(query: myPlaceInformationEditViewModel) { error in
-                            if let error = error {
-                                myPlaceInformationEditViewModel.reset()
-                                selectedDayOffIndices.removeAll()
-                                selectedServiceIndices.removeAll()
-                                print("Error registering place: \(error.localizedDescription)")
-                                path.removeLast()
-                            } else {
-                                print("SUCCESSSSSSSSSSSSSSSSSSSSSSSSSSS")
-                                myPlaceInformationEditViewModel.reset()
-                                selectedDayOffIndices.removeAll()
-                                selectedServiceIndices.removeAll()
-                                path.removeLast()
+                        func uploadImages(_ images: [UIImage], currentIndex: Int) {
+                            guard currentIndex < images.count else {
+                                MyPlaceManager.shared.registerMyPlace(query: myPlaceInformationEditViewModel) { error in
+                                    if let error = error {
+                                        print("Error registering place: \(error.localizedDescription)")
+                                        myPlaceInformationEditViewModel.reset()
+                                        selectedDayOffIndices.removeAll()
+                                        selectedServiceIndices.removeAll()
+                                        path.removeLast()
+                                    } else {
+                                        print("Successfully registered place.")
+                                        myPlaceInformationEditViewModel.reset()
+                                        selectedDayOffIndices.removeAll()
+                                        selectedServiceIndices.removeAll()
+                                        path.removeLast()
+                                    }
+                                }
+                                return
+                            }
+
+                            FirebaseStorageManager.uploadImage(image: images[currentIndex]) { url in
+                                if let imageUrl = url {
+                                    print("Image uploaded successfully. URL: \(imageUrl)")
+                                    myPlaceInformationEditViewModel.images.append("\(imageUrl)")
+                                } else {
+                                    print("Failed to upload image.")
+                                }
+                                
+                                // 다음 이미지 업로드를 위해 재귀 호출
+                                uploadImages(images, currentIndex: currentIndex + 1)
                             }
                         }
+
+                        // 첫 번째 이미지부터 업로드 시작
+                        uploadImages(selectedImage, currentIndex: 0)
+                     
                     }) {
                         Text("등록완료")
                             .font(
@@ -299,31 +321,6 @@ struct PlaceInformationEditView: View {
         UIGraphicsEndImageContext()
         return newImage!
     }
-    
-    func updateViewModelWithFormData(images: [UIImage]) {
-        let boundary = "Boundary-\(UUID().uuidString)"
-        var formData = Data()
-
-        for image in images {
-            guard let imageData = image.jpegData(compressionQuality: 0.5) else {
-                continue
-            }
-
-            formData.append("--\(boundary)\r\n".data(using: .utf8)!)
-            formData.append("Content-Disposition: form-data; name=\"image\"; filename=\"image.jpeg\"\r\n".data(using: .utf8)!)
-            formData.append("Content-Type: image/jpeg\r\n\r\n".data(using: .utf8)!)
-            formData.append(imageData)
-            formData.append("\r\n".data(using: .utf8)!)
-        }
-
-        formData.append("--\(boundary)\r\n".data(using: .utf8)!)
-
-        // Now you have the form data, you can update your ViewModel here
-        // For example, you might have a function in your ViewModel like this:
-        // viewModel.updateImages(formData: formData)
-    }
-
-    
 }
 
 struct CustomTextField: View {
@@ -466,6 +463,7 @@ struct SquarePhotosPicker: View {
                     if let imageData = try? await selectedItem?.loadTransferable(type: Data.self) {
                         if let uiImage = UIImage(data: imageData) {
                             selectedImage.append(uiImage)
+                            print("Selected Images: \(selectedImage)")
                         }
                         selectedItem = nil
                     }

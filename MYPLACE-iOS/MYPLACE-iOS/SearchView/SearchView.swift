@@ -117,7 +117,7 @@ struct SearchView: View {
                                             isHeartFilled = place.isLike
                                             path.append(.placeInformationView)
                                         }) {
-                                            SearchItemView_Registered(path: $path, isHeartFilled: place.isLike, searchText: $searchText, placeName: PlaceType.emojiForCategory(from: place.categoryId) + place.name, placeAddress: place.address, placeId: place.id)
+                                            SearchItemView_Registered(path: $path, isHeartFilled: place.isLike, searchText: $searchText, thumbnailUrl: place.thumbnailUrl, placeName: PlaceType.emojiForCategory(from: place.categoryId) + place.name, placeAddress: place.address, placeId: place.id)
                                         }
                                         .listRowSeparator(.hidden)
                                     }
@@ -142,7 +142,7 @@ struct SearchView: View {
                                             isHeartFilled = place.isLike
                                             path.append(.placeInformationView)
                                         }) {
-                                            SearchItemView_Registered(path: $path, isHeartFilled: place.isLike, searchText: $searchText, placeName: PlaceType.emojiForCategory(from: place.categoryId) + place.name, placeAddress: place.address, placeId: place.id)
+                                            SearchItemView_Registered(path: $path, isHeartFilled: place.isLike, searchText: $searchText, thumbnailUrl: place.thumbnailUrl, placeName: PlaceType.emojiForCategory(from: place.categoryId) + place.name, placeAddress: place.address, placeId: place.id)
                                         }
                                         .listRowSeparator(.hidden)
                                     }
