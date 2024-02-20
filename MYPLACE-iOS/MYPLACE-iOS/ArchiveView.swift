@@ -288,6 +288,7 @@ struct ArchiveView: View {
                             }
                         }
                     }
+                    .scrollIndicators(.hidden)
                     .clipShape(RoundedRectangle(cornerRadius: 12))
                     Spacer()
                 }
@@ -377,6 +378,7 @@ struct ArchiveView: View {
                         }
                     }
                     .frame(width: 290)
+                    .scrollIndicators(.hidden)
                     Spacer()
                 }
             }
@@ -464,7 +466,7 @@ struct ArchivePlaceView: View {
                 }
                 .foregroundStyle(Color(red: 0.27, green: 0.3, blue: 0.33))
                 .padding(.bottom, 2)
-                .frame(width: 120, alignment: .leading)
+                .frame(width: 126, alignment: .leading)
                 HStack(spacing: 6){
                     Image("map")
                         .resizable()

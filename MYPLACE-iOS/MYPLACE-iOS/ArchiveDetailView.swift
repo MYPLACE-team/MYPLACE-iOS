@@ -506,6 +506,7 @@ struct ArchiveDetailView: View {
                                         .id("scroll_top")
                                     }
                                 }
+                                .scrollIndicators(.hidden)
                                 .onChange(of: isLocationView) {
                                     withAnimation {
                                         proxy.scrollTo("scroll_top",anchor: .top)
