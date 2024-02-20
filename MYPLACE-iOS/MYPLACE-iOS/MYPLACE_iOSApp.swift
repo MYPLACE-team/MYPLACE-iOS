@@ -30,6 +30,8 @@ struct MYPLACE_iOSApp: App {
         }
     }
     
+    @State var isSplash = true
+    
     var body: some Scene {
         WindowGroup {
 //            LoginView()
@@ -40,8 +42,34 @@ struct MYPLACE_iOSApp: App {
 //                .onOpenURL { url in
 //                    GIDSignIn.sharedInstance.handle(url)
 //                }
-            HomeView()
-                .preferredColorScheme(.light)
+//            HomeView()
+//                .preferredColorScheme(.light)
+            if (isSplash) {
+                SplashScreenView()
+                    .preferredColorScheme(.light)
+                    .onAppear {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                            self.isSplash = false
+                        }
+                    }
+            } else {
+                HomeView()
+                    .preferredColorScheme(.light)
+            }
         }
+    }
+}
+
+
+struct SplashScreenView: View {
+    var body: some View {
+        Image("splashBackground")
+            .scaledToFill()
+            .ignoresSafeArea(.all)
+            .overlay(
+                Image("splashText")
+                    .scaledToFit()
+                    .padding(.bottom ,100)
+            )
     }
 }
