@@ -10,39 +10,50 @@ import PhotosUI
 
 struct ProfileEditView: View {
     @State private var name: String = ""
-    @State private var introduction: String = ""
-    private let nameHolder: String = "라일락"
+    @State private var profile: String = ""
+    @State private var profileImage: Image = Image("profile")
+    @State private var profileItem: PhotosPickerItem? = nil
     
+    @StateObject var toastViewModel = ToastViewModel.shared
+    @StateObject var userEditViewModel = UserEditViewModel.shared
+
     @Binding var path: [PathModel]
     
     var body: some View {
         VStack(spacing: 0){
-            Image("profile")
+            profileImage
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .frame(width: 126, height: 126)
                 .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
                 .overlay(
-                    Circle()
-                        .frame(width: 32, height: 32)
-                        .foregroundStyle(.white)
-                        .padding(.trailing, 1)
-                        .padding(.bottom, 1)
-                        .shadow(color: .black.opacity(0.25), radius: 3.9, x: 1, y: 4)
-                        .overlay(
-                            Button(action: {
-                                
-                            })
-                            {
-                                Image(systemName: "camera")
-                                    .resizable()
-                                    .aspectRatio(contentMode: /*@START_MENU_TOKEN@*/.fill/*@END_MENU_TOKEN@*/)
-                                    .frame(width: 13, height: 13)
-                                    .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
+                    PhotosPicker(
+                        selection: $profileItem,
+                        matching: .images,
+                        photoLibrary: .shared()) {
+                            Circle()
+                                .frame(width: 32, height: 32)
+                                .foregroundStyle(.white)
+                                .padding(.trailing, 1)
+                                .padding(.bottom, 1)
+                                .shadow(color: .black.opacity(0.25), radius: 3.9, x: 1, y: 4)
+                                .overlay(
+                                    Image(systemName: "camera")
+                                        .resizable()
+                                        .aspectRatio(contentMode: /*@START_MENU_TOKEN@*/.fill/*@END_MENU_TOKEN@*/)
+                                        .frame(width: 13, height: 13)
+                                        .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
+                                )
+                        }
+                        .onChange(of: profileItem) {
+                            Task {
+                                if let image = try? await profileItem?.loadTransferable(type: Image.self) {
+                                    profileImage = image
+                                    profileItem = nil
+                                }
                             }
-                        )
+                        }
                     , alignment: .bottomTrailing)
-                .padding(.top, 25)
             VStack(spacing: 0) {
                 HStack(alignment: .top, spacing: 0){
                     Text("닉네임")
@@ -60,7 +71,7 @@ struct ProfileEditView: View {
                     Spacer()
                 }
                 HStack(spacing: 0) {
-                    TextField(nameHolder,text: $name)
+                    TextField(UserInfoViewModel.shared.username, text: $name)
                         .onChange(of: name) {
                             if name.count > 10 {
                                 name = String(name.prefix(10))
@@ -68,6 +79,8 @@ struct ProfileEditView: View {
                         }
                         .font(Font.custom("Apple SD Gothic Neo", size: 16))
                         .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
+                        .autocapitalization(.none)
+                        .autocorrectionDisabled()
                     Spacer()
                     Text("\(name.count)/10")
                         .font(Font.custom("Apple SD Gothic Neo", size: 12))
@@ -89,18 +102,20 @@ struct ProfileEditView: View {
                     Spacer()
                 }
                 HStack(alignment: .bottom,spacing: 0) {
-                    TextField("커뮤니티에 보여져요.",text: $introduction, axis: .vertical)
+                    TextField("커뮤니티에 보여져요.",text: $profile, axis: .vertical)
                         .frame(width: 260)
                         .lineLimit(/*@START_MENU_TOKEN@*/2/*@END_MENU_TOKEN@*/)
-                        .onChange(of: introduction) {
-                            if introduction.count > 30 {
-                                introduction = String(introduction.prefix(30))
+                        .onChange(of: profile) {
+                            if profile.count > 30 {
+                                profile = String(profile.prefix(30))
                             }
                         }
                         .font(Font.custom("Apple SD Gothic Neo", size: 16))
                         .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
+                        .autocapitalization(.none)
+                        .autocorrectionDisabled()
                     Spacer()
-                    Text("\(introduction.count)/30")
+                    Text("\(profile.count)/30")
                         .font(Font.custom("Apple SD Gothic Neo", size: 12))
                         .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
                 }
@@ -111,7 +126,25 @@ struct ProfileEditView: View {
                     .foregroundStyle(Color(red: 0.79, green: 0.8, blue: 0.82))
                     .padding(.bottom, 52)
                 Button(action: {
-                    path.append(.privacyView)
+                    if(name == "") {
+                        toastViewModel.showToastWithString(text: "새로운 닉네임을 입력해주세요.")
+                    } else {
+                        userEditViewModel.username = name
+                        userEditViewModel.profile = profile
+                        userEditViewModel.setUserInfo (userId: userEditViewModel.userId, info: userEditViewModel) { result in
+                            switch result {
+                            case .success(let result):
+                                if(result) {
+                                    path.removeLast()
+                                } else {
+                                    toastViewModel.showToastWithString(text: "이미 존재하는 닉네임입니다.")
+                                }
+                            case .failure(let error):
+                                print(String(describing: error))
+                                toastViewModel.showToastWithString(text: "프로필 수정에 실패했습니다.")
+                            }
+                        }
+                    }
                 })
                 {
                     RoundedRectangle(cornerRadius: 7)
@@ -131,6 +164,7 @@ struct ProfileEditView: View {
             .frame(width: 300, alignment: .leading)
             .padding(.top, 56)
         }
+        .toast(message: toastViewModel.toastMessage, isShowing: $toastViewModel.showToast, duration: Toast.time)
         .navigationBarBackButtonHidden()
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
@@ -158,8 +192,19 @@ struct ProfileEditView: View {
             }
         }
     }
+    func resizeImage(image: UIImage, targetSize: CGSize) -> UIImage {
+            UIGraphicsBeginImageContext(targetSize)
+            image.draw(in: CGRect(x: 0, y: 0, width: targetSize.width, height: targetSize.height))
+            let newImage = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
+            return newImage!
+        }
 }
 
 #Preview {
     ProfileEditView(path: .constant([]))
 }
+
+
+
+

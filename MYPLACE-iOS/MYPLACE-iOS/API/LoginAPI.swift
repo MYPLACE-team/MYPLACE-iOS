@@ -12,6 +12,8 @@ import Moya
 enum LoginAPI {
     case googleLogin(accessToken: String)
     case kakaoLogin
+    case getUserInfo(userId: Int)
+    case setUserInfo(userId: Int, info: UserEditViewModel)
 }
 
 extension LoginAPI: TargetType {
@@ -39,6 +41,10 @@ extension LoginAPI: TargetType {
             return "/auth/login"
         case .kakaoLogin:
             return "/auth/login"
+        case .getUserInfo(let userId):
+            return "/user/\(userId)"
+        case .setUserInfo(let userId, let info):
+            return "/user/\(userId)"
         }
     }
     
@@ -47,6 +53,10 @@ extension LoginAPI: TargetType {
         case .googleLogin:
             return .post
         case .kakaoLogin:
+            return .post
+        case .getUserInfo:
+            return .get
+        case .setUserInfo:
             return .post
         }
     }
@@ -57,6 +67,11 @@ extension LoginAPI: TargetType {
             return .requestParameters(parameters: ["access_token": accessToken, "provider": "1"], encoding: URLEncoding.default)
         case .kakaoLogin:
             return .requestPlain
+        case .getUserInfo:
+            return .requestPlain
+        case .setUserInfo(let userId, let info):
+            let jsonData = try! JSONEncoder().encode(info)
+            return .requestData(jsonData)
         }
     }
     
@@ -66,6 +81,10 @@ extension LoginAPI: TargetType {
             return ["Content-type": "application/x-www-form-urlencoded;charset=utf-8", "Authorization": "Bearer \(accessToken)"]
         case .kakaoLogin:
             return["Content-type": "application/x-www-form-urlencoded;charset=utf-8", ]
+        case .getUserInfo:
+            return ["Content-type": "application/json"]
+        case .setUserInfo:
+            return ["Content-type": "application/json"]
         }
     }
     

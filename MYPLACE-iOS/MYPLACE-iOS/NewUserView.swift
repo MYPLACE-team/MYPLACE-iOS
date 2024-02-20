@@ -141,7 +141,7 @@ struct NewUserView: View {
                     .font(Font.custom("Apple SD Gothic Neo", size: 16)
                         .weight(.medium))
                     .autocapitalization(.none)
-                    .foregroundStyle(.black)
+                    .autocorrectionDisabled()                    .foregroundStyle(.black)
                     .padding(.horizontal, 11)
                     .padding(.vertical, 13)
                     .frame(width: 310, alignment: .leading)
@@ -259,24 +259,6 @@ struct NewUserView: View {
                 }
                 .frame(width: 312, alignment: .leading)
                 .padding(.bottom, 36)
-//                Button(action: {
-//                    
-//                })
-//                {
-//                    RoundedRectangle(cornerRadius: 7)
-//                        .foregroundStyle(Color(red: 0.91, green: 0.92, blue: 0.93))
-//                        .frame(width:154, height:154)
-//                        .overlay(
-//                            RoundedRectangle(cornerRadius: 7)
-//                                .inset(by: 1)
-//                                .stroke(Color(red: 0.45, green: 0.47, blue: 0.5), style: StrokeStyle(lineWidth: 2, dash: [2, 2]))
-//                                .overlay(
-//                                    Image(systemName: "plus.circle")
-//                                        .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
-//                                )
-//                        )
-//                        .padding(.bottom, 26)
-//                }
                 if profileImage == nil {
                     PhotosPicker(
                         selection: $profileItem,

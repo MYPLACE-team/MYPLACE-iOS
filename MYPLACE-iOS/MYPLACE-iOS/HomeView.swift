@@ -145,8 +145,12 @@ struct HomeView: View {
                             FavoritePlacesView(path: $path, placeId: $placeId, isHeartFilled: $isHeartFilled)
                         case .arciveView:
                             ArchiveView(path: $path)
+                        case .archivePlaceSearchView:
+                            ArchivePlaceSearchView(path: $path)
                         case .newArchiveView:
                             NewArchiveView(path: $path)
+                        case .archiveEditView:
+                            ArchiveEditView(path: $path)
                         case .archiveDetailView:
                             ArchiveDetailView(path: $path)
                         case .communityView:
@@ -159,6 +163,12 @@ struct HomeView: View {
                             PrivacyView(path: $path)
                         case .profileEditView:
                             ProfileEditView(path: $path)
+                        case .servicePolicyView:
+                            ServicePolicyView(path: $path)
+                        case .privacyPolicyView:
+                            PrivacyPolicyView(path: $path)
+                        case .locationPolicyView:
+                            LocationPolicyView(path: $path)
                         }
                     }
                     HStack {

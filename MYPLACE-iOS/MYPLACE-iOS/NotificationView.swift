@@ -110,7 +110,10 @@ struct NotificationView: View {
                 HStack(spacing: 0) {
                     Spacer()
                     Button(action: {
-                        allNotifications = []
+                        $allNotifications.forEach { item in
+                            item.read.wrappedValue = true
+                        }
+                        newNotifications = []
                     })
                     {
                         Text("모두 읽음처리 ")
@@ -202,6 +205,9 @@ struct NotificationView: View {
                 HStack(spacing: 0) {
                     Spacer()
                     Button(action: {
+                        newNotifications.forEach { item in
+                            $allNotifications.filter{ $0.id == item.id }.first?.read.wrappedValue = true
+                        }
                         newNotifications = []
                     })
                     {

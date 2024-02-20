@@ -136,11 +136,11 @@ struct GoogleLoginResponse: Codable {
     let isSuccess: Bool
     let code: String
     let message: String
-    let result: UserInformation
+    let result: LoginUserInformation
 }
 
-// MARK: - UserInformation (login에서 쓸 정보)
-struct UserInformation: Codable, Identifiable {
+// MARK: - LoginUserInformation (login에서 쓸 정보)
+struct LoginUserInformation: Codable, Identifiable {
     let id: Int
     let userId: Int
     let username, email, profile_img, accessToken: String
@@ -187,6 +187,130 @@ struct ArchiveFolder: Codable, Identifiable, Hashable {
         case id = "folderId"
         case title, dateStart, dateEnd, image
     }
+}
+
+// MARK: - ArchiveListResponse
+struct ArchivePlaceListResponse: Codable {
+    let isSuccess: Bool
+    let code: String
+    let message: String
+    let result: [ArchivePlace]
+}
+
+// MARK: - ArchivePlace
+struct ArchivePlace: Codable, Identifiable, Hashable {
+    let id: Int
+    let score: Int
+    let userId: Int
+    let name, address: String
+    let thumbnailUrl: String?
+    let categoryId: Int
+    let hashtag: [String]
+}
+
+// MARK: - Archive
+struct Archive: Codable, Identifiable {
+    let id: Int
+    let hashtag: [String]
+    let score: Int
+    
+    enum CodingKeys: String, CodingKey {
+        case id = "archiveId"
+        case hashtag, score
+    }
+}
+
+// MARK: - UserInfoResponse
+struct UserInfoResponse: Codable {
+    let isSuccess: Bool
+    let code: String
+    let message: String
+    let result: UserInformation
+}
+
+// MARK: - UserInformation
+struct UserInformation: Codable, Identifiable {
+    let id: Int
+    let email, username: String
+    let profileImg: String?
+    let profile: String
+    let level, point, placeCount, archiveCount, avgRate: Int
+    let provider: String
+    
+    enum CodingKeys: String, CodingKey {
+        case id = "userId"
+        case email, username, profileImg, profile, level, point, placeCount, archiveCount, avgRate, provider
+    }
+}
+
+// MARK: - ArchiveDetailResponse
+struct ArchiveDetailResponse: Codable {
+    let isSuccess: Bool
+    let code: String
+    let message: String
+    let result: ArchiveDetailResult
+}
+
+struct ArchiveDetailResult: Codable {
+    let place: ArchiveDetailPlace
+    let archive: ArchiveDetail
+}
+
+// MARK: - ArchiveDetail
+struct ArchiveDetail: Codable {
+    let archiveID: Int
+    let title, createdAt: String
+    let count, price: Int
+    let menu: String
+    let score: Int
+    let comment: String
+    let images: [String]
+    let hashtag: [String]
+    let visitedDate: String
+    let isPublic: Bool
+    let folderID: Int
+    let folderName: String
+
+    enum CodingKeys: String, CodingKey {
+        case archiveID = "archiveId"
+        case title, createdAt, count, price, menu, score, comment, images, hashtag, visitedDate, isPublic
+        case folderID = "folderId"
+        case folderName
+    }
+}
+
+// MARK: - ArchiveInformationResponse
+struct ArchiveInformationResponse: Codable {
+    let isSuccess: Bool
+    let code: String
+    let message: String
+    let result: ArchiveInformationResult
+}
+
+struct ArchiveInformationResult: Codable {
+    let archiveId: Int
+}
+
+// MARK: - Place
+struct ArchiveDetailPlace: Codable {
+    let placeID: Int
+    let name, address: String
+    let categoryID, isLike: Int
+    let thumbnail: String?
+
+    enum CodingKeys: String, CodingKey {
+        case placeID = "placeId"
+        case name, address
+        case categoryID = "categoryId"
+        case isLike, thumbnail
+    }
+}
+
+struct SetUserResponse: Codable {
+    let isSuccess: Bool
+    let code: String
+    let message: String
+    let result: String
 }
 
 // MARK: - Meta

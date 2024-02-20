@@ -31,4 +31,45 @@ struct LoginManager {
             }
         }
     }
+    
+    func getUserInfo (userId: Int, completion: @escaping (Result<UserInfoResponse, Error>) -> Void) {
+        loginProvider.request(.getUserInfo(userId: userId)) { result in
+            switch result {
+            case .success(let response):
+                do {
+                    let decoder = JSONDecoder()
+                    let responseData = try decoder.decode(UserInfoResponse.self, from: response.data)
+                    print("success")
+                    completion(.success(responseData))
+                } catch let error {
+                    print("error 1")
+                    completion(.failure(error))
+                }
+            case .failure(let error):
+                print("error 2")
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    func setUserInfo (userId: Int, info: UserEditViewModel, completion: @escaping (Result<UserInfoResponse, Error>) -> Void) {
+        print("Registering Archive with \(info)")
+        loginProvider.request(.setUserInfo(userId: userId, info: info)) { result in
+            switch result {
+            case .success(let response):
+                do {
+                    let decoder = JSONDecoder()
+                    let responseData = try decoder.decode(UserInfoResponse.self, from: response.data)
+                    completion(.success(responseData))
+                } catch let error {
+                    print("error 1")
+                    print(String(describing: error))
+                    completion(.failure(error))
+                }
+            case let .failure(error):
+                print(String(describing: error))
+                completion(.failure(error))
+            }
+        }
+    }
 }
