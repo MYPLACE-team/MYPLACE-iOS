@@ -131,6 +131,8 @@ struct ArchiveEditView: View {
                                     archive.title = String(archive.title.prefix(10))
                                 }
                             }
+                            .autocapitalization(.none)
+                            .autocorrectionDisabled()
                     }
                     .padding(.horizontal, 12)
                     .padding(.vertical, 16)
@@ -153,6 +155,8 @@ struct ArchiveEditView: View {
                                     archive.comment = String(archive.comment.prefix(300))
                                 }
                             }
+                            .autocapitalization(.none)
+                            .autocorrectionDisabled()
                         Spacer()
                         HStack {
                             Spacer()
@@ -250,8 +254,8 @@ struct ArchiveEditView: View {
                                             .inset(by: 0.5)
                                             .stroke(.black.opacity(0.23), lineWidth: 1)
                                     )
-                                    .autocorrectionDisabled()
-                                    .onSubmit {
+                                    .autocapitalization(.none)
+                                    .autocorrectionDisabled()                                    .onSubmit {
                                         if(tag != "") {
                                             archive.hashtag.append(tag)
                                             tag = ""
@@ -279,6 +283,8 @@ struct ArchiveEditView: View {
                                     archive.menu = String(archive.menu.prefix(24))
                                 }
                             }
+                            .autocapitalization(.none)
+                            .autocorrectionDisabled()
                             .padding(.horizontal, 12)
                             .padding(.vertical, 16)
                             .frame(width: 358, alignment: .leading)
@@ -375,17 +381,6 @@ struct ArchiveEditView: View {
                             archive.folder = folderId
                             archive.visitedDate = dateFormatter(date: date)
                             archive.placeId = ArchiveDetailViewModel.shared.archiveDetailPlace.placeID
-                            print(archive.placeId,
-                                  archive.score,
-                                  archive.isPublic,
-                                  archive.folder,
-                                  archive.title,
-                                  archive.comment,
-                                  archive.images,
-                                  archive.hashtag,
-                                  archive.menu,
-                                  archive.price,
-                                  archive.visitedDate)
                             ArchiveManager.shared.editArchive(archiveId: archiveId, query: archive) { result in
                                 if(result == nil) {
                                     toastViewModel.showToastWithString(text: "아카이브 게시물 수정에 실패했습니다.")

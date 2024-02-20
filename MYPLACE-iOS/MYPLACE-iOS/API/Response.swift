@@ -228,6 +228,13 @@ struct UserInfoResponse: Codable {
     let result: UserInformation
 }
 
+struct UserInfoEditResponse: Codable {
+    let isSuccess: Bool
+    let code: String
+    let message: String
+    let result: UserInformation
+}
+
 // MARK: - UserInformation
 struct UserInformation: Codable, Identifiable {
     let id: Int

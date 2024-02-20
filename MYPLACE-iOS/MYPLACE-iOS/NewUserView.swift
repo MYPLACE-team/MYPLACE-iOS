@@ -141,7 +141,7 @@ struct NewUserView: View {
                     .font(Font.custom("Apple SD Gothic Neo", size: 16)
                         .weight(.medium))
                     .autocapitalization(.none)
-                    .foregroundStyle(.black)
+                    .autocorrectionDisabled()                    .foregroundStyle(.black)
                     .padding(.horizontal, 11)
                     .padding(.vertical, 13)
                     .frame(width: 310, alignment: .leading)
