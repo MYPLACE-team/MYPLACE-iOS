@@ -267,7 +267,7 @@ struct HomeView: View {
                                                                             Spacer()
                                                                             
                                                                             Image(systemName: isHeartFilled ? "heart.fill" : "heart")
-                                                                                .foregroundStyle(isHeartFilled ? .red : .gray)
+                                                                                .foregroundStyle(isHeartFilled ? .red : .white)
                                                                                 .onTapGesture {
                                                                                     if isHeartFilled {
                                                                                         MyPlaceManager.shared.deleteFavoritePlace(placeId: placeId) { error in
@@ -304,7 +304,7 @@ struct HomeView: View {
                                                                         }
                                                                         HStack(spacing: 0) {
                                                                             Image("Map2")
-                                                                            Text("서울시 종로구 필운대로 25-2 1층")
+                                                                            Text(" 서울시 종로구 필운대로 25-2 1층")
                                                                                 .font(
                                                                                     .custom("Apple SD Gothic Neo", size: 16)
                                                                                     .weight(.regular)
@@ -322,6 +322,7 @@ struct HomeView: View {
                                                                 )
                                                         }
                                                     }
+                                                        .toast(message: toastViewModel.toastMessage, isShowing: $toastViewModel.showToast, duration: Toast.time)
                                                 )
                                                 .padding(.top, 15)
                                             HStack(spacing: 25) {
@@ -372,7 +373,7 @@ struct HomeView: View {
                                                                     )
                                                                     .multilineTextAlignment(.center)
                                                                     .foregroundStyle(Color.accentColor)
-                                                                Text("2024.02.01-2024.02.09")
+                                                                Text("2024.02.20-2024.02.24")
                                                                     .font(
                                                                         Font.custom("Apple SD Gothic Neo", size: 11)
                                                                             .weight(.medium)

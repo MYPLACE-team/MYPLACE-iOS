@@ -92,7 +92,12 @@ final class KakaoMapCoordinator: NSObject, MapControllerDelegate {
         createLabelLayer()
         createPoiStyle()
         for place in favoritePlaceViewModel.result {
-            createPois(lon: Double(place.lon) ?? 127, lat: Double(place.lat) ?? 37.5, categoryID: place.categoryID, poiColor: "purple")
+            if place.isVisited == 3000 { //방문 했던 장소는 검정색으로 설정
+                createPois(lon: Double(place.lon) ?? 127, lat: Double(place.lat) ?? 37.5, categoryID: place.categoryID, poiColor: "black")
+            }
+            else {                       //방문 할 장소는 보라색으로 설정
+                createPois(lon: Double(place.lon) ?? 127, lat: Double(place.lat) ?? 37.5, categoryID: place.categoryID, poiColor: "purple")
+            }
             print("\(place.lon), \(place.lat), \(place.categoryID)")
         }
 //        createPois(lon: 126.9800979573524, lat: 37.578627489574416, categoryID: 2, poiColor: "yellow")
@@ -134,10 +139,15 @@ final class KakaoMapCoordinator: NSObject, MapControllerDelegate {
         let yellowPoi = PoiStyle(styleID: "yellow", styles: [perLevelStyleYellow])
         manager.addPoiStyle(yellowPoi)
         
-        let purpleIcon = PoiIconStyle(symbol: UIImage(named: "PoiIcon"), anchorPoint: CGPoint(x: 0.5, y: 0.95))
+        let purpleIcon = PoiIconStyle(symbol: UIImage(named: "PoiIcon_Purple"), anchorPoint: CGPoint(x: 0.5, y: 0.95))
         let perLevelStylePurple = PerLevelPoiStyle(iconStyle: purpleIcon, level: 0)
         let purplePoi = PoiStyle(styleID: "purple", styles: [perLevelStylePurple])
         manager.addPoiStyle(purplePoi)
+        
+        let blackIcon = PoiIconStyle(symbol: UIImage(named: "PoiIcon_Black"), anchorPoint: CGPoint(x: 0.5, y: 0.95))
+        let perLevelStyleBlack = PerLevelPoiStyle(iconStyle: blackIcon, level: 0)
+        let blackPoi = PoiStyle(styleID: "black", styles: [perLevelStylePurple])
+        manager.addPoiStyle(blackPoi)
     }
     
     func createPois(lon: Double, lat: Double, categoryID: Int, poiColor: String) {
