@@ -32,8 +32,7 @@ struct LoginManager {
         }
     }
     
-    // MARK: - 성공
-    func getUserInfo (userId: String, completion: @escaping (Result<UserInfoResponse, Error>) -> Void) {
+    func getUserInfo (userId: Int, completion: @escaping (Result<UserInfoResponse, Error>) -> Void) {
         loginProvider.request(.getUserInfo(userId: userId)) { result in
             switch result {
             case .success(let response):
@@ -53,12 +52,10 @@ struct LoginManager {
         }
     }
     
-    // MARK: - 검사해야함
-    func setUserInfo (userId: String, info: UserInfoViewModel, completion: @escaping (Error?) -> Void) {
+    func setUserInfo (userId: Int, info: UserEditViewModel, completion: @escaping (Error?) -> Void) {
         loginProvider.request(.setUserInfo(userId: userId, info: info)) { result in
             switch result {
             case .success:
-                print(result)
                 completion(nil)
             case let .failure(error):
                 completion(error)

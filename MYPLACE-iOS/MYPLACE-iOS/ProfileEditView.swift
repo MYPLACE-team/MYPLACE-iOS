@@ -14,7 +14,7 @@ struct ProfileEditView: View {
     @State private var profile: String = ""
     
     @StateObject var toastViewModel = ToastViewModel.shared
-    @StateObject var user = UserInfoViewModel.shared
+    @StateObject var userEditViewModel = UserEditViewModel.shared
 
     @Binding var path: [PathModel]
     
@@ -63,7 +63,7 @@ struct ProfileEditView: View {
                     Spacer()
                 }
                 HStack(spacing: 0) {
-                    TextField(user.username,text: $name)
+                    TextField(UserInfoViewModel.shared.username, text: $name)
                         .onChange(of: name) {
                             if name.count > 10 {
                                 name = String(name.prefix(10))
@@ -117,14 +117,13 @@ struct ProfileEditView: View {
                     if(name == "") {
                         toastViewModel.showToastWithString(text: "새로운 닉네임을 입력해주세요.")
                     } else {
-                        user.username = name
-                        user.profileImg = "profile"
-                        if(profile != "") {
-                            user.profile = profile
-                        }
-                        user.setUserInfo(userId: "\(user.userId)", info: user) {result in
-                            if (result) {
+                        userEditViewModel.username = name
+                        userEditViewModel.profileImg = ""
+                        userEditViewModel.profile = profile
+                        LoginManager.shared.setUserInfo (userId: userEditViewModel.userId, info: userEditViewModel) { error in
+                            if let error = error {
                                 toastViewModel.showToastWithString(text: "프로필 수정에 실패했습니다.")
+                                print(String(describing: error))
                             } else {
                                 path.removeLast()
                             }

@@ -16,6 +16,9 @@ enum ArchiveAPI {
     case registerArchive(archive: ArchiveInformationViewModel)
     case editArchive(archiveId:Int, archive: ArchiveInformationViewModel)
     case deleteArchive(archiveId: Int)
+    case registerFolder(folder: ArchiveFolderViewModel)
+    case editFolder(folderId:Int, folder: ArchiveFolderViewModel)
+    case deleteFolder(folderId: Int)
 }
 
 extension ArchiveAPI: TargetType {
@@ -53,6 +56,12 @@ extension ArchiveAPI: TargetType {
             return "/archive/\(archiveId)"
         case .deleteArchive(let archiveId):
             return "/archive/\(archiveId)"
+        case .registerFolder:
+            return "/archive/folder"
+        case .editFolder(let folderId, let folder):
+            return "/archive/folder/\(folderId)"
+        case .deleteFolder(let folderId):
+            return "/archive/folder/\(folderId)"
         }
     }
     
@@ -71,6 +80,12 @@ extension ArchiveAPI: TargetType {
         case .editArchive:
             return .put
         case .deleteArchive:
+            return .delete
+        case .registerFolder:
+            return .post
+        case .editFolder:
+            return .put
+        case .deleteFolder:
             return .delete
         }
     }
@@ -92,6 +107,14 @@ extension ArchiveAPI: TargetType {
             let jsonData = try! JSONEncoder().encode(archive)
             return .requestData(jsonData)
         case .deleteArchive:
+            return .requestPlain
+        case .registerFolder(let folder):
+            let jsonData = try! JSONEncoder().encode(folder)
+            return .requestData(jsonData)
+        case .editFolder(let folderId, let folder):
+            let jsonData = try! JSONEncoder().encode(folder)
+            return .requestData(jsonData)
+        case .deleteFolder:
             return .requestPlain
         }
     }

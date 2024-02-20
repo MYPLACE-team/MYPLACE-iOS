@@ -32,6 +32,9 @@
 		A5CE892A2B5980CE00ED8F62 /* NewUserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5CE89292B5980CE00ED8F62 /* NewUserView.swift */; };
 		A5CE892C2B59AA0900ED8F62 /* ArchiveDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5CE892B2B59AA0900ED8F62 /* ArchiveDetailView.swift */; };
 		A5CFD2782B6CDB2200F7DA48 /* NewArchiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5CFD2772B6CDB2200F7DA48 /* NewArchiveView.swift */; };
+		A5E30A092B83568B008A9BBF /* ServicePolicyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E30A082B83568B008A9BBF /* ServicePolicyView.swift */; };
+		A5E30A0B2B8356B6008A9BBF /* PrivacyPolicyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E30A0A2B8356B6008A9BBF /* PrivacyPolicyView.swift */; };
+		A5E30A0D2B8356D8008A9BBF /* LocationPolicyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E30A0C2B8356D8008A9BBF /* LocationPolicyView.swift */; };
 		A5E8B3D42B81261A0062B011 /* secret.plist in Resources */ = {isa = PBXBuildFile; fileRef = A5E8B3D32B81261A0062B011 /* secret.plist */; };
 		A5E8B3D62B8147570062B011 /* ArchiveEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E8B3D52B8147570062B011 /* ArchiveEditView.swift */; };
 		A5E8B3D82B82BFEC0062B011 /* ArchivePlaceSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E8B3D72B82BFEC0062B011 /* ArchivePlaceSearchView.swift */; };
@@ -93,6 +96,9 @@
 		A5CE89292B5980CE00ED8F62 /* NewUserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewUserView.swift; sourceTree = "<group>"; };
 		A5CE892B2B59AA0900ED8F62 /* ArchiveDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveDetailView.swift; sourceTree = "<group>"; };
 		A5CFD2772B6CDB2200F7DA48 /* NewArchiveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewArchiveView.swift; sourceTree = "<group>"; };
+		A5E30A082B83568B008A9BBF /* ServicePolicyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicePolicyView.swift; sourceTree = "<group>"; };
+		A5E30A0A2B8356B6008A9BBF /* PrivacyPolicyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyView.swift; sourceTree = "<group>"; };
+		A5E30A0C2B8356D8008A9BBF /* LocationPolicyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationPolicyView.swift; sourceTree = "<group>"; };
 		A5E8B3D32B81261A0062B011 /* secret.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = secret.plist; path = ../../../Downloads/secret.plist; sourceTree = "<group>"; };
 		A5E8B3D52B8147570062B011 /* ArchiveEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveEditView.swift; sourceTree = "<group>"; };
 		A5E8B3D72B82BFEC0062B011 /* ArchivePlaceSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchivePlaceSearchView.swift; sourceTree = "<group>"; };
@@ -218,6 +224,9 @@
 				AAAAC9C42B5920F60026C8D9 /* ViewModel */,
 				AA2B64532B3D02A4008CEDBB /* NotificationView.swift */,
 				A59DC1E12B7BEE8600EA8E8E /* NotificationSettingView.swift */,
+				A5E30A082B83568B008A9BBF /* ServicePolicyView.swift */,
+				A5E30A0A2B8356B6008A9BBF /* PrivacyPolicyView.swift */,
+				A5E30A0C2B8356D8008A9BBF /* LocationPolicyView.swift */,
 				A59EE2B42B470C57009915D5 /* LoginView.swift */,
 				A5CE89292B5980CE00ED8F62 /* NewUserView.swift */,
 				AA05EAF62B3B87A1005596C5 /* Assets.xcassets */,
@@ -397,10 +406,12 @@
 				A5CE892A2B5980CE00ED8F62 /* NewUserView.swift in Sources */,
 				AAE7CD212B3FB09F00E02B71 /* PlaceModel.swift in Sources */,
 				A5BE8DE72B7E1FBE00579EBF /* ArchiveAPI.swift in Sources */,
+				A5E30A092B83568B008A9BBF /* ServicePolicyView.swift in Sources */,
 				A5CE892C2B59AA0900ED8F62 /* ArchiveDetailView.swift in Sources */,
 				AA2B644D2B3CCA03008CEDBB /* FavoritePlacesView.swift in Sources */,
 				A5BE8DEB2B7E289100579EBF /* ArchiveViewModel.swift in Sources */,
 				AABAC2962B6C6E10001B1533 /* KakaoSearchManager.swift in Sources */,
+				A5E30A0D2B8356D8008A9BBF /* LocationPolicyView.swift in Sources */,
 				A5BE8DF12B7F1F3E00579EBF /* LoginViewModel.swift in Sources */,
 				AAE7CD1F2B3F9C0C00E02B71 /* SearchView.swift in Sources */,
 				A59DC1E22B7BEE8600EA8E8E /* NotificationSettingView.swift in Sources */,
@@ -414,6 +425,7 @@
 				A59EE2BD2B47F91B009915D5 /* LoginModel.swift in Sources */,
 				AA2B64522B3D0289008CEDBB /* SettingView.swift in Sources */,
 				A59EE2BB2B47F80A009915D5 /* LoginPathModel.swift in Sources */,
+				A5E30A0B2B8356B6008A9BBF /* PrivacyPolicyView.swift in Sources */,
 				A5CFD2782B6CDB2200F7DA48 /* NewArchiveView.swift in Sources */,
 				A5F03F862B50FB5700242929 /* ArchiveModel.swift in Sources */,
 				AAAAC9C12B56BC180026C8D9 /* KakaoSearchViewModel.swift in Sources */,

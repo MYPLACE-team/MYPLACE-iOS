@@ -154,20 +154,35 @@ struct SettingView: View {
                       .padding(.top, 1)
                     VStack(alignment: .leading, spacing: 6) {
                         Text("약관 및 정책")
-                          .font(
-                            Font.custom("Apple SD Gothic Neo", size: 17)
-                              .weight(.semibold)
-                          )
-                          .foregroundStyle(Color(red: 0.4, green: 0.35, blue: 0.96))
-                        Text("서비스 이용 약관")
-                          .font(Font.custom("Apple SD Gothic Neo", size: 16))
-                          .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
-                        Text("개인정보 처리 방침")
-                          .font(Font.custom("Apple SD Gothic Neo", size: 16))
-                          .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
-                        Text("위치기반 서비스 이용 약관")
-                          .font(Font.custom("Apple SD Gothic Neo", size: 16))
-                          .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
+                            .font(
+                                Font.custom("Apple SD Gothic Neo", size: 17)
+                                    .weight(.semibold)
+                            )
+                            .foregroundStyle(Color(red: 0.4, green: 0.35, blue: 0.96))
+                        Button(action: {
+                            path.append(.servicePolicyView)
+                        })
+                        {
+                            Text("서비스 이용 약관")
+                                .font(Font.custom("Apple SD Gothic Neo", size: 16))
+                                .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
+                        }
+                        Button(action: {
+                            path.append(.privacyPolicyView)
+                        })
+                        {
+                            Text("개인정보 처리 방침")
+                                .font(Font.custom("Apple SD Gothic Neo", size: 16))
+                                .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
+                        }
+                        Button(action: {
+                            path.append(.locationPolicyView)
+                        })
+                        {
+                            Text("위치기반 서비스 이용 약관")
+                                .font(Font.custom("Apple SD Gothic Neo", size: 16))
+                                .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
+                        }
                     }
                 }
                 .padding(.leading, 33)
@@ -286,7 +301,7 @@ struct SettingView: View {
             }
         }
         .onAppear {
-            user.getUserInfo(userId: "\(user.userId)")
+            user.getUserInfo(userId: user.userId)
         }
     }
 }
