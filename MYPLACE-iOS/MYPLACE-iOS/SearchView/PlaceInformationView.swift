@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct PlaceInformationView: View {
-    @ObservedObject var myPlaceInformationViewModel: MyPlaceInformationViewModel
+    @StateObject var myPlaceInformationViewModel = MyPlaceInformationViewModel.shared
     @StateObject var myPlaceListViewModel = MyPlaceListViewModel.shared
     @Binding var path: [PathModel]
     @State private var currentPage = 0
@@ -226,7 +226,7 @@ struct PlaceInformationView: View {
                                 Spacer()
                             }
                             HStack {
-                                Text("흑임자라떼")
+                                Text(myPlaceInformationViewModel.result.recDish)
                                     .font(
                                         Font.custom("Apple SD Gothic Neo", size: 13)
                                             .weight(.medium)
