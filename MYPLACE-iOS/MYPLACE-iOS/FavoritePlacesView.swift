@@ -518,22 +518,15 @@ struct FavoritePlacesView: View {
                     else if selectedTab == "로딩 화면" {
                         VStack {
                             //FavoritePlaceLoading
-                            Image("FavoritePlaceMissing2")
+                            MyPlaceProgressView()
                                 .onAppear {
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
                                         withAnimation {
                                             selectedTab = latestSelectedTab
                                         }
                                     }
                                 }
-                            Text("로딩중이에요......")
-                                .font(
-                                    Font.custom("Apple SD Gothic Neo", size: 20)
-                                        .weight(.semibold)
-                                )
-                                .multilineTextAlignment(.center)
-                                .lineSpacing(5)
-                                .padding(.top, 30)
+                                .padding(.top, 160)
                             Spacer()
                         }
                     }
