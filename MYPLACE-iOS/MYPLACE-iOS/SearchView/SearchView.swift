@@ -110,28 +110,17 @@ struct SearchView: View {
                             }
                         } else {
                             if isNeedUpdate {
-                                List {
-                                    ForEach(myPlaceListViewModel.result.place, id: \.id) { place in
-                                        Button(action: {
-                                            placeId = place.id
-                                            isHeartFilled = place.isLike
-                                            path.append(.placeInformationView)
-                                        }) {
-                                            SearchItemView_Registered(path: $path, isHeartFilled: place.isLike, searchText: $searchText, thumbnailUrl: place.thumbnailUrl, placeName: PlaceType.emojiForCategory(from: place.categoryId) + place.name, placeAddress: place.address, placeId: place.id)
-                                        }
-                                        .listRowSeparator(.hidden)
-                                    }
-                                    ForEach(kakaoSearchViewModel.places, id: \.id) { place in
-                                        Button(action: {
-                                            popupViewModel.setSelectedPlace(x: place.x, y: place.y, placeName: place.placeName, address: place.addressName)
-                                            withAnimation {
-                                                isPopupPresented.toggle()
+                                VStack {
+                                    MyPlaceProgressView()
+                                        .onAppear {
+                                            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                                                withAnimation {
+                                                    isNeedUpdate.toggle()
+                                                }
                                             }
-                                        }) {
-                                            SearchItemView_UnRegistered(path: $path, placeName: place.placeName, addressName: place.addressName)
                                         }
-                                        .listRowSeparator(.hidden)
-                                    }
+                                        .padding(.top, 160)
+                                    Spacer()
                                 }
                             }
                             else {
@@ -158,6 +147,9 @@ struct SearchView: View {
                                         .listRowSeparator(.hidden)
                                     }
                                 }
+                                .refreshable {
+                                    updateView()
+                                }
                             }
                         }
                     }
@@ -165,10 +157,6 @@ struct SearchView: View {
                     .scrollIndicators(.hidden)
                     .onAppear {
                         updateView()
-                        isNeedUpdate.toggle()
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                            isNeedUpdate.toggle()
-                        }
                     }
                     Spacer()
                 }
@@ -187,6 +175,7 @@ struct SearchView: View {
     private func updateView() {
         kakaoSearchViewModel.search(query: searchText)
         myPlaceListViewModel.getMyPlaceList(keyword: searchText)
+        isNeedUpdate.toggle()
     }
 }
 
