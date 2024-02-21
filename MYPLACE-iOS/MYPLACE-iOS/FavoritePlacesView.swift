@@ -16,9 +16,11 @@ struct FavoritePlacesView: View {
     @Binding var isHeartFilled: Bool
     
     @State private var selectedTab: String = "전체"
+    @State private var latestSelectedTab: String = "전체"
     @StateObject private var toastViewModel = ToastViewModel.shared
     @State var isPopupPresented = false
     @State var isLatestSelected: String = "등록순"
+    
     var body: some View {
         ZStack {
             VStack(spacing: 0) {
@@ -209,7 +211,8 @@ struct FavoritePlacesView: View {
                                         .padding(.top, 25)
                                 }
                             }
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 700)
                             .background(Color(red: 0.94, green: 0.93, blue: 1).opacity(0.7))
                         }
                         else {
@@ -244,6 +247,7 @@ struct FavoritePlacesView: View {
                                                     }
                                                     
                                                     withAnimation {
+                                                        latestSelectedTab = "전체"
                                                         selectedTab = "로딩 화면"
                                                     }
                                                 }) {
@@ -305,7 +309,7 @@ struct FavoritePlacesView: View {
                                     .lineSpacing(5)
                                     .padding(.top, 30)
                                 Button(action: {
-                                    
+                                    path.append(.notificationSettingView)
                                 }) {
                                     RoundedRectangle(cornerRadius: 10)
                                         .foregroundStyle(Color.accentColor)
@@ -322,7 +326,8 @@ struct FavoritePlacesView: View {
                                         .padding(.top, 25)
                                 }
                             }
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 700)
                             .background(Color(red: 0.94, green: 0.93, blue: 1).opacity(0.7))
                         }
                         else {
@@ -351,6 +356,7 @@ struct FavoritePlacesView: View {
                                                         let toastMessage = "다녀올 장소에 저장되었어요"
                                                         ToastViewModel.shared.showToastWithString(text: toastMessage)
                                                         withAnimation {
+                                                            latestSelectedTab = "다녀온 장소"
                                                             selectedTab = "로딩 화면"
                                                         }
                                                     }) {
@@ -430,7 +436,8 @@ struct FavoritePlacesView: View {
                                         .padding(.top, 25)
                                 }
                             }
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 700)
                             .background(Color(red: 0.94, green: 0.93, blue: 1).opacity(0.7))
                         }
                         else {
@@ -459,6 +466,7 @@ struct FavoritePlacesView: View {
                                                         let toastMessage = "다녀올 장소에 저장되었어요"
                                                         ToastViewModel.shared.showToastWithString(text: toastMessage)
                                                         withAnimation {
+                                                            latestSelectedTab = "다녀올 장소"
                                                             selectedTab = "로딩 화면"
                                                         }
                                                     }) {
@@ -514,7 +522,7 @@ struct FavoritePlacesView: View {
                                 .onAppear {
                                     DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                                         withAnimation {
-                                            selectedTab = "전체"
+                                            selectedTab = latestSelectedTab
                                         }
                                     }
                                 }
@@ -531,6 +539,9 @@ struct FavoritePlacesView: View {
                     }
                 }
                 .scrollIndicators(.hidden)
+                .refreshable {
+                    selectedTab = "로딩 화면"
+                }
                 .navigationBarBackButtonHidden()
                 .toolbar {
                     ToolbarItem(placement: .topBarLeading) {
@@ -558,6 +569,7 @@ struct FavoritePlacesView: View {
                 }
                 .blur(radius: isPopupPresented ? 10 : 0)
                 .disabled(isPopupPresented)
+            }
                 if isPopupPresented {
                     FilterPopup(isPopupPresented: $isPopupPresented)
                         .onDisappear {
@@ -567,9 +579,8 @@ struct FavoritePlacesView: View {
                             }
                         }
                 }
-            }
-            .toast(message: toastViewModel.toastMessage, isShowing: $toastViewModel.showToast, duration: Toast.time)
         }
+        .toast(message: toastViewModel.toastMessage, isShowing: $toastViewModel.showToast, duration: Toast.time)
     }
 }
 

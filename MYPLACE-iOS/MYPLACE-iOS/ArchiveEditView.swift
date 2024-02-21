@@ -35,12 +35,13 @@ struct ArchiveEditView: View {
     var placeLocation = ArchiveDetailViewModel.shared.archiveDetailPlace.address
     var isLike = ArchiveDetailViewModel.shared.archiveDetailPlace.isLike
     var categoryId = ArchiveDetailViewModel.shared.archiveDetailPlace.categoryID
+    var asyncImage = ArchiveDetailViewModel.shared.archiveDetailPlace.thumbnail
         
     var body: some View {
         ZStack{
             ScrollView{
                 VStack(spacing: 0){
-                    placeView(name: placeName, location: placeLocation, image: "DummyImage", isHeartFilled: isLike == 0 ? false : true, categoryId: categoryId)
+                    placeView(name: placeName, location: placeLocation, image: asyncImage ?? "DummyImage2", isHeartFilled: isLike == 0 ? false : true, categoryId: categoryId)
                         .padding(.top, 32)
                     HStack(spacing: 0) {
                         VStack(alignment: .leading, spacing: 2) {
@@ -381,17 +382,36 @@ struct ArchiveEditView: View {
                             archive.folder = folderId
                             archive.visitedDate = dateFormatter(date: date)
                             archive.placeId = ArchiveDetailViewModel.shared.archiveDetailPlace.placeID
-                            ArchiveManager.shared.editArchive(archiveId: archiveId, query: archive) { result in
-                                if(result == nil) {
-                                    toastViewModel.showToastWithString(text: "아카이브 게시물 수정에 실패했습니다.")
-                                } else {
-                                    ArchiveDetailViewModel.shared.getArchiveDetail(archiveId: archiveId)
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                                        path.removeLast()
-                                        archive.reset()
+                            func uploadImages(_ images: [UIImage], currentIndex: Int) {
+                                guard currentIndex < images.count else {
+                                    ArchiveManager.shared.editArchive(archiveId: archiveId, query: archive) { result in
+                                        if(result == nil) {
+                                            toastViewModel.showToastWithString(text: "아카이브 게시물 수정에 실패했습니다.")
+                                        } else {
+                                            ArchiveDetailViewModel.shared.getArchiveDetail(archiveId: archiveId)
+                                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                                path.removeLast()
+                                                archive.reset()
+                                            }
+                                        }
                                     }
+                                    return
+                                }
+                                FirebaseStorageManager.uploadImage(image: images[currentIndex]) { url in
+                                    if let imageUrl = url {
+                                        print("Image uploaded successfully. URL: \(imageUrl)")
+                                        archive.images.append("\(imageUrl)")
+                                    } else {
+                                        print("Failed to upload image.")
+                                    }
+                                    
+                                    // 다음 이미지 업로드를 위해 재귀 호출
+                                    uploadImages(images, currentIndex: currentIndex + 1)
                                 }
                             }
+
+                            // 첫 번째 이미지부터 업로드 시작
+                            uploadImages(self.images, currentIndex: 0)
                         }
                     })
                     {

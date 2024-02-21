@@ -463,7 +463,6 @@ struct SquarePhotosPicker: View {
                     if let imageData = try? await selectedItem?.loadTransferable(type: Data.self) {
                         if let uiImage = UIImage(data: imageData) {
                             selectedImage.append(uiImage)
-                            print("Selected Images: \(selectedImage)")
                         }
                         selectedItem = nil
                     }

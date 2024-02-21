@@ -71,7 +71,6 @@ struct ArchiveBackButton: View {
         }) {
             HStack {
                 Image(systemName: "chevron.left")
-                Image("ArchiveBook")
                 Text("아카이브")
                     .font(
                         .custom("Apple SD Gothic Neo", size: 30)

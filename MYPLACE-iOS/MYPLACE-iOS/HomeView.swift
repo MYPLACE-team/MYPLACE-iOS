@@ -418,13 +418,16 @@ struct HomeView: View {
                                                 .overlay(
                                                     VStack(spacing: 30) {
                                                         HStack {
-                                                            Text("추천메뉴")
-                                                                .font(
-                                                                    Font.custom("Apple SD Gothic Neo", size: 16)
-                                                                        .weight(.medium)
-                                                                )
-                                                                .foregroundColor(Color(red: 0.45, green: 0.47, blue: 0.5))
-                                                                .frame(width: 70)
+                                                            HStack {
+                                                                Text("추천메뉴")
+                                                                    .font(
+                                                                        Font.custom("Apple SD Gothic Neo", size: 16)
+                                                                            .weight(.medium)
+                                                                    )
+                                                                    .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
+                                                                    Spacer()
+                                                            }
+                                                            .frame(width: 80)
                                                             VStack(alignment: .leading, spacing: 0) {
                                                                 Text("· 흑임자 크림 커피 (6,500원)")
                                                                 Text("· 누하과 (3,900원)")
@@ -438,28 +441,34 @@ struct HomeView: View {
                                                             Spacer()
                                                         }
                                                         HStack {
-                                                            Text("제공서비스")
-                                                                .font(
-                                                                    Font.custom("Apple SD Gothic Neo", size: 16)
-                                                                        .weight(.medium)
-                                                                )
-                                                                .foregroundColor(Color(red: 0.45, green: 0.47, blue: 0.5))
-                                                                .frame(width: 70)
+                                                            HStack {
+                                                                Text("제공서비스")
+                                                                    .font(
+                                                                        Font.custom("Apple SD Gothic Neo", size: 16)
+                                                                            .weight(.medium)
+                                                                    )
+                                                                    .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
+                                                                Spacer()
+                                                            }
+                                                                .frame(width: 80)
                                                             HStack(spacing: 25) {
                                                                 customTextRoundedRec(text: "☺️ 친절한 서비스")
                                                                 customTextRoundedRec(text: "💐 좋은 분위기")
                                                             }
-                                                            .padding(.leading, 20)
+                                                            .padding(.leading, 30)
                                                             Spacer()
                                                         }
                                                         HStack {
-                                                            Text("영업시간")
-                                                                .font(
-                                                                    Font.custom("Apple SD Gothic Neo", size: 16)
-                                                                        .weight(.medium)
-                                                                )
-                                                                .foregroundColor(Color(red: 0.45, green: 0.47, blue: 0.5))
-                                                                .frame(width: 70)
+                                                            HStack {
+                                                                Text("영업시간")
+                                                                    .font(
+                                                                        Font.custom("Apple SD Gothic Neo", size: 16)
+                                                                            .weight(.medium)
+                                                                    )
+                                                                    .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
+                                                                Spacer()
+                                                            }
+                                                                .frame(width: 80)
                                                             VStack(alignment: .leading, spacing: 0) {
                                                                 Text("· 화~금 10:00 - 20:00")
                                                                 Text("· 토,일 11:00 - 20:00")
@@ -473,15 +482,28 @@ struct HomeView: View {
                                                             Spacer()
                                                         }
                                                         HStack {
-                                                            Text("인스타그램")
-                                                                .font(
-                                                                    Font.custom("Apple SD Gothic Neo", size: 16)
-                                                                        .weight(.medium)
-                                                                )
-                                                                .foregroundColor(Color(red: 0.45, green: 0.47, blue: 0.5))
-                                                                .frame(width: 70)
+                                                            HStack {
+                                                                Text("인스타그램")
+                                                                    .font(
+                                                                        Font.custom("Apple SD Gothic Neo", size: 16)
+                                                                            .weight(.medium)
+                                                                    )
+                                                                    .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
+                                                                Spacer()
+                                                            }
+                                                                .frame(width: 80)
                                                             VStack(spacing: 0) {
-                                                                Text("dotle.bat")
+                                                                HStack {
+                                                                    Button(action: {
+                                                                        openInstagram(username: myPlaceInformationViewModel.result.insta)
+                                                                    }, label: {
+                                                                        Image("Earth")
+                                                                            .resizable()
+                                                                            .frame(width: 20, height: 20)
+                                                                    })
+                                                                    Spacer()
+                                                                }
+//
                                                             }
                                                             .font(
                                                                 Font.custom("Apple SD Gothic Neo", size: 12)
@@ -507,6 +529,16 @@ struct HomeView: View {
                 }
             }
             .ignoresSafeArea(.all)
+        }
+    }
+    
+    func openInstagram(username: String) {
+        let instagramUrl = URL(string: "instagram://user?username=\(username)")!
+        if UIApplication.shared.canOpenURL(instagramUrl) {
+            UIApplication.shared.open(instagramUrl, options: [:], completionHandler: nil)
+        } else {
+            let webUrl = URL(string: "https://www.instagram.com/\(username)/")!
+            UIApplication.shared.open(webUrl, options: [:], completionHandler: nil)
         }
     }
     

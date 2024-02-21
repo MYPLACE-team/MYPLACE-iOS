@@ -13,12 +13,14 @@ struct PlaceInformationView: View {
     @Binding var path: [PathModel]
     @State private var currentPage = 0
     @Binding var isHeartFilled: Bool
-    @State private var userInput: String = ""
+    @State private var userInputHeader: String = ""
+    @State private var userInputContent: String = ""
     @Binding var placeId: Int
+    @State private var selectedTab: String = "상세정보"
+    
     @StateObject private var toastViewModel = ToastViewModel()
     
     let imageHeight = CGFloat(440)
-    let hstackWidth = CGFloat(320)
     @State var emoji: String = ""
     
     var body: some View {
@@ -51,15 +53,6 @@ struct PlaceInformationView: View {
                     }
                     .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
                     .frame(height: imageHeight)
-                    //MARK: - pageControl 일단 보류 시간 오래걸림
-//                    HStack {
-//                        ForEach(0..<3, id: \.self) { index in
-//                            Circle()
-//                               .foregroundStyle(index == currentPage ? Color.black : Color.gray)
-//                                .frame(width: 8, height: 8)
-//                        }
-//                    }
-//                    .padding(.top, 290)
                     VStack {
                         Spacer()
                         ZStack {
@@ -139,20 +132,20 @@ struct PlaceInformationView: View {
                 }
                 
                 if !myPlaceInformationViewModel.result.hashtag.isEmpty {
-                    HStack(spacing: 10) {
+                    HStack(alignment: .center, spacing: 10) {
                         ForEach(myPlaceInformationViewModel.result.hashtag, id: \.self) { hashtag in
                             Text(hashtag)
                                 .font(
                                     .custom("Apple SD Gothic Neo", size: 15)
-                                    .weight(.bold)
+                                    .weight(.semibold)
                                 )
-                                .foregroundStyle(Color.accentColor)
+                                .foregroundStyle(Color(red: 0.49, green: 0.47, blue: 0.75))
                                 .background(
                                     RoundedRectangle(cornerRadius: 40)
                                         .foregroundStyle(.white)
                                         .overlay(
                                             RoundedRectangle(cornerRadius: 40)
-                                                .stroke(Color.accentColor, lineWidth: 1.3)
+                                                .stroke(Color.accentColor, lineWidth: 1)
                                                 .padding(EdgeInsets(top: -5, leading: -10, bottom: -4, trailing: -10))
                                         )
                                 )
@@ -160,45 +153,101 @@ struct PlaceInformationView: View {
                         }
                         Spacer()
                     }
-                    .padding(EdgeInsets(top: 10, leading: 30, bottom: 0, trailing: 0))   
+                    .frame(height: 35)
+                    .padding(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 0))
+                    VStack(spacing: 0) {
+                        Rectangle()
+                            .foregroundStyle(.clear)
+                            .frame(height: 1)
+                            .background(Color(red: 0.81, green: 0.81, blue: 0.81).opacity(0.8))
+                            .shadow(color: Color(red: 0.55, green: 0.54, blue: 0.54).opacity(0.1), radius: 0.5, x: 0, y: 1)
+                            .shadow(color: Color(red: 0.55, green: 0.54, blue: 0.54).opacity(0.09), radius: 1.5, x: 0, y: 3)
+                            .shadow(color: Color(red: 0.55, green: 0.54, blue: 0.54).opacity(0.05), radius: 1.5, x: 0, y: 6)
+                            .shadow(color: Color(red: 0.55, green: 0.54, blue: 0.54).opacity(0.01), radius: 2, x: 0, y: 10)
+                            .shadow(color: Color(red: 0.55, green: 0.54, blue: 0.54).opacity(0), radius: 2.5, x: 0, y: 16)
+                        Rectangle()
+                            .foregroundStyle(Color(red: 0.93, green: 0.93, blue: 0.93))
+                            .frame(height: 8)
+                    }
                 }
                 
                 HStack {
-                    VStack(alignment: .leading, spacing: 15) {
-                        HStack(spacing: 0) {
-                            HStack {
-                                Text("🍴추천 메뉴")
-                                    .font(
-                                        .custom("Apple SD Gothic Neo", size: 18)
-                                        .weight(.semibold)
-                                    )
-                                Spacer()
-                            }
-                            .frame(width: 110)
-                            .padding(.trailing, 40)
-                            Text(myPlaceInformationViewModel.result.recDish.isEmpty ? "추천 메뉴가 입력되지 않았어요" : myPlaceInformationViewModel.result.recDish)
-                                .font(
-                                    myPlaceInformationViewModel.result.recDish.isEmpty ?
-                                    Font.custom("Apple SD Gothic Neo", size: 12).weight(.regular) :
-                                        Font.custom("Apple SD Gothic Neo", size: 18).weight(.regular)
-                                )
-                                .foregroundStyle(.black)
-                            Spacer()
+                    VStack(spacing: 10){
+                        Spacer()
+                        Text("상세정보")
+                            .font(
+                                Font.custom("Apple SD Gothic Neo", size: 14)
+                                    .weight(.semibold)
+                            )
+                            .foregroundStyle(selectedTab == "상세정보" ? Color.accentColor : Color(red: 0.39, green: 0.45, blue: 0.55))
+                        
+                        UnevenRoundedRectangle(topLeadingRadius: 10, topTrailingRadius: 10)
+                            .frame(width: 120, height: 3)
+                            .foregroundStyle(selectedTab == "상세정보" ? Color.accentColor : .clear)
+                    }
+                    .onTapGesture {
+                        withAnimation {
+                            selectedTab = "상세정보"
                         }
-                        .padding(.top, 13)
-                        HStack(spacing: 0) {
-                            HStack {
-                                Text("💰제공서비스")
-                                    .font(
-                                        .custom("Apple SD Gothic Neo", size: 18)
+                    }
+                    VStack(spacing: 10){
+                        Spacer()
+                        HStack(spacing: 5) {
+                            Text("정보수정")
+                                .font(
+                                    Font.custom("Apple SD Gothic Neo", size: 14)
                                         .weight(.semibold)
+                                )
+                                .foregroundStyle(selectedTab == "정보수정" ? Color.accentColor : Color(red: 0.39, green: 0.45, blue: 0.55))
+                        }
+                        UnevenRoundedRectangle(topLeadingRadius: 10, topTrailingRadius: 10)
+                            .frame(width: 120, height: 3)
+                            .foregroundStyle(selectedTab == "정보수정" ? Color.accentColor : .clear)
+                    }
+                    .onTapGesture {
+                        withAnimation {
+                            selectedTab = "정보수정"
+                        }
+                    }
+                }
+                .frame(height: 30)
+                Divider()
+                
+                if selectedTab == "상세정보" {
+                    VStack(spacing: 20) {
+                        VStack(spacing: 5) {
+                            HStack {
+                                Text("추천메뉴")
+                                    .font(
+                                        Font.custom("Apple SD Gothic Neo", size: 16)
+                                            .weight(.bold)
                                     )
+                                    .foregroundStyle(Color(red: 0.15, green: 0.16, blue: 0.17))
                                 Spacer()
                             }
-                            .frame(width: 110)
-                            .padding(.trailing, 40)
-                            HStack(spacing: 5) {
-                                ForEach(myPlaceInformationViewModel.result.service.isEmpty ? ["제공서비스가 입력되지 않았어요"] : myPlaceInformationViewModel.result.service.prefix(1), id: \.self) { service in
+                            HStack {
+                                Text("흑임자라떼")
+                                    .font(
+                                        Font.custom("Apple SD Gothic Neo", size: 13)
+                                            .weight(.medium)
+                                    )
+                                    .foregroundStyle(Color(red: 0.15, green: 0.16, blue: 0.17))
+                                Spacer()
+                            }
+                        }
+                        .padding(.top, 10)
+                        VStack(spacing: 5) {
+                            HStack {
+                                Text("제공서비스")
+                                    .font(
+                                        Font.custom("Apple SD Gothic Neo", size: 16)
+                                            .weight(.bold)
+                                    )
+                                    .foregroundStyle(Color(red: 0.15, green: 0.16, blue: 0.17))
+                                Spacer()
+                            }
+                            HStack(spacing: 10) {
+                                ForEach(myPlaceInformationViewModel.result.service.isEmpty ? [""] : myPlaceInformationViewModel.result.service, id: \.self) { service in
                                     BlueChip(text: self.emojiForService(service) + service, isSelected: false)
                                 }
                                 .font(
@@ -206,162 +255,161 @@ struct PlaceInformationView: View {
                                     Font.custom("Apple SD Gothic Neo", size: 12).weight(.regular) :
                                         Font.custom("Apple SD Gothic Neo", size: 18).weight(.regular)
                                 )
+                                Spacer()
+                            }
+                        }
+                        VStack(spacing: 5) {
+                            HStack {
+                                Text("휴무일")
+                                    .font(
+                                        Font.custom("Apple SD Gothic Neo", size: 16)
+                                            .weight(.bold)
+                                    )
+                                    .foregroundStyle(Color(red: 0.15, green: 0.16, blue: 0.17))
+                                Spacer()
+                            }
+                            VStack {
+                                HStack(spacing: 10) {
+                                    ForEach(myPlaceInformationViewModel.result.closedDay.prefix(6), id: \.self) { closedDayIndex in
+                                        RedChip(text: closedDayIndex)
+                                    }
+                                    if myPlaceInformationViewModel.result.closedDay.count > 6 {
+                                        ForEach(myPlaceInformationViewModel.result.closedDay.dropFirst(6), id: \.self) { closedDayIndex in
+                                            RedChip(text: closedDayIndex)
+                                        }
+                                    }
+                                    Spacer()
+                                }
+                            }
+                        }
+                        VStack(spacing: 5) {
+                            HStack(alignment: .center, spacing: 0) {
+                                Text("인스타그램")
+                                    .font(
+                                        .custom("Apple SD Gothic Neo", size: 16)
+                                        .weight(.semibold)
+                                    )
+                                Spacer()
+                            }
+                            if !myPlaceInformationViewModel.result.insta.isEmpty {
+                                HStack {
+                                    Button(action: {
+                                        openInstagram(username: myPlaceInformationViewModel.result.insta)
+                                    }, label: {
+                                        Image("Earth")
+                                            .resizable()
+                                            .frame(width: 20, height: 20)
+                                    })
+                                    Spacer()
+                                }
+                            }
+                            else {
+                                HStack {
+                                    Text("인스타그램 계정이 입력되지 않았어요")
+                                        .font(
+                                            .custom("Apple SD Gothic Neo", size: 12)
+                                            .weight(.regular)
+                                        )
+                                    Spacer()
+                                }
+                            }
+                        }
+                    }
+                    .frame(height: 260)
+                    .padding(.leading, 30)
+                }
+                else if selectedTab == "정보수정" {
+                    VStack(spacing: 10) {
+                        ZStack {
+                            TextEditor(text: $userInputHeader)
+                                .font(
+                                    .custom("Apple SD Gothic Neo", size: 14)
+                                )
+                                .scrollContentBackground(.hidden)
+                                .frame(width: 320, height: 40)
+                                .background(
+                                    Rectangle()
+                                        .stroke(Color(red: 0.62, green: 0.64, blue: 0.67), lineWidth: 1)
+                                        .frame(width: 320, height: 40)
+                                        .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+                                )
+                                .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+                            if userInputHeader.isEmpty {
+                                HStack {
+                                    Text("제목 (10자 이내)")
+                                        .foregroundStyle(.gray)
+                                        .font(
+                                            .custom("Apple SD Gothic Neo", size: 13)
+                                        )
+                                        .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 0))
+                                    Spacer()
+                                }
+                                .frame(width: 320, height: 40)
                             }
                             Spacer()
                         }
-                        
-                        if myPlaceInformationViewModel.result.service.count > 1 {
-                            HStack(spacing: 0) {
-                                HStack {
-                                    EmptyView()
-                                }
-                                .frame(width: 150)
-                                HStack(spacing: 5) {
-                                    ForEach(myPlaceInformationViewModel.result.service.dropFirst(), id: \.self) { service in
-                                        BlueChip(text: self.emojiForService(service) + service, isSelected: false)
-                                    }
-                                }
-                                Spacer()
-                            }
-                            .padding(.top, -10)
-                        }
-                            
-                        
-                        HStack(spacing: 0) {
-                            HStack {
-                                Text("⏰휴무일")
-                                    .font(
-                                        .custom("Apple SD Gothic Neo", size: 18)
-                                        .weight(.semibold)
-                                    )
-                                Spacer()
-                            }
-                            .frame(width: 110)
-                            .padding(.trailing, 40)
-                            VStack {
-                                HStack(spacing: 5) {
-                                    ForEach(myPlaceInformationViewModel.result.closedDay.prefix(3), id: \.self) { closedDayIndex in
-                                        RedChip(text: closedDayIndex)
-                                    }
-                                }
-                            }
-                        }
-                        //MARK: - 간격 확인 후 수정 필요
-                        if myPlaceInformationViewModel.result.closedDay.count > 3 {
-                            HStack(spacing: 0) {
-                                HStack {
-                                    EmptyView()
-                                }
-                                .frame(width: 150)
-                                HStack(spacing: 5) {
-                                    ForEach(myPlaceInformationViewModel.result.closedDay.dropFirst(3), id: \.self) { closedDayIndex in
-                                        RedChip(text: closedDayIndex)
-                                    }
-                                }
-                            }
-                            .padding(.top, -10)
-                        }
-                        HStack(spacing: 0) {
-                            HStack(alignment: .center, spacing: 0) {
-                                Image("InstagramLogo")
-                                    .resizable()
-                                    .frame(width: 20, height: 20)
-                                    .padding(.bottom, 2)
-                                Text("인스타그램")
-                                    .font(
-                                        .custom("Apple SD Gothic Neo", size: 18)
-                                        .weight(.semibold)
-                                    )
-                                Spacer()
-                            }
-                            .frame(width: 110)
-                            .padding(.trailing, 40)
-                            if !myPlaceInformationViewModel.result.insta.isEmpty {
-                                Button(action: {
-                                    openInstagram(username: myPlaceInformationViewModel.result.insta)
-                                }, label: {
-                                    Image(systemName: "globe")
-                                        .foregroundStyle(.black)
-                                })
-                            }
-                            else {
-                                Text("인스타그램 계정이 입력되지 않았어요")
-                                    .font(
-                                        .custom("Apple SD Gothic Neo", size: 12)
-                                        .weight(.regular)
-                                    )
-                            }
-                        }
-                        
-                    }
-                    .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
-                    .frame(width: hstackWidth)
-                }
-                HStack(spacing: 0) {
-                    Image("Pencil")
-                        .resizable()
-                        .frame(width: 18, height: 18)
-                        .padding(.top, 8)
-                    Text("장소정보 수정 문의")
-                        .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
-                        .font(
-                            .custom("Apple SD Gothic Neo", size: 18)
-                            .weight(.semibold)
-                        )
-                        .padding(.top, 5)
-                        .padding(.leading, 4)
-                    Spacer()
-                    //MARK: - toast창이라도 띄우면 좋을듯?
-                    Button(action: {
-                        
-                    }) {
-                        Text("보내기")
-                            .font(
-                                .custom("Apple SD Gothic Neo", size: 12)
-                            )
-                    }
-                    .padding(.top, 10)
-                }
-                .frame(width: hstackWidth)
-                ZStack {
-                    TextEditor(text: $userInput)
-                        .font(
-                            .custom("Apple SD Gothic Neo", size: 14)
-                        )
-                        .frame(width: 250, height: 50)
-                        .background(
-                            Rectangle()
-                                .foregroundStyle(.white)
-                                .frame(width: 270, height: 60)
-                                .shadow(color: .black.opacity(0.25), radius: 2, x: 0, y: 2)
+                        .padding(.top, 10)
+                        ZStack {
+                            TextEditor(text: $userInputContent)
+                                .font(
+                                    .custom("Apple SD Gothic Neo", size: 14)
+                                )
+                                .scrollContentBackground(.hidden)
+                                .frame(width: 320, height: 120)
+                                .background(
+                                    Rectangle()
+                                        .stroke(Color(red: 0.62, green: 0.64, blue: 0.67), lineWidth: 1)
+                                        .frame(width: 320, height: 120)
+                                        .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+                                )
                                 .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
-                        )
-                        .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
-                    if userInput.isEmpty {
-                        Text("수정이 필요한 정보가 무엇인가요?\n자유롭게 남겨주세요!")
-                            .foregroundStyle(.gray)
-                            .font(
-                                .custom("Apple SD Gothic Neo", size: 13)
-                            )
-                            .frame(width: 250, height: 50)
-                            .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+                            if userInputContent.isEmpty {
+                                VStack {
+                                    HStack {
+                                        Text("내용 (300자 이내)")
+                                            .foregroundStyle(.gray)
+                                            .font(
+                                                .custom("Apple SD Gothic Neo", size: 13)
+                                            )
+                                            .padding(EdgeInsets(top: 10, leading: 10, bottom: 0, trailing: 0))
+                                        Spacer()
+                                    }
+                                    Spacer()
+                                }
+                                .frame(width: 320, height: 120)
+                            }
+                            Spacer()
+                        }
+                        //MARK: - toast창이라도 띄우면 좋을듯?
+                        Button(action: {
+                            
+                        }) {
+                            RoundedRectangle(cornerRadius: 7)
+                                .frame(width: 260, height: 40)
+                                .overlay(
+                                    Text("보내기")
+                                        .font(
+                                            .custom("Apple SD Gothic Neo", size: 14)
+                                            .weight(.semibold)
+                                        )
+                                        .foregroundStyle(.white)
+                                )
+                        }
+                        .padding(.top, 10)
                     }
-                    Spacer()
+                    .frame(height: 260)
                 }
-                
-                Spacer()
                 HStack {
                     Text("최초 작성자: " + "\(myPlaceInformationViewModel.result.writer)")
                         .font(Font.custom("Apple SD Gothic Neo", size: 12))
                         .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
-                        .padding(.leading, 40)
+                        .padding(.leading, 30)
                     Spacer()
                     Text("최근 수정일: \(formatDateString(myPlaceInformationViewModel.result.updatedAt))")
                         .font(Font.custom("Apple SD Gothic Neo", size: 12))
                         .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
-                        .padding(.trailing, 40)
+                        .padding(.trailing, 30)
                 }
-                .padding(.bottom, 10)
             }
             .ignoresSafeArea(.all)
             VStack {
@@ -379,7 +427,7 @@ struct PlaceInformationView: View {
                                     .bold()
                             )
                     }
-                    .padding(EdgeInsets(top: 10, leading: 10, bottom: 0, trailing: 0))
+                    .padding(EdgeInsets(top: 30, leading: 20, bottom: 0, trailing: 0))
                     Spacer()
                 }
                 Spacer()
@@ -480,5 +528,5 @@ extension View {
 }
 
 #Preview {
-    PlaceInformationView(myPlaceInformationViewModel: MyPlaceInformationViewModel(), myPlaceListViewModel: MyPlaceListViewModel(), path: .constant([]), isHeartFilled: .constant(true), placeId: .constant(52))
+    PlaceInformationView(myPlaceInformationViewModel: MyPlaceInformationViewModel(), myPlaceListViewModel: MyPlaceListViewModel(), path: .constant([]), isHeartFilled: .constant(true), placeId: .constant(101))
 }

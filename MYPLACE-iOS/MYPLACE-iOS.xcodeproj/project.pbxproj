@@ -112,6 +112,7 @@
 		AAE7CD1F2B3F9C0C00E02B71 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE7CD1E2B3F9C0C00E02B71 /* SearchView.swift */; };
 		AAE7CD212B3FB09F00E02B71 /* PlaceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE7CD202B3FB09F00E02B71 /* PlaceModel.swift */; };
 		AAE7CD232B3FCF6400E02B71 /* PlaceInformationEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE7CD222B3FCF6400E02B71 /* PlaceInformationEditView.swift */; };
+		AAE93A202B85545100C72BF0 /* MyPlaceProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE93A1F2B85545100C72BF0 /* MyPlaceProgressView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -175,6 +176,7 @@
 		AAE7CD1E2B3F9C0C00E02B71 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		AAE7CD202B3FB09F00E02B71 /* PlaceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceModel.swift; sourceTree = "<group>"; };
 		AAE7CD222B3FCF6400E02B71 /* PlaceInformationEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceInformationEditView.swift; sourceTree = "<group>"; };
+		AAE93A1F2B85545100C72BF0 /* MyPlaceProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPlaceProgressView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -288,6 +290,7 @@
 				A55106882B6C0E30004E8D1D /* ProfileEditView.swift */,
 				AA9E801B2B41641C00D51447 /* ToastView.swift */,
 				AAAAC9C72B597DB70026C8D9 /* PopupView.swift */,
+				AAE93A1F2B85545100C72BF0 /* MyPlaceProgressView.swift */,
 				AA9E801D2B4711B300D51447 /* ViewComponents.swift */,
 				AAE7CD242B3FCF6E00E02B71 /* SearchView */,
 				AAE7CD252B3FCF9C00E02B71 /* Model */,
@@ -501,6 +504,7 @@
 				AA2B644F2B3CCA21008CEDBB /* CommunityView.swift in Sources */,
 				AAE7CD232B3FCF6400E02B71 /* PlaceInformationEditView.swift in Sources */,
 				AAAAC9C82B597DB70026C8D9 /* PopupView.swift in Sources */,
+				AAE93A202B85545100C72BF0 /* MyPlaceProgressView.swift in Sources */,
 				A55106872B6C0E1A004E8D1D /* PrivacyView.swift in Sources */,
 				AAB755E22B62970C007B00A1 /* PopupModel.swift in Sources */,
 				AA05EB012B3B918E005596C5 /* HomeView.swift in Sources */,
