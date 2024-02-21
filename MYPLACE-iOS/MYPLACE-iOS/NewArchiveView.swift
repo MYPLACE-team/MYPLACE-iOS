@@ -37,7 +37,7 @@ struct NewArchiveView: View {
         ZStack{
             ScrollView{
                 VStack(spacing: 0){
-                    placeView(name: place.name, location: place.address, image: "DummyImage", isHeartFilled: place.isLike, categoryId: place.categoryId)
+                    placeView(name: place.name, location: place.address, image: place.image, isHeartFilled: place.isLike, categoryId: place.categoryId)
                         .padding(.top, 32)
                     HStack(spacing: 0) {
                         VStack(alignment: .leading, spacing: 2) {
@@ -391,19 +391,44 @@ struct NewArchiveView: View {
                             archive.folder = folderId
                             archive.visitedDate = dateFormatter(date: date)
                             archive.placeId = place.placeId
-                            ArchiveManager.shared.registerArchive(query: archive) { result in
-                                if(result == nil) {
-                                    toastViewModel.showToastWithString(text: "아카이브 게시물 등록에 실패했습니다.")
-                                } else {
-                                    ArchiveDetailViewModel.shared.getArchiveDetail(archiveId: result ?? 0)
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                                        // MARK: - 수정 필요
-                                        path.removeLast()
-                                        archive.reset()
-                                        path.append(.archiveDetailView)
+                            func uploadImages(_ images: [UIImage], currentIndex: Int) {
+                                guard currentIndex < images.count else {
+                                    ArchiveManager.shared.registerArchive(query: archive) { result in
+                                        if(result == nil) {
+                                            toastViewModel.showToastWithString(text: "아카이브 게시물 등록에 실패했습니다.")
+                                        } else {
+                                            ArchiveDetailViewModel.shared.getArchiveDetail(archiveId: result ?? 0)
+                                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                                // MARK: - 수정 필요
+                                                path.append(.archiveDetailView)
+                                                archive.reset()
+                                                path.remove(at: path.count - 2)
+                                                path.remove(at: path.count - 2)
+        //
+        //                                        path.removeLast()
+        //                                        archive.reset()
+        //                                        path.append(.archiveDetailView)
+                                            }
+                                        }
                                     }
+                                    return
+                                }
+                                FirebaseStorageManager.uploadImage(image: images[currentIndex]) { url in
+                                    if let imageUrl = url {
+                                        print("Image uploaded successfully. URL: \(imageUrl)")
+                                        archive.images.append("\(imageUrl)")
+                                    } else {
+                                        print("Failed to upload image.")
+                                    }
+                                    
+                                    // 다음 이미지 업로드를 위해 재귀 호출
+                                    uploadImages(images, currentIndex: currentIndex + 1)
                                 }
                             }
+
+                            // 첫 번째 이미지부터 업로드 시작
+                            uploadImages(self.images, currentIndex: 0)
+                            
                         }
                     })
                     {
@@ -495,12 +520,37 @@ struct placeView: View{
     
     var body: some View {
         HStack(spacing: 0){
-            Image(image)
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .frame(width: 77, height: 77)
-                .clipShape(RoundedRectangle(cornerRadius: 6))
-                .padding(.all, 6)
+            //MARK: - AsyncImage
+            AsyncImage(url: URL(string: image)) { phase in
+                  switch phase {
+                  case .success(let image):
+                      image
+                          .resizable()
+                          .aspectRatio(contentMode: .fill)
+                          .frame(width: 77, height: 77)
+                          .clipShape(RoundedRectangle(cornerRadius: 6))
+                          .padding(.all, 6)
+                  case .failure(_):
+                      RoundedRectangle(cornerRadius: 10)
+                          .frame(width: 76, height: 76)
+                          .foregroundStyle(Color(red: 0.88, green: 0.88, blue: 0.88))
+                          .overlay(
+                              Image("MyPlaceLogo")
+                          )
+                          .padding(EdgeInsets(top: 0, leading: 5, bottom: 0, trailing: 0))
+                  case .empty:
+                      RoundedRectangle(cornerRadius: 10)
+                          .frame(width: 76, height: 76)
+                          .foregroundStyle(Color(red: 0.88, green: 0.88, blue: 0.88))
+                          .overlay(
+                              Image("MyPlaceLogo")
+                          )
+                          .padding(EdgeInsets(top: 0, leading: 5, bottom: 0, trailing: 0))
+                  @unknown default:
+                      EmptyView()
+                  }
+              }
+            
             VStack(alignment: .leading, spacing: 9){
                 Text(PlaceType.emojiForCategory(from: categoryId) + " " + name)
                     .font(
@@ -509,7 +559,7 @@ struct placeView: View{
                     )
                     .foregroundStyle(Color(red: 0.27, green: 0.3, blue: 0.33))
                 HStack(spacing: 3) {
-                    Image("map")
+                    Image("Map2")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 14, height: 14)

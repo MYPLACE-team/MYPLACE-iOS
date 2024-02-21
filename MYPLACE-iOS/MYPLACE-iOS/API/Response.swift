@@ -91,12 +91,14 @@ struct FavoritePlace: Codable {
     let name, address: String
     let categoryID: Int
     let lat, lon: String
+    let thumbnailUrl: String
     let isVisited: Int
 
     enum CodingKeys: String, CodingKey {
         case id, name, address
         case categoryID = "categoryId"
         case lat, lon
+        case thumbnailUrl
         case isVisited
     }
 }

@@ -121,6 +121,7 @@ struct ArchivePlaceSearchView: View {
                                             searchPlaceViewModel.address = place.address
                                             searchPlaceViewModel.isLike = place.isLike
                                             searchPlaceViewModel.categoryId = place.categoryId
+                                            searchPlaceViewModel.image = place.thumbnailUrl
                                             path.append(.newArchiveView)
                                         }) {
                                             SearchItemView_Registered(path: $path, isHeartFilled: place.isLike, searchText: $searchText, thumbnailUrl: place.thumbnailUrl, placeName: PlaceType.emojiForCategory(from: place.categoryId) + place.name, placeAddress: place.address, placeId: place.id)
@@ -149,6 +150,7 @@ struct ArchivePlaceSearchView: View {
                                             searchPlaceViewModel.address = place.address
                                             searchPlaceViewModel.isLike = place.isLike
                                             searchPlaceViewModel.categoryId = place.categoryId
+                                            searchPlaceViewModel.image = place.thumbnailUrl
                                             path.append(.newArchiveView)
                                         }) {
                                             SearchItemView_Registered(path: $path, isHeartFilled: place.isLike, searchText: $searchText, thumbnailUrl: place.thumbnailUrl, placeName: PlaceType.emojiForCategory(from: place.categoryId) + place.name, placeAddress: place.address, placeId: place.id)

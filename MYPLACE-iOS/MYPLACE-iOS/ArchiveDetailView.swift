@@ -11,7 +11,7 @@ struct ArchiveDetailView: View {
     @State var isPopupPresented: Bool = false
     @State var popupMode: String = ""
     @State var isCommentPresented: Bool = false
-    @State var images: [String] = ["DummyImage", "DummyImage2", "DummyImage3"]
+    @State var images: [String] = []
     
     @StateObject private var toastViewModel = ToastViewModel.shared
     @StateObject private var archiveUserViewModel = ArchiveUserViewModel.shared
@@ -151,12 +151,37 @@ struct ArchiveDetailView: View {
                                     if isLocationView {
                                         VStack {
                                             HStack{
-                                                Image("DummyImage")
-                                                    .resizable()
-                                                    .aspectRatio(contentMode: .fill)
-                                                    .frame(width: 76, height: 76)
-                                                    .clipShape(RoundedRectangle(cornerRadius: 6))
-                                                    .padding(.leading, 7)
+                                                //MARK: - AsyncImage
+                                                AsyncImage(url: URL(string: archiveDetailViewModel.archiveDetailPlace.thumbnail ?? "")) { phase in
+                                                      switch phase {
+                                                      case .success(let image):
+                                                          image
+                                                              .resizable()
+                                                              .aspectRatio(contentMode: .fill)
+                                                              .frame(width: 76, height: 76)
+                                                              .clipShape(RoundedRectangle(cornerRadius: 6))
+                                                              .padding(.leading, 7)
+                                                      case .failure(_):
+                                                          RoundedRectangle(cornerRadius: 10)
+                                                              .frame(width: 76, height: 76)
+                                                              .foregroundStyle(Color(red: 0.88, green: 0.88, blue: 0.88))
+                                                              .overlay(
+                                                                  Image("MyPlaceLogo")
+                                                              )
+                                                              .padding(EdgeInsets(top: 0, leading: 5, bottom: 0, trailing: 0))
+                                                      case .empty:
+                                                          RoundedRectangle(cornerRadius: 10)
+                                                              .frame(width: 76, height: 76)
+                                                              .foregroundStyle(Color(red: 0.88, green: 0.88, blue: 0.88))
+                                                              .overlay(
+                                                                  Image("MyPlaceLogo")
+                                                              )
+                                                              .padding(EdgeInsets(top: 0, leading: 5, bottom: 0, trailing: 0))
+                                                      @unknown default:
+                                                          EmptyView()
+                                                      }
+                                                  }
+                                                    
                                                 VStack(alignment:.leading){
                                                     HStack(spacing: 6){
                                                         Text(PlaceType.emojiForCategory(from: archiveDetailViewModel.archiveDetailPlace.categoryID) + " " + archiveDetailViewModel.archiveDetailPlace.name)
@@ -168,7 +193,7 @@ struct ArchiveDetailView: View {
                                                     }
                                                     .padding(.bottom, 2)
                                                     HStack(spacing: 6){
-                                                        Image("map")
+                                                        Image("Map2")
                                                             .resizable()
                                                             .frame(width:14, height:18)
                                                             .padding(.horizontal,4)
@@ -186,7 +211,7 @@ struct ArchiveDetailView: View {
                                             .shadow(color: .black.opacity(0.25), radius: 2, x: 0, y: 2)
                                             .padding(.top, 12)
                                             TabView() {
-                                                ForEach(images, id: \.self) {
+                                                ForEach(archiveDetailViewModel.archiveDetail.images, id: \.self) {
                                                     Image($0)
                                                         .resizable()
                                                         .scaledToFill()
@@ -458,7 +483,7 @@ struct ArchiveDetailView: View {
                                                     archive.folder = archiveDetailViewModel.archiveDetail.folderID
                                                     archive.title = archiveDetailViewModel.archiveDetail.title
                                                     archive.comment = archiveDetailViewModel.archiveDetail.comment
-                                                    archive.images = []
+                                                    archive.images = archiveDetailViewModel.archiveDetail.images
                                                     archive.hashtag = archiveDetailViewModel.archiveDetail.hashtag
                                                     archive.menu = archiveDetailViewModel.archiveDetail.menu
                                                     archive.price = archiveDetailViewModel.archiveDetail.price

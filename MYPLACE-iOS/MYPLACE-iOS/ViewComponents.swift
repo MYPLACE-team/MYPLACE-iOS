@@ -11,7 +11,7 @@ struct ViewComponents: View {
     var body: some View {
         SearchItemView_Registered(myPlaceListViewModel: MyPlaceListViewModel(), path: .constant([]), isHeartFilled: false, searchText: .constant(""), thumbnailUrl: "", placeName: "test", placeAddress: "test", placeId: 50)
         SearchItemView_UnRegistered(path: .constant([]), placeName: "카카오프렌즈카카오프렌즈카카오프렌즈", addressName: "서울")
-        FavoriteItemView(path: .constant([]), isVisited: false, place: FavoritePlace(id: 1, name: "testName", address: "testAddress", categoryID: 50, lat: "1", lon: "1", isVisited: 0))
+        FavoriteItemView(path: .constant([]), isVisited: false, place: FavoritePlace(id: 1, name: "testName", address: "testAddress", categoryID: 50, lat: "1", lon: "1", thumbnailUrl: "", isVisited: 0))
         KakaoSearchView(kakaoSearchViewModel: KakaoSearchViewModel(), myPlaceListViewModel: MyPlaceListViewModel(), path: .constant([]), searchText: .constant(""))
         BlueChip(text: "가나다라마바사", isSelected: false)
         RedChip(text: "가나다라마바사")
@@ -145,8 +145,6 @@ struct SearchItemView_Registered: View {
                               EmptyView()
                           }
                       }
-                    
-                    
                     
                     VStack(alignment: .leading, spacing: 5) {
                         HStack {
@@ -282,12 +280,40 @@ struct FavoriteItemView: View {
             .foregroundStyle(isVisited ? Color(red: 0.96, green: 0.96, blue: 0.96) : Color(red: 0.93, green: 0.93, blue: 1))
             .overlay(
                 HStack {
-                    Image("DummyImage2")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 70, height: 70)
-                        .clipShape(RoundedRectangle(cornerRadius: 15))
-                        .padding(EdgeInsets(top: 0, leading: 5, bottom: 0, trailing: 0))
+//                    Image("DummyImage2")
+//                        .resizable()
+//                        .scaledToFit()
+//                        .frame(width: 70, height: 70)
+//                        .clipShape(RoundedRectangle(cornerRadius: 15))
+//                        .padding(EdgeInsets(top: 0, leading: 5, bottom: 0, trailing: 0))
+                    AsyncImage(url: URL(string: place.thumbnailUrl)) { phase in
+                          switch phase {
+                          case .success(let image):
+                              image
+                                  .resizable()
+                                  .frame(width: 70, height: 70)
+                                  .clipShape(RoundedRectangle(cornerRadius: 10))
+                                  .padding(EdgeInsets(top: 0, leading: 5, bottom: 0, trailing: 0))
+                          case .failure(_):
+                              RoundedRectangle(cornerRadius: 10)
+                                  .frame(width: 70, height: 70)
+                                  .foregroundStyle(Color(red: 0.88, green: 0.88, blue: 0.88))
+                                  .overlay(
+                                      Image("MyPlaceLogo")
+                                  )
+                                  .padding(EdgeInsets(top: 0, leading: 5, bottom: 0, trailing: 0))
+                          case .empty:
+                              RoundedRectangle(cornerRadius: 10)
+                                  .frame(width: 70, height: 70)
+                                  .foregroundStyle(Color(red: 0.88, green: 0.88, blue: 0.88))
+                                  .overlay(
+                                      Image("MyPlaceLogo")
+                                  )
+                                  .padding(EdgeInsets(top: 0, leading: 5, bottom: 0, trailing: 0))
+                          @unknown default:
+                              EmptyView()
+                          }
+                      }
                     
                     VStack(alignment: .leading, spacing: 5) {
                         HStack {

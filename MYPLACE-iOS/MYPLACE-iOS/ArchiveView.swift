@@ -283,7 +283,7 @@ struct ArchiveView: View {
                                     path.append(.archiveDetailView)
                                 })
                                 {
-                                    ArchivePlaceView(image: place.thumbnailUrl ?? "DummyImage", category: place.categoryId, title: place.name, address: place.address, score: place.score, tags: place.hashtag)
+                                    ArchivePlaceView(image: place.thumbnailUrl ?? "DummyImage2", category: place.categoryId, title: place.name, address: place.address, score: place.score, tags: place.hashtag)
                                 }
                             }
                         }
@@ -309,71 +309,97 @@ struct ArchiveView: View {
                     ScrollView {
                         LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing:18) {
                             ForEach(archiveUserViewModel.folders, id:\.self) { folder in
-                                Image("DummyImage")
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fill)
-                                    .frame(width: 130, height: 110)
-                                    .clipShape(RoundedRectangle(cornerRadius: 10))
-                                    .shadow(color: .black.opacity(0.25), radius: 2, x: 0, y: 2)
-                                    .overlay(
-                                        Color(red: 0.85, green: 0.85, blue: 0.85).opacity(0.6)
-                                            .overlay(
-                                                VStack(alignment: .leading, spacing: 0){
-                                                    HStack{
-                                                        Spacer()
-                                                        Button(action: {
-                                                            folderId = folder.id
-                                                            isPopupPresented.toggle()
-                                                        })
-                                                        {
-                                                            Circle()
-                                                                .frame(width: 17, height: 17)
-                                                                .foregroundStyle(Color(red: 0.89, green: 0.39, blue: 0.39))
-                                                                .overlay(
-                                                                    Image(systemName: "xmark")
-                                                                        .resizable()
-                                                                        .frame(width: 7, height: 7)
-                                                                        .foregroundStyle(.white)
-                                                                )
-                                                        }
-                                                    }
-                                                    .padding(.top, 7)
-                                                    .padding(.trailing, 8)
-                                                    HStack(alignment: .bottom,spacing: 2){
-                                                        Text("\(folder.title)")
-                                                            .font(
-                                                                Font.custom("Apple SD Gothic Neo", size: 15)
-                                                                    .weight(.bold)
-                                                            )
-                                                            .foregroundStyle(Color(red: 0.15, green: 0.16, blue: 0.17))
-                                                        
-                                                        Button(action: {
-                                                            print(folder.id)
-                                                            folderId = folder.id
-                                                            ArchiveFolderViewModel.shared.name = folder.title
-                                                            startDate = stringToDate(date: folder.dateStart)
-                                                            endDate = stringToDate(date: folder.dateEnd)
-                                                            isCreate = false
-                                                            createFolder.toggle()
-                                                        })
-                                                        {
-                                                            Image("edit")
-                                                                .foregroundStyle(Color(red: 0.27, green: 0.3, blue: 0.33))
-                                                                .padding(.bottom, 4)
-                                                        }
-                                                    }
-                                                    .padding(.leading, 6)
-                                                    .padding(.top, 46)
-                                                    Text(folderDateFormat(start: folder.dateStart, end: folder.dateEnd))
-                                                        .font(
-                                                            Font.custom("Apple SD Gothic Neo", size: 10)
-                                                                .weight(.semibold)
-                                                        )
-                                                        .foregroundStyle(Color(red: 0.27, green: 0.3, blue: 0.33))
-                                                        .padding(.leading, 6)
-                                                }
-                                                , alignment: .top)
-                                    )
+                                //MARK: - AsyncImage
+                                AsyncImage(url: URL(string: folder.image ?? "")) { phase in
+                                      switch phase {
+                                      case .success(let image):
+                                          image
+                                              .resizable()
+                                              .aspectRatio(contentMode: .fill)
+                                              .frame(width: 130, height: 110)
+                                              .clipShape(RoundedRectangle(cornerRadius: 10))
+                                              .shadow(color: .black.opacity(0.25), radius: 2, x: 0, y: 2)
+                                              .overlay(
+                                                  Color(red: 0.85, green: 0.85, blue: 0.85).opacity(0.6)
+                                                      .overlay(
+                                                          VStack(alignment: .leading, spacing: 0){
+                                                              HStack{
+                                                                  Spacer()
+                                                                  Button(action: {
+                                                                      folderId = folder.id
+                                                                      isPopupPresented.toggle()
+                                                                  })
+                                                                  {
+                                                                      Circle()
+                                                                          .frame(width: 17, height: 17)
+                                                                          .foregroundStyle(Color(red: 0.89, green: 0.39, blue: 0.39))
+                                                                          .overlay(
+                                                                              Image(systemName: "xmark")
+                                                                                  .resizable()
+                                                                                  .frame(width: 7, height: 7)
+                                                                                  .foregroundStyle(.white)
+                                                                          )
+                                                                  }
+                                                              }
+                                                              .padding(.top, 7)
+                                                              .padding(.trailing, 8)
+                                                              HStack(alignment: .bottom,spacing: 2){
+                                                                  Text("\(folder.title)")
+                                                                      .font(
+                                                                          Font.custom("Apple SD Gothic Neo", size: 15)
+                                                                              .weight(.bold)
+                                                                      )
+                                                                      .foregroundStyle(Color(red: 0.15, green: 0.16, blue: 0.17))
+                                                                  
+                                                                  Button(action: {
+                                                                      print(folder.id)
+                                                                      folderId = folder.id
+                                                                      ArchiveFolderViewModel.shared.name = folder.title
+                                                                      startDate = stringToDate(date: folder.dateStart)
+                                                                      endDate = stringToDate(date: folder.dateEnd)
+                                                                      isCreate = false
+                                                                      createFolder.toggle()
+                                                                  })
+                                                                  {
+                                                                      Image("edit")
+                                                                          .foregroundStyle(Color(red: 0.27, green: 0.3, blue: 0.33))
+                                                                          .padding(.bottom, 4)
+                                                                  }
+                                                              }
+                                                              .padding(.leading, 6)
+                                                              .padding(.top, 46)
+                                                              Text(folderDateFormat(start: folder.dateStart, end: folder.dateEnd))
+                                                                  .font(
+                                                                      Font.custom("Apple SD Gothic Neo", size: 10)
+                                                                          .weight(.semibold)
+                                                                  )
+                                                                  .foregroundStyle(Color(red: 0.27, green: 0.3, blue: 0.33))
+                                                                  .padding(.leading, 6)
+                                                          }
+                                                          , alignment: .top)
+                                              )
+                                      case .failure(_):
+                                          RoundedRectangle(cornerRadius: 10)
+                                              .frame(width: 130, height: 110)
+                                              .clipShape(RoundedRectangle(cornerRadius: 10))
+                                              .foregroundStyle(Color(red: 0.88, green: 0.88, blue: 0.88))
+                                              .overlay(
+                                                  Image("MyPlaceLogo")
+                                              )
+                                              .padding(EdgeInsets(top: 0, leading: 5, bottom: 0, trailing: 0))
+                                      case .empty:
+                                          RoundedRectangle(cornerRadius: 10)
+                                              .frame(width: 130, height: 110)
+                                              .clipShape(RoundedRectangle(cornerRadius: 10))
+                                              .foregroundStyle(Color(red: 0.88, green: 0.88, blue: 0.88))
+                                              .overlay(
+                                                  Image("MyPlaceLogo")
+                                              )
+                                              .padding(EdgeInsets(top: 0, leading: 5, bottom: 0, trailing: 0))
+                                      @unknown default:
+                                          EmptyView()
+                                      }
+                                  }
                             }
                         }
                     }
@@ -405,7 +431,6 @@ struct ArchiveView: View {
             }
             ToolbarItem(placement: .principal) {
                 HStack {
-                    Image("ArchiveBook")
                     Text("아카이브")
                         .font(
                             .custom("Apple SD Gothic Neo", size: 20)
@@ -449,12 +474,37 @@ struct ArchivePlaceView: View {
     
     var body: some View {
         HStack{
-            Image(image)
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .frame(width: 76, height: 76)
-                .clipShape(RoundedRectangle(cornerRadius: 6))
-                .padding(.leading, 7)
+            //MARK: - AsyncImage 적용 완료 
+            AsyncImage(url: URL(string: image)) { phase in
+                  switch phase {
+                  case .success(let image):
+                      image
+                          .resizable()
+                          .aspectRatio(contentMode: .fill)
+                          .frame(width: 76, height: 76)
+                          .clipShape(RoundedRectangle(cornerRadius: 6))
+                          .padding(.leading, 7)
+                  case .failure(_):
+                      RoundedRectangle(cornerRadius: 10)
+                          .frame(width: 76, height: 76)
+                          .foregroundStyle(Color(red: 0.88, green: 0.88, blue: 0.88))
+                          .overlay(
+                              Image("MyPlaceLogo")
+                          )
+                          .padding(EdgeInsets(top: 0, leading: 5, bottom: 0, trailing: 0))
+                  case .empty:
+                      RoundedRectangle(cornerRadius: 10)
+                          .frame(width: 76, height: 76)
+                          .foregroundStyle(Color(red: 0.88, green: 0.88, blue: 0.88))
+                          .overlay(
+                              Image("MyPlaceLogo")
+                          )
+                          .padding(EdgeInsets(top: 0, leading: 5, bottom: 0, trailing: 0))
+                  @unknown default:
+                      EmptyView()
+                  }
+              }
+          
             VStack(alignment:.leading){
                 HStack(spacing: 0) {
                     Text(PlaceType.emojiForCategory(from: category) + " ")
@@ -468,7 +518,7 @@ struct ArchivePlaceView: View {
                 .padding(.bottom, 2)
                 .frame(width: 126, alignment: .leading)
                 HStack(spacing: 6){
-                    Image("map")
+                    Image("Map")
                         .resizable()
                         .frame(width:14, height:18)
                         .padding(.horizontal,4)
@@ -802,15 +852,33 @@ struct createFolderView: View {
                             Button(action: {
                                 folder.start = dateFormatter(date: start)
                                 folder.end = dateFormatter(date: end)
-                                ArchiveManager.shared.registFolder(query: folder) { error in
-                                    if let error = error {
-                                        print(String(describing: error))
+                                FirebaseStorageManager.uploadImage(image: self.image[0]) { url in
+                                    if let imageUrl = url {
+                                        print("Image uploaded successfully. URL: \(imageUrl)")
+                                        folder.thumbnailImage = "\(imageUrl)"
+                                        ArchiveManager.shared.registFolder(query: folder) { error in
+                                            if let error = error {
+                                                print(String(describing: error))
+                                            } else {
+                                                ArchiveUserViewModel.shared.getArchiveUserInfo()
+                                                ArchiveFolderViewModel.shared.reset()
+                                            }
+                                        }
+                                        show.toggle()
                                     } else {
-                                        ArchiveUserViewModel.shared.getArchiveUserInfo()
-                                        ArchiveFolderViewModel.shared.reset()
+                                        print("Failed to upload image.")
+                                        ArchiveManager.shared.registFolder(query: folder) { error in
+                                            if let error = error {
+                                                print(String(describing: error))
+                                            } else {
+                                                ArchiveUserViewModel.shared.getArchiveUserInfo()
+                                                ArchiveFolderViewModel.shared.reset()
+                                            }
+                                        }
+                                        show.toggle()
                                     }
                                 }
-                                show.toggle()
+//                                show.toggle()
                             })
                             {
                                 Text("새 폴더 추가 완료")
@@ -826,15 +894,32 @@ struct createFolderView: View {
                             Button(action: {
                                 folder.start = dateFormatter(date: start)
                                 folder.end = dateFormatter(date: end)
-                                ArchiveManager.shared.editFolder(folderId: id, query: folder) { error in
-                                    if let error = error {
-                                        print(String(describing: error))
+                                FirebaseStorageManager.uploadImage(image: self.image[0]) { url in
+                                    if let imageUrl = url {
+                                        print("Image uploaded successfully. URL: \(imageUrl)")
+                                        folder.thumbnailImage = "\(imageUrl)"
+                                        ArchiveManager.shared.editFolder(folderId: id, query: folder) { error in
+                                            if let error = error {
+                                                print(String(describing: error))
+                                            } else {
+                                                ArchiveUserViewModel.shared.getArchiveUserInfo()
+                                                ArchiveFolderViewModel.shared.reset()
+                                            }
+                                        }
+                                        show.toggle()
                                     } else {
-                                        ArchiveUserViewModel.shared.getArchiveUserInfo()
-                                        ArchiveFolderViewModel.shared.reset()
+                                        print("Failed to upload image.")
+                                        ArchiveManager.shared.editFolder(folderId: id, query: folder) { error in
+                                            if let error = error {
+                                                print(String(describing: error))
+                                            } else {
+                                                ArchiveUserViewModel.shared.getArchiveUserInfo()
+                                                ArchiveFolderViewModel.shared.reset()
+                                            }
+                                        }
+                                        show.toggle()
                                     }
                                 }
-                                show.toggle()
                             })
                             {
                                 Text("수정 완료")

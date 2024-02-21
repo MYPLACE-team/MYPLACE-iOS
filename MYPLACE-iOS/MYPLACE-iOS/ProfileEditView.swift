@@ -21,6 +21,7 @@ struct ProfileEditView: View {
     
     var body: some View {
         VStack(spacing: 0){
+            //MARK: - AsyncImage 대공사라서 그냥 시연은 이걸로 하는걸로
             profileImage
                 .resizable()
                 .aspectRatio(contentMode: .fill)
