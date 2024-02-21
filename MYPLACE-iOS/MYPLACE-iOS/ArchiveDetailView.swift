@@ -211,17 +211,48 @@ struct ArchiveDetailView: View {
                                             .shadow(color: .black.opacity(0.25), radius: 2, x: 0, y: 2)
                                             .padding(.top, 12)
                                             TabView() {
-                                                ForEach(archiveDetailViewModel.archiveDetail.images, id: \.self) {
-                                                    Image($0)
-                                                        .resizable()
-                                                        .scaledToFill()
-                                                        .frame(width: 356, height: 400)
+                                                if(archiveDetailViewModel.archiveDetail.images.count > 0){
+                                                    ForEach(archiveDetailViewModel.archiveDetail.images, id: \.self) {
+                                                        AsyncImage(url: URL(string: $0)) { phase in
+                                                            switch phase {
+                                                            case .success(let image):
+                                                                image
+                                                                    .resizable()
+                                                                    .aspectRatio(contentMode: .fill)
+                                                                    .frame(width: 356, height: 356)
+                                                                    .clipShape(RoundedRectangle(cornerRadius: 30))
+                                                            case .failure(_):
+                                                                RoundedRectangle(cornerRadius: 30)
+                                                                    .frame(width: 356, height: 356)
+                                                                    .foregroundStyle(Color(red: 0.88, green: 0.88, blue: 0.88))
+                                                                    .overlay(
+                                                                        Image("MyPlaceLogo")
+                                                                    )
+                                                            case .empty:
+                                                                RoundedRectangle(cornerRadius: 30)
+                                                                    .frame(width: 356, height: 356)
+                                                                    .foregroundStyle(Color(red: 0.88, green: 0.88, blue: 0.88))
+                                                                    .overlay(
+                                                                        Image("MyPlaceLogo")
+                                                                    )
+                                                            @unknown default:
+                                                                EmptyView()
+                                                            }
+                                                        }
+                                                    }
+                                                } else {
+                                                    RoundedRectangle(cornerRadius: 30)
+                                                        .frame(width: 356, height: 356)
+                                                        .foregroundStyle(Color(red: 0.88, green: 0.88, blue: 0.88))
+                                                        .overlay(
+                                                            Image("MyPlaceLogo")
+                                                        )
                                                 }
                                             }
                                             .tabViewStyle(.page)
                                             .frame(width: 356, height: 400)
                                             .clipShape(RoundedRectangle(cornerRadius: 30))
-                                            .padding(.vertical, 40)
+                                            .padding(.vertical, 20)
                                         }
                                         .id("scroll_top")
                                     }
@@ -420,7 +451,7 @@ struct ArchiveDetailView: View {
                                                         .lineLimit(3)
                                                         .multilineTextAlignment(.leading)
                                                         .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
-                                                        .frame(width: 228)
+                                                        .frame(width: 228, alignment: .leading)
                                                         .padding(.top, 8)
                                                     if(archiveDetailViewModel.archiveDetail.comment.count > 60) {
                                                         HStack {

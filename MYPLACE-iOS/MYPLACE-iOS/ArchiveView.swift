@@ -474,96 +474,99 @@ struct ArchivePlaceView: View {
     
     var body: some View {
         HStack{
-            //MARK: - AsyncImage 적용 완료 
+            //MARK: - AsyncImage 적용 완료
             AsyncImage(url: URL(string: image)) { phase in
-                  switch phase {
-                  case .success(let image):
-                      image
-                          .resizable()
-                          .aspectRatio(contentMode: .fill)
-                          .frame(width: 76, height: 76)
-                          .clipShape(RoundedRectangle(cornerRadius: 6))
-                          .padding(.leading, 7)
-                  case .failure(_):
-                      RoundedRectangle(cornerRadius: 10)
-                          .frame(width: 76, height: 76)
-                          .foregroundStyle(Color(red: 0.88, green: 0.88, blue: 0.88))
-                          .overlay(
-                              Image("MyPlaceLogo")
-                          )
-                          .padding(EdgeInsets(top: 0, leading: 5, bottom: 0, trailing: 0))
-                  case .empty:
-                      RoundedRectangle(cornerRadius: 10)
-                          .frame(width: 76, height: 76)
-                          .foregroundStyle(Color(red: 0.88, green: 0.88, blue: 0.88))
-                          .overlay(
-                              Image("MyPlaceLogo")
-                          )
-                          .padding(EdgeInsets(top: 0, leading: 5, bottom: 0, trailing: 0))
-                  @unknown default:
-                      EmptyView()
-                  }
-              }
-          
+                switch phase {
+                case .success(let image):
+                    image
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 76, height: 76)
+                        .clipShape(RoundedRectangle(cornerRadius: 6))
+                        .padding(.leading, 7)
+                case .failure(_):
+                    RoundedRectangle(cornerRadius: 10)
+                        .frame(width: 76, height: 76)
+                        .foregroundStyle(Color(red: 0.88, green: 0.88, blue: 0.88))
+                        .overlay(
+                            Image("MyPlaceLogo")
+                        )
+                        .padding(EdgeInsets(top: 0, leading: 5, bottom: 0, trailing: 0))
+                case .empty:
+                    RoundedRectangle(cornerRadius: 10)
+                        .frame(width: 76, height: 76)
+                        .foregroundStyle(Color(red: 0.88, green: 0.88, blue: 0.88))
+                        .overlay(
+                            Image("MyPlaceLogo")
+                        )
+                        .padding(EdgeInsets(top: 0, leading: 5, bottom: 0, trailing: 0))
+                @unknown default:
+                    EmptyView()
+                }
+            }
+            
             VStack(alignment:.leading){
                 HStack(spacing: 0) {
                     Text(PlaceType.emojiForCategory(from: category) + " ")
                         .font(Font.custom("Apple SD Gothic Neo", size: 20))
                         .bold()
+                        .frame(width: 22)
+                        .padding(.trailing, 6)
                     AutoScrollingText(text: title, fontName: "Apple SD Gothic Neo", fontSize: 20, fontWeight: .bold)
-                        .frame(width: 100, height: 22)
+                        .frame(width: 110, height: 22)
                         .clipped()
+                    HStack(spacing: 2){
+                        ForEach(0..<score, id: \.self)
+                        {star in
+                            Image("StarFill")
+                        }
+                        ForEach(0..<5 - score, id: \.self) {star in
+                            Image("StarEmpty")
+                        }
+                    }
+                    .frame(width: 80)
+                    .padding(.bottom, 6)
+                    .padding(.leading, 12)
+                    .padding(.trailing, 11)
                 }
                 .foregroundStyle(Color(red: 0.27, green: 0.3, blue: 0.33))
                 .padding(.bottom, 2)
                 .frame(width: 126, alignment: .leading)
-                HStack(spacing: 6){
-                    Image("Map")
+                HStack(spacing: 0){
+                    Image("map")
                         .resizable()
                         .frame(width:14, height:18)
                         .padding(.horizontal,4)
                     Text(getSubAddress(address:address))
                         .font(Font.custom("Apple SD Gothic Neo", size: 15))
                         .foregroundStyle(Color(red: 0.45, green: 0.47, blue: 0.5))
-                }
-            }
-            .padding(.leading, 6)
-            Spacer()
-            VStack(alignment: .trailing){
-                HStack(spacing: 2){
-                    ForEach(0..<score, id: \.self)
-                    {star in
-                        Image("StarFill")
-                    }
-                    ForEach(0..<5 - score, id: \.self) {star in
-                        Image("StarEmpty")
-                    }
-                }
-                .padding(.bottom, 6)
-                HStack(spacing: 3){
-                    ForEach(tags.indices) {idx in
-                        if( idx < 2 ) {
-                            Text("#"+tags[idx])
-                                .font(Font.custom("Apple SD Gothic Neo", size: 12))
-                                .foregroundStyle(Color(red: 0.4, green: 0.35, blue: 0.96))
-                                .frame(height: 22)
-                                .padding(.horizontal, 8)
-                                .padding(.top, 2)
-                                .background(Color(red: 0.97, green: 0.95, blue: 1))
-                                .clipShape(RoundedRectangle(cornerRadius: 20))
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 20)
-                                        .inset(by: 0.5)
-                                        .stroke(Color(red: 0.4, green: 0.35, blue: 0.96), lineWidth: 1)
-                                )
+                        .padding(.leading, 6)
+                    Spacer()
+                    HStack(spacing: 3){
+                        ForEach(tags.indices) {idx in
+                            if( idx < 2 ) {
+                                Text("#"+tags[idx])
+                                    .font(Font.custom("Apple SD Gothic Neo", size: 12))
+                                    .foregroundStyle(Color(red: 0.4, green: 0.35, blue: 0.96))
+                                    .frame(height: 22)
+                                    .padding(.horizontal, 8)
+                                    .padding(.top, 2)
+                                    .background(Color(red: 0.97, green: 0.95, blue: 1))
+                                    .clipShape(RoundedRectangle(cornerRadius: 20))
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 20)
+                                            .inset(by: 0.5)
+                                            .stroke(Color(red: 0.4, green: 0.35, blue: 0.96), lineWidth: 1)
+                                    )
+                            }
                         }
                     }
+                    .padding(.trailing, 11)
                 }
-                .frame(height: 22)
             }
-            .padding(.trailing, 8)
+            .padding(.leading, 8)
         }
-        .frame(width: 343, height: 88)
+        .frame(width: 343, height: 88, alignment: .leading)
         .background(.white)
         .clipShape(RoundedRectangle(cornerRadius: 12))
     }
