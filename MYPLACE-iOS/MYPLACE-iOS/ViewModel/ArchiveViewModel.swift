@@ -113,7 +113,7 @@ class ArchiveInformationViewModel: ObservableObject, Codable {
     private init() {
         self.placeId = 0
         self.score = 0
-        self.isPublic = true
+        self.isPublic = false
         self.folder = nil
         self.title = ""
         self.comment = ""
@@ -173,7 +173,7 @@ class ArchiveInformationViewModel: ObservableObject, Codable {
     func reset() {
         self.placeId = 0
         self.score = 0
-        self.isPublic = true
+        self.isPublic = false
         self.folder = nil
         self.title = ""
         self.comment = ""

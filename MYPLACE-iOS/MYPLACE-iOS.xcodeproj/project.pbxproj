@@ -35,6 +35,8 @@
 		A5E30A092B83568B008A9BBF /* ServicePolicyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E30A082B83568B008A9BBF /* ServicePolicyView.swift */; };
 		A5E30A0B2B8356B6008A9BBF /* PrivacyPolicyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E30A0A2B8356B6008A9BBF /* PrivacyPolicyView.swift */; };
 		A5E30A0D2B8356D8008A9BBF /* LocationPolicyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E30A0C2B8356D8008A9BBF /* LocationPolicyView.swift */; };
+		A5E30A122B8522C4008A9BBF /* secret.plist in Resources */ = {isa = PBXBuildFile; fileRef = A5E30A102B8522C4008A9BBF /* secret.plist */; };
+		A5E30A132B8522C4008A9BBF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A5E30A112B8522C4008A9BBF /* GoogleService-Info.plist */; };
 		A5E8B3D62B8147570062B011 /* ArchiveEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E8B3D52B8147570062B011 /* ArchiveEditView.swift */; };
 		A5E8B3D82B82BFEC0062B011 /* ArchivePlaceSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E8B3D72B82BFEC0062B011 /* ArchivePlaceSearchView.swift */; };
 		A5F03F862B50FB5700242929 /* ArchiveModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F03F852B50FB5700242929 /* ArchiveModel.swift */; };
@@ -85,8 +87,6 @@
 		AA82C4C82B84CA0400E86F98 /* FirebaseRemoteConfigSwift in Frameworks */ = {isa = PBXBuildFile; productRef = AA82C4C72B84CA0400E86F98 /* FirebaseRemoteConfigSwift */; };
 		AA82C4CA2B84CA0400E86F98 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = AA82C4C92B84CA0400E86F98 /* FirebaseStorage */; };
 		AA82C4CC2B84CA0400E86F98 /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = AA82C4CB2B84CA0400E86F98 /* FirebaseStorageCombine-Community */; };
-		AA82C4D22B85134C00E86F98 /* secret.plist in Resources */ = {isa = PBXBuildFile; fileRef = AA82C4D12B85134C00E86F98 /* secret.plist */; };
-		AA82C4D42B85154A00E86F98 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = AA82C4D32B85154A00E86F98 /* GoogleService-Info.plist */; };
 		AA9E801A2B415F7C00D51447 /* ToastViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9E80192B415F7C00D51447 /* ToastViewModel.swift */; };
 		AA9E801C2B41641D00D51447 /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9E801B2B41641C00D51447 /* ToastView.swift */; };
 		AA9E801E2B4711B300D51447 /* ViewComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA9E801D2B4711B300D51447 /* ViewComponents.swift */; };
@@ -134,6 +134,8 @@
 		A5E30A082B83568B008A9BBF /* ServicePolicyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicePolicyView.swift; sourceTree = "<group>"; };
 		A5E30A0A2B8356B6008A9BBF /* PrivacyPolicyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyView.swift; sourceTree = "<group>"; };
 		A5E30A0C2B8356D8008A9BBF /* LocationPolicyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationPolicyView.swift; sourceTree = "<group>"; };
+		A5E30A102B8522C4008A9BBF /* secret.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = secret.plist; path = ../../../Downloads/secret.plist; sourceTree = "<group>"; };
+		A5E30A112B8522C4008A9BBF /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A5E8B3D52B8147570062B011 /* ArchiveEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveEditView.swift; sourceTree = "<group>"; };
 		A5E8B3D72B82BFEC0062B011 /* ArchivePlaceSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchivePlaceSearchView.swift; sourceTree = "<group>"; };
 		A5F03F852B50FB5700242929 /* ArchiveModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveModel.swift; sourceTree = "<group>"; };
@@ -153,8 +155,6 @@
 		AA2B64532B3D02A4008CEDBB /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
 		AA2B64552B3D0E7E008CEDBB /* KakaoMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoMapView.swift; sourceTree = "<group>"; };
 		AA82C4952B84C97300E86F98 /* FirebaseStorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseStorageManager.swift; sourceTree = "<group>"; };
-		AA82C4D12B85134C00E86F98 /* secret.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = secret.plist; path = ../../../../../Desktop/secret.plist; sourceTree = "<group>"; };
-		AA82C4D32B85154A00E86F98 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Downloads/MYPLACE-image/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		AA9E80192B415F7C00D51447 /* ToastViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastViewModel.swift; sourceTree = "<group>"; };
 		AA9E801B2B41641C00D51447 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
 		AA9E801D2B4711B300D51447 /* ViewComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewComponents.swift; sourceTree = "<group>"; };
@@ -270,9 +270,9 @@
 				A59DC1E52B7D485900EA8E8E /* LoginManager.swift */,
 				A5BE8DE82B7E220300579EBF /* ArchiveManager.swift */,
 				AA82C4952B84C97300E86F98 /* FirebaseStorageManager.swift */,
-				AA82C4D32B85154A00E86F98 /* GoogleService-Info.plist */,
 				AA2B64502B3CFEA9008CEDBB /* Info.plist */,
-				AA82C4D12B85134C00E86F98 /* secret.plist */,
+				A5E30A112B8522C4008A9BBF /* GoogleService-Info.plist */,
+				A5E30A102B8522C4008A9BBF /* secret.plist */,
 				AA05EAF22B3B87A0005596C5 /* MYPLACE_iOSApp.swift */,
 				AA05EAF42B3B87A0005596C5 /* ContentView.swift */,
 				AA2B64552B3D0E7E008CEDBB /* KakaoMapView.swift */,
@@ -482,10 +482,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AA82C4D22B85134C00E86F98 /* secret.plist in Resources */,
-				AA82C4D42B85154A00E86F98 /* GoogleService-Info.plist in Resources */,
 				AA05EAFA2B3B87A1005596C5 /* Preview Assets.xcassets in Resources */,
+				A5E30A122B8522C4008A9BBF /* secret.plist in Resources */,
 				AA05EAF72B3B87A1005596C5 /* Assets.xcassets in Resources */,
+				A5E30A132B8522C4008A9BBF /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -681,10 +681,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"MYPLACE-iOS/Preview Content\"";
-				DEVELOPMENT_TEAM = 7BKK7NQ2K7;
+				DEVELOPMENT_TEAM = 3LSYH4N82C;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "MYPLACE-iOS/Info.plist";
@@ -700,8 +701,9 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.MYPLACE-iOS-DemoDay";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.MYPLACE-iOS-DemoDayr";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -713,10 +715,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"MYPLACE-iOS/Preview Content\"";
-				DEVELOPMENT_TEAM = 7BKK7NQ2K7;
+				DEVELOPMENT_TEAM = 3LSYH4N82C;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "MYPLACE-iOS/Info.plist";
@@ -732,8 +735,9 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.MYPLACE-iOS-DemoDay";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.MYPLACE-iOS-DemoDayr";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
